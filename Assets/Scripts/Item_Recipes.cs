@@ -15,4 +15,10 @@ public class Item_Recipes : MonoBehaviour {
         this.newItem = newItem;
 
     }
+
+    public int GetData(int itemID)
+    {
+
+        return newItem;
+    }
 }

@@ -11,7 +11,10 @@ public class Item  {
     public Item()
     {
 
-
+    }
+    public int GetID()
+    {
+        return id;
     }
 
 }

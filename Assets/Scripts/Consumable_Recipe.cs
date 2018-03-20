@@ -14,4 +14,10 @@ public class Consumable_Recipe : MonoBehaviour {
         this.Recipe_id = _id;
         this.newItem = newItem;
     }
+
+    public int GetData()
+    {
+
+        return newItem;
+    }
 }
