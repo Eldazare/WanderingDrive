@@ -7,6 +7,8 @@ public class Recipe {
     int id;
     List<Crafting_Item> list;
 
+    public Recipe() { }
+
     public Recipe(List<Crafting_Item> _list, int _id) {
         this.list = _list;
         this.id = _id;
@@ -16,6 +18,7 @@ public class Recipe {
     public Item Merge(List<Crafting_Item> _list, int _id)
     {
         _list = list;
+        _id = id;
         if (id == 0) {
             if (true)
             {
