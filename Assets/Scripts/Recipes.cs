@@ -2,21 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Recipes<T> : MonoBehaviour {
+public class Recipe {
 
+    int id;
+    List<Crafting_Item> list;
 
+    public Recipe(List<Crafting_Item> _list, int _id) {
+        this.list = _list;
+        this.id = _id;
 
+    }
 
-    public Crafting_Item Merge(List<Item> _list)
+    public Item Merge(List<Crafting_Item> _list, int _id)
     {
-        if (true)
+        _list = list;
+        if (id == 0) {
+            if (true)
+            {
+                //Luo uusi tavara
+            }
+
+            Item _item = new Item();
+            return _item;
+        }
+        if (id == 1)
         {
-            //Luo uusi tavara
+            if (true)
+            {
+                //Luo uusi tavara
+            }
+
+            Item _item = new Item();
+            return _item;
         }
 
-        Crafting_Item _item = new Crafting_Item();
-        return _item;
-
+        return null;
     }
 
 }
