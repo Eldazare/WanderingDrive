@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Item_Recipes : MonoBehaviour {
 
-    int id;
+    int Recipe_id;
     List<int> list;
-    Item newItem;
+    int newItem;
 
-    public Item_Recipes(List<int> _list, int _id, Item newItem)
+    public Item_Recipes(List<int> _list, int _id, int newItem)
     {
         this.list = _list;
-        this.id = _id;
+        this.Recipe_id = _id;
         this.newItem = newItem;
 
     }
