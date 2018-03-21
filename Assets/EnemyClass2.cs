@@ -25,31 +25,20 @@ public class Enemy {
 		yield return new WaitForSeconds (2.0f);
 	}
 	void Start () {
+		// Instantiate enemy stats and such
+
 
 	}
 	public string GetHit (){
 
+
+		// animator.SetTrigger("Ouch");
 		return "lel";
 	}
-
-	/*
-	public string _Name = "Unnamed";
-	public int _HealthValue = 1;
-	public int _AttackValue = 1;
-
-	public Enemy Previous;
-	public Enemy Next;
-
-	public Enemy (string n, int HP, int AP) {
-		_Name = n;
-		_HealthValue = HP;
-		_AttackValue = AP;
-	}
-	public void GetHit (int d) {
-		_HealthValue -= d;
-	}
-	*/
 }
+
+
+
 
 [System.Serializable]
 public class Wat {

@@ -5,15 +5,19 @@ using UnityEngine;
 public class DoNotDestroy : MonoBehaviour {
 
 
+	public static DoNotDestroy self;
 
 
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+		if (self == null) {
+			DontDestroyOnLoad (gameObject);
+			self = this;
+		} else if (self != this) {
+			Destroy (gameObject);
+		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+
 }

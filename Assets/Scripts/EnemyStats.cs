@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	int ID;
+	int health;
+	int damage;
+	int element;
+	int elementWeakness;
+	int elementDamage;
+	int armorType;
+
+
+	void Start(){
+		// Generate stats from the enemy ID
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+
 }
