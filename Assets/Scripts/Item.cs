@@ -5,7 +5,8 @@ using UnityEngine;
 public class Item  {
 
     int id;
-
+    string description;
+    int type;
 
 
     //Konstruktori
