@@ -10,7 +10,7 @@ public class Crafting : MonoBehaviour {
     public List<Recipe> ConsRecipeList;
     public List<Sprite> ItemSprites;
     public List<Sprite> ConsumableSprites;
-    private List<Sprite> CurrentItemSpriteList;
+    public List<Sprite> CurrentItemSpriteList;
     private List<Sprite> CurrentConsumableSpriteList;
     public Merge merger;
     private Recipe CurrentItemRecipe;
@@ -30,15 +30,16 @@ public class Crafting : MonoBehaviour {
     public void ChangeRecipeOnwards()
     {
 
+        
         spriteCounter++;
-        if (spriteCounter >= ItemSprites.Count)
+        if (spriteCounter >= CurrentItemSpriteList.Count)
         {
-            RecipeImage.sprite = ItemSprites[0];
+            RecipeImage.sprite = CurrentItemSpriteList[0];
             spriteCounter = 0;
         }
         else
         {   
-            RecipeImage.sprite = ItemSprites[spriteCounter];
+            RecipeImage.sprite = CurrentItemSpriteList[spriteCounter];
         }
     }
 
@@ -48,12 +49,12 @@ public class Crafting : MonoBehaviour {
         spriteCounter--;
         if (spriteCounter < 0)
         {
-            RecipeImage.sprite = ItemSprites[ItemSprites.Count - 1];
-            spriteCounter = ItemSprites.Count - 1;
+            RecipeImage.sprite = CurrentItemSpriteList[CurrentItemSpriteList.Count - 1];
+            spriteCounter = CurrentItemSpriteList.Count - 1;
         }
         else
         {
-            RecipeImage.sprite = ItemSprites[spriteCounter];
+            RecipeImage.sprite = CurrentItemSpriteList[spriteCounter];
         }
     }
 

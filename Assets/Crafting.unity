@@ -797,7 +797,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 804080018}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047278553}
+        m_MethodName: ChangeRecipeListToConsumable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &804080018
@@ -908,7 +919,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 898496298}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047278553}
+        m_MethodName: ChangeRecipeListToCrafting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &898496298
@@ -1757,7 +1779,10 @@ MonoBehaviour:
   - {fileID: 21300002, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300000, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300004, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  ConsumableSprites: []
+  ConsumableSprites:
+  - {fileID: 21300012, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
+  - {fileID: 21300006, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
+  - {fileID: 21300010, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   RecipeImage: {fileID: 260227942}
 --- !u!4 &2047278554
 Transform:
