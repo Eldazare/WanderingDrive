@@ -7,8 +7,8 @@ public class Merge {
     int id;
     List<int> list;
     Inventory inventory;
-    private Item_Recipes itemRecipes;
-    private Consumable_Recipe consumableRecipes;
+    private Recipe itemRecipes;
+    private Recipe consumableRecipes;
 
 
     public Merge() { }
