@@ -44,13 +44,16 @@ public class Merge {
         }
         if (id == 1)
         {
-            if (true)
+            //Hae ja poista tavarat inventorysta
+            foreach (int i in _list)
             {
-                //Luo uusi tavara
+                inventory.GetItem(i);
             }
-
+            //Luo uusi tavara ja laita se inventoryyn
+            itemRecipes.GetData(_RecipeID);
             Item _item = new Item();
-            
+            inventory.PutItem(_item.GetID());
+
         }
 
         
