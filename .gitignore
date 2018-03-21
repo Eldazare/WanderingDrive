@@ -33,10 +33,3 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-
-/*
-bool butts = true;
-if (butts) {
-	Debug.Log("Butts");
-}
-*/
