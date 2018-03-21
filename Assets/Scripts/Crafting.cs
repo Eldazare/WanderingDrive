@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Crafting : MonoBehaviour {
 
+    public Inventory inventory;
+    public List<Recipe> RecipeList;
+    public Merge merger;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -11,6 +15,7 @@ public class Crafting : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
 		
 	}
 }
