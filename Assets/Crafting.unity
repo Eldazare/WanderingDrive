@@ -1775,6 +1775,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+  RecipeImage: {fileID: 260227942}
+  ItemRecipeList: 010000000200000003000000
+  ConsRecipeList: 010000000200000003000000
   ItemSprites:
   - {fileID: 21300002, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300000, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
@@ -1783,7 +1786,13 @@ MonoBehaviour:
   - {fileID: 21300012, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300006, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300010, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  RecipeImage: {fileID: 260227942}
+  CurrentRecipeType: 0
+  CurrentRecipe: 0
+  RecipeType_Item: 0
+  RecipeType_Consumable: 1
+  RecipeType_Armor: 2
+  RecipeType_Weapon: 3
+  RecipeType_Accessory: 4
 --- !u!4 &2047278554
 Transform:
   m_ObjectHideFlags: 0

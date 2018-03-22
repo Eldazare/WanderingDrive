@@ -5,23 +5,31 @@ using UnityEngine.UI;
 
 public class Crafting : MonoBehaviour {
 
-    public Inventory inventory;
-    public List<Recipe> ItemRecipeList;
-    public List<Recipe> ConsRecipeList;
+    public Merge merger;
+    public Image RecipeImage;
+
+    public List<int> ItemRecipeList;
+    public List<int> ConsRecipeList;
     public List<Sprite> ItemSprites;
     public List<Sprite> ConsumableSprites;
     private int CurrentItemSpriteList;
     private List<Sprite> CurrentConsumableSpriteList;
-    public Merge merger;
-    private Recipe CurrentItemRecipe;
-    private Recipe CurrentConsumableRecipe;
-    public Image RecipeImage;
+   
+    public int CurrentRecipeType;
+    public int CurrentRecipe;
     private int spriteCounter;
+
+    public int RecipeType_Item = 0;
+    public int RecipeType_Consumable = 1;
+    public int RecipeType_Armor = 2;
+    public int RecipeType_Weapon = 3;
+    public int RecipeType_Accessory = 4;
 
     public void Start()
     {
         RecipeImage.sprite = ItemSprites[0];
-        //CurrentItemRecipe = ItemRecipeList[0];
+        CurrentRecipe = ItemRecipeList[0];
+        CurrentRecipeType = RecipeType_Item;
         CurrentItemSpriteList = 0;
         spriteCounter = 0;
         
@@ -35,26 +43,32 @@ public class Crafting : MonoBehaviour {
         spriteCounter++;
         if (spriteCounter >= ItemSprites.Count)
         {
-            if (CurrentItemSpriteList == 0)
+            switch (CurrentItemSpriteList)
             {
-                RecipeImage.sprite = ItemSprites[0];
-                spriteCounter = 0;
-            }
-            else
-            {
-                RecipeImage.sprite = ConsumableSprites[0];
-                spriteCounter = 0;
+                case 0:
+                    RecipeImage.sprite = ItemSprites[0];
+                    CurrentRecipe = ItemRecipeList[0];
+                    spriteCounter = 0;
+                    break;
+                case 1:
+                    RecipeImage.sprite = ConsumableSprites[0];
+                    CurrentRecipe = ConsRecipeList[0];
+                    spriteCounter = 0;
+                    break;
             }
         }
         else
         {
-            if (CurrentItemSpriteList == 0)
+            switch (CurrentItemSpriteList)
             {
-                RecipeImage.sprite = ItemSprites[spriteCounter];
-            }
-            else
-            {
-                RecipeImage.sprite = ConsumableSprites[spriteCounter];
+                case 0:
+                    RecipeImage.sprite = ItemSprites[spriteCounter];
+                    CurrentRecipe = ItemRecipeList[spriteCounter];
+                    break;
+                case 1:
+                    RecipeImage.sprite = ConsumableSprites[spriteCounter];
+                    CurrentRecipe = ConsRecipeList[spriteCounter];
+                    break;
             }
         }
     }
@@ -65,26 +79,32 @@ public class Crafting : MonoBehaviour {
         spriteCounter--;
         if (spriteCounter < 0)
         {
-            if (CurrentItemSpriteList == 0)
+            switch (CurrentItemSpriteList)
             {
-                RecipeImage.sprite = ItemSprites[ItemSprites.Count - 1];
-                spriteCounter = ItemSprites.Count - 1;
-            }
-            else
-            {
-                RecipeImage.sprite = ConsumableSprites[ConsumableSprites.Count - 1];
-                spriteCounter = ConsumableSprites.Count - 1;
+                case 0:
+                    RecipeImage.sprite = ItemSprites[ItemSprites.Count - 1];
+                    CurrentRecipe = ItemRecipeList[ItemRecipeList.Count - 1];
+                    spriteCounter = ItemSprites.Count - 1;
+                    break;
+                case 1:
+                    RecipeImage.sprite = ConsumableSprites[ConsumableSprites.Count - 1];
+                    CurrentRecipe = ConsRecipeList[ConsRecipeList.Count - 1];
+                    spriteCounter = ConsumableSprites.Count - 1;
+                    break;
             }
         }
         else
         {
-            if (CurrentItemSpriteList == 0)
+            switch (CurrentItemSpriteList)
             {
-                RecipeImage.sprite = ItemSprites[spriteCounter];
-            }
-            else
-            {
-                RecipeImage.sprite = ConsumableSprites[spriteCounter];
+                case 0:
+                    RecipeImage.sprite = ItemSprites[spriteCounter];
+                    CurrentRecipe = ItemRecipeList[spriteCounter];
+                    break;
+                case 1:
+                    RecipeImage.sprite = ConsumableSprites[spriteCounter];
+                    CurrentRecipe = ConsRecipeList[spriteCounter];
+                    break;
             }
         }
     }
@@ -92,7 +112,8 @@ public class Crafting : MonoBehaviour {
     public void ChangeRecipeListToCrafting()
     {
         RecipeImage.sprite = ItemSprites[0];
-        //CurrentItemRecipe = ItemRecipeList[0];
+        CurrentRecipe = ItemRecipeList[0];
+        CurrentRecipeType = RecipeType_Item;
         CurrentItemSpriteList = 0;
         spriteCounter = 0;
     }
@@ -100,7 +121,8 @@ public class Crafting : MonoBehaviour {
     public void ChangeRecipeListToConsumable()
     {
         RecipeImage.sprite = ConsumableSprites[0];
-        //CurrentItemRecipe = ConsRecipeList[0];
+        CurrentRecipe = ConsRecipeList[0];
+        CurrentRecipeType = RecipeType_Consumable;
         CurrentItemSpriteList = 1;
         spriteCounter = 0;
     }
@@ -108,6 +130,7 @@ public class Crafting : MonoBehaviour {
 
     public void LetsMerge()
     {
+        merger.Conbine(CurrentRecipeType, CurrentRecipe);
 
     }
 }

@@ -4,59 +4,34 @@ using UnityEngine;
 
 public class Merge {
 
-    int id;
+  
     List<int> list;
-    Inventory inventory;
-    private Recipe itemRecipes;
-    private Recipe consumableRecipes;
+    Inventory MyInventory;
+    Recipe_Manager recipe_manager;
+
 
 
     public Merge() { }
 
-    public Merge(List<int> _list, int _id) {
+    public Merge(List<int> _list ) {
         this.list = _list;
-        this.id = _id;
+       
 
     }
 
-    public void Conbine(List<int> _list, int _RecipeID)
+    public void Conbine(int RecipeType, int RecipeID)
     {
-        _list = list;
-        _RecipeID = id;
-        if (id == 0) {
-            if (true)
-            {
-                
-
-                //Hae ja poista tavarat inventorysta
-                foreach (int i in _list)
-                {
-                    inventory.GetItem(i);
-                }
-                //Luo uusi tavara ja laita se inventoryyn
-                itemRecipes.GetData(_RecipeID);
-                //Item _item = new Item();
-                //inventory.PutItem(_item.GetID());
-            }
-
-            
-            
-        }
-        if (id == 1)
-        {
-            //Hae ja poista tavarat inventorysta
-            foreach (int i in _list)
-            {
-                inventory.GetItem(i);
-            }
-            //Luo uusi tavara ja laita se inventoryyn
-            itemRecipes.GetData(_RecipeID);
-            //Item _item = new Item();
-            //inventory.PutItem(_item.GetID());
-
-        }
-
         
+        //Hae resepti
+        Recipe newRecipe = recipe_manager.GetRecipeData(RecipeType, RecipeID);
+        //luo uusi tavara
+        for (int i = 0; i <= newRecipe.MaterialList.Count; i++)
+        {
+            MyInventory.RemoveItem(newRecipe.MaterialList[i].GetItemtype(), newRecipe.MaterialList[i].GetItemID());
+        }
+        MyInventory.PutItem(newRecipe.newItemType, newRecipe.newItemID);
+
     }
+
 
 }

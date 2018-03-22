@@ -5,22 +5,16 @@ using UnityEngine;
 public class Recipe {
 
     public int Recipe_id;
-    public List<int> list;
-    public int newItem;
+    public List<_material> MaterialList;
+    public int newItemType;
+    public int newItemID;
 
-    public Recipe(List<int> _list, int _id, int newItem)
+    public Recipe(List<_material> _list, int _id, int newItem)
     {
-        this.list = _list;
-        this.Recipe_id = _id;
-        this.newItem = newItem;
+        MaterialList = _list;
+        Recipe_id = _id;
+        newItemType = newItem;
 
     }
-
-    public int GetData(int itemID)
-    {
-
-        return newItem;
-    }
-
 
 }
