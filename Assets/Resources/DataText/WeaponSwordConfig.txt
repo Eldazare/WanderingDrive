@@ -1,0 +1,8 @@
+#This is a comment line
+
+weapon_sword_speed=1
+
+%weapon_sword_0_genericSword
+weapon_sword_0_damage=10
+weapon_sword_0_elemet=
+weapon_sword_0_elementDamage=

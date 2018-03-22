@@ -1,0 +1,8 @@
+#This is a comment line
+
+%armor_0_genericArmor
+enemy_0_head=1
+enemy_0_chest=1
+enemy_0_arms=1
+enemy_0_legs=1
+enemy_0_boots=1

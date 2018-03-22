@@ -1,0 +1,8 @@
+#This is a comment line
+#drop < identifier
+#Enemy id
+#Material id
+#=droprate
+
+drop_0_0=50
+drop_0_1=50
