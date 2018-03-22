@@ -45,6 +45,10 @@ public class GameController : MonoBehaviour {
 	float modLength;
 
 
+	public GameObject DefeatScreen, VictoryScreen, CowardScreen;
+	public Text LootText;
+
+
 	void Awake (){
 
 		barFill = bar.GetComponent<Image> ();
@@ -89,15 +93,16 @@ public class GameController : MonoBehaviour {
 
 
 		string m = "Encountered " + hostile.Name;
-		StartCoroutine (TextLine(m));
+		StartCoroutine (TextLine(m, TextBox));
 	}
 	
 
 
-	//Temprary thing
 	void Update () {
 		
 	}
+
+
 
 
 	// RepeatInvoke this
@@ -122,10 +127,19 @@ public class GameController : MonoBehaviour {
 
 
 		if (pleb.Health <= 0) {
-			SceneManager.LoadScene ("Defeat");
+			//SceneManager.LoadScene ("Defeat");
+			DefeatScreen.SetActive(true);
+			GetComponent<AudioSource> ().Stop ();
 		}
 		if (hostile.Health <= 0) {
-			SceneManager.LoadScene ("Victory");
+			//SceneManager.LoadScene ("Victory");
+			VictoryScreen.SetActive(true);
+			GetComponent<AudioSource> ().Stop ();
+
+
+			string m = "You've found a... stick on a stick!";
+			StartCoroutine (TextLine(m, LootText));
+
 		}
 	}
 
@@ -138,7 +152,7 @@ public class GameController : MonoBehaviour {
 		if (PlayerTurn) {
 			if (b == Attack) {
 				string m = "Attacked for " + pleb.Attack + " damage.";
-				StartCoroutine (TextLine (m));
+				StartCoroutine (TextLine (m, TextBox));
 
 				hostile.Health -= pleb.Attack;
 				PlayerTurn = false;
@@ -148,8 +162,10 @@ public class GameController : MonoBehaviour {
 			}
 			if (b == Run) {
 				string m = "You ran away like a coward.";
-				StartCoroutine (TextLine (m));
-				SceneManager.LoadScene ("Ran");
+				StartCoroutine (TextLine (m, TextBox));
+				//SceneManager.LoadScene ("Ran");
+				GetComponent<AudioSource> ().Stop ();
+				CowardScreen.SetActive(true);
 			}
 			/*
 			if (b == Abilities) {
@@ -171,10 +187,10 @@ public class GameController : MonoBehaviour {
 	}
 
 	// Slow textlines
-	IEnumerator TextLine(string mes){
-		TextBox.text = "";
+	IEnumerator TextLine(string mes, Text box){
+		box.text = "";
 		for (int i = 0; i < mes.Length; i++) {
-			TextBox.text += mes [i];
+			box.text += mes [i];
 			yield return new WaitForSeconds (0.005f);
 		}
 	}
@@ -199,7 +215,7 @@ public class GameController : MonoBehaviour {
 			pleb.Health -= (int)mod;
 		}
 
-		StartCoroutine (TextLine(m));
+		StartCoroutine (TextLine(m, TextBox));
 		UpdateHealth ();
 		PlayerTurn = true;
 	}
