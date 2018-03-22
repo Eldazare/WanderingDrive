@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Consumable {
+public class Inventory_Weapon  {
 
     public int ItemID;
 
-    public Consumable(int id)
+    public Inventory_Weapon(int id)
     {
         ItemID = id;
     }
 
+    //Efekti
 
 }

@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Consumable {
+public class Non_CombatConsumable : Consumable {
 
-    public int ItemID;
-
-    public Consumable(int id)
+    public Non_CombatConsumable(int id) : base(id)
     {
         ItemID = id;
     }
-
-
 }

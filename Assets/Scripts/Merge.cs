@@ -35,8 +35,8 @@ public class Merge {
                 }
                 //Luo uusi tavara ja laita se inventoryyn
                 itemRecipes.GetData(_RecipeID);
-                Item _item = new Item();
-                inventory.PutItem(_item.GetID());
+                //Item _item = new Item();
+                //inventory.PutItem(_item.GetID());
             }
 
             
@@ -51,8 +51,8 @@ public class Merge {
             }
             //Luo uusi tavara ja laita se inventoryyn
             itemRecipes.GetData(_RecipeID);
-            Item _item = new Item();
-            inventory.PutItem(_item.GetID());
+            //Item _item = new Item();
+            //inventory.PutItem(_item.GetID());
 
         }
 

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Consumable {
+public class _material  {
 
     public int ItemID;
 
-    public Consumable(int id)
+    public _material(int ItemID, int ItemType)
     {
-        ItemID = id;
+        this.ItemID = ItemID;
     }
 
-
+     
 }
