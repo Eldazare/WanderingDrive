@@ -8,7 +8,7 @@ public class PlayerStats : MonoBehaviour {
 	public int health;
 	public int stamina;
 	public int damageReduction;
-
+	public int element;
 	public int elementalDamage;
 	public int elementalWeakness;
 	public int weaponType;
@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour {
 
 
 
-	void statLoad(){
+	public void loadStats(){
 		// Load dem stats, bebeh
 	}
 }

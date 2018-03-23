@@ -1,0 +1,10 @@
+#This is a comment line
+#Contains only names, each effect requires own class
+
+#May contain balanceable numbers as per consumable
+#(Name the lines accordingly, use straight from the subclass)
+#Get number of consumables from nameList
+
+
+%consumable_noncon_0_whetstone
+

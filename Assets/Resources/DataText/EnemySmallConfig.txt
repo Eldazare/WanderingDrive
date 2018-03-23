@@ -1,0 +1,7 @@
+#This is a comment line
+
+%enemySmall_0_genericLizardSmall
+enemy_0_attack=1
+enemy_0_quickness=5
+enemy_0_health=10
+enemy_0_defense=2

@@ -1,0 +1,10 @@
+#This is a comment line
+#gather (identifier)
+#node id
+#Material id
+#=droprate
+
+
+
+gather_0_2=50
+gather_0_3=50
