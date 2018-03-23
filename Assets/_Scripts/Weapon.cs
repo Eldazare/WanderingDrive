@@ -6,12 +6,7 @@ public class Weapon : MonoBehaviour {
 
 	Renderer weapon;
 	int id;
-
-
-
-	void Derp () {
-		Debug.Log ("Derp");
+	private void Start() {
+		//Load relevant renderer for me
 	}
-
-
 }
