@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 84d465b4bfeb3074a8ec2247512d8dd2
 folderAsset: yes
 timeCreated: 1521627076
+=======
+guid: be0a4854fada1a54da96dff6795a3807
+folderAsset: yes
+timeCreated: 1521474740
+>>>>>>> origin/SimoCombatBranch
 licenseType: Free
 DefaultImporter:
   externalObjects: {}
