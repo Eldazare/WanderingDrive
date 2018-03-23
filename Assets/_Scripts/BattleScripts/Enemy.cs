@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour{
 	EnemyStats enemyStats;
 	Animator anim;
 	Vector3 startPos;
-	public PlayerCombatScript player;
 	public CombatController combatController;
 
 	AnimationClip idle;
@@ -30,14 +29,14 @@ public class Enemy : MonoBehaviour{
 		//anim.SetTrigger("Attack");
 		yield return new WaitUntil(() =>proceed);
 		proceed = false;
-		player.GetHit(enemyStats.damage,enemyStats.elementDamage, enemyStats.element, false);
+		combatController.HitPlayer(enemyStats.damage,enemyStats.elementDamage, enemyStats.element, false);
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);
 	}
 
 	void moveToPlayer(){
-		Debug.Log(Vector3.Distance(player.transform.position, transform.position));
-		if(Vector3.Distance(player.transform.position, transform.position)>1){
-			transform.Translate((player.transform.position-transform.position)*Time.deltaTime*5);
+		Debug.Log(Vector3.Distance(combatController.player.transform.position, transform.position));
+		if(Vector3.Distance(combatController.player.transform.position, transform.position)>1){
+			transform.Translate((combatController.player.transform.position-transform.position)*Time.deltaTime*5);
 		}else{
 			proceed = true;
 			CancelInvoke("moveToPlayer");
@@ -58,6 +57,10 @@ public class Enemy : MonoBehaviour{
 		enemyStats.health -= damageTaken;
 		// animator.SetTrigger("Ouch");
 		return "lel";
+	}
+
+	public void animatorCallingEnemy(){
+
 	}
 }
 

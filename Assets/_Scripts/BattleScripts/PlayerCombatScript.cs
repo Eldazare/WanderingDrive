@@ -12,9 +12,10 @@ public class PlayerCombatScript : MonoBehaviour{
 	bool proceed;
 	public MenuController menuController;
 	public CombatController combatController;
-	
+	bool defended, focused;
 	void Start(){
 		//Generate player model
+		playerStats = new PlayerStats();
 	}
 	public void Attack () {
 		startPos = transform.position;
@@ -58,7 +59,7 @@ public class PlayerCombatScript : MonoBehaviour{
 
 	public void PlayerFocus () {
 
-
+		focused = true;
 	}
 	public void PlayerOverload () {
 		
@@ -104,7 +105,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	public void Dodge(int direction){
-		if(dodgeTimer<=0 && !IsInvoking("DodgeCountDown")){
+		if(dodgeTimer<=0 && !defended){
 			//Dodge
 			dodgeTimer += dodgeDuration;
 			InvokeRepeating("DodgeCountDown",0, timerAccuracy);
@@ -112,7 +113,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	public void Block(){
-		if(blockTimer<=0 && !IsInvoking("BlockCountDown")){
+		if(blockTimer<=0 && !defended){
 			//Block
 			blockTimer += blockDuration;
 			InvokeRepeating("BlockCountDown", 0, timerAccuracy);

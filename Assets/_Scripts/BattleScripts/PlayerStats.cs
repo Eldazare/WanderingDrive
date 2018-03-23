@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour {
+public class PlayerStats {
 
 	public int damage;
 	public int health;
@@ -25,13 +25,8 @@ public class PlayerStats : MonoBehaviour {
 	public int consumable3ID;
 	public int consumable4ID;
 
-	void Start(){
-		damage = 10;
+	public PlayerStats(){
 		health = 100;
-		element = 1;
-	}
-	public void loadStats(){
-
-		// Load stats
+		damage = 10;
 	}
 }

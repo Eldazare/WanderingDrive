@@ -8,6 +8,8 @@ public class CombatController : MonoBehaviour {
 	// public enum Elements{
 	// 	fire = 1, water = 2, grass = 3, lightning = 4
 	// };
+
+	public GameObject loadOut;
 	public List<Enemy> enemyList;
 	public PlayerCombatScript player;
 	public PlayerStats playerStats;
@@ -16,25 +18,19 @@ public class CombatController : MonoBehaviour {
 	public GameObject enemyHost;
 	GameObject mapToBattleContainer;
 	public MenuController menuController;
+	public GameObject enemyCreator;
 	public bool enemyAttacked;
 
 	//public Text TextBox;
 	
 
 	void Start () {
-		//Add    .GetComponent<ContainerLuokka>();
-		mapToBattleContainer = GameObject.Find("MapToBattleContainer");
-		//Get the right player model
-		playerStats.loadStats();
-		//Find amount of Enemies and their ID from maptobattlecontainer
-		//Instantiate the x amount of enemies and let them know their ID
 
 		//Temp enemy instantiation
 		GameObject enemyObject = Instantiate(Resources.Load("Enemy1_EyeRaptor", typeof(GameObject)),enemyHost.transform.position, Quaternion.identity, enemyHost.transform) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
 		enemyList.Add(enemy);
 		menuController.targetedEnemy = enemy;
-		enemy.player = player;
 		enemy.combatController = this;
 	}
 	public void enemyAttacks(){
@@ -45,14 +41,19 @@ public class CombatController : MonoBehaviour {
 			StartCoroutine(enemyList[i].Attack());
 			yield return new WaitUntil(()=>enemyAttacked);
 		}
-		menuController.DefaultButtons.SetActive(true);
+		menuController.PlayersTurn();
 	}
 	void textBoxUpdate(){
 		// Do the thing
 	}
+	
+	public void enemycreation(){
+		//Call enemyCreator and give it its things
+	}
 
-
-	// public section
+	public void HitPlayer(int damage, int element, int elementDamage, bool area){
+		player.GetHit(damage, element, elementDamage, area);
+	}
 	
 	
 
