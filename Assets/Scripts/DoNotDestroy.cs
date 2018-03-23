@@ -8,7 +8,6 @@ public class DoNotDestroy : MonoBehaviour {
 	public static DoNotDestroy self;
 
 
-	// Use this for initialization
 	void Awake () {
 		if (self == null) {
 			DontDestroyOnLoad (gameObject);

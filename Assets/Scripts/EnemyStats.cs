@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour {
 
-	int ID;
-	int health;
-	int damage;
-	int element;
-	int elementWeakness;
-	int elementDamage;
-	int armorType;
+	public int ID;
+	public float health;
+	public int damage;
+	public int element;
+	public int elementWeakness;
+	public int elementDamage;
+	public int armorType;
+	public float hitDistance;
 
 
-	void Start(){
+	public EnemyStats(int id){
+		ID = id;
+		hitDistance = 1;
+		health = 100;
+		damage = 10;
+		element = 1;
+		elementWeakness = 2;
+		elementDamage = 5;
+		armorType = 1;
 		// Generate stats from the enemy ID
 	}
+
 
 
 }
