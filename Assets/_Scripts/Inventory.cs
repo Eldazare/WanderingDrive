@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Inventory {
 
-    public List<int> [] items_In_Inventory = new List <int> [5];
-    public List<int> inventory_Materials;
 
     public List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
     public List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
