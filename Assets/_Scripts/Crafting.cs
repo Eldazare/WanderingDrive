@@ -130,7 +130,7 @@ public class Crafting : MonoBehaviour {
 
     public void LetsMerge()
     {
-        merger.Conbine(CurrentRecipeType, CurrentRecipe);
+        //merger.Conbine(CurrentRecipeType, CurrentRecipe);
 
     }
 }

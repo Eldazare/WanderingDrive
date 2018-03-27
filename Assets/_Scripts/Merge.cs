@@ -18,20 +18,20 @@ public class Merge {
        
 
     }
-
+	/*
     public void Conbine(int RecipeType, int RecipeID)
     {
         
         //Hae resepti
         Recipe newRecipe = recipe_manager.GetRecipeData(RecipeType, RecipeID);
         //luo uusi tavara
-        for (int i = 0; i <= newRecipe.MaterialList.Count; i++)
+        for (int i = 0; i <= newRecipe.materialList.Count; i++)
         {
-            MyInventory.RemoveItem(newRecipe.MaterialList[i].GetItemtype(), newRecipe.MaterialList[i].GetItemID());
+            MyInventory.RemoveItem(newRecipe.materialList[i].GetItemtype(), newRecipe.materialList[i].GetItemID());
         }
         MyInventory.PutItem(newRecipe.newItemType, newRecipe.newItemID);
 
     }
-
+	*/
 
 }
