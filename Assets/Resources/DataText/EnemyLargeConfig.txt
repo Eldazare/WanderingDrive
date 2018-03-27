@@ -1,6 +1,6 @@
 #This is a comment line
 
-%enemyLarge_0_genericLizardLarge
+%enemy_enemyLarge_0_genericLizardLarge
 enemyLarge_0_health=10
 enemyLarge_0_damage=1
 enemyLarge_0_element=0

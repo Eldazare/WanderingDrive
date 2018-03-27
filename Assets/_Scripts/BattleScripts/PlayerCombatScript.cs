@@ -65,7 +65,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		
 
 	}
-	public string GetHit(int damage, int elementDamage, int element, bool area){
+	public string GetHit(int damage, Element elementDamage, int element, bool area){
 		if(dodgeTimer>0){
 			if(area){
 				playerStats.health -= damage*playerStats.damageReduction;

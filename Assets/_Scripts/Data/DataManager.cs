@@ -5,6 +5,7 @@ using System.IO;
 
 public static class DataManager  {
 	static private bool readBool = false;
+	// TODO: Add rest of weapon dictionaries
 
 	static Dictionary<string,string> consumableData = new Dictionary<string, string>{ };
 	static Dictionary<string,string> materialData = new Dictionary<string, string>{ };
@@ -15,20 +16,13 @@ public static class DataManager  {
 	static Dictionary<string,string> dropData = new Dictionary<string, string>{ };
 	static Dictionary<string,string> gatherData = new Dictionary<string, string>{ };
 
-	static List<string> nameListConsumable = new List<string>{ };
-	static List<string> nameListMaterial = new List<string>{ };
-	static List<string> nameListArmor = new List<string>{ };
-	static List<string> nameListRecipe = new List<string>{ };
-	static List<string> nameListEnemySmall = new List<string>{ };
-	static List<string> nameListEnemyLarge = new List<string>{ };
-	static List<string> nameListDrop = new List<string>{ };
-	static List<string> nameListGather = new List<string>{ };
+	public static List<string> nameListGeneric = new List<string>{};
+	public static List<string> descriptionListGeneric= new List<string>{};
 
 	static Dictionary<string,string> weaponSwordData = new Dictionary<string, string>{ };
 	static Dictionary<string,string> recipeUpSwordData = new Dictionary<string, string>{ };
 
-	static List<string> nameListWeaponSword = new List<string>{ };
-	static List<string> nameListRecipeUpSword = new List<string>{ };
+	public static List<string> recipeNameList= new List<string>{};
 
 
 
@@ -87,19 +81,20 @@ public static class DataManager  {
 
 
 	static private void DownloadTextData(){
-		DownloadSingleFile ("ConsumableCombatConfig", consumableData, nameListConsumable);
-		DownloadSingleFile ("ConsumableNonConConfig", consumableData, nameListConsumable);
-		DownloadSingleFile ("MaterialConfig", materialData, nameListMaterial);
-		DownloadSingleFile ("EnemySmallConfig", enemySmallData, nameListEnemySmall);
-		DownloadSingleFile ("EnemyLargeConfig", enemyLargeData, nameListEnemyLarge);
-		DownloadSingleFile ("ArmorConfig", armorData, nameListArmor);
-		DownloadSingleFile ("DropConfig", dropData, nameListDrop);
-		DownloadSingleFile ("GatheringConfig", gatherData, nameListGather);
-		DownloadSingleFile ("RecipeConfig", recipeData, nameListRecipe);
+		DownloadSingleFile ("ConsumableCombatConfig", consumableData, nameListGeneric);
+		DownloadSingleFile ("ConsumableNonConConfig", consumableData, nameListGeneric);
+		DownloadSingleFile ("MaterialConfig", materialData, nameListGeneric);
+		DownloadSingleFile ("EnemySmallConfig", enemySmallData, nameListGeneric);
+		DownloadSingleFile ("EnemyLargeConfig", enemyLargeData, nameListGeneric);
+		DownloadSingleFile ("ArmorConfig", armorData, nameListGeneric);
+		DownloadSingleFile ("DropConfig", dropData, nameListGeneric);
+		DownloadSingleFile ("GatheringConfig", gatherData, nameListGeneric);
+		DownloadSingleFile ("RecipeConfig", recipeData, recipeNameList);
 
-		DownloadSingleFile ("RecipeSwordUpgradeConfig", recipeUpSwordData, nameListRecipeUpSword);
-		DownloadSingleFile ("WeaponSwordConfig", weaponSwordData, nameListWeaponSword);
+		DownloadSingleFile ("RecipeSwordUpgradeConfig", recipeUpSwordData, recipeNameList);
+		DownloadSingleFile ("WeaponSwordConfig", weaponSwordData, nameListGeneric);
 		readBool = true;
+		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
 	}
 
 	static private void DownloadSingleFile(string filename, Dictionary<string,string> dic, List<string> namelist){
@@ -107,7 +102,10 @@ public static class DataManager  {
 		TextAsset fullData = Resources.Load (path) as TextAsset; 
 		string[] data = fullData.text.Split("\r\n".ToCharArray());
 		foreach (string line in data) {
-			if (line [0] == "%"[0]) {
+			if (line [0] == "&" [0]) {
+				descriptionListGeneric.Add (line);
+			}
+			else if (line [0] == "%"[0]) {
 				namelist.Add (line);
 			}
 			else if ((line.Length > 0) && (line[0] != "#"[0])) {

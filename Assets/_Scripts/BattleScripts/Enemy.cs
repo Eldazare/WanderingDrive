@@ -22,14 +22,14 @@ public class Enemy : MonoBehaviour{
 
 	void Start() {
 		startPos = transform.position;
-		enemyStats = new EnemyStats(enemyID);
+		enemyStats = EnemyStatCreator.LoadStatBlockData(0, "small");
 	}
 	public IEnumerator Attack() {
 		InvokeRepeating("moveToPlayer", 0, Time.deltaTime);
 		//anim.SetTrigger("Attack");
 		yield return new WaitUntil(() =>proceed);
 		proceed = false;
-		combatController.HitPlayer(enemyStats.damage,enemyStats.elementDamage, enemyStats.element, false);
+		combatController.HitPlayer(enemyStats.damage, enemyStats.element, enemyStats.elementDamage, false);
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);
 	}
 

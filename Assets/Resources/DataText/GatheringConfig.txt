@@ -5,6 +5,6 @@
 #=droprate
 
 
-
+%gather_gather_0_herbBush
 gather_0_2=50
 gather_0_3=50

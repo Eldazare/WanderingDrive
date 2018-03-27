@@ -51,7 +51,7 @@ public class CombatController : MonoBehaviour {
 		//Call enemyCreator and give it its things
 	}
 
-	public void HitPlayer(int damage, int element, int elementDamage, bool area){
+	public void HitPlayer(int damage, Element element, int elementDamage, bool area){
 		player.GetHit(damage, element, elementDamage, area);
 	}
 	
