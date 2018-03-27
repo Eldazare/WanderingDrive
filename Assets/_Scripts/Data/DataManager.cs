@@ -95,6 +95,7 @@ public static class DataManager  {
 		DownloadSingleFile ("WeaponSwordConfig", weaponSwordData, nameListGeneric);
 		readBool = true;
 		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
+		RecipeContainer.GenerateRecipes (recipeNameList);
 	}
 
 	static private void DownloadSingleFile(string filename, Dictionary<string,string> dic, List<string> namelist){

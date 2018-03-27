@@ -6,6 +6,8 @@
 #result is : type, subtype, id
 #=id
 
+#weapon | combat | noncon
+
 
 %recipe_0_weapon_genericSword
 recipe_0_m1=mat_0_2
