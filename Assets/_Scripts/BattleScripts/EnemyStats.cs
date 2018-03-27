@@ -6,6 +6,7 @@ public class EnemyStats {
 
 	public int ID;
 	public float health;
+	public float maxHealth;
 	public int damage;
 	public int element;
 	public int elementWeakness;
@@ -17,7 +18,8 @@ public class EnemyStats {
 	public EnemyStats(int id){
 		ID = id;
 		hitDistance = 1;
-		health = 100;
+		maxHealth = 100;
+		health = maxHealth;
 		damage = 10;
 		element = 1;
 		elementWeakness = 2;

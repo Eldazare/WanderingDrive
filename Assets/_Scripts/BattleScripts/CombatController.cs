@@ -9,7 +9,7 @@ public class CombatController : MonoBehaviour {
 	// 	fire = 1, water = 2, grass = 3, lightning = 4
 	// };
 
-	public GameObject loadOut;
+	public GameObject loadOut; //Annetaanko loadout ja vihu tiedot tämmöiseen objectiin vai kutsutaanko CombatControlleria ne tarvittavat tiedot parametreinä?
 	public List<Enemy> enemyList;
 	public PlayerCombatScript player;
 	public PlayerStats playerStats;
@@ -18,8 +18,10 @@ public class CombatController : MonoBehaviour {
 	public GameObject enemyHost;
 	GameObject mapToBattleContainer;
 	public MenuController menuController;
+	public TouchControlScript touchController;
 	public GameObject enemyCreator;
 	public bool enemyAttacked;
+	public int enemyTurns;
 
 	//public Text TextBox;
 	
@@ -27,37 +29,55 @@ public class CombatController : MonoBehaviour {
 	void Start () {
 
 		//Temp enemy instantiation
-		GameObject enemyObject = Instantiate(Resources.Load("Enemy1_EyeRaptor", typeof(GameObject)),enemyHost.transform.position, Quaternion.identity, enemyHost.transform) as GameObject;
+		GameObject enemyObject = Instantiate(Resources.Load("CombatResources/Enemy1_EyeRaptor", typeof(GameObject)),enemyHost.transform.position, Quaternion.identity, enemyHost.transform) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
 		enemyList.Add(enemy);
 		menuController.targetedEnemy = enemy;
 		enemy.combatController = this;
+
+		//Initialize enemy healthbars
+		foreach (var item in enemyList)
+		{
+			int number = 0;
+			menuController.enemyHealthBars[number].SetActive(true);
+			number++;
+		}
 	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}
+	public void ResetPlayerDefence(){
+		touchController.enemyTurn = true;
+	}
 	IEnumerator enemyAttacksRoutine(){
+		yield return new WaitForSeconds(1.5f);
+		touchController.enemyTurn = true;
 		for (int i = 0; i < enemyList.Count; i++) {
 			StartCoroutine(enemyList[i].Attack());
 			yield return new WaitUntil(()=>enemyAttacked);
 		}
+		touchController.enemyTurn = false;
+		yield return new WaitForSeconds(1.5f);
 		menuController.PlayersTurn();
-	}
-	void textBoxUpdate(){
-		// Do the thing
 	}
 	
 	public void enemycreation(){
 		//Call enemyCreator and give it its things
 	}
 
-	public void HitPlayer(int damage, int element, int elementDamage, bool area){
-		player.GetHit(damage, element, elementDamage, area);
+	public void playerStatCreation(){
+		player.playerStats = new PlayerStats(); //Give stats to PlayerStats
 	}
-	
-	
 
+	public void HitPlayer(int damage, int element, int elementDamage, bool area){
+		menuController.messageToScreen(player.GetHit(damage, element, elementDamage, area));
+	}
 
+	public void HitEnemy(int damage, int element, int elementDamage){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, element, elementDamage));
+	}
 
-
+	public void updateEnemyStats(float health, float maxhealth, float percentage, Enemy enemy){
+		menuController.updateEnemyHealth(health, maxhealth, percentage, enemy);
+	}
 }

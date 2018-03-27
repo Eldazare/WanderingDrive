@@ -6,14 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Ran.unity
-    guid: 2122f51e25846f14297179245089aba3
-  - enabled: 1
-    path: Assets/Encounter_1.unity
-    guid: 26aebe6ed67659f408e8f6adfec4d41f
-  - enabled: 1
-    path: Assets/Defeat.unity
-    guid: 8896483903f76b34dba66d543d2b04b2
-  - enabled: 1
-    path: Assets/Victory.unity
-    guid: 1e75dd33add8c9c4cb1df29ef5b328b3
+    path: Assets/TouchScreenTest.unity
+    guid: 638983956777ee846b3be3e7e4b34e4a
