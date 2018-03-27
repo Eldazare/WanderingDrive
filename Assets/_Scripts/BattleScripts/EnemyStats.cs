@@ -2,30 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Element{none, fire, ice, thunder, earth, light, shadow};
+public enum ArmorType{swordW, axeW, daggerW, rangedW, magicW};
+
 public class EnemyStats {
 
 	public int ID;
 	public float health;
 	public int damage;
-	public int element;
-	public int elementWeakness;
+	public Element element;
+	public Element elementWeakness;
 	public int elementDamage;
-	public int armorType;
+	public int armor;
+	public ArmorType armorType;
 	public float hitDistance;
-
-
-	public EnemyStats(int id){
-		ID = id;
-		hitDistance = 1;
-		health = 100;
-		damage = 10;
-		element = 1;
-		elementWeakness = 2;
-		elementDamage = 5;
-		armorType = 1;
-		// Generate stats from the enemy ID
-	}
-
-
+	public float quickness;
 
 }

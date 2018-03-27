@@ -1,7 +1,12 @@
 #This is a comment line
 
 %enemySmall_0_genericLizardSmall
-enemy_0_attack=1
-enemy_0_quickness=5
-enemy_0_health=10
-enemy_0_defense=2
+enemySmall_0_health=10
+enemySmall_0_damage=1
+enemySmall_0_element=0
+enemySmall_0_elementWeakness=0
+enemySmall_0_elementDamage=2
+enemySmall_0_armor=3
+enemySmall_0_armorType=2
+enemySmall_0_hitDistance=5.0
+enemySmall_0_quickness=1.2
