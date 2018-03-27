@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponCreator : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+public static class WeaponCreator  {
 	
-	// Update is called once per frame
-	void Update () {
-		
+	// subtypes: sword | axe | spear | dagger | pistol | bow | greatbow | buckler | towershield
+
+
+	public static WeaponStats CreateWeaponStatBlock(string subtype, int id){
+		string begin = "weapon_" + subtype + "_" + id + "_";
+		WeaponStats createe = new WeaponStats ();
+		createe.id = id;
+		createe.subtype = subtype;
+		createe.damage = DataManager.ReadDataInt (begin + "damage");
+		createe.elementDamage = DataManager.ReadDataInt (begin + "elementDamage");
+		createe.element = (Element)DataManager.ReadDataInt (begin + "element");
+		return createe;
 	}
 }
