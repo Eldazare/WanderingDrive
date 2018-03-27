@@ -5,132 +5,154 @@ using UnityEngine.UI;
 
 public class Crafting : MonoBehaviour {
 
-    public Merge merger;
-    public Image RecipeImage;
+    public Merge Merger;
+    public Image recipeImage;
+    public int weaponRecipeNumber, consRecipeNumber, armorRecipeNumber;
 
-    public List<int> ItemRecipeList;
-    public List<int> ConsRecipeList;
-    public List<Sprite> ItemSprites;
-    public List<Sprite> ConsumableSprites;
-    private int CurrentItemSpriteList;
-    private List<Sprite> CurrentConsumableSpriteList;
-   
-    public int CurrentRecipeType;
-    public int CurrentRecipe;
+    public List<int> weaponRecipeList;
+    public List<int> consRecipeList;
+    public List<int> armorRecipeList;
+    public List<Sprite> weaponSprites;
+    public List<Sprite> consumableSprites;
+    public List<Sprite> armorSprites;
+    private int currentItemSpriteList;
+    List<Recipe> tempRecipeList = new List<Recipe>();
+
+
+    public int currentRecipeType;
+    public int currentRecipe;
     private int spriteCounter;
 
-    public int RecipeType_Item = 0;
-    public int RecipeType_Consumable = 1;
-    public int RecipeType_Armor = 2;
-    public int RecipeType_Weapon = 3;
-    public int RecipeType_Accessory = 4;
+    public int recipeTypeWeapon = 0;
+    public int recipeTypeConsumable = 1;
+    public int recipeTypeArmor = 2;
 
-    public void Start()
-    {
-        RecipeImage.sprite = ItemSprites[0];
-        CurrentRecipe = ItemRecipeList[0];
-        CurrentRecipeType = RecipeType_Item;
-        CurrentItemSpriteList = 0;
+
+    public void Start() {
+        weaponRecipeList = new List<int>(weaponRecipeNumber);
+        consRecipeList = new List<int>(consRecipeNumber);
+        armorRecipeList = new List<int>(armorRecipeNumber);
+        recipeImage.sprite = weaponSprites[0];
+        currentRecipe = weaponRecipeList[0];
+        currentRecipeType = recipeTypeWeapon;
+        currentItemSpriteList = 0;
         spriteCounter = 0;
         
     }
 
 
-    public void ChangeRecipeOnwards()
-    {
-
-        
+    public void ChangeRecipeOnwards() {
         spriteCounter++;
-        if (spriteCounter >= ItemSprites.Count)
-        {
-            switch (CurrentItemSpriteList)
-            {
+        if (spriteCounter >= weaponSprites.Count) {
+            switch (currentItemSpriteList) {
                 case 0:
-                    RecipeImage.sprite = ItemSprites[0];
-                    CurrentRecipe = ItemRecipeList[0];
+                    recipeImage.sprite = weaponSprites[0];
+                    currentRecipe = weaponRecipeList[0];
                     spriteCounter = 0;
                     break;
                 case 1:
-                    RecipeImage.sprite = ConsumableSprites[0];
-                    CurrentRecipe = ConsRecipeList[0];
+                    recipeImage.sprite = consumableSprites[0];
+                    currentRecipe = consRecipeList[0];
+                    spriteCounter = 0;
+                    break;
+                case 2:
+                    recipeImage.sprite = armorSprites[0];
+                    currentRecipe = armorRecipeList[0];
                     spriteCounter = 0;
                     break;
             }
         }
-        else
-        {
-            switch (CurrentItemSpriteList)
-            {
+        else {
+            switch (currentItemSpriteList) {
                 case 0:
-                    RecipeImage.sprite = ItemSprites[spriteCounter];
-                    CurrentRecipe = ItemRecipeList[spriteCounter];
+                    recipeImage.sprite = weaponSprites[spriteCounter];
+                    currentRecipe = weaponRecipeList[spriteCounter];
                     break;
                 case 1:
-                    RecipeImage.sprite = ConsumableSprites[spriteCounter];
-                    CurrentRecipe = ConsRecipeList[spriteCounter];
+                    recipeImage.sprite = consumableSprites[spriteCounter];
+                    currentRecipe = consRecipeList[spriteCounter];
+                    break;
+                case 2:
+                    recipeImage.sprite = armorSprites[spriteCounter];
+                    currentRecipe = armorRecipeList[spriteCounter];
                     break;
             }
         }
     }
 
-    public void ChangeRecipeBackwards()
-    {
-
+    public void ChangeRecipeBackwards() {
         spriteCounter--;
-        if (spriteCounter < 0)
-        {
-            switch (CurrentItemSpriteList)
-            {
+        if (spriteCounter < 0) {
+            switch (currentItemSpriteList) {
                 case 0:
-                    RecipeImage.sprite = ItemSprites[ItemSprites.Count - 1];
-                    CurrentRecipe = ItemRecipeList[ItemRecipeList.Count - 1];
-                    spriteCounter = ItemSprites.Count - 1;
+                    recipeImage.sprite = weaponSprites[weaponSprites.Count - 1];
+                    currentRecipe = weaponRecipeList[weaponRecipeList.Count - 1];
+                    spriteCounter = weaponSprites.Count - 1;
                     break;
                 case 1:
-                    RecipeImage.sprite = ConsumableSprites[ConsumableSprites.Count - 1];
-                    CurrentRecipe = ConsRecipeList[ConsRecipeList.Count - 1];
-                    spriteCounter = ConsumableSprites.Count - 1;
+                    recipeImage.sprite = consumableSprites[consumableSprites.Count - 1];
+                    currentRecipe = consRecipeList[consRecipeList.Count - 1];
+                    spriteCounter = consumableSprites.Count - 1;
+                    break;
+                case 2:
+                    recipeImage.sprite = armorSprites[armorSprites.Count - 1];
+                    currentRecipe = armorRecipeList[armorRecipeList.Count - 1];
+                    spriteCounter = armorSprites.Count - 1;
                     break;
             }
         }
-        else
-        {
-            switch (CurrentItemSpriteList)
-            {
+        else {
+            switch (currentItemSpriteList) {
                 case 0:
-                    RecipeImage.sprite = ItemSprites[spriteCounter];
-                    CurrentRecipe = ItemRecipeList[spriteCounter];
+                    recipeImage.sprite = weaponSprites[spriteCounter];
+                    currentRecipe = weaponRecipeList[spriteCounter];
                     break;
                 case 1:
-                    RecipeImage.sprite = ConsumableSprites[spriteCounter];
-                    CurrentRecipe = ConsRecipeList[spriteCounter];
+                    recipeImage.sprite = consumableSprites[spriteCounter];
+                    currentRecipe = consRecipeList[spriteCounter];
+                    break;
+                case 2:
+                    recipeImage.sprite = armorSprites[spriteCounter];
+                    currentRecipe = armorRecipeList[spriteCounter];
                     break;
             }
         }
     }
 
-    public void ChangeRecipeListToCrafting()
-    {
-        RecipeImage.sprite = ItemSprites[0];
-        CurrentRecipe = ItemRecipeList[0];
-        CurrentRecipeType = RecipeType_Item;
-        CurrentItemSpriteList = 0;
+    public void ChangeRecipeListToCrafting() {
+        recipeImage.sprite = weaponSprites[0];
+        currentRecipe = weaponRecipeList[0];
+        currentRecipeType = recipeTypeWeapon;
+        currentItemSpriteList = 0;
         spriteCounter = 0;
     }
 
-    public void ChangeRecipeListToConsumable()
-    {
-        RecipeImage.sprite = ConsumableSprites[0];
-        CurrentRecipe = ConsRecipeList[0];
-        CurrentRecipeType = RecipeType_Consumable;
-        CurrentItemSpriteList = 1;
+    public void ChangeRecipeListToConsumable() {
+        recipeImage.sprite = consumableSprites[0];
+        currentRecipe = consRecipeList[0];
+        currentRecipeType = recipeTypeConsumable;
+        currentItemSpriteList = 1;
+        spriteCounter = 0;
+    }
+
+    public void ChangeRecipeListToArmor() {
+        recipeImage.sprite = armorSprites[0];
+        currentRecipe = armorRecipeList[0];
+        currentRecipeType = recipeTypeArmor;
+        currentItemSpriteList = 2;
         spriteCounter = 0;
     }
 
 
-    public void LetsMerge()
-    {
-        //merger.Conbine(CurrentRecipeType, CurrentRecipe);
-
+    public void LetsMerge() {
+        if (currentRecipeType == recipeTypeWeapon){
+            Merger.Conbine(currentRecipeType, weaponRecipeList.IndexOf(weaponRecipeList[currentRecipe]));
+        }
+        else if (currentRecipeType == recipeTypeConsumable) {
+            Merger.Conbine(currentRecipeType, consRecipeList.IndexOf(consRecipeList[currentRecipe]));
+        }
+        else if (currentRecipeType == recipeTypeArmor) {
+            Merger.Conbine(currentRecipeType, armorRecipeList.IndexOf(armorRecipeList[currentRecipe]));
+        }
     }
 }
