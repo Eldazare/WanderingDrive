@@ -1,21 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour {
 
 
-	CombatController combatController;
+	public CombatController combatController;
 	public Enemy targetedEnemy;
-	PlayerCombatScript playerCombatScript;
 
 
-	public GameObject DefaultButtons;
-	public GameObject AbilityButtons;
-	public GameObject ItemMenu;
+	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;
+	public Button focusButton, overloadButton; //Drag focus and overload buttons to menuController
 	public PlayerCombatScript player;
-	bool playersTurn;
+	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
+	public Image playerHealthFill, playerManaFill;
+	public Text playerHealthText, playerManaText, textBoxText;
+	public Image[] enemyHealthFills;
+	public Text[] enemyHealthTexts;
+	public GameObject[] enemyHealthBars;
+	public float textSpeed;
+
+	
+
+
+	void Start(){
+		focusEnabled = true;
+		overloadEnabled = true;
+	}	
 
 	//Doesn't actually do anything yet
 	//Uses the linked list concept, to switch targets
@@ -33,11 +46,14 @@ public class MenuController : MonoBehaviour {
 		}
 		targetedEnemy = combatController.enemyList[enemyTargetNumber];
 	}
- 	//Buttons for button menus. Really basic at the moment.
-	//The buttons are set as children of empty GameObjects and we're basically just tossing them from out of view back in view.
+
+ 	//Buttons for button menus.
+
 	public void AbilitiesMenu() {
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
+		focusButton.enabled = focusEnabled;
+		overloadButton.enabled = overloadEnabled;
 	}
 	public void ItemsMenu () {
 		ItemMenu.SetActive (true);
@@ -49,7 +65,7 @@ public class MenuController : MonoBehaviour {
 		AbilityButtons.SetActive (false);
 	}
 	public void PlayersTurn(){
-		DefaultButtons.SetActive(true);
+		StartCoroutine(AttackWaitTime());
 	}
 
 	// Buttons.
@@ -58,18 +74,55 @@ public class MenuController : MonoBehaviour {
 		player.Attack ();
 	}
 	public void Ability(int slot) {
+		AbilityButtons.SetActive (false);
 		player.Ability (slot);
 	}
 
 	public void Consumable(int slot){
+		ItemMenu.SetActive (false);
 		player.Consumable(slot);
 	}
 	public void Focus() {
+		AbilityButtons.SetActive (false);
 		player.PlayerFocus ();
 	}
 	public void Overload () {
+		AbilityButtons.SetActive (false);
 		player.PlayerOverload ();
 	}
 
+	//UI updates
+	public void updatePlayerHealth(float health, float maxHealth, float percentage){
+		Debug.Log("Player health:" +percentage);
+		playerHealthFill.fillAmount = percentage;
+		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
+	}
+	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
+		Debug.Log("Enemy health:" + percentage);
+		enemyHealthFills[combatController.enemyList.IndexOf(enemyForListSearch)].fillAmount = percentage;
+		enemyHealthTexts[combatController.enemyList.IndexOf(enemyForListSearch)].text = health.ToString() +"/"+maxHealth.ToString();
+	}
+
+	public void messageToScreen(string message){
+		textBox.SetActive(true);
+		StartCoroutine(writeText(message));
+	}
+	IEnumerator writeText(string message){
+		foreach (var item in message)
+		{
+			textBoxText.text += item;
+			yield return new WaitForSeconds(textSpeed);
+		}
+		yield return new WaitForSeconds(1.5f);
+		textBoxText.text = "";
+		textBox.SetActive(false);
+	}
+
+	IEnumerator AttackWaitTime(){
+		yield return new WaitForSeconds(1.5f);
+		DefaultButtons.SetActive(true);
+		textBoxText.text = "";
+		textBox.SetActive(false);
+	}
 
 }

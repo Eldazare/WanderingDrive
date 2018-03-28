@@ -9,6 +9,8 @@ public class TouchControlScript : MonoBehaviour {
     private float dragDistance;  //minimum distance for a swipe to be registered
 
 	public PlayerCombatScript player;
+    public bool enemyTurn;
+    bool isTouchableArea;
  
     void Start()
     {
@@ -17,19 +19,41 @@ public class TouchControlScript : MonoBehaviour {
  
     void Update()
     {
-        if (Input.touchCount == 1) // user is touching the screen with a single touch
+       if (Input.touchCount == 1 && enemyTurn) // user is touching the screen with a single touch
         {
+			if(Input.GetTouch(0).phase == TouchPhase.Began)
+                 {
+                     Ray ray =  Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                     
+                     RaycastHit hit;
+                     
+                     if(Physics.Raycast(ray,out hit))
+                     {
+                         if(hit.collider!=null && hit.collider.name=="Quad")
+                         {
+                             isTouchableArea = true;
+                             
+                         }
+                         
+                     }
+                     else
+                     {
+                         isTouchableArea = false;
+                     }
+                     
+                 }
             Touch touch = Input.GetTouch(0); // get the touch
-            if (touch.phase == TouchPhase.Began) //check for the first touch
+            if (touch.phase == TouchPhase.Began && isTouchableArea) //check for the first touch
             {
+				
                 fp = touch.position;
                 lp = touch.position;
             }
-            else if (touch.phase == TouchPhase.Moved) // update the last position based on where they moved
+            else if (touch.phase == TouchPhase.Moved && isTouchableArea) // update the last position based on where they moved
             {
                 lp = touch.position;
             }
-            else if (touch.phase == TouchPhase.Ended) //check if the finger is removed from the screen
+            else if (touch.phase == TouchPhase.Ended && isTouchableArea) //check if the finger is removed from the screen
             {
                 lp = touch.position;  //last touch position. Ommitted if you use list
  
@@ -42,12 +66,13 @@ public class TouchControlScript : MonoBehaviour {
                         if ((lp.x > fp.x))  //If the movement was to the right)
                         {   //Right swipe
                             Debug.Log("Right Swipe");
-							player.Dodge(1);
+                            player.Dodge(1);
+
                         }
                         else
                         {   //Left swipe
                             Debug.Log("Left Swipe");
-							player.Dodge(0);
+                            player.Dodge(0);
                         }
                     }
                     else
@@ -55,19 +80,22 @@ public class TouchControlScript : MonoBehaviour {
                         if (lp.y > fp.y)  //If the movement was up
                         {   //Up swipe
                             Debug.Log("Up Swipe");
-							player.Dodge(0);
+                            player.Dodge(0);
                         }
                         else
                         {   //Down swipe
                             Debug.Log("Down Swipe");
-							player.Dodge(1);
+                            player.Dodge(1);
                         }
                     }
                 }
                 else
                 {   //It's a tap as the drag distance is less than 20% of the screen height
-                    Debug.Log("Tap");
-					player.Block();
+                    if(isTouchableArea){
+                        Debug.Log("Tap");
+					    player.Block();
+                    }
+                    
                 }
             }
         }

@@ -6,12 +6,12 @@ public class Merge {
 
     Inventory MyInventory;
     //RecipeType_Weapon = 0; 
-    //RecipeType_Consumable = 1;
+    //RecipeType_CombatConsumable = 1;
     //RecipeType_Armor = 2;
 
     public Merge() { }
 	
-    public void Conbine(int RecipeType, int RecipeID) {
+    public void Combine(int RecipeType, int RecipeID) {
         List<Recipe> newRecipeList = new List<Recipe>();
         Recipe newRecipe = new Recipe();
         //katsotaan ylhäällä määrättyjen tyyppien mukaan mitä listaa käytetään
@@ -32,7 +32,7 @@ public class Merge {
                 MyInventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 1:
-                newRecipeList = RecipeContainer.GetConsumableCraftRecipes();
+                newRecipeList = RecipeContainer.GetConsumableCombatCraftRecipes();
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -44,7 +44,7 @@ public class Merge {
                 MyInventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 2:
-                newRecipeList = RecipeContainer.GetArmorCraftRecipes();
+			newRecipeList = RecipeContainer.GetArmorCraftRecipes();
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;

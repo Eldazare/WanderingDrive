@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class RecipeContainer {
 
+	// TODO: Armor craft recipes
 	// TODO: UPGRADE RECIPES
 
 
@@ -78,6 +79,10 @@ public static class RecipeContainer {
 		return consumableCombatCrafts;
 	}
 
+	public static List<Recipe> GetArmorCraftRecipes(){
+		return null;
+	}
+
 	public static List<Recipe> GetConsumableNonconCraftRecipes(){
 		return consumableNonconCrafts;
 	}
@@ -86,7 +91,4 @@ public static class RecipeContainer {
 		return null;
 	}
 
-	public static List<Recipe> GetArmorUpgradeRecipes (string subtype, int id){
-		return null;
-	}
 }

@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerStats {
 
 	public int damage;
-	public int health;
+	public float health;
+	public float maxHealth;
 	public int stamina;
 	public int element;
 	public int damageReduction;
@@ -26,7 +27,17 @@ public class PlayerStats {
 	public int consumable4ID;
 
 	public PlayerStats(){
-		health = 100;
+		maxHealth = 100;
+		health = maxHealth;
 		damage = 10;
+	}
+	public int abilityDamage(int abilityID){
+		return 0;
+	}
+	public int abilityElement(int abilityID){
+		return 0;
+	}
+	public int abilityElementDamage(int abilityID){
+		return 0;
 	}
 }

@@ -146,13 +146,13 @@ public class Crafting : MonoBehaviour {
 
     public void LetsMerge() {
         if (currentRecipeType == recipeTypeWeapon){
-            Merger.Conbine(currentRecipeType, weaponRecipeList.IndexOf(weaponRecipeList[currentRecipe]));
+            Merger.Combine(currentRecipeType, weaponRecipeList.IndexOf(weaponRecipeList[currentRecipe]));
         }
         else if (currentRecipeType == recipeTypeConsumable) {
-            Merger.Conbine(currentRecipeType, consRecipeList.IndexOf(consRecipeList[currentRecipe]));
+            Merger.Combine(currentRecipeType, consRecipeList.IndexOf(consRecipeList[currentRecipe]));
         }
         else if (currentRecipeType == recipeTypeArmor) {
-            Merger.Conbine(currentRecipeType, armorRecipeList.IndexOf(armorRecipeList[currentRecipe]));
+            Merger.Combine(currentRecipeType, armorRecipeList.IndexOf(armorRecipeList[currentRecipe]));
         }
     }
 }
