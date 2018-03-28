@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerCombatScript : MonoBehaviour{
 	public PlayerStats playerStats; //Player stat container
-	Vector3 startPos;	//Player's starting position to mvoe to and from Enemy
+	Vector3 startPos;	//Player's starting position to move to and from Enemy
 	public GameObject model, weapon;
 	float blockTimer, blockDuration, dodgeTimer, dodgeDuration, timerAccuracy; //Defensive timers and the accuracy wanted
 	Vector3 enemyPos; //Enemy position to move to and from it
 	bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
-	public bool defended, focusedTurn, overloadedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
+	bool defended, focusedTurn, overloadedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
 	int attackRange = 1; //How close the player moves to the enemy
 	void Start(){
 		//Generate player model and player stats
@@ -27,7 +27,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		//animator.SetTrigger("Attack");
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(playerStats.damage, playerStats.elementalDamage, playerStats.element);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
 		proceed = false;
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
 	}

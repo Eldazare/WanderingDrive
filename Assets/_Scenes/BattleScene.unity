@@ -1332,14 +1332,6 @@ MonoBehaviour:
   weapon: {fileID: 568704580}
   menuController: {fileID: 425286907}
   combatController: {fileID: 847982939}
-  defended: 0
-  focusedTurn: 0
-  overloadedTurn: 0
-  focusDefensiveBonus: 0
-  skipTurn: 0
-  overloadDamageTakenBonus: 0
-  focusPlusOverloadTurn: 0
-  focusPlustOverloadBonus: 0
 --- !u!1 &374258678
 GameObject:
   m_ObjectHideFlags: 0
@@ -7174,7 +7166,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2043879772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.23, y: 1.55, z: 2.56}
+  m_LocalPosition: {x: 8, y: 2, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

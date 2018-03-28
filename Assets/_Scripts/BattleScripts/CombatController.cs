@@ -35,7 +35,19 @@ public class CombatController : MonoBehaviour {
 		menuController.targetedEnemy = enemy;
 		enemy.combatController = this;
 
-
+		/*foreach (var item in loadOut.enemyList){
+			float enemySpacing = 0;
+			Vector3 enemyPos = enemyHost.transform.position;
+			//Adds spacing
+			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4), Quaternion.identity, enemyHost.transform) as GameObject;
+			Enemy enemy = enemyObject.GetComponent<Enemy>();
+			enemyList.Add(enemy);
+			enemy.combatcontroller = this;
+			enemySpacing++;
+		}
+		menuController.targetedEnemy = enemyList[0];
+		*/
+		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
 		player.updateStats();
 
 		//Initialize enemy healthbars

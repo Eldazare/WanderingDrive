@@ -14,7 +14,7 @@ public class PlayerStats {
 	public int elementalDamage;
 	public Element elementalWeakness;
 	public int weaponType;
-	public Weapon weapon;
+	public WeaponStats weapon;
 
 	public int ability1ID;
 	public int ability2ID;
