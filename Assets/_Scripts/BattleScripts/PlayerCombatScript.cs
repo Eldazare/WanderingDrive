@@ -11,8 +11,9 @@ public class PlayerCombatScript : MonoBehaviour{
 	bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
-	bool defended, focusedTurn, overloadedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
+	bool defended, focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
 	int attackRange = 1; //How close the player moves to the enemy
+	int overloadedTurn;
 	void Start(){
 		//Generate player model and player stats
 		playerStats = new PlayerStats();
@@ -57,13 +58,13 @@ public class PlayerCombatScript : MonoBehaviour{
 		EndPlayerTurn(true);
 	}
 	public void PlayerOverload () {
-		overloadedTurn = true;
+		overloadedTurn = 3;
 		if(focusedTurn){
 			focusPlusOverloadTurn = true;
 			focusPlustOverloadBonus = true;
 			EndPlayerTurn(true);
 		}else{
-			EndPlayerTurn(false);
+			EndPlayerTurn(true);
 		}
 	}
 
@@ -76,9 +77,9 @@ public class PlayerCombatScript : MonoBehaviour{
 		}else if(focusedTurn){
 			menuController.PlayersTurn();
 			focusedTurn = false;
-		}else if(overloadedTurn){
+		}else if(overloadedTurn > 0){
 			menuController.PlayersTurn();
-			overloadedTurn = false;
+			overloadedTurn--;
 		}else{
 			focusedTurn = focus;
 			focusPlustOverloadBonus = false;
