@@ -4,9 +4,6 @@ using UnityEngine;
 
 public static class RecipeContainer {
 
-	// TODO: Armor craft recipes
-	// TODO: UPGRADE RECIPES
-
 
 	static bool generated = false;
 

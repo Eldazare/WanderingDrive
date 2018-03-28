@@ -5,7 +5,7 @@ using System.IO;
 
 public static class DataManager  {
 	static private bool readBool = false;
-	// TODO: Recipe dictionary may BLOAT
+	// TODO: Recipe/Weapon/Upgrade dictionary may BLOAT
 
 
 	public enum DataManagerDictionaryTypes{
