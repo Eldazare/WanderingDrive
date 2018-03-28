@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Inventory_Armor {
 
-    public int ItemID;
+    public int itemID;
+    public string subType;
 
-    public Inventory_Armor(int id)
+    public Inventory_Armor(int id, string subtype)
     {
-        ItemID = id;
+        itemID = id;
+        subType = subtype;
+
     }
 
     //Efekti

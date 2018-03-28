@@ -2,65 +2,135 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour {
+public class Inventory {
 
-    public List<int> [] items_In_Inventory = new List <int> [5];
-    public List<int> inventory_Armor;
-    public List<int> inventory_Accessory;
-    public List<int> inventory_Weapons;
-    public List<int> inventory_Materials;
-    public List<int> combat_consumables;
-    public List<int> non_combat_consumables;
 
-    private void Start()
-    {
-        items_In_Inventory[0] = non_combat_consumables;
-        items_In_Inventory[1] = combat_consumables;
-        items_In_Inventory[2] = inventory_Armor;
-        items_In_Inventory[3] = inventory_Accessory;
-        items_In_Inventory[4] = inventory_Weapons;
-        items_In_Inventory[5] = inventory_Materials;
-    }
+    public List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
+    public List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
+    public List<int> inventoryMaterials = new List<int>();
+    public List<int> combatConsumables = new List<int>();
+    public List<int> nonCombatConsumables = new List<int>();
+    public int capacity;
+    public int maxCapacity;
+    public int maxStack = 255;
+
 
     //hae itemi inventorysta ja poista se
-    public void RemoveItem(int ItemType, int ItemID)
+    public bool RemoveItem(string itemType, string subType, int itemId, int amount)
     {
-        foreach (int i in items_In_Inventory[ItemType])
+        bool Success = false;
+        switch (itemType)
         {
-            if(i == ItemID)
-            {
-                items_In_Inventory[ItemType].RemoveAt(i);
-            }
+            case "wep":
+                for (int i = 0; i <= inventoryWeapons.Count; i++) {
+                    if (itemId == inventoryWeapons[i].ItemID) {
+                        inventoryWeapons.RemoveAt(i);
+                        capacity--;
+                        Success = true;
+                    }
+                }
+                break;
+            case "arm":
+                for (int i = 0; i <= inventoryArmor.Count; i++) {
+                    if(itemId == inventoryArmor[i].itemID && subType == inventoryArmor[i].subType) {
+                        inventoryArmor.RemoveAt(i);
+                        capacity--;
+                        Success = true;
+                    }
+                }
+                break;
+            case "cons":
+                if (subType == "world") {
+                    if (nonCombatConsumables[itemId] < amount) {
+                        break;
+                    }
+                    else {
+                        nonCombatConsumables[itemId] -= amount;
+                        Success = true;
+                    }
+                }
+                else if (subType == "comb") {
+                    if ( combatConsumables[itemId] < amount) {
+                        break;
+                    }
+                    else {
+                        combatConsumables[itemId] -= amount;
+                        Success = true;
+                    }
+                }
+                break;
+            case "mat":
+                if(inventoryMaterials[itemId] < amount) {
+                    break;
+                }
+                else {
+                    inventoryMaterials[itemId] -= amount;
+                    Success = true;
+                }
+                break;
         }
-        
-
+        return Success;
     }
     
     //Laita uusi Itemi inventoryyn
-    public void PutItem(int ItemType, int ItemID)
+    public bool PutItem(string itemType, string subType, int itemId, int amount)
     {
-        switch (ItemType)
-        {
-            case 0:
-                items_In_Inventory[0].Add(ItemID);
+        bool Success = false;
+        switch (itemType) {
+            case "wep":
+                if (capacity + 1 > maxCapacity) {
+                    break;
+                }
+                else {
+                    Inventory_Weapon newWeapon = new Inventory_Weapon(itemId, subType);
+                    inventoryWeapons.Add(newWeapon);
+                    capacity++;
+                    Success = true;
+                    break;
+                }
+            case "arm":
+                if (capacity + 1 > maxCapacity) {
+                    break;
+                }
+                else {
+                    Inventory_Armor newArmor = new Inventory_Armor(itemId, subType);
+                    inventoryArmor.Add(newArmor);
+                    capacity++;
+                    Success = true;
+                    break;
+                }
+            case "cons":
+                if(subType == "world") {
+                    if (nonCombatConsumables[itemId] + amount > maxStack) {
+                        break;
+                    }
+                    else {
+                        nonCombatConsumables[itemId] += amount;
+                        Success = true;
+                    }
+                }
+                else if (subType == "comb"){
+                    if (combatConsumables[itemId] + amount > maxStack){
+                        break;
+                    }
+                    else {
+                        combatConsumables[itemId] += amount;
+                        Success = true;
+                    }    
+                }
                 break;
-            case 1:
-                items_In_Inventory[1].Add(ItemID);
-                break;
-            case 2:
-                items_In_Inventory[2].Add(ItemID);
-                break;
-            case 3:
-                items_In_Inventory[3].Add(ItemID);
-                break;
-            case 4:
-                items_In_Inventory[4].Add(ItemID);
-                break;
-            case 5:
-                items_In_Inventory[5].Add(ItemID);
-                break;
+            case "mat":
+                if (inventoryMaterials[itemId] + amount > maxStack) {
+                    break;
+                }
+                else {
+                    inventoryMaterials[itemId] += amount;
+                    break;
+                }
         }
-        
+        return Success;  
     }
+
+     
 
 }

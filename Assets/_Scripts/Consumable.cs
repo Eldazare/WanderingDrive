@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Consumable {
 
-    public int ItemID;
+    public int itemID;
 
     public Consumable(int id)
     {
-        ItemID = id;
+        itemID = id;
     }
 
 
