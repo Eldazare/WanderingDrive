@@ -94,8 +94,8 @@ public static class DataManager  {
 		DownloadSingleFile ("RecipeSwordUpgradeConfig", recipeUpSwordData, recipeNameList);
 		DownloadSingleFile ("WeaponSwordConfig", weaponSwordData, nameListGeneric);
 		readBool = true;
-		/* NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
-		RecipeContainer.GenerateRecipes (recipeNameList); */
+		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
+		RecipeContainer.GenerateRecipes (recipeNameList);
 	}
 
 	static private void DownloadSingleFile(string filename, Dictionary<string,string> dic, List<string> namelist){
@@ -105,10 +105,10 @@ public static class DataManager  {
 		foreach (string line in data) {
 			if (line.Length > 0){
 				if (line [0] == "&" [0]) {
-					descriptionListGeneric.Add (line);
+					descriptionListGeneric.Add (line.Substring (1));
 				}
 				else if (line [0] == "%"[0]) {
-					namelist.Add (line);
+					namelist.Add (line.Substring(1));
 				}
 				else if (line[0] != "#"[0]) {
 					string[] keyValue = line.Split ("="[0]);

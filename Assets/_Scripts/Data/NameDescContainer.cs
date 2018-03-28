@@ -20,6 +20,10 @@ public static class NameDescContainer  {
 
 	public static void GenerateNames(List<string> namelist, List<string> descList){
 		if (!genBool) {
+			for (int i = 0; i < System.Enum.GetNames (typeof(NameType)).Length; i++) {
+				PopulateListList (names);
+				PopulateListList (descriptions);
+			}
 			genBool = true;
 			foreach (string str in namelist) {
 				string[] splitStr = str.Split ("_".ToCharArray ());
@@ -35,6 +39,14 @@ public static class NameDescContainer  {
 		} else {
 			Debug.LogError ("GenerateNames called twice or more");
 		}
+	}
+
+	private static void PopulateListList(List<List<string>> list){
+		List<string> tempList = new List<string>{ };
+		for (int i = 0; i < 100; i++) {
+			tempList.Add ("default");
+		}
+		list.Add (tempList);
 	}
 
 	public static string GetName(NameType subtype, int index){

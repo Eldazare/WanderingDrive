@@ -17,7 +17,11 @@ public class RecipeMaterial  {
 		type = matArr [0];
 		subtype = matArr [1];
 		itemId = int.Parse (matArr [2]);
-		amount = int.Parse (matArr [3]);
+		if (matArr.Length > 3) {
+			amount = int.Parse (matArr [3]);
+		} else {
+			amount = 1;
+		}
 	}
 
 

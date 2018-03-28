@@ -9,4 +9,8 @@ public class Recipe {
 	public List<RecipeMaterial> materialList;
 	public RecipeMaterial resultItem;
 
+	public Recipe() {
+		materialList = new List<RecipeMaterial>{ };
+	}
+
 }

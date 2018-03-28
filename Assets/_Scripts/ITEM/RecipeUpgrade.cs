@@ -9,4 +9,8 @@ public class RecipeUpgrade {
 	public RecipeMaterial baseEquipment;
 	public List<RecipeMaterial> materialList;
 	public RecipeMaterial result;
+
+	public RecipeUpgrade(){
+		materialList = new List<RecipeMaterial>{ };
+	}
 }

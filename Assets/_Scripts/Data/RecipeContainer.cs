@@ -10,85 +10,57 @@ public static class RecipeContainer {
 
 	static bool generated = false;
 
-
-	public static List<Recipe> weaponCrafts = new List<Recipe>();
-	public static List<Recipe> consumableCombatCrafts = new List<Recipe>();
-	public static List<Recipe> consumableNonconCrafts = new List<Recipe> ();
-
-	public static List<List<RecipeUpgrade>> equipmentUpgrades = new List<List<RecipeUpgrade>>(System.Enum.GetNames(typeof(EquipmentSubtypes)).Length){};
-
-	/*
-	public static List<RecipeUpgrade> swordUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> axeUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> spearUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> daggerUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> pistolUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> bowUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> greatbowUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> bucklerUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> towershieldUpgrades = new List<RecipeUpgrade>();
-
-	public static List<RecipeUpgrade> armorHelmUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> armorChestUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> armorArmsUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> armorLegsUpgrades = new List<RecipeUpgrade>();
-	public static List<RecipeUpgrade> armorBootsUpgrades = new List<RecipeUpgrade>();
-	*/
-
+	public enum CraftingRecipeTypes{weapon, armor, accessory, conCon, nonconCon};
 	public enum EquipmentSubtypes{
 		sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield,
 		helm, chest, arms, legs, boots,
 		accessory
 	};
 
+	public static List<List<Recipe>> craftingRecipes = new List<List<Recipe>> (){ };
+	public static List<List<RecipeUpgrade>> equipmentUpgrades = new List<List<RecipeUpgrade>>(){};
+
+
 	public static void GenerateRecipes(List<string> recipeNames){
 		if (!generated){
+			for (int i = 0; i < System.Enum.GetNames (typeof(EquipmentSubtypes)).Length; i++) {
+				craftingRecipes.Add (new List<Recipe> ());
+				equipmentUpgrades.Add (new List<RecipeUpgrade> ());
+			}
 			generated = true;
-			foreach (string str in recipeNames) {
-				string[] splitStr = str.Split ("_".ToCharArray ());
-				if (splitStr[0] == "recipeUp") {
+			foreach (string recipeName in recipeNames) {
+				string[] splitStr = recipeName.Split ("_".ToCharArray ());
+				if (splitStr [0] == "recipeUp") {
 					RecipeUpgrade recipeUp = RecipeCreator.CreateUpgradeRecipe (splitStr [1], int.Parse (splitStr [2]));
 					EquipmentSubtypes eqSubT = (EquipmentSubtypes)System.Enum.Parse (typeof(EquipmentSubtypes), splitStr [1]);
 					equipmentUpgrades [System.Convert.ToInt32 (eqSubT)].Add (recipeUp);
-				}else {
+				} else if (splitStr [0] == "recipe") {
 					Recipe recipe = RecipeCreator.CreateRecipe (int.Parse (splitStr [2]));
-					switch (splitStr [1]) {
-					case "weapon":
-						weaponCrafts.Add (recipe);
-						break;
-					case "combat":
-						consumableCombatCrafts.Add (recipe);
-						break;
-					case "noncon":
-						consumableNonconCrafts.Add (recipe);
-						break;
-					default:
-						Debug.LogError ("False line ine recipe names (" + str + ").");
-						break;
-					}
+					CraftingRecipeTypes recipetype = (CraftingRecipeTypes)System.Enum.Parse (typeof(CraftingRecipeTypes), splitStr [1]);
+					craftingRecipes [System.Convert.ToInt32 (recipetype)].Add (recipe);
+				} else {
+					Debug.LogError ("Recipe skipped: " + recipeName);
 				}
 			}
 		}
 	}
 
-	public static List<Recipe> GetWeaponCraftRecipes(){
-		return weaponCrafts;
+
+	public static List<Recipe> GetCraftRecipes(CraftingRecipeTypes recipType){
+		return craftingRecipes [System.Convert.ToInt32 (recipType)];
 	}
 
-	public static List<Recipe> GetConsumableCombatCraftRecipes(){
-		return consumableCombatCrafts;
-	}
 
-	public static List<Recipe> GetArmorCraftRecipes(){
-		return null;
-	}
-
-	public static List<Recipe> GetConsumableNonconCraftRecipes(){
-		return consumableNonconCrafts;
-	}
-
-	public static List<Recipe> GetEquipmentUpgradeRecipes (EquipmentSubtypes eqSub, int id){
-		return null;
+	// equipment subtype and the item id in that subtype that you want improvements FOR.
+	public static List<RecipeUpgrade> GetEquipmentUpgradeRecipes (EquipmentSubtypes eqSub, int id){
+		List<RecipeUpgrade> returnee = new List<RecipeUpgrade> (){ };
+		List<RecipeUpgrade> subtypeList = equipmentUpgrades [System.Convert.ToInt32 (eqSub)];
+		foreach (RecipeUpgrade upgrade in subtypeList) {
+			if (upgrade.baseEquipment.itemId == id) {
+				returnee.Add (upgrade);
+			}
+		}
+		return returnee;
 	}
 
 }

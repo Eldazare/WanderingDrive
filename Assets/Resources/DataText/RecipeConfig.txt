@@ -9,9 +9,9 @@
 #weapon | combat | noncon
 
 
-%recipe_0_weapon_genericSword
-recipe_0_m1=mat_0_2
-recipe_0_m2=cons_6_1
+%recipe_weapon_0_genericSword
+recipe_0_m1=mat_mat_0_2
+recipe_0_m2=cons_world_6_1
 recipe_0_m3=
 recipe_0_m4=
 recipe_0_result=weapon_sword_1

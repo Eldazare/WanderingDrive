@@ -10,7 +10,10 @@ public class Merge {
     //RecipeType_Armor = 2;
 
     public Merge() { }
-	
+
+	//TODO: Convert to static
+	//TODO: Convert switch to instead use the enum
+
     public void Combine(int RecipeType, int RecipeID) {
         List<Recipe> newRecipeList = new List<Recipe>();
         Recipe newRecipe = new Recipe();
@@ -18,7 +21,7 @@ public class Merge {
         switch (RecipeType) {
             case 0:
                 //Hae resepti
-                newRecipeList = RecipeContainer.GetWeaponCraftRecipes();
+				newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.weapon);
                 foreach (Recipe i in newRecipeList){
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -32,7 +35,7 @@ public class Merge {
                 MyInventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 1:
-                newRecipeList = RecipeContainer.GetConsumableCombatCraftRecipes();
+			newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.conCon);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -44,7 +47,7 @@ public class Merge {
                 MyInventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 2:
-			newRecipeList = RecipeContainer.GetArmorCraftRecipes();
+			newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.armor);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
