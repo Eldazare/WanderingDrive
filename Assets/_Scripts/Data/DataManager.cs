@@ -5,26 +5,19 @@ using System.IO;
 
 public static class DataManager  {
 	static private bool readBool = false;
-	// TODO: Add rest of weapon dictionaries
+	// TODO: Recipe dictionary may BLOAT
 
-	static Dictionary<string,string> consumableData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> materialData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> armorData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> recipeData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> enemySmallData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> enemyLargeData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> dropData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> gatherData = new Dictionary<string, string>{ };
+
+	public enum DataManagerDictionaryTypes{
+		consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
+		weapons, recipeUp
+	}
+
+	static List<Dictionary<string,string>> configDatas = new List<Dictionary<string,string>>{ };
 
 	public static List<string> nameListGeneric = new List<string>{};
 	public static List<string> descriptionListGeneric= new List<string>{};
-
-	static Dictionary<string,string> weaponSwordData = new Dictionary<string, string>{ };
-	static Dictionary<string,string> recipeUpSwordData = new Dictionary<string, string>{ };
-
 	public static List<string> recipeNameList= new List<string>{};
-
-
 
 	static public string ReadDataString(string entryName){
 		if (!readBool) {
@@ -32,41 +25,14 @@ public static class DataManager  {
 		}
 		string[] splitted= entryName.Split ("_".ToCharArray());
 		string identifier = splitted [0];
-		switch (identifier) {
-		case "consumable":
-			return consumableData [entryName];
-		case "material":
-			return materialData [entryName];
-		case "enemySmall":
-			return enemySmallData [entryName];
-		case "enemyLarge":
-			return enemyLargeData [entryName];
-        case "armor":
-            return armorData[entryName];
-		case "recipe":
-			return recipeData[entryName];
-		case "drop":
-			return dropData[entryName];
-		case "gather":
-			return gatherData[entryName];
-		case "weapon":
-			switch (splitted [1]) {
-			case "sword":
-				return weaponSwordData [entryName];
-			default:
-				return null;
-			}
-		case "recipeUp":
-			switch (splitted [1]) {
-			case "sword":
-				return recipeUpSwordData [entryName];
-			default:
-				return null;
-			}
-		default:
-			Debug.LogError ("DataManager was given unsuitable identifier in entryName (" + entryName + ").");
+		try{
+			DataManagerDictionaryTypes dicType = (DataManagerDictionaryTypes)System.Enum.Parse (typeof(DataManagerDictionaryTypes), identifier);
+			return configDatas[System.Convert.ToInt32(dicType)][entryName];
+		} catch{
+			Debug.LogError ("Identifier part is not defined in DataManager: " + identifier);
 			return null;
 		}
+
 	}
 
 	static public float ReadDataFloat(string entryName){
@@ -81,18 +47,21 @@ public static class DataManager  {
 
 
 	static private void DownloadTextData(){
-		DownloadSingleFile ("ConsumableCombatConfig", consumableData, nameListGeneric);
-		DownloadSingleFile ("ConsumableNonConConfig", consumableData, nameListGeneric);
-		DownloadSingleFile ("MaterialConfig", materialData, nameListGeneric);
-		DownloadSingleFile ("EnemySmallConfig", enemySmallData, nameListGeneric);
-		DownloadSingleFile ("EnemyLargeConfig", enemyLargeData, nameListGeneric);
-		DownloadSingleFile ("ArmorConfig", armorData, nameListGeneric);
-		DownloadSingleFile ("DropConfig", dropData, nameListGeneric);
-		DownloadSingleFile ("GatheringConfig", gatherData, nameListGeneric);
-		DownloadSingleFile ("RecipeConfig", recipeData, recipeNameList);
+		for (int i = 0; i < System.Enum.GetNames (typeof(DataManagerDictionaryTypes)).Length; i++) {
+			configDatas.Add(new Dictionary<string,string>());
+		}
+		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryTypes.consumable], nameListGeneric);
+		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryTypes.consumable], nameListGeneric);
+		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryTypes.material], nameListGeneric);
+		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryTypes.enemySmall], nameListGeneric);
+		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryTypes.enemyLarge], nameListGeneric);
+		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryTypes.armor], nameListGeneric);
+		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryTypes.drop], nameListGeneric);
+		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryTypes.gather], nameListGeneric);
+		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryTypes.recipe], recipeNameList);
 
-		DownloadSingleFile ("RecipeSwordUpgradeConfig", recipeUpSwordData, recipeNameList);
-		DownloadSingleFile ("WeaponSwordConfig", weaponSwordData, nameListGeneric);
+		DownloadSingleFile ("RecipeSwordUpgradeConfig", configDatas[(int)DataManagerDictionaryTypes.recipeUp], recipeNameList);
+		DownloadSingleFile ("WeaponSwordConfig", configDatas[(int)DataManagerDictionaryTypes.weapons], nameListGeneric);
 		readBool = true;
 		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
 		RecipeContainer.GenerateRecipes (recipeNameList);

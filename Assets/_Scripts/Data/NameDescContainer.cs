@@ -7,13 +7,12 @@ public static class NameDescContainer  {
 
 	private static bool genBool = false;
 
-	public enum NameType{material, nonconCon, conCon, sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, armor, enemySmall, enemyLarge, gather};
-	// subtypes as per index: 
-	//material, nonconCon, conCon (0-2)
-	//sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield (3-11)
-	//armor (12)
-	//enemySmall, enemyLarge (13-14)
-	//gatherNode (15)
+	public enum NameType{
+		material, nonconCon, conCon, 
+		sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, 
+		armor, 
+		enemySmall, enemyLarge, 
+		gather};
 
 	static List<List<string>> names = new List<List<string>>{ };
 	static List<List<string>> descriptions = new List<List<string>>{ };
