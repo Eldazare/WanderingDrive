@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour{
 		startPos = transform.position;
 		enemyStats = EnemyStatCreator.LoadStatBlockData(0, "small");
 		enemyName = "Enemy";
+		updateStats();
 	}
 
 	public IEnumerator Attack() {
@@ -54,21 +55,23 @@ public class Enemy : MonoBehaviour{
 			combatController.enemyAttacked = true;
 		}
 	}
-	public string GetHit (int damage, int elementDamage, int element){
-		int damageTaken = damage+elementDamage;
+	public string GetHit (int damage, int elementDamage, Element element){
+		if(element == 0){
+			elementDamage = 0;
+		}
+		float damageTaken = damage+elementDamage;
 		//Damage reduction calculations
 		enemyStats.health -= damageTaken;
 		// animator.SetTrigger("Ouch");
-		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, enemyStats.health/enemyStats.maxHealth, this);
+		updateStats();
 		return enemyName+" took "+damageTaken+" damage!";
+	}
+
+	void updateStats(){
+		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, enemyStats.health/enemyStats.maxHealth, this);
 	}
 
 	public void animatorCallingEnemy(){
 		proceed = true;
 	}
 }
-
-
-
-	
-

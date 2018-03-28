@@ -37,7 +37,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		enemyPos = menuController.targetedEnemy.transform.position;
 		StartCoroutine(AbilityRoutine(playerStats.abilityDamage(ID), playerStats.abilityElementDamage(ID), playerStats.abilityElement(ID)));
 	}
-	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, int abilityElement) {
+	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, Element abilityElement) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		//anim.SetTrigger("AbilityX");
 		yield return new WaitUntil(() =>proceed);
@@ -87,6 +87,9 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	public string GetHit(int damage, int elementDamage, Element element, bool area){
+		if(element == 0){
+			elementDamage = 0;
+		}
 		string returnedValue;	//Returning value to report in TextBox
 		float damageTaken = damage+elementDamage;
 		//Include modifiers to calculations: 
@@ -113,8 +116,13 @@ public class PlayerCombatScript : MonoBehaviour{
 			returnedValue = "You took " + damageTaken + " damage!";
 		}
 		combatController.ResetPlayerDefence();
-		menuController.updatePlayerHealth(playerStats.health, playerStats.maxHealth, playerStats.health/playerStats.maxHealth);
+		updateStats();
+
 		return returnedValue;
+	}
+
+	public void updateStats(){
+		menuController.updatePlayerHealth(playerStats.health, playerStats.maxHealth, playerStats.health/playerStats.maxHealth);
 	}
 
 	void moveToEnemy(){

@@ -8,13 +8,13 @@ public class PlayerStats {
 	public float health;
 	public float maxHealth;
 	public int stamina;
-	public int element;
+	public Element element;
 	public int damageReduction;
 
 	public int elementalDamage;
-	public int elementalWeakness;
+	public Element elementalWeakness;
 	public int weaponType;
-	public GameObject weapon;
+	public Weapon weapon;
 
 	public int ability1ID;
 	public int ability2ID;
@@ -29,15 +29,15 @@ public class PlayerStats {
 	public PlayerStats(){
 		maxHealth = 100;
 		health = maxHealth;
-		damage = 10;
+		damage = 2;
 	}
 	public int abilityDamage(int abilityID){
 		return 0;
 	}
-	public int abilityElement(int abilityID){
+	public int abilityElementDamage(int abilityID){
 		return 0;
 	}
-	public int abilityElementDamage(int abilityID){
+	public Element abilityElement(int abilityID){
 		return 0;
 	}
 }

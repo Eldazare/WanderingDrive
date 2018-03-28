@@ -35,6 +35,9 @@ public class CombatController : MonoBehaviour {
 		menuController.targetedEnemy = enemy;
 		enemy.combatController = this;
 
+
+		player.updateStats();
+
 		//Initialize enemy healthbars
 		foreach (var item in enemyList)
 		{
@@ -48,6 +51,12 @@ public class CombatController : MonoBehaviour {
 	}
 	public void ResetPlayerDefence(){
 		touchController.enemyTurn = true;
+	}
+
+	
+	public void StartCombat(){
+
+		menuController.PlayersTurn();
 	}
 	IEnumerator enemyAttacksRoutine(){
 		yield return new WaitForSeconds(1.5f);
@@ -74,8 +83,8 @@ public class CombatController : MonoBehaviour {
 		//player.GetHit (damage, elementDamage, element, area);
 	}
 
-	public void HitEnemy(int damage, int element, int elementDamage){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, element, elementDamage));
+	public void HitEnemy(int damage, int elementDamage, Element element){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element));
 	}
 
 	public void updateEnemyStats(float health, float maxhealth, float percentage, Enemy enemy){

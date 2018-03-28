@@ -20,18 +20,6 @@ public class EnemyStats {
 	public float hitDistance;
 	public float quickness;
 
-	/*
-	public EnemyStats(int id){
-		ID = id;
-		hitDistance = 1;
-		maxHealth = 100;
-		health = maxHealth;
-		damage = 10;
-		element = 1;
-		elementWeakness = 2;
-		elementDamage = 5;
-		armorType = 1;
-		// Generate stats from the enemy ID
-	}
-	*/
+	
+	
 }

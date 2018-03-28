@@ -38,7 +38,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4631221572395376}
   - component: {fileID: 114905409577996216}
-  - component: {fileID: 95849618345951374}
   m_Layer: 0
   m_Name: Enemy1_EyeRaptor
   m_TagString: enemy
@@ -163,23 +162,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &95849618345951374
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1337158433551260}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4f92a4e45b718a249b00bd5c3399c659, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114423264113036984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -204,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatController: {fileID: 0}
+  enemyID: 0
 --- !u!135 &135234992444938142
 SphereCollider:
   m_ObjectHideFlags: 1
