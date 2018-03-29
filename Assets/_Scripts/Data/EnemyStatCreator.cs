@@ -25,7 +25,7 @@ public static class EnemyStatCreator {
 		createe.elementWeakness= (Element)DataManager.ReadDataInt(indetifier + "elementWeakness");
 		createe.elementDamage= DataManager.ReadDataInt(indetifier + "elementDamage");
 		createe.armor = DataManager.ReadDataInt(indetifier + "armor");
-		createe.armorType= (ArmorType)DataManager.ReadDataInt(indetifier + "armorType");
+		createe.armorType= (weaknessType)DataManager.ReadDataInt(indetifier + "armorType");
 		createe.hitDistance= DataManager.ReadDataFloat(indetifier + "hitDistance");
 		createe.quickness= DataManager.ReadDataFloat(indetifier + "quickness");
 

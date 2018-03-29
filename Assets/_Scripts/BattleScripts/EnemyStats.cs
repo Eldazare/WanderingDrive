@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum Element{none, fire, ice, thunder, earth, light, shadow};
-public enum ArmorType{swordW, axeW, daggerW, rangedW, magicW};
+public enum weaknessType{swordW, axeW, daggerW, rangedW, magicW};
 
 public class EnemyStats {
 
@@ -16,7 +16,7 @@ public class EnemyStats {
 	public Element elementWeakness;
 	public int elementDamage;
 	public int armor;
-	public ArmorType armorType;
+	public weaknessType armorType;
 	public float hitDistance;
 	public float quickness;
 
