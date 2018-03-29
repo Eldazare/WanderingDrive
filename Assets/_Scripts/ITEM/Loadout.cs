@@ -64,6 +64,4 @@ public class Loadout {
 			Debug.LogError ("Invalid slot given to AddAccessory in Loadout");
 		}
 	}
-
-
 }

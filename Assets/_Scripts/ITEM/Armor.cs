@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour {
+public class Armor {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public ArmorTypes armorType;
+	public int[] elementResists;
+	public float defense;
+	public float magicDefense;
+	public float speed;
+
+	public Armor(int elementCount, ArmorTypes type){
+		elementResists = new int[elementCount];
+		armorType = type;
 	}
 }
