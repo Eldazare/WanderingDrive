@@ -3,53 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
 public class Enemy : MonoBehaviour{
 	EnemyStats enemyStats;
-	Animator anim;
+	public Animator animator;
 	Vector3 startPos;
+	[HideInInspector]
 	public CombatController combatController;
-
-	AnimationClip idle;
-	AnimationClip attack1;
-	AnimationClip attack2;
-	AnimationClip roar;
-	AnimationClip defensive;
-
+	
 	string enemyName;
 	public int enemyID;
 	Image healthBar;
-	bool proceed;
+	public bool proceed;
 
 
 	void Start() {
-		startPos = transform.position;
 		enemyStats = EnemyStatCreator.LoadStatBlockData(0, "small");
 		enemyName = "Enemy";
 		updateStats();
 	}
 
 	public IEnumerator Attack() {
+		startPos = transform.position;
 		InvokeRepeating("moveToPlayer", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
+		animator.SetTrigger("Attack");
 		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		combatController.HitPlayer(enemyStats.damage, enemyStats.elementDamage,enemyStats.element, false);
+		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);
+		proceed = false;
 	}
 
 	void moveToPlayer(){
-		if(Vector3.Distance(combatController.player.transform.position, transform.position)>1){
-			transform.Translate((combatController.player.transform.position-transform.position)*Time.deltaTime*5);
+		if(Vector3.Distance(combatController.player.transform.position, transform.position)>4){
+			//transform.Translate((combatController.player.transform.position-transform.position)*Time.deltaTime*enemyStats.quickness);
+			transform.position = Vector3.MoveTowards(transform.position, combatController.player.transform.position, Time.deltaTime*enemyStats.quickness+2); //Quickness as movement speed
 		}else{
-			//animator.SetTrigger("Attack");
-			//animator calls animatorCallingEnemy(); and sets proceed to true and player takes damage
 			proceed = true;
 			CancelInvoke("moveToPlayer");
 		}
 	}
 	void moveFromPlayer(){
 		if(Vector3.Distance(startPos, transform.position)>0.1){
-			transform.Translate((startPos-transform.position)*Time.deltaTime*5);
+			//transform.Translate((startPos-transform.position)*Time.deltaTime*enemyStats.quickness);
+			transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime*enemyStats.quickness+2); //Quickness as movement speed
 		}else{
 			CancelInvoke("moveFromPlayer");
 			combatController.enemyAttacked = true;
@@ -69,9 +68,5 @@ public class Enemy : MonoBehaviour{
 
 	void updateStats(){
 		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, enemyStats.health/enemyStats.maxHealth, this);
-	}
-
-	public void animatorCallingEnemy(){
-		proceed = true;
 	}
 }

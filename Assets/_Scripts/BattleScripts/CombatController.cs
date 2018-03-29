@@ -29,7 +29,7 @@ public class CombatController : MonoBehaviour {
 	void Start () {
 
 		//Temp enemy instantiation
-		GameObject enemyObject = Instantiate(Resources.Load("CombatResources/Enemy1_EyeRaptor", typeof(GameObject)),enemyHost.transform.position, Quaternion.identity, enemyHost.transform) as GameObject;
+		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
 		enemyList.Add(enemy);
 		menuController.targetedEnemy = enemy;

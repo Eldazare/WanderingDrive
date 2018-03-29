@@ -8,12 +8,13 @@ public class PlayerCombatScript : MonoBehaviour{
 	public GameObject model, weapon;
 	float blockTimer, blockDuration, dodgeTimer, dodgeDuration, timerAccuracy; //Defensive timers and the accuracy wanted
 	Vector3 enemyPos; //Enemy position to move to and from it
-	bool proceed; //Used in moving to and from the targeted enemy
+	public bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
 	bool defended, focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
-	int attackRange = 1; //How close the player moves to the enemy
+	int attackRange = 2; //How close the player moves to the enemy
 	int overloadedTurn;
+	public Animator animator;
 	void Start(){
 		//Generate player model and player stats
 		playerStats = new PlayerStats();
@@ -26,11 +27,15 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	IEnumerator AttackRoutine(Enemy target) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
-		//animator.SetTrigger("Attack");
+		yield return new WaitUntil(() =>proceed);
+		animator.SetTrigger("Attack");
+		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
 		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		proceed = false;
 	}
 
 	public void Ability (int ID) {
@@ -40,11 +45,15 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, Element abilityElement) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
-		//anim.SetTrigger("AbilityX");
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(abilityDamage, abilityElementDamage, abilityElement);
+		animator.SetTrigger("Attack");
 		proceed = false;
+		yield return new WaitUntil(() =>proceed);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
+		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		proceed = false;
 	}
 	
 	public void Consumable(int slot) {
@@ -128,7 +137,7 @@ public class PlayerCombatScript : MonoBehaviour{
 
 	void moveToEnemy(){
 		if(Vector3.Distance(enemyPos, transform.position)>attackRange){
-			transform.Translate((enemyPos-transform.position)*Time.deltaTime*5);
+			transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		}else{
 			proceed = true;
 			CancelInvoke("moveToEnemy");
