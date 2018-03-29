@@ -20,4 +20,20 @@ public static class ArmorCreator {
 		}
 		return createe;
 	}
+
+	public static Accessory CreateAccessory(int id){
+		string begin = "accessory_" + id + "_";
+		Accessory createe = new Accessory (System.Enum.GetNames (typeof(Element)).Length);
+		createe.magicDefense = DataManager.ReadDataFloat (begin + "magicDefense");
+		createe.damage = DataManager.ReadDataFloat (begin + "damage");
+		string elementResStr = DataManager.ReadDataString (begin + "elementResist");
+		string[] elementResStrSplit = elementResStr.Split (";".ToCharArray());
+		int i = 0;
+		foreach (string str in elementResStrSplit) {
+			int parsedInt = int.Parse (str);
+			createe.elementResists [i] = parsedInt;
+			i++;
+		}
+		return createe;
+	}
 }
