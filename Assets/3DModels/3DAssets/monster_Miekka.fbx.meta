@@ -1,18 +1,21 @@
 fileFormatVersion: 2
-guid: e917242d35383e6438b77050534e6b59
-timeCreated: 1522322693
+guid: e8b55ecfbbf0679468ab7bc60bc1972f
+timeCreated: 1522335673
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: unnamed
-    2300000: //RootNode
-    3300000: //RootNode
+    100000: Cube
+    100002: //RootNode
+    100004: Point
+    400000: Cube
+    400002: //RootNode
+    400004: Point
+    2100000: No Name
+    2300000: Cube
+    3300000: Cube
     4300000: Cube
-    7400000: Default Take
-    9500000: //RootNode
+    10800000: Point
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -68,7 +71,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -87,7 +90,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

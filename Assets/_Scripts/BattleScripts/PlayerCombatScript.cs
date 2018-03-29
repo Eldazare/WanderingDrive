@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerCombatScript : MonoBehaviour{
 	public PlayerStats playerStats; //Player stat container
 	Vector3 startPos;	//Player's starting position to move to and from Enemy
-	public GameObject model, weapon;
+	public GameObject model, weapon, weaponSlot;
+	public Transform stomach;
 	float blockTimer, blockDuration, dodgeTimer, dodgeDuration, timerAccuracy; //Defensive timers and the accuracy wanted
 	Vector3 enemyPos; //Enemy position to move to and from it
+	[HideInInspector]
 	public bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
@@ -68,6 +70,8 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	public void PlayerOverload () {
 		overloadedTurn = 3;
+		menuController.focusEnabled = false;
+		menuController.overloadEnabled = false;
 		if(focusedTurn){
 			focusPlusOverloadTurn = true;
 			focusPlustOverloadBonus = true;
@@ -77,20 +81,29 @@ public class PlayerCombatScript : MonoBehaviour{
 		}
 	}
 
-	void EndPlayerTurn(bool focus){
+	void EndPlayerTurn(bool setBool){
 		if(focusPlusOverloadTurn){
 			menuController.focusEnabled = false;
 			menuController.overloadEnabled = false;
-			focusPlusOverloadTurn = focus;
+			focusPlusOverloadTurn = setBool;
 			menuController.PlayersTurn();
 		}else if(focusedTurn){
-			menuController.PlayersTurn();
 			focusedTurn = false;
-		}else if(overloadedTurn > 0){
+			menuController.overloadEnabled = false;
 			menuController.PlayersTurn();
+		}else if(overloadedTurn > 0){
 			overloadedTurn--;
+			if(overloadedTurn == 0){
+				menuController.focusEnabled = true;
+				menuController.overloadEnabled = true;
+				combatController.enemyAttacks();
+			}else{
+				menuController.PlayersTurn();
+			}
 		}else{
-			focusedTurn = focus;
+			focusedTurn = setBool;
+			menuController.focusEnabled = !setBool;
+			menuController.overloadEnabled = true;
 			focusPlustOverloadBonus = false;
 			combatController.enemyAttacks();
 		}

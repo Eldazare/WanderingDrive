@@ -52,8 +52,8 @@ public class MenuController : MonoBehaviour {
 	public void AbilitiesMenu() {
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
-		focusButton.enabled = focusEnabled;
-		overloadButton.enabled = overloadEnabled;
+		focusButton.interactable = focusEnabled;
+		overloadButton.interactable = overloadEnabled;
 	}
 	public void ItemsMenu () {
 		ItemMenu.SetActive (true);
