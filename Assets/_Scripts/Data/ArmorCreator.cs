@@ -12,7 +12,7 @@ public static class ArmorCreator {
 		createe.speed = DataManager.ReadDataFloat (begin + "speed");
 		string elementResStr = DataManager.ReadDataString (begin + "elementResist");
 		string[] elementResStrSplit = elementResStr.Split (";".ToCharArray());
-		int i = 0;
+		int i = 1;
 		foreach (string str in elementResStrSplit) {
 			int parsedInt = int.Parse (str);
 			createe.elementResists [i] = parsedInt;
@@ -28,7 +28,7 @@ public static class ArmorCreator {
 		createe.damage = DataManager.ReadDataFloat (begin + "damage");
 		string elementResStr = DataManager.ReadDataString (begin + "elementResist");
 		string[] elementResStrSplit = elementResStr.Split (";".ToCharArray());
-		int i = 0;
+		int i = 1;
 		foreach (string str in elementResStrSplit) {
 			int parsedInt = int.Parse (str);
 			createe.elementResists [i] = parsedInt;

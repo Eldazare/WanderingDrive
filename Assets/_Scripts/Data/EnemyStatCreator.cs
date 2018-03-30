@@ -22,12 +22,22 @@ public static class EnemyStatCreator {
 		createe.maxHealth = createe.health;
 		createe.damage= DataManager.ReadDataInt(indentifier + "damage");
 		createe.element= (Element)DataManager.ReadDataInt(indentifier + "element");
-		createe.elementWeakness= (Element)DataManager.ReadDataInt(indentifier + "elementWeakness");
 		createe.elementDamage= DataManager.ReadDataInt(indentifier + "elementDamage");
 		createe.armor = DataManager.ReadDataInt(indentifier + "armor");
-		createe.armorType= (weaknessType)DataManager.ReadDataInt(indentifier + "armorType");
+		createe.armorType= (WeaknessType)DataManager.ReadDataInt(indentifier + "armorType");
 		createe.hitDistance= DataManager.ReadDataFloat(indentifier + "hitDistance");
 		createe.quickness= DataManager.ReadDataFloat(indentifier + "quickness");
+
+		string elementWeaknessData = DataManager.ReadDataString(indentifier + "elementWeakness");
+		string[] elementWeaknessSplit = elementWeaknessData.Split (";".ToCharArray ());
+		createe.elementWeakness = new List<int> ();
+		createe.elementWeakness.Add (0);
+		foreach (string str in elementWeaknessSplit) {
+			createe.elementWeakness.Add (int.Parse (str));
+		}
+		if (createe.elementWeakness.Count != System.Enum.GetNames (typeof(Element)).Length) {
+			Debug.LogError ("Disparity in enemy config and Element length, ID: " + type + "_" + enemyIndex);
+		}
 
 		createe.partList = new List<EnemyPart> ();
 		int i = 1;

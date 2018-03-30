@@ -6,7 +6,7 @@
 enemySmall_0_health=10
 enemySmall_0_damage=1
 enemySmall_0_element=0
-enemySmall_0_elementWeakness=0
+enemySmall_0_elementWeakness=0;0;0;0;0;0
 enemySmall_0_elementDamage=2
 enemySmall_0_armor=3
 enemySmall_0_armorType=2

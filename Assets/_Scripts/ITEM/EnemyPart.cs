@@ -8,4 +8,12 @@ public class EnemyPart {
 	public int percentageHit;
 	public float damageMod;
 	public float hp;
+	public bool broken = false;
+
+	public void DamageThisPart(float damage){
+		hp -= damage;
+		if (hp <= 0) {
+			broken = true;
+		}
+	}
 }
