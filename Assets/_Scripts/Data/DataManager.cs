@@ -28,7 +28,11 @@ public static class DataManager  {
 
 		try{
 			DataManagerDictionaryTypes dicType = (DataManagerDictionaryTypes)System.Enum.Parse (typeof(DataManagerDictionaryTypes), identifier);
-			return configDatas[System.Convert.ToInt32(dicType)][entryName];
+			try{
+				return configDatas[System.Convert.ToInt32(dicType)][entryName];
+			} catch{
+				return null;
+			}
 		} catch{
 			Debug.LogError ("Identifier part is not defined in DataManager: " + identifier);
 			return null;

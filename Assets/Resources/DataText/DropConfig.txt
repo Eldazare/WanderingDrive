@@ -7,3 +7,4 @@
 
 drop_small_0_1=0_50
 drop_small_0_2=1_50
+drop_small_0_p2=2_100

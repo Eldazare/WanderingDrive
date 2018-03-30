@@ -12,22 +12,40 @@ public static class EnemyStatCreator {
 			begin += "Small_";
 			break;
 		case "large":
-			begin += "large_";
+			begin += "Large_";
 			break;
 		}
-		string indetifier = begin + enemyIndex + "_";
+		string indentifier = begin + enemyIndex + "_";
 		EnemyStats createe = new EnemyStats ();
 		createe.ID = enemyIndex;
-		createe.health = DataManager.ReadDataFloat(indetifier + "health");
+		createe.health = DataManager.ReadDataFloat(indentifier + "health");
 		createe.maxHealth = createe.health;
-		createe.damage= DataManager.ReadDataInt(indetifier + "damage");
-		createe.element= (Element)DataManager.ReadDataInt(indetifier + "element");
-		createe.elementWeakness= (Element)DataManager.ReadDataInt(indetifier + "elementWeakness");
-		createe.elementDamage= DataManager.ReadDataInt(indetifier + "elementDamage");
-		createe.armor = DataManager.ReadDataInt(indetifier + "armor");
-		createe.armorType= (weaknessType)DataManager.ReadDataInt(indetifier + "armorType");
-		createe.hitDistance= DataManager.ReadDataFloat(indetifier + "hitDistance");
-		createe.quickness= DataManager.ReadDataFloat(indetifier + "quickness");
+		createe.damage= DataManager.ReadDataInt(indentifier + "damage");
+		createe.element= (Element)DataManager.ReadDataInt(indentifier + "element");
+		createe.elementWeakness= (Element)DataManager.ReadDataInt(indentifier + "elementWeakness");
+		createe.elementDamage= DataManager.ReadDataInt(indentifier + "elementDamage");
+		createe.armor = DataManager.ReadDataInt(indentifier + "armor");
+		createe.armorType= (weaknessType)DataManager.ReadDataInt(indentifier + "armorType");
+		createe.hitDistance= DataManager.ReadDataFloat(indentifier + "hitDistance");
+		createe.quickness= DataManager.ReadDataFloat(indentifier + "quickness");
+
+		createe.partList = new List<EnemyPart> ();
+		int i = 1;
+		while (true) {
+			string partData = DataManager.ReadDataString (indentifier + "p" + i);
+			if (partData != null) {
+				string[] partDataSplit = partData.Split ("_".ToCharArray ());
+				EnemyPart aPart = new EnemyPart ();
+				aPart.name = partDataSplit [0];
+				aPart.percentageHit = int.Parse (partDataSplit [1]);
+				aPart.damageMod = float.Parse (partDataSplit [2]);
+				aPart.hp = float.Parse (partDataSplit [3]);
+				createe.partList.Add (aPart);
+				i++;
+			} else {
+				break;
+			}
+		}
 
 		return createe;
 	}

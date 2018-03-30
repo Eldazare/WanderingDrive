@@ -20,6 +20,6 @@ public class EnemyStats {
 	public float hitDistance;
 	public float quickness;
 
-	
+	public List<EnemyPart> partList;
 	
 }
