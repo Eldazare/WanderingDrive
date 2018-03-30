@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class CombatController : MonoBehaviour {
 
@@ -22,22 +23,24 @@ public class CombatController : MonoBehaviour {
 	public GameObject enemyCreator;
 	public bool enemyAttacked;
 	public int enemyTurns;
-
-	//public Text TextBox;
 	
 
+	//public Text TextBox;
+		
 	void Start () {
 
 		//Temp enemy instantiation
-		GameObject enemyObject = Instantiate(Resources.Load("CombatResources/Enemy1_EyeRaptor", typeof(GameObject)),enemyHost.transform.position, Quaternion.identity, enemyHost.transform) as GameObject;
+		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
 		enemyList.Add(enemy);
 		menuController.targetedEnemy = enemy;
 		enemy.combatController = this;
 
-
+		
+		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
+		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats();
-
+	
 		//Initialize enemy healthbars
 		foreach (var item in enemyList)
 		{
@@ -71,7 +74,18 @@ public class CombatController : MonoBehaviour {
 	}
 	
 	public void enemycreation(){
-		//Call enemyCreator and give it its things
+		/*foreach (var item in loadOut.enemyList){
+			float enemySpacing = 0;
+			Vector3 enemyPos = enemyHost.transform.position;
+			//Adds spacing
+			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4), Quaternion.identity, enemyHost.transform) as GameObject;
+			Enemy enemy = enemyObject.GetComponent<Enemy>();
+			enemyList.Add(enemy);
+			enemy.combatcontroller = this;
+			enemySpacing++;
+		}
+		menuController.targetedEnemy = enemyList[0];
+		*/
 	}
 
 	public void playerStatCreation(){

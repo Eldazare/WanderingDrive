@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class PlayerCombatScript : MonoBehaviour{
 	public PlayerStats playerStats; //Player stat container
-	Vector3 startPos;	//Player's starting position to mvoe to and from Enemy
-	public GameObject model, weapon;
+	Vector3 startPos;	//Player's starting position to move to and from Enemy
+	public GameObject model, weapon, weaponSlot;
+	public Transform stomach;
 	float blockTimer, blockDuration, dodgeTimer, dodgeDuration, timerAccuracy; //Defensive timers and the accuracy wanted
 	Vector3 enemyPos; //Enemy position to move to and from it
-	bool proceed; //Used in moving to and from the targeted enemy
+	[HideInInspector]
+	public bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
-	public bool defended, focusedTurn, overloadedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
-	int attackRange = 1; //How close the player moves to the enemy
+	bool defended, focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
+	int attackRange = 2; //How close the player moves to the enemy
+	int overloadedTurn;
+	public Animator animator;
 	void Start(){
 		//Generate player model and player stats
 		playerStats = new PlayerStats();
@@ -25,11 +29,15 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	IEnumerator AttackRoutine(Enemy target) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
-		//animator.SetTrigger("Attack");
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(playerStats.damage, playerStats.elementalDamage, playerStats.element);
+		animator.SetTrigger("Attack");
 		proceed = false;
+		yield return new WaitUntil(() =>proceed);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
+		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		proceed = false;
 	}
 
 	public void Ability (int ID) {
@@ -39,11 +47,15 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, Element abilityElement) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
-		//anim.SetTrigger("AbilityX");
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(abilityDamage, abilityElementDamage, abilityElement);
+		animator.SetTrigger("Attack");
 		proceed = false;
+		yield return new WaitUntil(() =>proceed);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
+		proceed = false;
+		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		proceed = false;
 	}
 	
 	public void Consumable(int slot) {
@@ -57,30 +69,41 @@ public class PlayerCombatScript : MonoBehaviour{
 		EndPlayerTurn(true);
 	}
 	public void PlayerOverload () {
-		overloadedTurn = true;
+		overloadedTurn = 3;
+		menuController.focusEnabled = false;
+		menuController.overloadEnabled = false;
 		if(focusedTurn){
 			focusPlusOverloadTurn = true;
 			focusPlustOverloadBonus = true;
 			EndPlayerTurn(true);
 		}else{
-			EndPlayerTurn(false);
+			EndPlayerTurn(true);
 		}
 	}
 
-	void EndPlayerTurn(bool focus){
+	void EndPlayerTurn(bool setBool){
 		if(focusPlusOverloadTurn){
 			menuController.focusEnabled = false;
 			menuController.overloadEnabled = false;
-			focusPlusOverloadTurn = focus;
+			focusPlusOverloadTurn = setBool;
 			menuController.PlayersTurn();
 		}else if(focusedTurn){
-			menuController.PlayersTurn();
 			focusedTurn = false;
-		}else if(overloadedTurn){
+			menuController.overloadEnabled = false;
 			menuController.PlayersTurn();
-			overloadedTurn = false;
+		}else if(overloadedTurn > 0){
+			overloadedTurn--;
+			if(overloadedTurn == 0){
+				menuController.focusEnabled = true;
+				menuController.overloadEnabled = true;
+				combatController.enemyAttacks();
+			}else{
+				menuController.PlayersTurn();
+			}
 		}else{
-			focusedTurn = focus;
+			focusedTurn = setBool;
+			menuController.focusEnabled = !setBool;
+			menuController.overloadEnabled = true;
 			focusPlustOverloadBonus = false;
 			combatController.enemyAttacks();
 		}
@@ -127,7 +150,7 @@ public class PlayerCombatScript : MonoBehaviour{
 
 	void moveToEnemy(){
 		if(Vector3.Distance(enemyPos, transform.position)>attackRange){
-			transform.Translate((enemyPos-transform.position)*Time.deltaTime*5);
+			transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		}else{
 			proceed = true;
 			CancelInvoke("moveToEnemy");
