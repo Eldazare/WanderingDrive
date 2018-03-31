@@ -6,10 +6,6 @@ using UnityEditor;
 
 public class CombatController : MonoBehaviour {
 
-	// public enum Elements{
-	// 	fire = 1, water = 2, grass = 3, lightning = 4
-	// };
-
 	public GameObject loadOut;
 	public List<Enemy> enemyList;
 	public PlayerCombatScript player;
@@ -20,12 +16,8 @@ public class CombatController : MonoBehaviour {
 	GameObject mapToBattleContainer;
 	public MenuController menuController;
 	public TouchControlScript touchController;
-	public GameObject enemyCreator;
+	public CameraController cameraScript;
 	public bool enemyAttacked;
-	public int enemyTurns;
-	
-
-	//public Text TextBox;
 		
 	void Start () {
 
@@ -62,8 +54,9 @@ public class CombatController : MonoBehaviour {
 		menuController.PlayersTurn();
 	}
 	IEnumerator enemyAttacksRoutine(){
-		yield return new WaitForSeconds(1.5f);
 		touchController.enemyTurn = true;
+		yield return new WaitUntil(()=>menuController.proceed);
+		yield return new WaitForSeconds(1.5f);
 		for (int i = 0; i < enemyList.Count; i++) {
 			StartCoroutine(enemyList[i].Attack());
 			yield return new WaitUntil(()=>enemyAttacked);

@@ -7,13 +7,14 @@ public class Enemy : MonoBehaviour{
 	EnemyStats enemyStats;
 	public Animator animator;
 	Vector3 startPos;
-	[HideInInspector]
 	public CombatController combatController;
 	
 	string enemyName;
 	public int enemyID;
 	Image healthBar;
 	public bool proceed;
+	public GameObject cameraTarget;
+	public GameObject[] partCanvas;
 
 
 	void Start() {
@@ -68,5 +69,19 @@ public class Enemy : MonoBehaviour{
 
 	void updateStats(){
 		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, enemyStats.health/enemyStats.maxHealth, this);
+	}
+	public void playerAttackPart(int part){
+		combatController.menuController.ChoosePartToAttack(part);
+	}
+
+	public void ActivatePartCanvas(){
+		foreach (var item in partCanvas)
+		{
+			if(item.activeInHierarchy){
+				item.SetActive(false);
+			}else{
+				item.SetActive(true);
+			}
+		}
 	}
 }

@@ -20,7 +20,9 @@ public class MenuController : MonoBehaviour {
 	public Image[] enemyHealthFills;
 	public Text[] enemyHealthTexts;
 	public GameObject[] enemyHealthBars;
+	public GameObject playerPovCamera;
 	public float textSpeed;
+	public bool proceed;
 
 	
 
@@ -71,7 +73,19 @@ public class MenuController : MonoBehaviour {
 	// Buttons.
 	public void Attack () {
 		DefaultButtons.SetActive(false);
-		player.Attack ();
+		//player.Attack ();
+		combatController.cameraScript.MoveCamera(targetedEnemy.cameraTarget);
+	}
+	public void ChoosePartToAttack(int part){
+		//player.Attack(part);
+		StartCoroutine(PlayerAttack(part));
+	}
+	IEnumerator PlayerAttack(int part){
+		proceed = false;
+		combatController.cameraScript.MoveCamera(playerPovCamera);
+		yield return new WaitUntil(()=>proceed);
+		combatController.cameraScript.FollowTarget(playerPovCamera);
+		player.Attack(part);
 	}
 	public void Ability(int slot) {
 		AbilityButtons.SetActive (false);
@@ -93,12 +107,10 @@ public class MenuController : MonoBehaviour {
 
 	//UI updates
 	public void updatePlayerHealth(float health, float maxHealth, float percentage){
-		Debug.Log("Player health:" +percentage);
 		playerHealthFill.fillAmount = percentage;
 		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
-		Debug.Log("Enemy health:" + percentage);
 		enemyHealthFills[combatController.enemyList.IndexOf(enemyForListSearch)].fillAmount = percentage;
 		enemyHealthTexts[combatController.enemyList.IndexOf(enemyForListSearch)].text = health.ToString() +"/"+maxHealth.ToString();
 	}

@@ -22,7 +22,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		playerStats = new PlayerStats();
 	}
 	
-	public void Attack () {
+	public void Attack (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
 		StartCoroutine(AttackRoutine(menuController.targetedEnemy));
@@ -163,6 +163,7 @@ public class PlayerCombatScript : MonoBehaviour{
 			CancelInvoke("moveFromEnemy");
 			EndPlayerTurn(false);
 			focusDefensiveBonus = false;
+			combatController.cameraScript.ResetCamera();
 		}
 	}
 	void BlockCountDown(){
