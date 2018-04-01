@@ -3,8 +3,8 @@
 #name | base chance | damageModifier | partHP for break
 
 %enemy_enemySmall_0_genericLizardSmall
-enemySmall_0_health=10
-enemySmall_0_damage=1
+enemySmall_0_health=100
+enemySmall_0_damage=10
 enemySmall_0_element=0
 enemySmall_0_elementWeakness=0;0;0;0;0;0
 enemySmall_0_elementDamage=2

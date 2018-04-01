@@ -20,6 +20,6 @@ public class EnemyStats {
 	public float quickness;
 
 	public List<int> elementWeakness;
-	public List<EnemyPart> partList;
+	public List<EnemyPart> partList;  //0 is always the main body
 	
 }

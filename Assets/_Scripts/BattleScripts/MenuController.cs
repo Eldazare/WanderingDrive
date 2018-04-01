@@ -7,46 +7,48 @@ public class MenuController : MonoBehaviour {
 
 
 	public CombatController combatController;
+	[HideInInspector]
 	public Enemy targetedEnemy;
 
 
 	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;
 	public Button focusButton, overloadButton; //Drag focus and overload buttons to menuController
 	public PlayerCombatScript player;
+	public GameObject enemyPartCanvas;
+	public GameObject [] enemyPartCanvasButtons;
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerManaFill;
 	public Text playerHealthText, playerManaText, textBoxText;
 	public Image[] enemyHealthFills;
 	public Text[] enemyHealthTexts;
+	public Button[] enemyTargetButtons;
 	public GameObject[] enemyHealthBars;
 	public GameObject playerPovCamera;
 	public float textSpeed;
 	public bool proceed;
+	public int selectedPart;
+	public Text enemyTurnText, playerTurnText;
 
+	Color originalColor;
 	
 
 
 	void Start(){
 		focusEnabled = true;
 		overloadEnabled = true;
+		PlayerTurnTextFade();
 	}	
 
 	//Doesn't actually do anything yet
 	//Uses the linked list concept, to switch targets
-	public void NextTarget () {
-		enemyTargetNumber++;
-		if(enemyTargetNumber > combatController.enemyList.Count){
-			enemyTargetNumber = 0;
+	public void SelectTargetEnemy(int enemyNbr){
+		targetedEnemy = combatController.enemyList[enemyNbr];
+		foreach (var item in enemyTargetButtons)
+		{
+			item.interactable = true;
 		}
-		targetedEnemy = combatController.enemyList[enemyTargetNumber];
-	}
-	public void PreviousTarget() {
-		enemyTargetNumber--;
-		if(enemyTargetNumber < 0){
-			enemyTargetNumber = combatController.enemyList.Count;
-		}
-		targetedEnemy = combatController.enemyList[enemyTargetNumber];
+		enemyTargetButtons[enemyNbr].interactable = false;
 	}
 
  	//Buttons for button menus.
@@ -65,6 +67,7 @@ public class MenuController : MonoBehaviour {
 		DefaultButtons.SetActive (true);
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
+		combatController.cameraScript.ResetCamera();
 	}
 	public void PlayersTurn(){
 		StartCoroutine(AttackWaitTime());
@@ -74,22 +77,29 @@ public class MenuController : MonoBehaviour {
 	public void Attack () {
 		DefaultButtons.SetActive(false);
 		//player.Attack ();
+		StartCoroutine(CameraToEnemy());
+	}
+
+	IEnumerator CameraToEnemy(){
 		combatController.cameraScript.MoveCamera(targetedEnemy.cameraTarget);
+		yield return new WaitUntil(()=>proceed);
+		targetedEnemy.ActivatePartCanvas();
 	}
-	public void ChoosePartToAttack(int part){
+	public void ChoosePartToAttack(){
 		//player.Attack(part);
-		StartCoroutine(PlayerAttack(part));
+		targetedEnemy.ActivatePartCanvas();
+		StartCoroutine(PlayerAttack());
 	}
-	IEnumerator PlayerAttack(int part){
+	IEnumerator PlayerAttack(){
 		proceed = false;
 		combatController.cameraScript.MoveCamera(playerPovCamera);
 		yield return new WaitUntil(()=>proceed);
 		combatController.cameraScript.FollowTarget(playerPovCamera);
-		player.Attack(part);
+		player.Attack(selectedPart);
 	}
 	public void Ability(int slot) {
 		AbilityButtons.SetActive (false);
-		player.Ability (slot);
+		player.Ability (slot, selectedPart);
 	}
 
 	public void Consumable(int slot){
@@ -117,9 +127,9 @@ public class MenuController : MonoBehaviour {
 
 	public void messageToScreen(string message){
 		textBox.SetActive(true);
-		StartCoroutine(writeText(message));
+		StartCoroutine(WriteText(message));
 	}
-	IEnumerator writeText(string message){
+	IEnumerator WriteText(string message){
 		foreach (var item in message)
 		{
 			textBoxText.text += item;
@@ -129,12 +139,30 @@ public class MenuController : MonoBehaviour {
 		textBoxText.text = "";
 		textBox.SetActive(false);
 	}
-
+	public void SelectEnemyPart(int partNbr){
+		foreach (var item in enemyPartCanvasButtons)
+		{
+			item.GetComponent<Button>().interactable = true;
+		}
+		enemyPartCanvasButtons[partNbr].GetComponent<Button>().interactable = false;
+		selectedPart = partNbr;
+	}
 	IEnumerator AttackWaitTime(){
 		yield return new WaitForSeconds(1.5f);
+		PlayerTurnTextFade();
 		DefaultButtons.SetActive(true);
-		textBoxText.text = "";
-		textBox.SetActive(false);
+	}
+
+	public void EnemyTurnTextFade(){
+		enemyTurnText.gameObject.SetActive(true);
+		enemyTurnText.CrossFadeAlpha(1.0f, 0.0f, false);
+		enemyTurnText.CrossFadeAlpha(0.0f, 3.0f,false);
+	}
+
+	void PlayerTurnTextFade(){
+		playerTurnText.gameObject.SetActive(true);
+		playerTurnText.CrossFadeAlpha(1.0f, 0.0f, false);
+		playerTurnText.CrossFadeAlpha(0.0f, 3.0f, false);
 	}
 
 }

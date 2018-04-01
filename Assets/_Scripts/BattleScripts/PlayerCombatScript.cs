@@ -7,13 +7,13 @@ public class PlayerCombatScript : MonoBehaviour{
 	Vector3 startPos;	//Player's starting position to move to and from Enemy
 	public GameObject model, weapon, weaponSlot;
 	public Transform stomach;
-	float blockTimer, blockDuration, dodgeTimer, dodgeDuration, timerAccuracy; //Defensive timers and the accuracy wanted
+	float blockTimer, blockDuration = 3, dodgeTimer, dodgeDuration = 2, timerAccuracy = 0.8f; //Defensive timers and the accuracy wanted
 	Vector3 enemyPos; //Enemy position to move to and from it
 	[HideInInspector]
 	public bool proceed; //Used in moving to and from the targeted enemy
 	public MenuController menuController;
 	public CombatController combatController;
-	bool defended, focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
+	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
 	int attackRange = 2; //How close the player moves to the enemy
 	int overloadedTurn;
 	public Animator animator;
@@ -25,33 +25,33 @@ public class PlayerCombatScript : MonoBehaviour{
 	public void Attack (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
-		StartCoroutine(AttackRoutine(menuController.targetedEnemy));
+		StartCoroutine(AttackRoutine(menuController.targetedEnemy, part));
 	}
-	IEnumerator AttackRoutine(Enemy target) {
+	IEnumerator AttackRoutine(Enemy target, int part) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
 		animator.SetTrigger("Attack");
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element, part);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
 		proceed = false;
 	}
 
-	public void Ability (int ID) {
+	public void Ability (int ID, int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
-		StartCoroutine(AbilityRoutine(playerStats.abilityDamage(ID), playerStats.abilityElementDamage(ID), playerStats.abilityElement(ID)));
+		StartCoroutine(AbilityRoutine(playerStats.abilityDamage(ID), playerStats.abilityElementDamage(ID), playerStats.abilityElement(ID), part));
 	}
-	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, Element abilityElement) {
+	IEnumerator AbilityRoutine(int abilityDamage, int abilityElementDamage, Element abilityElement, int part) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
 		animator.SetTrigger("Attack");
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element);
+		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element, part);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
@@ -119,7 +119,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		//overloadDamageTakenBonus
 		//focusDefensiveBonus
 
-		if(dodgeTimer>timerAccuracy){
+		if(dodgeTimer>timerAccuracy*dodgeTimer){
 			if(area){
 				playerStats.health -= damage*playerStats.damageReduction;
 
@@ -129,8 +129,9 @@ public class PlayerCombatScript : MonoBehaviour{
 				returnedValue = "You dodged the attack!";
 			}
 		}
-		else if(blockTimer>timerAccuracy){
+		else if(blockTimer>timerAccuracy*blockTimer){
 			//Block calculations
+			damageTaken *= 0.5f;
 			returnedValue = "You blocked the attack but took "+ damage +" damage!";
 		}
 		else{
@@ -183,7 +184,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	public void Dodge(int direction){
-		if(dodgeTimer<=0 && !defended){
+		if(dodgeTimer<=0){
 			//Dodge animation depending on direction 1 = right and down, 0 = left and up
 			dodgeTimer += dodgeDuration;
 			InvokeRepeating("DodgeCountDown",0, timerAccuracy);
@@ -191,7 +192,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	public void Block(){
-		if(blockTimer<=0 && !defended){
+		if(blockTimer<=0){
 			//Block 
 			blockTimer += blockDuration;
 			InvokeRepeating("BlockCountDown", 0, timerAccuracy);

@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 224346184249954148}
   - component: {fileID: 223891347424402324}
   - component: {fileID: 114211009480336120}
+  - component: {fileID: 114230643703880806}
   m_Layer: 0
   m_Name: HeadTargetCanvas
   m_TagString: Untagged
@@ -57,6 +58,7 @@ GameObject:
   - component: {fileID: 224722041978220580}
   - component: {fileID: 223711878093847686}
   - component: {fileID: 114711148579732624}
+  - component: {fileID: 114149811389969172}
   m_Layer: 0
   m_Name: LeftArmTargetCanvas
   m_TagString: Untagged
@@ -275,6 +277,7 @@ GameObject:
   - component: {fileID: 224735616343866916}
   - component: {fileID: 223711627031072222}
   - component: {fileID: 114074732690699332}
+  - component: {fileID: 114440933532730870}
   m_Layer: 0
   m_Name: ChestTargetCanvas
   m_TagString: Untagged
@@ -461,6 +464,7 @@ GameObject:
   - component: {fileID: 224348712915023514}
   - component: {fileID: 223883741154716512}
   - component: {fileID: 114635248593720766}
+  - component: {fileID: 114141305318256286}
   m_Layer: 0
   m_Name: RightArmTargetCanvas
   m_TagString: Untagged
@@ -1042,6 +1046,32 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114141305318256286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1745945132895318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83c2ef74c3ae804a9650c1678a2e0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 114039193686792286}
+  myButton: {fileID: 114028465250266376}
+--- !u!114 &114149811389969172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1019912044831470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83c2ef74c3ae804a9650c1678a2e0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 114465902223416922}
+  myButton: {fileID: 114316867304342982}
 --- !u!114 &114211009480336120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1058,6 +1088,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114230643703880806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1019196179021916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83c2ef74c3ae804a9650c1678a2e0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 114593791887122490}
+  myButton: {fileID: 114358205799090802}
 --- !u!114 &114285827382783604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1190,10 +1233,10 @@ MonoBehaviour:
   proceed: 0
   cameraTarget: {fileID: 1688156722184334}
   partCanvas:
-  - {fileID: 1019196179021916}
+  - {fileID: 1430465904360808}
   - {fileID: 1019912044831470}
   - {fileID: 1745945132895318}
-  - {fileID: 1430465904360808}
+  - {fileID: 1019196179021916}
 --- !u!114 &114408387564228860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1246,6 +1289,19 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114440933532730870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1430465904360808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83c2ef74c3ae804a9650c1678a2e0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 114899321791987566}
+  myButton: {fileID: 114408387564228860}
 --- !u!114 &114465902223416922
 MonoBehaviour:
   m_ObjectHideFlags: 1

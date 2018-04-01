@@ -22,24 +22,26 @@ public class CombatController : MonoBehaviour {
 	void Start () {
 
 		//Temp enemy instantiation
-		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
+		/* GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
 		enemyList.Add(enemy);
 		menuController.targetedEnemy = enemy;
-		enemy.combatController = this;
+		enemy.combatController = this; 
+		int number = 0;
+		foreach (var item in enemyList)
+		{
+			menuController.enemyHealthBars[number].SetActive(true);
+			number++;
+		}*/
+		EnemyCreation();
 
 		
 		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
 		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats();
-	
+		Debug.Log(player.playerStats.weapon.damage);
 		//Initialize enemy healthbars
-		foreach (var item in enemyList)
-		{
-			int number = 0;
-			menuController.enemyHealthBars[number].SetActive(true);
-			number++;
-		}
+		
 	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
@@ -50,48 +52,71 @@ public class CombatController : MonoBehaviour {
 
 	
 	public void StartCombat(){
-
 		menuController.PlayersTurn();
 	}
+
 	IEnumerator enemyAttacksRoutine(){
-		touchController.enemyTurn = true;
 		yield return new WaitUntil(()=>menuController.proceed);
-		yield return new WaitForSeconds(1.5f);
+		touchController.enemyTurn = true;
+		menuController.EnemyTurnTextFade();
 		for (int i = 0; i < enemyList.Count; i++) {
+			yield return new WaitForSeconds(3f);
 			StartCoroutine(enemyList[i].Attack());
 			yield return new WaitUntil(()=>enemyAttacked);
 		}
 		touchController.enemyTurn = false;
-		yield return new WaitForSeconds(1.5f);
 		menuController.PlayersTurn();
 	}
 	
-	public void enemycreation(){
-		/*foreach (var item in loadOut.enemyList){
-			float enemySpacing = 0;
+	public void EnemyCreation(){
+		float enemySpacing = 0;
+		for(int i = 0;i<2;i++){
 			Vector3 enemyPos = enemyHost.transform.position;
 			//Adds spacing
-			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4), Quaternion.identity, enemyHost.transform) as GameObject;
+			GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem",typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)),enemyHost.transform.rotation) as GameObject;
 			Enemy enemy = enemyObject.GetComponent<Enemy>();
 			enemyList.Add(enemy);
-			enemy.combatcontroller = this;
+			enemy.combatController = this;
+			enemySpacing++;
+		}
+		menuController.targetedEnemy = enemyList[0];
+		
+		/*foreach (var item in loadOut.enemyList){
+			Vector3 enemyPos = enemyHost.transform.position;
+			//Adds spacing
+			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)), Quaternion.identity, enemyHost.transform) as GameObject;
+			Enemy enemy = enemyObject.GetComponent<Enemy>();
+			enemyList.Add(enemy);
+			enemy.combatController = this;
 			enemySpacing++;
 		}
 		menuController.targetedEnemy = enemyList[0];
 		*/
+		int number = 0;
+		foreach (var item in enemyList)
+		{
+			menuController.enemyHealthBars[number].SetActive(true);
+			number++;
+		}
 	}
 
-	public void playerStatCreation(){
-		player.playerStats = new PlayerStats(); //Give stats to PlayerStats
+	public void EnemyDies(Enemy enemy){
+		enemyList.Remove(enemy);
+		if(enemyList.Count == 0){
+			WinEncounter();
+		}
+	}
+
+	void WinEncounter(){
+		//Generate loot
 	}
 
 	public void HitPlayer(int damage,int elementDamage,Element element, bool area){
 		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area));
-		//player.GetHit (damage, elementDamage, element, area);
 	}
 
-	public void HitEnemy(int damage, int elementDamage, Element element){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element));
+	public void HitEnemy(int damage, int elementDamage, Element element, int part){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part));
 	}
 
 	public void updateEnemyStats(float health, float maxhealth, float percentage, Enemy enemy){

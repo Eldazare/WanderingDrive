@@ -29,8 +29,10 @@ public class CameraController : MonoBehaviour {
 		InvokeRepeating("MoveToTarget", 0, Time.deltaTime);
 	}
 	public void ResetCamera(){
+		menuController.enemyPartCanvas.SetActive(false);
 		CancelInvoke("FollowTargetRepeat");
 		targetLoc = startPos;
+		startTime = Time.time;
 		movingLength = Vector3.Distance(transform.position, targetLoc);
 		InvokeRepeating("MoveFromTarget", 0, Time.deltaTime);
 	}
@@ -49,7 +51,6 @@ public class CameraController : MonoBehaviour {
 			transform.position = Vector3.Lerp(transform.position, targetLoc, distanceCovered/movingLength);
 			transform.rotation = Quaternion.Lerp(transform.rotation,targetObject.transform.rotation, distanceCovered/movingLength);
 		}else{
-			menuController.targetedEnemy.ActivatePartCanvas();
 			menuController.proceed = true;
 			CancelInvoke("MoveToTarget");
 		}

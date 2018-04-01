@@ -29,15 +29,14 @@ public class PlayerStats {
 	public PlayerStats(){
 		maxHealth = 100;
 		health = maxHealth;
-		damage = 2;
 	}
 	public int abilityDamage(int abilityID){
-		return 0;
+		return damage;
 	}
 	public int abilityElementDamage(int abilityID){
-		return 0;
+		return elementalDamage;
 	}
 	public Element abilityElement(int abilityID){
-		return 0;
+		return element;
 	}
 }

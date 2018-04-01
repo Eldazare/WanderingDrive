@@ -50,6 +50,7 @@ public static class EnemyStatCreator {
 				aPart.percentageHit = int.Parse (partDataSplit [1]);
 				aPart.damageMod = float.Parse (partDataSplit [2]);
 				aPart.hp = float.Parse (partDataSplit [3]);
+				aPart.maxHP = aPart.hp;
 				createe.partList.Add (aPart);
 				i++;
 			} else {
