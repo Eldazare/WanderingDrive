@@ -18,6 +18,7 @@ public class CombatController : MonoBehaviour {
 	public TouchControlScript touchController;
 	public CameraController cameraScript;
 	public bool enemyAttacked;
+	List<EnemyStats> deadEnemies;
 		
 	void Start () {
 
@@ -102,6 +103,8 @@ public class CombatController : MonoBehaviour {
 
 	public void EnemyDies(Enemy enemy){
 		enemyList.Remove(enemy);
+		deadEnemies.Add(enemy.ReturnDeadStats());
+		Destroy(enemy,2f);
 		if(enemyList.Count == 0){
 			WinEncounter();
 		}

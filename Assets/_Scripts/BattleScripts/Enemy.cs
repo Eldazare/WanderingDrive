@@ -138,4 +138,7 @@ public class Enemy : MonoBehaviour{
 		}
 		
 	}
+	public EnemyStats ReturnDeadStats(){
+		return enemyStats;
+	}
 }
