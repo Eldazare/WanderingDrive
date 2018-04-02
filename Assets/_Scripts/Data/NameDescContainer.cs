@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum NameType{
+	material, nonconCon, conCon, 
+	sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, 
+	armor, 
+	enemySmall, enemyLarge, 
+	gather};
+
 public static class NameDescContainer  {
 
 	private static bool genBool = false;
 
-	public enum NameType{
-		material, nonconCon, conCon, 
-		sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, 
-		armor, 
-		enemySmall, enemyLarge, 
-		gather};
 
 	static List<List<string>> names = new List<List<string>>{ };
 	static List<List<string>> descriptions = new List<List<string>>{ };

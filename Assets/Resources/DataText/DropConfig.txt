@@ -1,10 +1,10 @@
 #This is a comment line
 #drop < identifier
-#small/large/gather , subtypeId, dropNumber
+#eSmall/eLarge/gather , subtypeId, dropNumber
 #material id , drop percentage
 #TryCatch dictionary
 
 
-drop_small_0_1=0_50
-drop_small_0_2=1_50
-drop_small_0_p2=2_100
+drop_enemySmall_0_0=0_50
+drop_enemySmall_0_1=1_50
+drop_enemySmall_0_p2_0=2_100

@@ -8,7 +8,10 @@ public enum WeaknessType{swordW, axeW, daggerW, rangedW, magicW};
 
 public class EnemyStats {
 
+	public string subtype;
 	public int ID;
+
+
 	public float health;
 	public float maxHealth;
 	public int damage;

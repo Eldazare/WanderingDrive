@@ -2,7 +2,7 @@
 #Parts: pn identifier
 #name | base chance | damageModifier | partHP for break
 
-%enemy_enemySmall_0_genericLizardSmall
+%enemy_enemySmall_0_TESTGOLEM
 enemySmall_0_health=100
 enemySmall_0_damage=10
 enemySmall_0_element=0

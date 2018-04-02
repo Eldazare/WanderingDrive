@@ -20,8 +20,12 @@ public class Enemy : MonoBehaviour{
 	
 
 	void Start() {
-		enemyStats = EnemyStatCreator.LoadStatBlockData(0, "small");
-		enemyName = "Enemy";
+		string enemyType = "enemySmall";
+		int id = 0;
+		enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
+		//enemyName = "Enemy";
+		enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
+		Debug.Log (enemyName);
 		updateStats();
 	}
 

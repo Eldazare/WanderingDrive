@@ -6,5 +6,5 @@
 
 
 %gather_gather_0_herbBush
-gather_0_2=50
-gather_0_3=50
+drop_gather_0_0=2_50
+drop_gather_0_1=3_50
