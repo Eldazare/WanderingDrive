@@ -42,7 +42,6 @@ public class CombatController : MonoBehaviour {
 		player.updateStats();
 		Debug.Log(player.playerStats.weapon.damage);
 		//Initialize enemy healthbars
-		
 	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
@@ -71,6 +70,7 @@ public class CombatController : MonoBehaviour {
 	
 	public void EnemyCreation(){
 		float enemySpacing = 0;
+		enemyList = new List<Enemy> ();
 		for(int i = 0;i<2;i++){
 			Vector3 enemyPos = enemyHost.transform.position;
 			//Adds spacing

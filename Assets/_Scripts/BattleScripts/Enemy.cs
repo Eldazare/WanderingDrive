@@ -25,7 +25,6 @@ public class Enemy : MonoBehaviour{
 		enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
 		//enemyName = "Enemy";
 		enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
-		Debug.Log (enemyName);
 		updateStats();
 	}
 
@@ -121,8 +120,7 @@ public class Enemy : MonoBehaviour{
 		if(!combatController.menuController.enemyPartCanvas.activeInHierarchy){
 			combatController.menuController.enemyPartCanvas.SetActive(true);
 			i = 0;
-			foreach (var item in enemyStats.partList)
-			{
+			foreach (var item in enemyStats.partList){
 				combatController.menuController.enemyPartCanvasButtons[i].SetActive(true);
 				if(!enemyStats.partList[i].broken){
 					combatController.menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemyStats.partList[i].name +"\n"+enemyStats.partList[i].percentageHit+"%";
@@ -140,8 +138,9 @@ public class Enemy : MonoBehaviour{
 			}
 			combatController.menuController.enemyPartCanvas.SetActive(false);
 		}
-		
 	}
+
+
 	public EnemyStats ReturnDeadStats(){
 		return enemyStats;
 	}
