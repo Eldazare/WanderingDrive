@@ -70,6 +70,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 	public void PlayerOverload () {
 		overloadedTurn = 3;
+		combatController.enemyTurns = 2;
 		menuController.focusEnabled = false;
 		menuController.overloadEnabled = false;
 		if(focusedTurn){

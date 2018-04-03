@@ -89,58 +89,6 @@ public class Enemy : MonoBehaviour{
 	public void updateStats(){
 		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, this);
 	}
-
-	//Legacy
-	/* public void playerAttackPart(int part){
-		combatController.menuController.ChoosePartToAttack();
-	} */
-
-	public void ActivatePartCanvas(){
-
-		//Legacy
-		/* foreach (var item in partCanvas)
-		{
-			if(item.activeInHierarchy){
-				item.SetActive(false);
-			}else{
-				item.SetActive(true);
-			}
-		} */
-		int i = 0;
-		/* foreach (var item in enemyStats.partList)
-		{
-			if(!item.broken){
-				combatController.menuController.selectedPart = i;
-				continue;
-			}
-			i++;
-		} */
-
-
-		if(!combatController.menuController.enemyPartCanvas.activeInHierarchy){
-			combatController.menuController.enemyPartCanvas.SetActive(true);
-			i = 0;
-			foreach (var item in enemyStats.partList){
-				combatController.menuController.enemyPartCanvasButtons[i].SetActive(true);
-				if(!enemyStats.partList[i].broken){
-					combatController.menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemyStats.partList[i].name +"\n"+enemyStats.partList[i].percentageHit+"%";
-				}else{
-					combatController.menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemyStats.partList[i].name +"\nBroken";
-					combatController.menuController.enemyPartCanvasButtons[i].GetComponent<Image>().color = Color.red;
-					combatController.menuController.enemyPartCanvasButtons[i].GetComponent<Button>().enabled = false;
-				}
-				i++;
-			}
-		}else{
-			foreach (var item in combatController.menuController.enemyPartCanvasButtons)
-			{
-				item.SetActive(false);
-			}
-			combatController.menuController.enemyPartCanvas.SetActive(false);
-		}
-	}
-
-
 	public EnemyStats ReturnDeadStats(){
 		return enemyStats;
 	}

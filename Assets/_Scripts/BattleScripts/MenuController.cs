@@ -37,7 +37,6 @@ public class MenuController : MonoBehaviour {
 	void Start(){
 		focusEnabled = true;
 		overloadEnabled = true;
-		PlayerTurnTextFade();
 	}	
 
 	public void GenerateHealthBars(int number, Enemy item){
@@ -91,11 +90,11 @@ public class MenuController : MonoBehaviour {
 	IEnumerator CameraToEnemy(){
 		combatController.cameraScript.MoveCamera(targetedEnemy.cameraTarget);
 		yield return new WaitUntil(()=>proceed);
-		targetedEnemy.ActivatePartCanvas();
+		combatController.ActivatePartCanvas(targetedEnemy);
 	}
 	public void ChoosePartToAttack(){
 		//player.Attack(part);
-		targetedEnemy.ActivatePartCanvas();
+		combatController.ActivatePartCanvas(targetedEnemy);
 		StartCoroutine(PlayerAttack());
 	}
 	IEnumerator PlayerAttack(){
@@ -129,8 +128,8 @@ public class MenuController : MonoBehaviour {
 		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
-		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
-		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString() +"/"+maxHealth.ToString();
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString() +"/"+maxHealth.ToString();
 	}
 
 	public void messageToScreen(string message){

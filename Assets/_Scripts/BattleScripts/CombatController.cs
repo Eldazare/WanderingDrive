@@ -19,6 +19,7 @@ public class CombatController : MonoBehaviour {
 	public CameraController cameraScript;
 	public bool enemyAttacked;
 	List<EnemyStats> deadEnemies;
+	public int enemyTurns;
 		
 	void Start () {
 
@@ -75,7 +76,14 @@ public class CombatController : MonoBehaviour {
 			yield return new WaitUntil(()=>enemyAttacked);
 		}
 		touchController.enemyTurn = false;
-		menuController.PlayersTurn();
+		enemyTurns--;
+		if(enemyTurns<=0){
+			enemyTurns = 0;
+			menuController.PlayersTurn();
+		}else{
+			enemyAttacks();
+		}
+		
 	}
 	void EnemyCreation(int enemySpacing, string enemyType, int id){
 		Vector3 enemyPos = enemyHost.transform.position;
@@ -87,24 +95,6 @@ public class CombatController : MonoBehaviour {
 		
 		enemyList.Add(enemy);
 		enemy.combatController = this;
-		/*foreach (var item in loadOut.enemyList){
-			Vector3 enemyPos = enemyHost.transform.position;
-			//Adds spacing
-			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)), Quaternion.identity, enemyHost.transform) as GameObject;
-			Enemy enemy = enemyObject.GetComponent<Enemy>();
-			enemyList.Add(enemy);
-			enemy.combatController = this;
-			enemySpacing++;
-		}
-		menuController.targetedEnemy = enemyList[0];
-		*/
-
-		/* int number = enemyList.Count-1;
-		foreach (var item in enemyList)
-		{
-			menuController.enemyHealthBars[number].SetActive(true);
-			number--;
-		} */
 	}
 
 	void CreateHealthBars(){
@@ -140,5 +130,28 @@ public class CombatController : MonoBehaviour {
 
 	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
 		menuController.updateEnemyHealth(health, maxhealth, health/maxhealth, enemy);
+	}
+	public void ActivatePartCanvas(Enemy enemy){
+		int i = 0;
+		if(!menuController.enemyPartCanvas.activeInHierarchy){
+			menuController.enemyPartCanvas.SetActive(true);
+			i = 0;
+			foreach (var item in enemy.enemyStats.partList){
+				menuController.enemyPartCanvasButtons[i].SetActive(true);
+				if(!enemy.enemyStats.partList[i].broken){
+					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%";
+				}else{
+					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%"+"\nBroken";
+					menuController.enemyPartCanvasButtons[i].GetComponent<Image>().color = Color.red;
+				}
+				i++;
+			}
+		}else{
+			foreach (var item in menuController.enemyPartCanvasButtons)
+			{
+				item.SetActive(false);
+			}
+			menuController.enemyPartCanvas.SetActive(false);
+		}
 	}
 }

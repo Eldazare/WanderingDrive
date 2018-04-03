@@ -56,7 +56,7 @@ public class CameraController : MonoBehaviour {
 			CancelInvoke("MoveToTarget");
 		}
 	}
-
+	
 	void MoveFromTarget(){
 		float distanceCovered = (Time.time-startTime)*lerpSpeed*0.2f;
 		if(Vector3.Distance(transform.position, targetLoc)>0.1){
