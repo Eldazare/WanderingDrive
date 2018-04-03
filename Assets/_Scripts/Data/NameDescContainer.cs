@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public enum NameType{
-	mat, nonCom, conCon, 
+	mat, nonCom, comCon, 
 	sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, 
 	armor, 
 	enemySmall, enemyLarge, 

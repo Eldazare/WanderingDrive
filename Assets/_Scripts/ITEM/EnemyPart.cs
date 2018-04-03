@@ -11,11 +11,12 @@ public class EnemyPart {
 	public float maxHP;
 	public bool broken = false;
 
-	public void DamageThisPart(float damage){
+	public bool DamageThisPart(float damage){
 		hp -= damage;
 		if (hp <= 0) {
 			hp = 0;
 			broken = true;
 		}
+		return broken;
 	}
 }

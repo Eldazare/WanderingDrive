@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombatScript : MonoBehaviour{
-	public PlayerStats playerStats; //Player stat container
+	public PlayerStats playerStats = new PlayerStats(); //Player stat container
 	Vector3 startPos;	//Player's starting position to move to and from Enemy
 	public GameObject model, weapon, weaponSlot;
 	public Transform stomach;
@@ -19,7 +19,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	public Animator animator;
 	void Start(){
 		//Generate player model and player stats
-		playerStats = new PlayerStats();
+		//playerStats = new PlayerStats();
 	}
 	
 	public void Attack (int part) {

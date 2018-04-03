@@ -19,16 +19,18 @@ public class TestMain : MonoBehaviour {
 		foreach (RecipeMaterial mat in lastList) {
 			Debug.Log ("matname: " + NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), mat.subtype), mat.itemId));
 		} */
+		StartCoroutine (WaitLoadScene ());
+	}
 
+	private IEnumerator WaitLoadScene(){
 		List<NodeEnemy> nodeInfo = new List<NodeEnemy> ();
 		for (int i = 0; i < 3; i++) {
 			nodeInfo.Add (new NodeEnemy (0, "enemySmall"));
 		}
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new Inventory_Weapon (0, "sword"));
-		SceneManager.LoadScene ("BattleScene");
-		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController>();
-		// comCom.StartCombat(loadout, nodeInfo);
+		yield return SceneManager.LoadSceneAsync ("BattleScene");
+		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController> ();
+		comCon.StartCombat (loadout, nodeInfo);
 	}
-
 }

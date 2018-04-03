@@ -35,11 +35,12 @@ public class CombatController : MonoBehaviour {
 			number++;
 		}*/
 
-		
+		/*
 		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
 		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats();
 		StartCombat();
+		*/
 	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
@@ -49,15 +50,15 @@ public class CombatController : MonoBehaviour {
 	}
 
 	
-	public void StartCombat(){
+	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
 		enemyList = new List<Enemy> ();
-		string enemyType = "enemySmall";
-		int id = 0;
-		int numberOfEnemies = 2;
 
+		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.ItemID);
+		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
+		player.updateStats ();
 
-		for(int i = 0;i<numberOfEnemies;i++){
-			EnemyCreation(i, enemyType, id);
+		for(int i = 0;i<nodeEnemyList.Count;i++){
+			EnemyCreation(i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
 		}
 		menuController.targetedEnemy = enemyList[0];
 		CreateHealthBars();
