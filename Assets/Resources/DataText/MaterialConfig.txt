@@ -1,4 +1,6 @@
 #This is a comment
 #material, id, name
 
-%material_material_0_sharp Fang
+%mat_mat_0_golem rock
+%mat_mat_1_golem shiny rock
+%mat_mat_2_golem eyesocket

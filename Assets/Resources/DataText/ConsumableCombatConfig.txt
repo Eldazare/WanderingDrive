@@ -6,5 +6,5 @@
 #Get number of consumables from nameList
 
 
-%consumable_conCon_0_flash
+%consumable_comCon_0_flash
 

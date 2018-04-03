@@ -8,6 +8,7 @@ public enum WeaknessType{swordW, axeW, daggerW, rangedW, magicW};
 
 public class EnemyStats {
 
+
 	public string subtype;
 	public int ID;
 
