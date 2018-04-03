@@ -20,29 +20,6 @@ public class CombatController : MonoBehaviour {
 	public bool enemyAttacked;
 	List<EnemyStats> deadEnemies;
 	public int enemyTurns;
-		
-	void Start () {
-
-		//Temp enemy instantiation
-		/* GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
-		Enemy enemy = enemyObject.GetComponent<Enemy>();
-		enemyList.Add(enemy);
-		menuController.targetedEnemy = enemy;
-		enemy.combatController = this; 
-		int number = 0;
-		foreach (var item in enemyList)
-		{
-			menuController.enemyHealthBars[number].SetActive(true);
-			number++;
-		}*/
-
-		/*
-		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
-		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
-		player.updateStats();
-		StartCombat();
-		*/
-	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}

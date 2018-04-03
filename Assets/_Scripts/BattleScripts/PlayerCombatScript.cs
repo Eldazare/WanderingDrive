@@ -17,10 +17,6 @@ public class PlayerCombatScript : MonoBehaviour{
 	int attackRange = 2; //How close the player moves to the enemy
 	int overloadedTurn;
 	public Animator animator;
-	void Start(){
-		//Generate player model and player stats
-		//playerStats = new PlayerStats();
-	}
 	
 	public void Attack (int part) {
 		startPos = transform.position;
@@ -33,7 +29,10 @@ public class PlayerCombatScript : MonoBehaviour{
 		animator.SetTrigger("Attack");
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
+
+		//Damage calculations!!!
 		combatController.HitEnemy(playerStats.weapon.damage, playerStats.weapon.elementDamage, playerStats.weapon.element, part);
+
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);

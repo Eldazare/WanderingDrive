@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyTargetCanvasScript : MonoBehaviour {
-
 	public Text myText;
 	public Button myButton;
 }

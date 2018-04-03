@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour {
 	public Button focusButton, overloadButton; //Drag focus and overload buttons to menuController
 	public PlayerCombatScript player;
 	public GameObject enemyPartCanvas;
-	public GameObject [] enemyPartCanvasButtons;
+	public List<GameObject> enemyPartCanvasButtons;
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerManaFill;
@@ -29,11 +29,7 @@ public class MenuController : MonoBehaviour {
 	public bool proceed;
 	public int selectedPart;
 	public Text enemyTurnText, playerTurnText;
-
 	Color originalColor;
-	
-
-
 	void Start(){
 		focusEnabled = true;
 		overloadEnabled = true;

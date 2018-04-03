@@ -17,17 +17,6 @@ public class Enemy : MonoBehaviour{
 	public GameObject[] partCanvas; //Legacy on target visual buttons
 	public GameObject[] partButtons; 
 
-	
-
-	void Start() {/* 
-		string enemyType = "enemySmall";
-		int id = 0;
-		enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
-		//enemyName = "Enemy";
-		enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
-		updateStats(); */
-	}
-
 	public IEnumerator Attack() {
 		startPos = transform.position;
 		InvokeRepeating("moveToPlayer", 0, Time.deltaTime);
