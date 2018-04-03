@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour{
-	EnemyStats enemyStats;
+	public EnemyStats enemyStats;
 	public Animator animator;
 	Vector3 startPos;
 	public CombatController combatController;
 	
-	string enemyName;
+	public string enemyName;
 	public int enemyID;
 	Image healthBar;
 	public bool proceed;
@@ -19,13 +19,13 @@ public class Enemy : MonoBehaviour{
 
 	
 
-	void Start() {
+	void Start() {/* 
 		string enemyType = "enemySmall";
 		int id = 0;
 		enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
 		//enemyName = "Enemy";
 		enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
-		updateStats();
+		updateStats(); */
 	}
 
 	public IEnumerator Attack() {
@@ -86,8 +86,8 @@ public class Enemy : MonoBehaviour{
 		}
 	}
 
-	void updateStats(){
-		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, enemyStats.health/enemyStats.maxHealth, this);
+	public void updateStats(){
+		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, this);
 	}
 
 	//Legacy

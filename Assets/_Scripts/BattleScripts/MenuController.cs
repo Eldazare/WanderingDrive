@@ -20,10 +20,10 @@ public class MenuController : MonoBehaviour {
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerManaFill;
 	public Text playerHealthText, playerManaText, textBoxText;
-	public Image[] enemyHealthFills;
-	public Text[] enemyHealthTexts;
-	public Button[] enemyTargetButtons;
-	public GameObject[] enemyHealthBars;
+	public GameObject enemyHealthBarParent;
+	public List<GameObject> enemyHealthBars;
+	List<Image> enemyHealthFills;
+	List<Text> enemyHealthTexts;
 	public GameObject playerPovCamera;
 	public float textSpeed;
 	public bool proceed;
@@ -40,15 +40,23 @@ public class MenuController : MonoBehaviour {
 		PlayerTurnTextFade();
 	}	
 
+	public void GenerateHealthBars(int number, Enemy item){
+		GameObject newHealthBar = Instantiate(Resources.Load("CombatResources/EnemyHealthBar"),transform.position, Quaternion.identity,enemyHealthBarParent.transform) as GameObject;
+		enemyHealthBars.Add(newHealthBar);
+		EnemyHealthBarScript newScript = newHealthBar.GetComponent<EnemyHealthBarScript>();
+		newScript.targetbutton.onClick.AddListener(delegate{SelectTargetEnemy(number);});
+		newScript.buttonText.text = item.enemyName;
+	}
+
 	//Doesn't actually do anything yet
 	//Uses the linked list concept, to switch targets
 	public void SelectTargetEnemy(int enemyNbr){
 		targetedEnemy = combatController.enemyList[enemyNbr];
-		foreach (var item in enemyTargetButtons)
+		foreach (var item in enemyHealthBars)
 		{
-			item.interactable = true;
+			item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
 		}
-		enemyTargetButtons[enemyNbr].interactable = false;
+		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
 
  	//Buttons for button menus.
@@ -121,8 +129,8 @@ public class MenuController : MonoBehaviour {
 		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
-		enemyHealthFills[combatController.enemyList.IndexOf(enemyForListSearch)].fillAmount = percentage;
-		enemyHealthTexts[combatController.enemyList.IndexOf(enemyForListSearch)].text = health.ToString() +"/"+maxHealth.ToString();
+		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
+		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString() +"/"+maxHealth.ToString();
 	}
 
 	public void messageToScreen(string message){

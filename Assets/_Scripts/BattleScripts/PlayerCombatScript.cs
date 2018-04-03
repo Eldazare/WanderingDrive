@@ -131,7 +131,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		}
 		else if(blockTimer>timerAccuracy*blockTimer){
 			//Block calculations
-			damageTaken *= 0.5f;
+			damageTaken = damageTaken*0.5f;
 			returnedValue = "You blocked the attack but took "+ damage +" damage!";
 		}
 		else{

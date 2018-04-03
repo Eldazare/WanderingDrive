@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour {
 	void FollowTargetRepeat(){
 		transform.position = targetObject.transform.position;
 	}
+	
 	void MoveToTarget(){
 		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(transform.position, targetLoc)>0.1){

@@ -34,14 +34,12 @@ public class CombatController : MonoBehaviour {
 			menuController.enemyHealthBars[number].SetActive(true);
 			number++;
 		}*/
-		EnemyCreation();
 
 		
 		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
 		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats();
-		Debug.Log(player.playerStats.weapon.damage);
-		//Initialize enemy healthbars
+		StartCombat();
 	}
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
@@ -52,6 +50,17 @@ public class CombatController : MonoBehaviour {
 
 	
 	public void StartCombat(){
+		enemyList = new List<Enemy> ();
+		string enemyType = "enemySmall";
+		int id = 0;
+		int numberOfEnemies = 2;
+
+
+		for(int i = 0;i<numberOfEnemies;i++){
+			EnemyCreation(i, enemyType, id);
+		}
+		menuController.targetedEnemy = enemyList[0];
+		CreateHealthBars();
 		menuController.PlayersTurn();
 	}
 
@@ -67,21 +76,16 @@ public class CombatController : MonoBehaviour {
 		touchController.enemyTurn = false;
 		menuController.PlayersTurn();
 	}
-	
-	public void EnemyCreation(){
-		float enemySpacing = 0;
-		enemyList = new List<Enemy> ();
-		for(int i = 0;i<2;i++){
-			Vector3 enemyPos = enemyHost.transform.position;
-			//Adds spacing
-			GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem",typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)),enemyHost.transform.rotation) as GameObject;
-			Enemy enemy = enemyObject.GetComponent<Enemy>();
-			enemyList.Add(enemy);
-			enemy.combatController = this;
-			enemySpacing++;
-		}
-		menuController.targetedEnemy = enemyList[0];
+	void EnemyCreation(int enemySpacing, string enemyType, int id){
+		Vector3 enemyPos = enemyHost.transform.position;
+		//Adds spacing
+		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem",typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)),enemyHost.transform.rotation) as GameObject;
+		Enemy enemy = enemyObject.GetComponent<Enemy>();
+		enemy.enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
+		enemy.enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
 		
+		enemyList.Add(enemy);
+		enemy.combatController = this;
 		/*foreach (var item in loadOut.enemyList){
 			Vector3 enemyPos = enemyHost.transform.position;
 			//Adds spacing
@@ -93,11 +97,22 @@ public class CombatController : MonoBehaviour {
 		}
 		menuController.targetedEnemy = enemyList[0];
 		*/
-		int number = 0;
+
+		/* int number = enemyList.Count-1;
 		foreach (var item in enemyList)
 		{
 			menuController.enemyHealthBars[number].SetActive(true);
-			number++;
+			number--;
+		} */
+	}
+
+	void CreateHealthBars(){
+		int i = enemyList.Count-1;
+		foreach (var item in enemyList)
+		{
+			menuController.GenerateHealthBars(i, item);
+			updateEnemyStats(item.enemyStats.health, item.enemyStats.maxHealth, item);
+			i--;
 		}
 	}
 
@@ -122,7 +137,7 @@ public class CombatController : MonoBehaviour {
 		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part));
 	}
 
-	public void updateEnemyStats(float health, float maxhealth, float percentage, Enemy enemy){
-		menuController.updateEnemyHealth(health, maxhealth, percentage, enemy);
+	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
+		menuController.updateEnemyHealth(health, maxhealth, health/maxhealth, enemy);
 	}
 }
