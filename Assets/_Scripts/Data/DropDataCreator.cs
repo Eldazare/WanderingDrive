@@ -27,8 +27,11 @@ public static class DropDataCreator {
 				while (true) {
 					string dataStr = DataManager.ReadDataString (begin + "p" + i + "_" + j);
 					if (dataStr == null) {
-						createeEnemy.partDropDatas.Add (null);
-						createeEnemy.percentageList.Add (0);
+						if (createeDrop.drops.Count == 0) {
+							createeEnemy.partDropDatas.Add (null);
+						} else {
+							createeEnemy.partDropDatas.Add (createeDrop);
+						}
 						break;
 					} else {
 						string[] datasplit = dataStr.Split ("_".ToCharArray ());
@@ -63,7 +66,8 @@ public static class DropDataCreator {
 		}
 		List<DropData> partDrops = dropData.GetPartDrops ();
 		if (partDrops != null) {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 9; i++) {
+				Debug.Log ("i = " + i);
 				if (partDrops [i] != null) {
 					if (partList [i].broken) {
 						createe.Add (GetSingleDrop (partDrops [i].drops, partDrops [i].percentageList));
