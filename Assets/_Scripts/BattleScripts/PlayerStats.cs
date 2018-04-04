@@ -8,13 +8,15 @@ public class PlayerStats {
 	public float health;
 	public float maxHealth;
 	public int stamina;
+	public float speed;
 	public Element element;
 	public int damageReduction;
 
 	public int elementalDamage;
-	public Element elementalWeakness;
+	public List<int> elementalWeakness = new List<int>{0, 0, 0, 0, 0, 0};
 	public int weaponType;
-	public WeaponStats weapon;
+	public WeaponStats mainHand, offHand;
+
 
 	public int ability1ID;
 	public int ability2ID;
@@ -33,7 +35,7 @@ public class PlayerStats {
 	public int abilityDamage(int abilityID){
 		return damage;
 	}
-	public int abilityElementDamage(int abilityID){
+	public int abilityElementDamage(int abilityId){
 		return elementalDamage;
 	}
 	public Element abilityElement(int abilityID){

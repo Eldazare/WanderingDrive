@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour{
 		animator.SetTrigger("Attack");
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitPlayer(enemyStats.damage, enemyStats.elementDamage,enemyStats.element, false);
+		combatController.HitPlayer(enemyStats.damage, enemyStats.elementDamage, enemyStats.element, false);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);
@@ -49,23 +49,30 @@ public class Enemy : MonoBehaviour{
 			combatController.enemyAttacked = true;
 		}
 	}
-	public string GetHit (int damage, int elementDamage, Element element, int part){
-		float damageTaken, damageTakenModifier=1;
-		if(element == 0){
-			elementDamage = 0;
-		}else{
-			damageTakenModifier = enemyStats.elementWeakness[System.Convert.ToInt32(element)];
-		}
-
-		//0-100 vs 0-1.0
+	public string GetHit (float damage, float elementDamage, Element element, int part, float damageMod){
+		float damageTaken, damageModifier=1+damageMod, eleModifier = 1;
+		//0-100
 		if(Random.Range(0, 100)<enemyStats.partList[part].percentageHit){
 			//Damage reduction calculations
-			damageTaken = (damage+elementDamage)*damageTakenModifier;
+
+			eleModifier += enemyStats.elementWeakness[System.Convert.ToInt32(element)]/100;
+			damageModifier += enemyStats.armor;
+
+			eleModifier += enemyStats.partList[part].damageMod;
+			damageModifier += enemyStats.partList[part].damageMod;
+
+			damage *= damageModifier;
+			elementDamage *= eleModifier;
+
+			damageTaken = damage+elementDamage;
+
 			enemyStats.health -= damageTaken;
 			enemyStats.partList[part].DamageThisPart(damageTaken); // Part takes damage
 			// animator.SetTrigger("Ouch");
 			updateStats();
 			if(enemyStats.health <= 0){
+				combatController.EnemyDies(this);
+				//animator.SetTrigger("Death");
 				return enemyName+" took "+damageTaken+" damage and died!";
 			}else{
 				return enemyName+" took "+damageTaken+" damage!";
@@ -77,8 +84,5 @@ public class Enemy : MonoBehaviour{
 
 	public void updateStats(){
 		combatController.updateEnemyStats(enemyStats.health, enemyStats.maxHealth, this);
-	}
-	public EnemyStats ReturnDeadStats(){
-		return enemyStats;
 	}
 }

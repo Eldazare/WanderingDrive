@@ -49,7 +49,10 @@ public class MenuController : MonoBehaviour {
 		targetedEnemy = combatController.enemyList[enemyNbr];
 		foreach (var item in enemyHealthBars)
 		{
-			item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+			if(item != null){
+				item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+			}
+			
 		}
 		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
@@ -121,11 +124,11 @@ public class MenuController : MonoBehaviour {
 	//UI updates
 	public void updatePlayerHealth(float health, float maxHealth, float percentage){
 		playerHealthFill.fillAmount = percentage;
-		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
+		playerHealthText.text = health.ToString("00") + "/" + maxHealth.ToString("00");
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
 		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
-		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString() +"/"+maxHealth.ToString();
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString("00") +"/"+maxHealth.ToString("00");
 	}
 
 	public void messageToScreen(string message){

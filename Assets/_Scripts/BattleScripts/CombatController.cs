@@ -6,20 +6,17 @@ using UnityEditor;
 
 public class CombatController : MonoBehaviour {
 
-	public GameObject loadOut;
 	public List<Enemy> enemyList;
 	public PlayerCombatScript player;
 	public PlayerStats playerStats;
-	public string textBoxMessage;
-	string getHitReturn;
 	public GameObject enemyHost;
-	GameObject mapToBattleContainer;
 	public MenuController menuController;
 	public TouchControlScript touchController;
 	public CameraController cameraScript;
 	public bool enemyAttacked;
-	List<EnemyStats> deadEnemies;
+	List<RecipeMaterial> encounterDrops;
 	public int enemyTurns;
+	bool playerDead;
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}
@@ -30,8 +27,13 @@ public class CombatController : MonoBehaviour {
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
 		enemyList = new List<Enemy> ();
+		
+		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.ItemID);
+		if(loadout.offHand != null){
+			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock (loadout.offHand.subType, loadout.offHand.ItemID);
+		}
 
-		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.ItemID);
+		GenerateArmors(loadout);
 		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats ();
 
@@ -43,23 +45,73 @@ public class CombatController : MonoBehaviour {
 		menuController.PlayersTurn();
 	}
 
+	void GenerateArmors(Loadout loadout){
+		float armorAmount = 0;
+		float speed = 0;
+		int j = 0;
+
+		//Armor generation
+		if(loadout.wornArmor[0] != null){
+			foreach (var item in loadout.wornArmor)	
+			{
+				Armor armor = ArmorCreator.CreateArmor((ArmorTypes)System.Enum.Parse(typeof(ArmorTypes), item.subType), item.itemID);
+				armorAmount += armor.defense;
+
+				int i = 0;
+				foreach (var item1 in armor.elementResists)
+				{
+					playerStats.elementalWeakness[i] += item1;// + (int)(armor.magicDefense*100);
+					i++;
+				}
+				speed += armor.speed;
+				j++;
+			}
+			playerStats.speed = speed/j;
+		}
+		
+
+		
+
+		//Accessory generation
+		if(loadout.wornAccessories[0] != null){
+			foreach (var item in loadout.wornAccessories)
+			{
+				Accessory acc = ArmorCreator.CreateAccessory(item.itemID);
+				int i = 0;
+				foreach (var item1 in acc.elementResists)
+				{
+					playerStats.elementalWeakness[i] += item1;// + (int)(acc.magicDefense*100);
+					i++;
+				}
+			}
+		}
+	}
+
 	IEnumerator enemyAttacksRoutine(){
-		yield return new WaitUntil(()=>menuController.proceed);
-		touchController.enemyTurn = true;
-		menuController.EnemyTurnTextFade();
-		for (int i = 0; i < enemyList.Count; i++) {
-			yield return new WaitForSeconds(3f);
-			StartCoroutine(enemyList[i].Attack());
-			yield return new WaitUntil(()=>enemyAttacked);
-		}
-		touchController.enemyTurn = false;
-		enemyTurns--;
-		if(enemyTurns<=0){
-			enemyTurns = 0;
-			menuController.PlayersTurn();
-		}else{
-			enemyAttacks();
-		}
+		
+			yield return new WaitUntil(()=>menuController.proceed);
+			touchController.enemyTurn = true;
+			menuController.EnemyTurnTextFade();
+			foreach (var item in enemyList)
+			{
+				if(!playerDead){
+					if(item != null){
+						yield return new WaitForSeconds(3f);
+						StartCoroutine(item.Attack());
+						yield return new WaitUntil(()=>enemyAttacked);
+					}
+				}else{
+					break;
+				}
+			}
+			touchController.enemyTurn = false;
+			enemyTurns--;
+			if(enemyTurns<=0){
+				enemyTurns = 0;
+				menuController.PlayersTurn();
+			}else{
+				enemyAttacks();
+			}
 		
 	}
 	void EnemyCreation(int enemySpacing, string enemyType, int id){
@@ -85,24 +137,44 @@ public class CombatController : MonoBehaviour {
 	}
 
 	public void EnemyDies(Enemy enemy){
-		enemyList.Remove(enemy);
-		deadEnemies.Add(enemy.ReturnDeadStats());
-		Destroy(enemy,2f);
+
+			
+		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyID);
+		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,1 ,enemy.enemyStats.partList);
+
+		foreach (var item in list)
+		{
+			//encounterDrops.Add(item);
+		}
+		//menuController.enemyHealthBars.Remove(menuController.enemyHealthBars[menuController.enemyHealthBars.Count]);
+		Destroy(menuController.enemyHealthBars[menuController.enemyHealthBars.Count-1]);
+		enemyList[enemyList.IndexOf(enemy)] = null;
+		Destroy(enemy.gameObject,2f);
+		foreach (var item in enemyList)
+		{
+			if(item != null){
+				item.updateStats();
+			}
+			
+		}
 		if(enemyList.Count == 0){
 			WinEncounter();
 		}
 	}
 
 	void WinEncounter(){
-		//Generate loot
+		
+	}
+	public void LoseEncounter(){
+		playerDead = true;
 	}
 
-	public void HitPlayer(int damage,int elementDamage,Element element, bool area){
+	public void HitPlayer(float damage, float elementDamage, Element element, bool area){
 		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area));
 	}
 
-	public void HitEnemy(int damage, int elementDamage, Element element, int part){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part));
+	public void HitEnemy(float damage, float elementDamage, Element element, int part, float damageMod){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, damageMod));
 	}
 
 	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
