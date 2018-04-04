@@ -14,6 +14,23 @@ public class Inventory {
     public int maxCapacity;
     public int maxStack = 255;
 
+	// TODO: Read counts from config file through DataManager
+
+	public Inventory(){
+		int materialCount = 1000;
+		int comConCount = 10;
+		int nonConCount = 10;
+		for (int i = 0; i < materialCount; i++) {
+			inventoryMaterials.Add (0);
+		}
+		for (int i = 0; i < comConCount; i++){
+			combatConsumables.Add (0);
+		}
+		for (int i = 0; i < nonConCount;i++){
+			nonCombatConsumables.Add (0);
+		}
+	}
+
 
     //hae itemi inventorysta ja poista se
     public bool RemoveItem(string itemType, string subType, int itemId, int amount)
@@ -131,6 +148,11 @@ public class Inventory {
         return Success;  
     }
 
+
+
+	public bool InsertRecipeMaterial(RecipeMaterial recMat){
+		return PutItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);
+	}
      
 
 }
