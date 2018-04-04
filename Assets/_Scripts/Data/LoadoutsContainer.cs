@@ -9,6 +9,7 @@ public class LoadoutsContainer {
 
 	public LoadoutsContainer(int loadoutCount){
 		this.loadoutCount = loadoutCount;
+		loadoutList = new List<Loadout> ();
 		for (int i = 0; i < loadoutCount; i++) {
 			loadoutList.Add (null);
 		}
