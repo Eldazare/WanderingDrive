@@ -39,7 +39,12 @@ public class UndyingObject : MonoBehaviour {
 		yield return SceneManager.LoadSceneAsync ("TheWorld");
 	}
 
-	public void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){
+	//TODO: CHOOSE LOADOUT
+	public void CombatPrompt (List<NodeEnemy> enemyList){
+		StartCombat (0, enemyList);
+	}
+
+	private void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){
 		StartCoroutine (StartCombatIenum (loadoutList [loadoutIndex], enemyList));
 	}
 
