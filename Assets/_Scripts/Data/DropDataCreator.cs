@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DropperType{
+	enemySmall, enemyLarge, gather
+};
+
 public static class DropDataCreator {
 
 	// TODO: part maximum amount from config at some point

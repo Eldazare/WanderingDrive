@@ -14,8 +14,10 @@ public class UndyingObject : MonoBehaviour {
 
 	float health;
 	float stamina;
+
+	// PUBLIC only for testing purposes
 	Inventory inventory;
-	List<Loadout> loadoutList;
+	public LoadoutsContainer loadoutList;
 
 	double locLatitude;
 	double locLongitude;
@@ -28,13 +30,10 @@ public class UndyingObject : MonoBehaviour {
 		//ELSE:
 		health = 100;
 		stamina = 100;
-		inventory = new Inventory ();
-		loadoutList = new List<Loadout> ();
+		int loadoutCount = 10;
 
-		int loadoutCount = 10; // TODO: read this from somewhere
-		for (int i = 0;i<loadoutCount;i++){
-			loadoutList.Add (null);
-		}
+		inventory = new Inventory ();
+		loadoutList = new LoadoutsContainer(loadoutCount);
 
 		// Get location data here
 		//StartCoroutine (UpdateLocationData(10)); // Enable this when testing
@@ -51,7 +50,7 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	private void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){
-		StartCoroutine (StartCombatIenum (loadoutList [loadoutIndex], enemyList));
+		StartCoroutine (StartCombatIenum (loadoutList.GetLoadout(loadoutIndex), enemyList));
 	}
 
 	private IEnumerator StartCombatIenum(Loadout loadout, List<NodeEnemy> enemyList){
@@ -115,21 +114,5 @@ public class UndyingObject : MonoBehaviour {
 			locLatitude = 0;
 			locLongitude = 0;
 		}
-	}
-
-
-
-
-
-
-
-
-	//TEST, probably own class for this
-	public void AddLoadout(Loadout loadout, int index){
-		loadoutList [index] = loadout;
-	}
-
-	public void RemoveLoadout(int index){
-		loadoutList [index] = null;
 	}
 }

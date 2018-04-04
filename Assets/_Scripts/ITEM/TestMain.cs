@@ -29,7 +29,7 @@ public class TestMain : MonoBehaviour {
 		yield return new WaitForSeconds(5);
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new Inventory_Weapon (0, "sword"));
-		und.AddLoadout (loadout, 0);
+		und.loadoutList.InsertLoadout (loadout, 0);
 		WorldNode testNode = this.GetComponent<WorldNode> ();
 		testNode.Interact ();
 	}
