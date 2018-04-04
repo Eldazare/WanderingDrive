@@ -70,6 +70,8 @@ public class Enemy : MonoBehaviour{
 			enemyStats.partList[part].DamageThisPart(damageTaken); // Part takes damage
 			// animator.SetTrigger("Ouch");
 			updateStats();
+			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh>().text = damageTaken.ToString("00");
 			if(enemyStats.health <= 0){
 				combatController.EnemyDies(this);
 				//animator.SetTrigger("Death");

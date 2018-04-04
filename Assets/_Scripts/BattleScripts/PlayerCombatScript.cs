@@ -168,6 +168,7 @@ public class PlayerCombatScript : MonoBehaviour{
 			else{
 				//Dodged attack
 				returnedValue = "You dodged the attack!";
+				takeDamage(0, 0, 0);
 			}
 		}
 		else if(blockTimer>0){
@@ -203,6 +204,7 @@ public class PlayerCombatScript : MonoBehaviour{
 			
 			
 		}
+		
 		return returnedValue;
 	}
 
@@ -220,7 +222,8 @@ public class PlayerCombatScript : MonoBehaviour{
 		elementDamage = elementDamage*eleModifier;
 		damageTaken = damage+elementDamage;
 		playerStats.health -= damageTaken;
-
+		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+		popup.GetComponent<TextMesh>().text = damageTaken.ToString("0");
 		updateStats();
 		return damageTaken;
 	}
@@ -241,7 +244,8 @@ public class PlayerCombatScript : MonoBehaviour{
 		elementDamage = elementDamage*eleModifier;
 		damageTaken = damage+elementDamage;
 		playerStats.health -= damageTaken;
-
+		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+		popup.GetComponent<TextMesh>().text = damageTaken.ToString("0");
 		updateStats();
 		return damageTaken;
 	}
