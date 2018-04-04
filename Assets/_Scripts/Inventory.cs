@@ -2,28 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory {
+public static class Inventory {
 
 
-    public List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
-    public List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
-    public List<int> inventoryMaterials = new List<int>();
-    public List<int> combatConsumables = new List<int>();
-    public List<int> nonCombatConsumables = new List<int>();
-    public int capacity;
-    public int maxCapacity;
-    public int maxStack = 255;
+    public static List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
+    public  static List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
+    public  static List<int> inventoryMaterials = new List<int>();
+    public  static List<int> combatConsumables = new List<int>();
+    public  static List<int> nonCombatConsumables = new List<int>();
+    public static int capacity;
+    public  static int maxCapacity;
+    public  static int maxStack = 255;
 
+    //katso löytyykö tavarat inventorysta
+    public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
+        bool result = true;
+        foreach(RecipeMaterial i in materialList) {
+            if (materialList[0].subtype == "mat") {
+                if (inventoryMaterials[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+            else if (materialList[0].subtype == "world") {
+                if (nonCombatConsumables[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+            else if (materialList[0].subtype == "comb") {
+                if (combatConsumables[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+        }
+        return result;
+    }
 
     //hae itemi inventorysta ja poista se
-    public bool RemoveItem(string itemType, string subType, int itemId, int amount)
-    {
+    public static bool RemoveItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
-        switch (itemType)
-        {
+        switch (itemType) {
             case "wep":
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
-                    if (itemId == inventoryWeapons[i].ItemID) {
+                    if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
                         capacity--;
                         Success = true;
@@ -73,8 +93,7 @@ public class Inventory {
     }
     
     //Laita uusi Itemi inventoryyn
-    public bool PutItem(string itemType, string subType, int itemId, int amount)
-    {
+    public static bool PutItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
             case "wep":
