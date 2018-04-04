@@ -1,0 +1,8 @@
+#This is a comment
+#node_multimonster_id=
+#S = Small, L = Large
+#then just the id
+#_ is separator
+
+
+node_multimonster_0=S0_S0_S0_S0

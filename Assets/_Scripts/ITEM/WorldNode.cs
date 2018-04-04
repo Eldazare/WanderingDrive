@@ -10,6 +10,10 @@ public class WorldNode : MonoBehaviour {
 	public int nodeType;
 	public int id;
 
+	public float latitude;
+	public float longitude;
+
+
 	public void Interact(){
 		NodeInteraction.HandleNodeInteraction (nodeType, id);
 	}

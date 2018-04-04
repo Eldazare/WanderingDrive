@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class TestMain : MonoBehaviour {
 
+	// FOR TESTING PURPOSES. No final code here.
+	UndyingObject und;
 
 	void Start () {
 		DontDestroyOnLoad (this);
+		und = this.GetComponent<UndyingObject> ();
 		/*
 		Inventory inv = new Inventory ();
 		EnemyStats stats = EnemyStatCreator.LoadStatBlockData (0, "enemySmall");
@@ -23,14 +26,11 @@ public class TestMain : MonoBehaviour {
 	}
 
 	private IEnumerator WaitLoadScene(){
-		List<NodeEnemy> nodeInfo = new List<NodeEnemy> ();
-		for (int i = 0; i < 3; i++) {
-			nodeInfo.Add (new NodeEnemy (0, "enemySmall"));
-		}
+		yield return new WaitForSeconds(5);
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new Inventory_Weapon (0, "sword"));
-		yield return SceneManager.LoadSceneAsync ("BattleScene");
-		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController> ();
-		comCon.StartCombat (loadout, nodeInfo);
+		und.AddLoadout (loadout, 0);
+		WorldNode testNode = this.GetComponent<WorldNode> ();
+		testNode.Interact ();
 	}
 }

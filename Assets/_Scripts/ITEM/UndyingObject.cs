@@ -23,12 +23,18 @@ public class UndyingObject : MonoBehaviour {
 	void Start () {
 		DontDestroyOnLoad (this);
 		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen data
+		NodeInteraction.InitializeUndyingObject(this);
 		// TODO: Potentially load player data
 		//ELSE:
 		health = 100;
 		stamina = 100;
 		inventory = new Inventory ();
 		loadoutList = new List<Loadout> ();
+
+		int loadoutCount = 10; // TODO: read this from somewhere
+		for (int i = 0;i<loadoutCount;i++){
+			loadoutList.Add (null);
+		}
 
 		// Get location data here
 		//StartCoroutine (UpdateLocationData(10)); // Enable this when testing
@@ -109,5 +115,21 @@ public class UndyingObject : MonoBehaviour {
 			locLatitude = 0;
 			locLongitude = 0;
 		}
+	}
+
+
+
+
+
+
+
+
+	//TEST, probably own class for this
+	public void AddLoadout(Loadout loadout, int index){
+		loadoutList [index] = loadout;
+	}
+
+	public void RemoveLoadout(int index){
+		loadoutList [index] = null;
 	}
 }

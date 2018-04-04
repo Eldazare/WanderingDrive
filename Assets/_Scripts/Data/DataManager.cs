@@ -10,7 +10,8 @@ public static class DataManager  {
 
 	public enum DataManagerDictionaryTypes{
 		consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
-		weapon, recipeUp
+		weapon, recipeUp,
+		node
 	}
 
 	static List<Dictionary<string,string>> configDatas = new List<Dictionary<string,string>>{ };
@@ -34,7 +35,9 @@ public static class DataManager  {
 				return null;
 			}
 		} catch{
-			Debug.LogError ("Identifier part is not defined in DataManager: " + identifier);
+			if (identifier != "nonexistent") {
+				Debug.LogError ("Identifier part is not defined in DataManager: " + identifier);
+			}
 			return null;
 		}
 
@@ -64,6 +67,7 @@ public static class DataManager  {
 		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryTypes.drop], nameListGeneric);
 		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryTypes.gather], nameListGeneric);
 		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryTypes.recipe], recipeNameList);
+		DownloadSingleFile ("MultiBattleNodes", configDatas [(int)DataManagerDictionaryTypes.node], nameListGeneric);
 
 		DownloadSingleFile ("RecipeSwordUpgradeConfig", configDatas[(int)DataManagerDictionaryTypes.recipeUp], recipeNameList);
 		DownloadSingleFile ("WeaponSwordConfig", configDatas[(int)DataManagerDictionaryTypes.weapon], nameListGeneric);
