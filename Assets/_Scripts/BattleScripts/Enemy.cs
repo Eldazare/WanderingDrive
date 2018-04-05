@@ -24,7 +24,10 @@ public class Enemy : MonoBehaviour{
 		animator.SetTrigger("Attack");
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		combatController.HitPlayer(enemyStats.damage, enemyStats.elementDamage, enemyStats.element, false);
+		// TODO: Verify attack
+		int randIndex = Random.Range(0,enemyStats.attackList.Count);
+		EnemyAttack chosenAttack = enemyStats.attackList [randIndex];
+		combatController.HitPlayer(chosenAttack.damage, chosenAttack.elementDamage, chosenAttack.element, false);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);

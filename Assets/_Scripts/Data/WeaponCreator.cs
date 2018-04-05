@@ -16,8 +16,22 @@ public static class WeaponCreator  {
 		createe.id = id;
 		createe.subtype = wepType;
 		createe.damage = DataManager.ReadDataInt (begin + "damage");
-		createe.elementDamage = DataManager.ReadDataInt (begin + "elementDamage");
-		createe.element = (Element)DataManager.ReadDataInt (begin + "element");
+		createe.weaknessType = (WeaknessType)DataManager.ReadDataInt (begin + "weaknessType");
+
+		string[] elementStr = DataManager.ReadDataString (begin + "element").Split ("/".ToCharArray ());
+		createe.elementDamage = int.Parse(elementStr [0]);
+		createe.elementDamageBonus = int.Parse(elementStr [2]);
+		createe.element = (Element)int.Parse(elementStr [1]);
+
+		string[] bonusStr = DataManager.ReadDataString (begin + "bonuses").Split ("/".ToCharArray ());
+		createe.damageBonus = int.Parse (bonusStr [0]);
+		createe.magicDamageBonus = int.Parse (bonusStr [1]);
+		createe.armorBonus = int.Parse (bonusStr [2]);
+		createe.magicArmorBonus = int.Parse (bonusStr [3]);
+
+		string[] defenseModStr = DataManager.ReadDataString (begin + "defenseMods").Split ("/".ToCharArray ());
+		createe.dodgeModifier = float.Parse (defenseModStr [0]);
+		createe.blockModifier = float.Parse (defenseModStr [1]);
 		return createe;
 	}
 

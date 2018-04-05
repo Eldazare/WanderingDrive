@@ -1,10 +1,20 @@
 #This is a comment line
 #Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Swords are 2-handed
+
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
 
 weapon_sword_speed=1
 
 %weapon_sword_0_genericSword
 &weapon_sword_0_genericSword description is here
 weapon_sword_0_damage=10
-weapon_sword_0_element=0
-weapon_sword_0_elementDamage=0
+weapon_sword_0_weaknessType=0
+weapon_sword_0_element=0/0/0
+weapon_sword_0_bonuses=0/0/0/0
+weapon_sword_0_defenseMods=0.0/0.0
+

@@ -9,9 +9,6 @@ public class EnemyStats {
 	public int ID;
 	public float health;
 	public float maxHealth;
-	public int damage;
-	public Element element;
-	public int elementDamage;
 	public int armor;
 	public WeaknessType weaknessType;
 	public float hitDistance;
