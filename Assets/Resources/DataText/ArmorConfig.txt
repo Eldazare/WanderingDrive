@@ -2,8 +2,10 @@
 #stats are same for each piece
 #Differences come from the material each piece requires
 #Possibility for bonus stats per armor piece
+#6 different elements
 
 %armor_armor_0_genericArmor
 armor_0_defense=1
 armor_0_speed=1
-armor_0_element=0
+armor_0_magicDefense=1
+armor_0_elementResist=0;0;0;0;0;0

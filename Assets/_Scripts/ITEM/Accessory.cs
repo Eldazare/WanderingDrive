@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor {
+public class Accessory {
 
-	public ArmorTypes armorType;
-	public List<int> elementResists;
-	public float defense;
+	public float damage;
 	public float magicDefense;
-	public float speed;
+	public List<int> elementResists;
 
-	public Armor(int elementCount, ArmorTypes type){
+	public Accessory(int elementCount){
 		elementResists = new List<int>(){};
 		for (int i = 0; i < elementCount; i++) {
 			elementResists.Add (0);
 		}
-		armorType = type;
 	}
+
 }

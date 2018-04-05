@@ -10,7 +10,7 @@ public static class DataManager  {
 
 	public enum DataManagerDictionaryTypes{
 		consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
-		weapons, recipeUp
+		weapon, recipeUp
 	}
 
 	static List<Dictionary<string,string>> configDatas = new List<Dictionary<string,string>>{ };
@@ -25,9 +25,14 @@ public static class DataManager  {
 		}
 		string[] splitted= entryName.Split ("_".ToCharArray());
 		string identifier = splitted [0];
+
 		try{
 			DataManagerDictionaryTypes dicType = (DataManagerDictionaryTypes)System.Enum.Parse (typeof(DataManagerDictionaryTypes), identifier);
-			return configDatas[System.Convert.ToInt32(dicType)][entryName];
+			try{
+				return configDatas[System.Convert.ToInt32(dicType)][entryName];
+			} catch{
+				return null;
+			}
 		} catch{
 			Debug.LogError ("Identifier part is not defined in DataManager: " + identifier);
 			return null;
@@ -61,7 +66,7 @@ public static class DataManager  {
 		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryTypes.recipe], recipeNameList);
 
 		DownloadSingleFile ("RecipeSwordUpgradeConfig", configDatas[(int)DataManagerDictionaryTypes.recipeUp], recipeNameList);
-		DownloadSingleFile ("WeaponSwordConfig", configDatas[(int)DataManagerDictionaryTypes.weapons], nameListGeneric);
+		DownloadSingleFile ("WeaponSwordConfig", configDatas[(int)DataManagerDictionaryTypes.weapon], nameListGeneric);
 		readBool = true;
 		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
 		RecipeContainer.GenerateRecipes (recipeNameList);
