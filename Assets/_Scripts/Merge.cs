@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public static class Merge {
 
 
     //RecipeType_Weapon = 0; 
     //RecipeType_CombatConsumable = 1;
     //RecipeType_Armor = 2;
+    public enum RecipeTypes
+    {
+        weapon, armor, nonCom, comCom
+    };
 
-    
 
-	//TODO: Convert to static
-	//TODO: Convert switch to instead use the enum
+    //TODO: Convert to static
+    //TODO: Convert switch to instead use the enum
 
     public static  bool Combine(int RecipeType, int RecipeID) {
         bool success = true;
         List<Recipe> newRecipeList = new List<Recipe>();
         Recipe newRecipe = new Recipe();
+        RecipeTypes types = RecipeTypes.weapon;
+        RecipeType = (int)types;
         //katsotaan ylhäällä määrättyjen tyyppien mukaan mitä listaa käytetään
         switch (RecipeType) {
             case 0:
@@ -41,7 +47,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 1:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.conCon);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.armor);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -56,7 +62,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 2:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.armor);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.nonconCon);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -66,6 +72,25 @@ public static class Merge {
                     return false;
                 }
                 for (int i = 0; i <= newRecipe.materialList.Count; i++) {
+                    Inventory.RemoveItem(newRecipe.materialList[i].type, newRecipe.materialList[i].subtype, newRecipe.materialList[i].itemId, newRecipe.materialList[i].amount);
+                }
+                Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
+                break;
+            case 3:
+                newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.conCon);
+                foreach (Recipe i in newRecipeList)
+                {
+                    if (RecipeID == i.recipeId)
+                    {
+                        newRecipe = i;
+                    }
+                }
+                if (!Inventory.CheckIfExists(newRecipe.materialList))
+                {
+                    return false;
+                }
+                for (int i = 0; i <= newRecipe.materialList.Count; i++)
+                {
                     Inventory.RemoveItem(newRecipe.materialList[i].type, newRecipe.materialList[i].subtype, newRecipe.materialList[i].itemId, newRecipe.materialList[i].amount);
                 }
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
