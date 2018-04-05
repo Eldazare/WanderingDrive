@@ -4,14 +4,12 @@
 
 %enemy_enemySmall_0_TESTGOLEM
 enemySmall_0_health=100
-enemySmall_0_damage=10
-enemySmall_0_element=0
 enemySmall_0_elementWeakness=0;0;0;0;0;0
-enemySmall_0_elementDamage=2
 enemySmall_0_armor=3
-enemySmall_0_armorType=2
+enemySmall_0_weaknessType=2
 enemySmall_0_hitDistance=5.0
 enemySmall_0_quickness=1.2
 enemySmall_0_p1=torso_100_0.8_9001
 enemySmall_0_p2=head_45_1.3_4
 enemySmall_0_p3=tail_80_1.0_3
+enemySmall_0_a1=10;2;earth;0;1.0

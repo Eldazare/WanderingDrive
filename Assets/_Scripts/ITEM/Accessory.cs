@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Accessory {
 
-	public float damage;
+	public float damage; // bonus damage to all attacks (both melee and ability)
+	public float elementDamage; // bonus element damage to all attacks, regardless of element
 	public float magicDefense;
 	public List<int> elementResists;
 

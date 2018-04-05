@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Element{none, fire, ice, thunder, earth, light, shadow};
+public enum WeaknessType{slash, stab, smash, ranged, magic};
+
 public static class EnemyStatCreator {
 
 	public static EnemyStats LoadStatBlockData(int enemyIndex, string type){
 
 		string begin = type+"_";
-		string indentifier = begin + enemyIndex + "_";
+		string identifier = begin + enemyIndex + "_";
 		EnemyStats createe = new EnemyStats ();
 		createe.subtype = type;
 		createe.ID = enemyIndex;
-		createe.health = DataManager.ReadDataFloat(indentifier + "health");
+		createe.health = DataManager.ReadDataFloat(identifier + "health");
 		createe.maxHealth = createe.health;
-		createe.damage= DataManager.ReadDataInt(indentifier + "damage");
-		createe.element= (Element)DataManager.ReadDataInt(indentifier + "element");
-		createe.elementDamage= DataManager.ReadDataInt(indentifier + "elementDamage");
-		createe.armor = DataManager.ReadDataInt(indentifier + "armor");
-		createe.armorType= (WeaknessType)DataManager.ReadDataInt(indentifier + "armorType");
-		createe.hitDistance= DataManager.ReadDataFloat(indentifier + "hitDistance");
-		createe.quickness= DataManager.ReadDataFloat(indentifier + "quickness");
+		createe.armor = DataManager.ReadDataInt(identifier + "armor");
+		createe.weaknessType = (WeaknessType)DataManager.ReadDataInt(identifier + "weaknessType");
+		createe.hitDistance= DataManager.ReadDataFloat(identifier + "hitDistance");
+		createe.quickness= DataManager.ReadDataFloat(identifier + "quickness");
 
-		string elementWeaknessData = DataManager.ReadDataString(indentifier + "elementWeakness");
+		string elementWeaknessData = DataManager.ReadDataString(identifier + "elementWeakness");
 		string[] elementWeaknessSplit = elementWeaknessData.Split (";".ToCharArray ());
 		createe.elementWeakness = new List<int> ();
 		createe.elementWeakness.Add (0);
@@ -35,7 +35,7 @@ public static class EnemyStatCreator {
 		createe.partList = new List<EnemyPart> ();
 		int i = 1;
 		while (true) {
-			string partData = DataManager.ReadDataString (indentifier + "p" + i);
+			string partData = DataManager.ReadDataString (identifier + "p" + i);
 			if (partData != null) {
 				string[] partDataSplit = partData.Split ("_".ToCharArray ());
 				EnemyPart aPart = new EnemyPart ();
@@ -51,6 +51,29 @@ public static class EnemyStatCreator {
 			}
 		}
 
+		createe.attackList = new List<EnemyAttack> ();
+		i = 1;
+		while (true) {
+			string eAttackData = DataManager.ReadDataString (identifier + "a" + i);
+			if (eAttackData != null) {
+				createe.attackList.Add (CreateEnemyAttack (eAttackData));
+			} else {
+				break;
+			}
+			i++;
+		}
+
+		return createe;
+	}
+
+	public static EnemyAttack CreateEnemyAttack(string identifierString){
+		string[] idStrSplit = identifierString.Split (";".ToCharArray ());
+		EnemyAttack createe = new EnemyAttack ();
+		createe.damage = int.Parse(idStrSplit [0]);
+		createe.elementDamage = int.Parse(idStrSplit [1]);
+		createe.element = (Element)System.Enum.Parse (typeof(Element), idStrSplit [2]);
+		createe.damageType = int.Parse(idStrSplit [3]);
+		createe.animationSpeed = float.Parse(idStrSplit [4]);
 		return createe;
 	}
 }

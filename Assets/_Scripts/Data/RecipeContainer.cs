@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CraftingRecipeTypes{weapon, armor, accessory, conCon, nonconCon};
+public enum EquipmentSubtypes{
+	sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield,
+	helm, chest, arms, legs, boots,
+	accessory
+};
+
 public static class RecipeContainer {
 
 
 	static bool generated = false;
-
-	public enum CraftingRecipeTypes{weapon, armor, accessory, conCon, nonconCon};
-	public enum EquipmentSubtypes{
-		sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield,
-		helm, chest, arms, legs, boots,
-		accessory
-	};
 
 	public static List<List<Recipe>> craftingRecipes = new List<List<Recipe>> (){ };
 	public static List<List<RecipeUpgrade>> equipmentUpgrades = new List<List<RecipeUpgrade>>(){};

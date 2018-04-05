@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum ArmorTypes{helm, chest, arms, legs, boots};
-
 public class Loadout {
 	// This is: Container for equipment to be loaded at start of map
 
@@ -13,6 +11,8 @@ public class Loadout {
 
 	public Inventory_Weapon mainHand = null;
 	public Inventory_Weapon offHand = null;
+	private bool twoHandEquipped = false;
+
 	public Inventory_Armor[] wornArmor; // excludes accessories
 	public List<Inventory_Armor> wornAccessories = new List<Inventory_Armor>(); // 
 	public List<int> combatConsumableIndexes = new List<int>();
@@ -38,19 +38,25 @@ public class Loadout {
 	}
 
 	public void AddMainHand(Inventory_Weapon wep){
-		if (wep.subType == "sword") {
+		int handed = WeaponCreator.GetHandedness ((WeaponType)System.Enum.Parse (typeof(WeaponType), wep.subType));
+		if (handed == 2) {
 			offHand = null;
 		}
 		mainHand = wep;
+		twoHandEquipped = true;
 	}
 
 	public void AddOffHand(Inventory_Weapon wep){
-		if (mainHand != null) {
-			if (mainHand.subType == "sword") {
-				return;
-			}
+		int handed = WeaponCreator.GetHandedness ((WeaponType)System.Enum.Parse (typeof(WeaponType), wep.subType));
+		if (handed == 2) {
+			mainHand = wep;
+			offHand = null;
+			twoHandEquipped = true;
+		} else if (!twoHandEquipped) {
+			offHand = wep;
+		} else {
+			// return false;
 		}
-		offHand = wep;
 	}
 
 	public void AddArmor(Inventory_Armor armor, ArmorTypes type){

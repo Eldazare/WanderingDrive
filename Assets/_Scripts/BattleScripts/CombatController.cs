@@ -28,9 +28,9 @@ public class CombatController : MonoBehaviour {
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
 		enemyList = new List<Enemy> ();
 		
-		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.itemID);
+		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
 		if(loadout.offHand != null){
-			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock (loadout.offHand.subType, loadout.offHand.itemID);
+			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
 		}
 
 		GenerateArmors(loadout);

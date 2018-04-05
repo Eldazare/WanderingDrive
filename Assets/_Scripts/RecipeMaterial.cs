@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RecipeMaterial  {
 
-	public string type; // wep | mat | cons | arm
-	public string subtype; // mat | world | comb | (sword | axe | spear | dagg | pist | bow | lbow | shis | shil) | (head | torso | arms | legs | boots)
+	public string type; // wep | mat | consumable | arm
+	public string subtype; // mat | nonCom | comCon | (sword | axe | spear | dagger | pistol | bow | Gbow | shield | shil) | (head | torso | arms | legs | boots)
     public int itemId;
 	public string itemName; // TODO
 	public int amount;

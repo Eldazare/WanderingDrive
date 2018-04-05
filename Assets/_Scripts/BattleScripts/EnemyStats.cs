@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum Element{none, fire, ice, thunder, earth, light, shadow};
-public enum WeaknessType{swordW, axeW, daggerW, rangedW, magicW};
-
 public class EnemyStats {
 
 
@@ -17,11 +13,11 @@ public class EnemyStats {
 	public Element element;
 	public int elementDamage;
 	public int armor;
-	public WeaknessType armorType;
+	public WeaknessType weaknessType;
 	public float hitDistance;
 	public float quickness;
 
 	public List<int> elementWeakness;
 	public List<EnemyPart> partList;  //0 is always the main body
-	
+	public List<EnemyAttack> attackList;
 }

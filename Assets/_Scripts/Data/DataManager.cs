@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+
+
+public enum DataManagerDictionaryTypes{
+	consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
+	weapon, recipeUp,
+	node
+}
+
 public static class DataManager  {
 	static private bool readBool = false;
 	// TODO: Recipe/Weapon/Upgrade dictionary may BLOAT
-
-
-	public enum DataManagerDictionaryTypes{
-		consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
-		weapon, recipeUp,
-		node
-	}
 
 	static List<Dictionary<string,string>> configDatas = new List<Dictionary<string,string>>{ };
 

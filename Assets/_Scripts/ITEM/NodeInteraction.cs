@@ -8,7 +8,7 @@ public static class NodeInteraction {
 	private static bool initialized = false;
 	private static int gatheringAmount = 3;
 
-	//TYPES:
+	//TYPES: (INT because database cannot really store Enum)
 	// 0 = Gather
 	// 1 = Single small monster - Indexes same as small monsters
 	// 2 = Multimonster (defined in config)

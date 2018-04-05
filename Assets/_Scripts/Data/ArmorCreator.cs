@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ArmorTypes{helm, chest, arms, legs, boots};
+
 public static class ArmorCreator {
 
 	public static Armor CreateArmor(ArmorTypes subtype, int id){
