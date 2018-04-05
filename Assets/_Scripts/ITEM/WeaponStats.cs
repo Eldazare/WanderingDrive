@@ -8,6 +8,7 @@ public class WeaponStats {
 	public int id;
 
 	public int damage; // if damage is 0, this cannot attack
+	public int accuracyBonus; // in percentage, usually 0 (can be negative)
 	public WeaknessType weaknessType;
 
 	public int damageBonus; // added to other hand attacks

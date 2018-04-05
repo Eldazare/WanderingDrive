@@ -71,7 +71,6 @@ public static class DropDataCreator {
 		List<DropData> partDrops = dropData.GetPartDrops ();
 		if (partDrops != null) {
 			for (int i = 0; i < 9; i++) {
-				Debug.Log ("i = " + i);
 				if (partDrops [i] != null) {
 					if (partList [i].broken) {
 						createe.Add (GetSingleDrop (partDrops [i].drops, partDrops [i].percentageList));

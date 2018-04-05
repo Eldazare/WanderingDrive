@@ -14,6 +14,7 @@ public static class EnemyStatCreator {
 		EnemyStats createe = new EnemyStats ();
 		createe.subtype = type;
 		createe.ID = enemyIndex;
+
 		createe.health = DataManager.ReadDataFloat(identifier + "health");
 		createe.maxHealth = createe.health;
 		createe.armor = DataManager.ReadDataInt(identifier + "armor");

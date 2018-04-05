@@ -1,6 +1,7 @@
 #This is a comment line
 #Parts: pn identifier
 #name | base chance | damageModifier | partHP for break
+#damage |elementDamage | element(str) | damagetype(physical/magical) | animationSpeed
 
 %enemy_enemySmall_0_TESTGOLEM
 enemySmall_0_health=100
