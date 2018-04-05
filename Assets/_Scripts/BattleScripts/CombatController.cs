@@ -14,7 +14,7 @@ public class CombatController : MonoBehaviour {
 	public TouchControlScript touchController;
 	public CameraController cameraScript;
 	public bool enemyAttacked;
-	List<RecipeMaterial> encounterDrops;
+	List<List<RecipeMaterial>> encounterDrops = new List<List<RecipeMaterial>>();
 	public int enemyTurns;
 	bool playerDead;
 	public void enemyAttacks(){
@@ -139,13 +139,12 @@ public class CombatController : MonoBehaviour {
 	public void EnemyDies(Enemy enemy){
 
 			
-		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyID);
-		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,1 ,enemy.enemyStats.partList);
+		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyStats.ID);
+		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,2 ,enemy.enemyStats.partList);
 
-		foreach (var item in list)
-		{
-			//encounterDrops.Add(item);
-		}
+		encounterDrops.Add(list);
+		
+
 		//menuController.enemyHealthBars.Remove(menuController.enemyHealthBars[menuController.enemyHealthBars.Count]);
 		Destroy(menuController.enemyHealthBars[menuController.enemyHealthBars.Count-1]);
 		enemyList[enemyList.IndexOf(enemy)] = null;
@@ -156,6 +155,13 @@ public class CombatController : MonoBehaviour {
 				item.updateStats();
 			}
 			
+		}
+		foreach (var item in encounterDrops)
+		{
+			foreach (var item1 in item)
+			{
+				Debug.Log(item1.itemId);
+			}
 		}
 		if(enemyList.Count == 0){
 			WinEncounter();
