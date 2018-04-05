@@ -6,42 +6,17 @@ using UnityEditor;
 
 public class CombatController : MonoBehaviour {
 
-	public GameObject loadOut;
 	public List<Enemy> enemyList;
 	public PlayerCombatScript player;
 	public PlayerStats playerStats;
-	public string textBoxMessage;
-	string getHitReturn;
 	public GameObject enemyHost;
-	GameObject mapToBattleContainer;
 	public MenuController menuController;
 	public TouchControlScript touchController;
 	public CameraController cameraScript;
 	public bool enemyAttacked;
-	List<EnemyStats> deadEnemies;
-		
-	void Start () {
-
-		//Temp enemy instantiation
-		/* GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem", typeof(GameObject)),enemyHost.transform.position, enemyHost.transform.rotation, enemyHost.transform) as GameObject;
-		Enemy enemy = enemyObject.GetComponent<Enemy>();
-		enemyList.Add(enemy);
-		menuController.targetedEnemy = enemy;
-		enemy.combatController = this; 
-		int number = 0;
-		foreach (var item in enemyList)
-		{
-			menuController.enemyHealthBars[number].SetActive(true);
-			number++;
-		}*/
-
-		/*
-		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock("sword", 0);
-		player.weapon = Instantiate(Resources.Load("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
-		player.updateStats();
-		StartCombat();
-		*/
-	}
+	List<RecipeMaterial> encounterDrops;
+	public int enemyTurns;
+	bool playerDead;
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}
@@ -52,8 +27,13 @@ public class CombatController : MonoBehaviour {
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
 		enemyList = new List<Enemy> ();
+		
+		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.ItemID);
+		if(loadout.offHand != null){
+			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock (loadout.offHand.subType, loadout.offHand.ItemID);
+		}
 
-		player.playerStats.weapon = WeaponCreator.CreateWeaponStatBlock (loadout.mainHand.subType, loadout.mainHand.ItemID);
+		GenerateArmors(loadout);
 		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats ();
 
@@ -65,17 +45,74 @@ public class CombatController : MonoBehaviour {
 		menuController.PlayersTurn();
 	}
 
-	IEnumerator enemyAttacksRoutine(){
-		yield return new WaitUntil(()=>menuController.proceed);
-		touchController.enemyTurn = true;
-		menuController.EnemyTurnTextFade();
-		for (int i = 0; i < enemyList.Count; i++) {
-			yield return new WaitForSeconds(3f);
-			StartCoroutine(enemyList[i].Attack());
-			yield return new WaitUntil(()=>enemyAttacked);
+	void GenerateArmors(Loadout loadout){
+		float armorAmount = 0;
+		float speed = 0;
+		int j = 0;
+
+		//Armor generation
+		if(loadout.wornArmor[0] != null){
+			foreach (var item in loadout.wornArmor)	
+			{
+				Armor armor = ArmorCreator.CreateArmor((ArmorTypes)System.Enum.Parse(typeof(ArmorTypes), item.subType), item.itemID);
+				armorAmount += armor.defense;
+
+				int i = 0;
+				foreach (var item1 in armor.elementResists)
+				{
+					playerStats.elementalWeakness[i] += item1;// + (int)(armor.magicDefense*100);
+					i++;
+				}
+				speed += armor.speed;
+				j++;
+			}
+			playerStats.speed = speed/j;
 		}
-		touchController.enemyTurn = false;
-		menuController.PlayersTurn();
+		
+
+		
+
+		//Accessory generation
+		if(loadout.wornAccessories[0] != null){
+			foreach (var item in loadout.wornAccessories)
+			{
+				Accessory acc = ArmorCreator.CreateAccessory(item.itemID);
+				int i = 0;
+				foreach (var item1 in acc.elementResists)
+				{
+					playerStats.elementalWeakness[i] += item1;// + (int)(acc.magicDefense*100);
+					i++;
+				}
+			}
+		}
+	}
+
+	IEnumerator enemyAttacksRoutine(){
+		
+			yield return new WaitUntil(()=>menuController.proceed);
+			touchController.enemyTurn = true;
+			menuController.EnemyTurnTextFade();
+			foreach (var item in enemyList)
+			{
+				if(!playerDead){
+					if(item != null){
+						yield return new WaitForSeconds(3f);
+						StartCoroutine(item.Attack());
+						yield return new WaitUntil(()=>enemyAttacked);
+					}
+				}else{
+					break;
+				}
+			}
+			touchController.enemyTurn = false;
+			enemyTurns--;
+			if(enemyTurns<=0){
+				enemyTurns = 0;
+				menuController.PlayersTurn();
+			}else{
+				enemyAttacks();
+			}
+		
 	}
 	void EnemyCreation(int enemySpacing, string enemyType, int id){
 		Vector3 enemyPos = enemyHost.transform.position;
@@ -87,24 +124,6 @@ public class CombatController : MonoBehaviour {
 		
 		enemyList.Add(enemy);
 		enemy.combatController = this;
-		/*foreach (var item in loadOut.enemyList){
-			Vector3 enemyPos = enemyHost.transform.position;
-			//Adds spacing
-			GameObject enemyObject = Instantiate(Resources.Load("CombatResources"+item.ID, typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)), Quaternion.identity, enemyHost.transform) as GameObject;
-			Enemy enemy = enemyObject.GetComponent<Enemy>();
-			enemyList.Add(enemy);
-			enemy.combatController = this;
-			enemySpacing++;
-		}
-		menuController.targetedEnemy = enemyList[0];
-		*/
-
-		/* int number = enemyList.Count-1;
-		foreach (var item in enemyList)
-		{
-			menuController.enemyHealthBars[number].SetActive(true);
-			number--;
-		} */
 	}
 
 	void CreateHealthBars(){
@@ -118,27 +137,70 @@ public class CombatController : MonoBehaviour {
 	}
 
 	public void EnemyDies(Enemy enemy){
-		enemyList.Remove(enemy);
-		deadEnemies.Add(enemy.ReturnDeadStats());
-		Destroy(enemy,2f);
+
+			
+		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyID);
+		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,1 ,enemy.enemyStats.partList);
+
+		foreach (var item in list)
+		{
+			//encounterDrops.Add(item);
+		}
+		//menuController.enemyHealthBars.Remove(menuController.enemyHealthBars[menuController.enemyHealthBars.Count]);
+		Destroy(menuController.enemyHealthBars[menuController.enemyHealthBars.Count-1]);
+		enemyList[enemyList.IndexOf(enemy)] = null;
+		Destroy(enemy.gameObject,2f);
+		foreach (var item in enemyList)
+		{
+			if(item != null){
+				item.updateStats();
+			}
+			
+		}
 		if(enemyList.Count == 0){
 			WinEncounter();
 		}
 	}
 
 	void WinEncounter(){
-		//Generate loot
+		
+	}
+	public void LoseEncounter(){
+		playerDead = true;
 	}
 
-	public void HitPlayer(int damage,int elementDamage,Element element, bool area){
+	public void HitPlayer(float damage, float elementDamage, Element element, bool area){
 		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area));
 	}
 
-	public void HitEnemy(int damage, int elementDamage, Element element, int part){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part));
+	public void HitEnemy(float damage, float elementDamage, Element element, int part, float damageMod){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, damageMod));
 	}
 
 	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
 		menuController.updateEnemyHealth(health, maxhealth, health/maxhealth, enemy);
+	}
+	public void ActivatePartCanvas(Enemy enemy){
+		int i = 0;
+		if(!menuController.enemyPartCanvas.activeInHierarchy){
+			menuController.enemyPartCanvas.SetActive(true);
+			i = 0;
+			foreach (var item in enemy.enemyStats.partList){
+				menuController.enemyPartCanvasButtons[i].SetActive(true);
+				if(!enemy.enemyStats.partList[i].broken){
+					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%";
+				}else{
+					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%"+"\nBroken";
+					menuController.enemyPartCanvasButtons[i].GetComponent<Image>().color = Color.red;
+				}
+				i++;
+			}
+		}else{
+			foreach (var item in menuController.enemyPartCanvasButtons)
+			{
+				item.SetActive(false);
+			}
+			menuController.enemyPartCanvas.SetActive(false);
+		}
 	}
 }

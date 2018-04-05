@@ -22,6 +22,9 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public void MoveCamera(GameObject target){
+		CancelInvoke("MoveFromTarget");
+		CancelInvoke("MoveCamera");
+		CancelInvoke("FollowTargetRepeat");
 		targetObject = target;
 		targetLoc = targetObject.transform.position;
 		startTime = Time.time;
@@ -29,14 +32,19 @@ public class CameraController : MonoBehaviour {
 		InvokeRepeating("MoveToTarget", 0, Time.deltaTime);
 	}
 	public void ResetCamera(){
-		menuController.enemyPartCanvas.SetActive(false);
+		CancelInvoke("MoveFromTarget");
+		CancelInvoke("MoveCamera");
 		CancelInvoke("FollowTargetRepeat");
+		menuController.enemyPartCanvas.SetActive(false);
 		targetLoc = startPos;
 		startTime = Time.time;
 		movingLength = Vector3.Distance(transform.position, targetLoc);
 		InvokeRepeating("MoveFromTarget", 0, Time.deltaTime);
 	}
 	public void FollowTarget(GameObject target){
+		CancelInvoke("MoveFromTarget");
+		CancelInvoke("MoveCamera");
+		CancelInvoke("FollowTargetRepeat");
 		targetObject = target;
 		InvokeRepeating("FollowTargetRepeat", 0, Time.deltaTime);
 	}
@@ -56,7 +64,7 @@ public class CameraController : MonoBehaviour {
 			CancelInvoke("MoveToTarget");
 		}
 	}
-
+	
 	void MoveFromTarget(){
 		float distanceCovered = (Time.time-startTime)*lerpSpeed*0.2f;
 		if(Vector3.Distance(transform.position, targetLoc)>0.1){

@@ -15,7 +15,7 @@ public class MenuController : MonoBehaviour {
 	public Button focusButton, overloadButton; //Drag focus and overload buttons to menuController
 	public PlayerCombatScript player;
 	public GameObject enemyPartCanvas;
-	public GameObject [] enemyPartCanvasButtons;
+	public List<GameObject> enemyPartCanvasButtons;
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerManaFill;
@@ -29,15 +29,10 @@ public class MenuController : MonoBehaviour {
 	public bool proceed;
 	public int selectedPart;
 	public Text enemyTurnText, playerTurnText;
-
 	Color originalColor;
-	
-
-
 	void Start(){
 		focusEnabled = true;
 		overloadEnabled = true;
-		PlayerTurnTextFade();
 	}	
 
 	public void GenerateHealthBars(int number, Enemy item){
@@ -54,7 +49,10 @@ public class MenuController : MonoBehaviour {
 		targetedEnemy = combatController.enemyList[enemyNbr];
 		foreach (var item in enemyHealthBars)
 		{
-			item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+			if(item != null){
+				item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+			}
+			
 		}
 		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
@@ -91,11 +89,11 @@ public class MenuController : MonoBehaviour {
 	IEnumerator CameraToEnemy(){
 		combatController.cameraScript.MoveCamera(targetedEnemy.cameraTarget);
 		yield return new WaitUntil(()=>proceed);
-		targetedEnemy.ActivatePartCanvas();
+		combatController.ActivatePartCanvas(targetedEnemy);
 	}
 	public void ChoosePartToAttack(){
 		//player.Attack(part);
-		targetedEnemy.ActivatePartCanvas();
+		combatController.ActivatePartCanvas(targetedEnemy);
 		StartCoroutine(PlayerAttack());
 	}
 	IEnumerator PlayerAttack(){
@@ -126,11 +124,11 @@ public class MenuController : MonoBehaviour {
 	//UI updates
 	public void updatePlayerHealth(float health, float maxHealth, float percentage){
 		playerHealthFill.fillAmount = percentage;
-		playerHealthText.text = health.ToString() + "/" + maxHealth.ToString();
+		playerHealthText.text = health.ToString("00") + "/" + maxHealth.ToString("00");
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
-		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
-		enemyHealthBars[(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString() +"/"+maxHealth.ToString();
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString("00") +"/"+maxHealth.ToString("00");
 	}
 
 	public void messageToScreen(string message){
