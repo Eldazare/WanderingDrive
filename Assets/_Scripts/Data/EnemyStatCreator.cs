@@ -15,15 +15,18 @@ public static class EnemyStatCreator {
 		createe.subtype = type;
 		createe.ID = enemyIndex;
 
-		createe.health = DataManager.ReadDataFloat(identifier + "health");
+		string[] defensesStr = DataManager.ReadDataString (identifier + "defenses").Split ("/".ToCharArray ());
+		createe.health = int.Parse (defensesStr [0]);
 		createe.maxHealth = createe.health;
-		createe.armor = DataManager.ReadDataInt(identifier + "armor");
-		createe.weaknessType = (WeaknessType)DataManager.ReadDataInt(identifier + "weaknessType");
-		createe.hitDistance= DataManager.ReadDataFloat(identifier + "hitDistance");
-		createe.quickness= DataManager.ReadDataFloat(identifier + "quickness");
+		createe.armor = int.Parse (defensesStr [1]);
+		createe.evasion = int.Parse (defensesStr [2]);
+		createe.weaknessType = (WeaknessType)int.Parse (defensesStr [3]);
 
-		string elementWeaknessData = DataManager.ReadDataString(identifier + "elementWeakness");
-		string[] elementWeaknessSplit = elementWeaknessData.Split (";".ToCharArray ());
+		string[] assortmentStr = DataManager.ReadDataString (identifier + "assortment").Split ("/".ToCharArray());
+		createe.quickness = float.Parse (assortmentStr [0]);
+		createe.hitDistance = float.Parse (assortmentStr [1]);
+
+		string[] elementWeaknessSplit = DataManager.ReadDataString(identifier + "elementWeakness").Split (";".ToCharArray ());
 		createe.elementWeakness = new List<int> ();
 		createe.elementWeakness.Add (0);
 		foreach (string str in elementWeaknessSplit) {
