@@ -34,14 +34,15 @@ public class UndyingObject : MonoBehaviour {
 
 		loadoutList = new LoadoutsContainer(loadoutCount);
 
-		// Get location data here
-		//StartCoroutine (UpdateLocationData(10)); // Enable this when testing
-		StartCoroutine (ToTheWorld ());
+        // Get location data here
+        //StartCoroutine (UpdateLocationData(10)); // Enable this when testing
+        //StartCoroutine (ToTheWorld ());
+        StartCrafting();
 	}
 
 	private IEnumerator ToTheWorld(){
-		yield return SceneManager.LoadSceneAsync ("TheWorld");
-	}
+        yield return SceneManager.LoadSceneAsync ("TheWorld");
+    }
 
 	//TODO: CHOOSE LOADOUT
 	public void CombatPrompt (List<NodeEnemy> enemyList){
@@ -94,6 +95,7 @@ public class UndyingObject : MonoBehaviour {
 	private IEnumerator StartCraftingIenum(){
 		yield return SceneManager.LoadSceneAsync ("Crafting");
 		Crafting craft = GameObject.FindGameObjectWithTag ("CraftingController").GetComponent<Crafting> ();
+
 	}
 
 	public void EndCrafting(){

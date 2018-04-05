@@ -7,22 +7,15 @@ public class Material  {
     public int itemId;
     public int itemType;
 
-
-
-
-	// DEPRECATED
-    public Material(int ItemID, int ItemType)
-    {
+ public Material(int ItemID, int ItemType) {
         this.itemId = ItemID;
     }
 
-    public int GetItemtype()
-    {
+public int GetItemtype() {
         return itemType;
     }
 
-    public int GetItemID()
-    {
+public int GetItemID() {
         return itemId;
     }
 

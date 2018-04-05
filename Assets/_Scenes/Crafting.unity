@@ -1638,7 +1638,7 @@ GameObject:
   - component: {fileID: 2047278553}
   m_Layer: 0
   m_Name: CraftManager
-  m_TagString: Untagged
+  m_TagString: CraftingController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1655,8 +1655,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeImage: {fileID: 260227942}
-  weaponRecipeList: 000000000000000000000000
-  consRecipeList: 000000000000000000000000
+  weaponRecipeList: 
+  consRecipeList: 
   armorRecipeList: 
   weaponSprites:
   - {fileID: 21300002, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
@@ -1667,6 +1667,10 @@ MonoBehaviour:
   - {fileID: 21300006, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300010, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   armorSprites: []
+  currentItemSpriteList: 0
+  currentRecipeType: 0
+  currentRecipe: 0
+  spriteCounter: 0
   recipeTypeWeapon: 0
   recipeTypeConsumable: 1
   recipeTypeArmor: 2
@@ -1817,7 +1821,7 @@ GameObject:
   - component: {fileID: 2119714740}
   - component: {fileID: 2119714739}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Merge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1880,7 +1884,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2119714740}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047278553}
+        m_MethodName: LetsMerge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2119714740

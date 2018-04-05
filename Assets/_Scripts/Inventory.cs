@@ -11,7 +11,7 @@ public static class Inventory {
     public static List<int> combatConsumables = new List<int>();
     public static List<int> nonCombatConsumables = new List<int>();
     public static int capacity;
-    public static int maxCapacity;
+    public static int maxCapacity = 30;
     public static int maxStack = 255;
 
 	// TODO: Read counts from config file through DataManager
@@ -52,22 +52,25 @@ public static class Inventory {
     //katso löytyykö tavarat inventorysta
     public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
         bool result = true;
-        foreach(RecipeMaterial i in materialList) {
-            if (materialList[0].subtype == "mat") {
+        int temp = 0;
+        foreach (RecipeMaterial i in materialList) {
+            if (i.subtype == "mat") {
                 if (inventoryMaterials[i.itemId] < i.amount) {
                     result = false;
                 }
             }
-            else if (materialList[0].subtype == "world") {
+            else if (i.subtype == "nonCom") {
                 if (nonCombatConsumables[i.itemId] < i.amount) {
                     result = false;
                 }
             }
-            else if (materialList[0].subtype == "comb") {
+            else if (i.subtype == "comCom") {
                 if (combatConsumables[i.itemId] < i.amount) {
                     result = false;
+                    
                 }
             }
+            temp++;
         }
         return result;
     }
@@ -76,7 +79,7 @@ public static class Inventory {
     public static bool RemoveItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
-            case "wep":
+            case "weapon":
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
                     if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
@@ -85,7 +88,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case "arm":
+            case "armor":
                 for (int i = 0; i <= inventoryArmor.Count; i++) {
                     if(itemId == inventoryArmor[i].itemID && subType == inventoryArmor[i].subType) {
                         inventoryArmor.RemoveAt(i);
@@ -95,7 +98,7 @@ public static class Inventory {
                 }
                 break;
             case "cons":
-                if (subType == "world") {
+                if (subType == "nonCom") {
                     if (nonCombatConsumables[itemId] < amount) {
                         break;
                     }
@@ -104,7 +107,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == "comb") {
+                else if (subType == "comCom") {
                     if ( combatConsumables[itemId] < amount) {
                         break;
                     }
@@ -131,7 +134,7 @@ public static class Inventory {
     public static bool PutItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
-            case "wep":
+            case "weapon":
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
@@ -142,7 +145,7 @@ public static class Inventory {
                     Success = true;
                     break;
                 }
-            case "arm":
+            case "armor":
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
@@ -154,7 +157,7 @@ public static class Inventory {
                     break;
                 }
             case "cons":
-                if(subType == "world") {
+                if(subType == "nonCom") {
                     if (nonCombatConsumables[itemId] + amount > maxStack) {
                         break;
                     }
@@ -163,7 +166,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == "comb"){
+                else if (subType == "comCom"){
                     if (combatConsumables[itemId] + amount > maxStack){
                         break;
                     }
