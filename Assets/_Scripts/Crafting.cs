@@ -178,6 +178,8 @@ public class Crafting : MonoBehaviour
         else {
             Debug.Log("Error, combining failed");
         }
+        Debug.Log("onnistui");
         Debug.Log(Inventory.inventoryWeapons[0].subType);
+
     }
 }

@@ -59,12 +59,12 @@ public static class Inventory {
                     result = false;
                 }
             }
-            else if (i.subtype == "world") {
+            else if (i.subtype == "nonCom") {
                 if (nonCombatConsumables[i.itemId] < i.amount) {
                     result = false;
                 }
             }
-            else if (i.subtype == "comb") {
+            else if (i.subtype == "comCom") {
                 if (combatConsumables[i.itemId] < i.amount) {
                     result = false;
                     
@@ -98,7 +98,7 @@ public static class Inventory {
                 }
                 break;
             case "cons":
-                if (subType == "world") {
+                if (subType == "nonCom") {
                     if (nonCombatConsumables[itemId] < amount) {
                         break;
                     }
@@ -107,7 +107,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == "comb") {
+                else if (subType == "comCom") {
                     if ( combatConsumables[itemId] < amount) {
                         break;
                     }
@@ -157,7 +157,7 @@ public static class Inventory {
                     break;
                 }
             case "cons":
-                if(subType == "world") {
+                if(subType == "nonCom") {
                     if (nonCombatConsumables[itemId] + amount > maxStack) {
                         break;
                     }
@@ -166,7 +166,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == "comb"){
+                else if (subType == "comCom"){
                     if (combatConsumables[itemId] + amount > maxStack){
                         break;
                     }
