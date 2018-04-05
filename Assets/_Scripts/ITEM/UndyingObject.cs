@@ -16,7 +16,6 @@ public class UndyingObject : MonoBehaviour {
 	float stamina;
 
 	// PUBLIC only for testing purposes
-	Inventory inventory;
 	public LoadoutsContainer loadoutList;
 
 	double locLatitude;
@@ -26,13 +25,13 @@ public class UndyingObject : MonoBehaviour {
 		DontDestroyOnLoad (this);
 		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen data
 		NodeInteraction.InitializeUndyingObject(this);
+		Inventory.Initialize ();
 		// TODO: Potentially load player data
 		//ELSE:
 		health = 100;
 		stamina = 100;
 		int loadoutCount = 10;
 
-		inventory = new Inventory ();
 		loadoutList = new LoadoutsContainer(loadoutCount);
 
 		// Get location data here
@@ -68,7 +67,7 @@ public class UndyingObject : MonoBehaviour {
 	public void EndCombat(List<List<RecipeMaterial>> dropListList, float health, float stamina){
 		foreach (List<RecipeMaterial> dropList in dropListList) {
 			foreach (RecipeMaterial recMat in dropList) {
-				inventory.InsertRecipeMaterial (recMat);
+				Inventory.InsertRecipeMaterial (recMat);
 			}
 		}
 		this.health = health;
@@ -84,7 +83,7 @@ public class UndyingObject : MonoBehaviour {
 		DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.gather, nodeIndex);
 		List<RecipeMaterial> dropList = DropDataCreator.CalculateDrops (nodeDropData, dropAmount, null);
 		foreach (RecipeMaterial recMat in dropList) {
-			inventory.InsertRecipeMaterial (recMat);
+			Inventory.InsertRecipeMaterial (recMat);
 		}
 	}
 

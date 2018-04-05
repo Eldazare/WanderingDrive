@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Crafting : MonoBehaviour {
+public class Crafting : MonoBehaviour
+{
 
-    public Merge Merger;
+
     public Image recipeImage;
-    public int weaponRecipeNumber, consRecipeNumber, armorRecipeNumber;
 
-    public List<int> weaponRecipeList;
-    public List<int> consRecipeList;
-    public List<int> armorRecipeList;
+    public List<int> weaponRecipeList = new List<int>(3);
+    public List<int> consRecipeList = new List<int>(3);
+    public List<int> armorRecipeList = new List<int>(3);
     public List<Sprite> weaponSprites;
     public List<Sprite> consumableSprites;
     public List<Sprite> armorSprites;
+
+
     private int currentItemSpriteList;
-    List<Recipe> tempRecipeList = new List<Recipe>();
-
-
     public int currentRecipeType;
     public int currentRecipe;
     private int spriteCounter;
@@ -29,21 +28,21 @@ public class Crafting : MonoBehaviour {
 
 
     public void Start() {
-        weaponRecipeList = new List<int>(weaponRecipeNumber);
-        consRecipeList = new List<int>(consRecipeNumber);
-        armorRecipeList = new List<int>(armorRecipeNumber);
+        Inventory.inventoryMaterials[0] = 2;
+        Inventory.nonCombatConsumables[6] = 1;
         recipeImage.sprite = weaponSprites[0];
-        currentRecipe = weaponRecipeList[0];
+        currentRecipe = 1;
+        //currentRecipe = weaponRecipeList[0];
         currentRecipeType = recipeTypeWeapon;
         currentItemSpriteList = 0;
         spriteCounter = 0;
-        
-    }
+        Debug.Log(weaponRecipeList.Count);
 
+    }
 
     public void ChangeRecipeOnwards() {
         spriteCounter++;
-        if (spriteCounter >= weaponSprites.Count) {
+        if (spriteCounter >= weaponRecipeList.Count) {
             switch (currentItemSpriteList) {
                 case 0:
                     recipeImage.sprite = weaponSprites[0];
@@ -78,6 +77,7 @@ public class Crafting : MonoBehaviour {
                     break;
             }
         }
+        
     }
 
     public void ChangeRecipeBackwards() {
@@ -143,16 +143,24 @@ public class Crafting : MonoBehaviour {
         spriteCounter = 0;
     }
 
-
     public void LetsMerge() {
-        if (currentRecipeType == recipeTypeWeapon){
-            Merger.Combine(currentRecipeType, weaponRecipeList.IndexOf(weaponRecipeList[currentRecipe]));
+        if (currentRecipeType == recipeTypeWeapon) {
+            if (!Merge.Combine(currentRecipeType, weaponRecipeList.IndexOf(weaponRecipeList[currentRecipe]))) {
+                Debug.Log("No sufficient materials");
+            }
         }
         else if (currentRecipeType == recipeTypeConsumable) {
-            Merger.Combine(currentRecipeType, consRecipeList.IndexOf(consRecipeList[currentRecipe]));
+           if (!Merge.Combine(currentRecipeType, consRecipeList.IndexOf(consRecipeList[currentRecipe]))) {
+                Debug.Log("No sufficient materials");
+            }
         }
         else if (currentRecipeType == recipeTypeArmor) {
-            Merger.Combine(currentRecipeType, armorRecipeList.IndexOf(armorRecipeList[currentRecipe]));
+            if (!Merge.Combine(currentRecipeType, armorRecipeList.IndexOf(armorRecipeList[currentRecipe]))) {
+                Debug.Log("No sufficient materials");
+            }
+        }
+        else {
+            Debug.Log("Error, combining failed");
         }
     }
 }

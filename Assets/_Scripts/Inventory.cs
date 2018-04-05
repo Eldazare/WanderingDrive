@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory {
+public static class Inventory {
 
 
-    public List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
-    public List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
-    public List<int> inventoryMaterials = new List<int>();
-    public List<int> combatConsumables = new List<int>();
-    public List<int> nonCombatConsumables = new List<int>();
-    public int capacity;
-    public int maxCapacity;
-    public int maxStack = 255;
+    public static List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
+    public static List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
+    public static List<int> inventoryMaterials = new List<int>();
+    public static List<int> combatConsumables = new List<int>();
+    public static List<int> nonCombatConsumables = new List<int>();
+    public static int capacity;
+    public static int maxCapacity;
+    public static int maxStack = 255;
 
 	// TODO: Read counts from config file through DataManager
+	// ^^ Initialize script
 
+	/*
 	public Inventory(){
 		int materialCount = 1000;
 		int comConCount = 10;
@@ -30,17 +32,53 @@ public class Inventory {
 			nonCombatConsumables.Add (0);
 		}
 	}
+	*/
 
+	public static void Initialize(){
+		int materialCount = 1000;
+		int comConCount = 10;
+		int nonConCount = 10;
+		for (int i = 0; i < materialCount; i++) {
+			inventoryMaterials.Add (0);
+		}
+		for (int i = 0; i < comConCount; i++){
+			combatConsumables.Add (0);
+		}
+		for (int i = 0; i < nonConCount;i++){
+			nonCombatConsumables.Add (0);
+		}
+	}
+
+    //katso löytyykö tavarat inventorysta
+    public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
+        bool result = true;
+        foreach(RecipeMaterial i in materialList) {
+            if (materialList[0].subtype == "mat") {
+                if (inventoryMaterials[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+            else if (materialList[0].subtype == "world") {
+                if (nonCombatConsumables[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+            else if (materialList[0].subtype == "comb") {
+                if (combatConsumables[i.itemId] < i.amount) {
+                    result = false;
+                }
+            }
+        }
+        return result;
+    }
 
     //hae itemi inventorysta ja poista se
-    public bool RemoveItem(string itemType, string subType, int itemId, int amount)
-    {
+    public static bool RemoveItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
-        switch (itemType)
-        {
+        switch (itemType) {
             case "wep":
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
-                    if (itemId == inventoryWeapons[i].ItemID) {
+                    if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
                         capacity--;
                         Success = true;
@@ -90,8 +128,7 @@ public class Inventory {
     }
     
     //Laita uusi Itemi inventoryyn
-    public bool PutItem(string itemType, string subType, int itemId, int amount)
-    {
+    public static bool PutItem(string itemType, string subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
             case "wep":
@@ -150,7 +187,7 @@ public class Inventory {
 
 
 
-	public bool InsertRecipeMaterial(RecipeMaterial recMat){
+	public static bool InsertRecipeMaterial(RecipeMaterial recMat){
 		return PutItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);
 	}
      

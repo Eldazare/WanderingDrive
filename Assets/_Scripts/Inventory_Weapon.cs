@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Inventory_Weapon  {
 
-    public int ItemID;
+    public int itemID;
     public string subType;
 
     public Inventory_Weapon(int id, string subtype)
     {
-        ItemID = id;
+        itemID = id;
         subType = subtype;
     }
 
