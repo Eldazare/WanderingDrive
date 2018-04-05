@@ -5,8 +5,8 @@ using UnityEngine;
 public static class Inventory {
 
 
-    public static List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
-    public static List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
+    public static List<InventoryArmor> inventoryArmor = new List<InventoryArmor>();
+    public static List<InventoryWeapon> inventoryWeapons = new List<InventoryWeapon>();
     public static List<int> inventoryMaterials = new List<int>();
     public static List<int> combatConsumables = new List<int>();
     public static List<int> nonCombatConsumables = new List<int>();
@@ -139,7 +139,7 @@ public static class Inventory {
                     break;
                 }
                 else {
-                    Inventory_Weapon newWeapon = new Inventory_Weapon(itemId, subType);
+                    InventoryWeapon newWeapon = new InventoryWeapon(itemId, subType);
                     inventoryWeapons.Add(newWeapon);
                     capacity++;
                     Success = true;
@@ -150,7 +150,7 @@ public static class Inventory {
                     break;
                 }
                 else {
-                    Inventory_Armor newArmor = new Inventory_Armor(itemId, subType);
+                    InventoryArmor newArmor = new InventoryArmor(itemId, subType);
                     inventoryArmor.Add(newArmor);
                     capacity++;
                     Success = true;

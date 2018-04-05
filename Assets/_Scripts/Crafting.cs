@@ -42,15 +42,15 @@ public class Crafting : MonoBehaviour
     
     public void FillLists() {
         List<Recipe> newRecipeList = new List<Recipe>();
-        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.weapon);
+        newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.weapon);
         for (int i = 0; i < newRecipeList.Count; i++) {
             weaponRecipeList.Add(i);
         }
-        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.conCon);
+        newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.conCon);
         for (int i = 0; i < newRecipeList.Count; i++) {
             consRecipeList.Add(i);
         }
-        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.armor);
+        newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.armor);
         for (int i = 0; i < newRecipeList.Count; i++) {
             armorRecipeList.Add(i);
         }

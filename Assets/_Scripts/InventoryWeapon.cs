@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory_Armor {
+public class InventoryWeapon  {
 
     public int itemID;
     public string subType;
 
-    public Inventory_Armor(int id, string subtype) {
+    public InventoryWeapon(int id, string subtype) {
         itemID = id;
         subType = subtype;
-
     }
 
+
+
     //Efekti
+
 }

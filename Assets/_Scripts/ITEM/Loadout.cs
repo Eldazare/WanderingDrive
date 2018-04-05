@@ -9,12 +9,12 @@ public class Loadout {
 	public int accessoryCount;
 	private int combatConsumableCount;
 
-	public Inventory_Weapon mainHand = null;
-	public Inventory_Weapon offHand = null;
+	public InventoryWeapon mainHand = null;
+	public InventoryWeapon offHand = null;
 	private bool twoHandEquipped = false;
 
-	public Inventory_Armor[] wornArmor; // excludes accessories
-	public List<Inventory_Armor> wornAccessories = new List<Inventory_Armor>(); // 
+	public InventoryArmor[] wornArmor; // excludes accessories
+	public List<InventoryArmor> wornAccessories = new List<InventoryArmor>(); // 
 	public List<int> combatConsumableIndexes = new List<int>();
 
 	public Loadout(int accessoryAmount){
@@ -23,7 +23,7 @@ public class Loadout {
 		for (int i = 0; i < combatConsumableCount; i++) {
 			combatConsumableIndexes.Add (-1);
 		}
-		wornArmor = new Inventory_Armor[5];
+		wornArmor = new InventoryArmor[5];
 		for (int i = 0; i < accessoryCount; i++) {
 			wornAccessories.Add (null);
 		}
@@ -37,7 +37,7 @@ public class Loadout {
 		}
 	}
 
-	public void AddMainHand(Inventory_Weapon wep){
+	public void AddMainHand(InventoryWeapon wep){
 		int handed = WeaponCreator.GetHandedness ((WeaponType)System.Enum.Parse (typeof(WeaponType), wep.subType));
 		if (handed == 2) {
 			offHand = null;
@@ -46,7 +46,7 @@ public class Loadout {
 		twoHandEquipped = true;
 	}
 
-	public void AddOffHand(Inventory_Weapon wep){
+	public void AddOffHand(InventoryWeapon wep){
 		int handed = WeaponCreator.GetHandedness ((WeaponType)System.Enum.Parse (typeof(WeaponType), wep.subType));
 		if (handed == 2) {
 			mainHand = wep;
@@ -59,11 +59,11 @@ public class Loadout {
 		}
 	}
 
-	public void AddArmor(Inventory_Armor armor, ArmorTypes type){
+	public void AddArmor(InventoryArmor armor, ArmorTypes type){
 		wornArmor [System.Convert.ToInt32 (type)] = armor;
 	}
 
-	public void AddAccessory(Inventory_Armor accessory, int slot){
+	public void AddAccessory(InventoryArmor accessory, int slot){
 		if (slot >= 0 && slot < accessoryCount) {
 			wornAccessories [slot] = accessory;
 		} else {

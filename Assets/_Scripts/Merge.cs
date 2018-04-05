@@ -22,7 +22,7 @@ public static class Merge {
         switch (RecipeType) {
             case 0:
                 //Hae resepti
-				newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.weapon);
+				newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.weapon);
                 foreach (Recipe i in newRecipeList){
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -41,7 +41,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 1:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.conCon);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.conCon);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -56,7 +56,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 2:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.armor);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.armor);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
