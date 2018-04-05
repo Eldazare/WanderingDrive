@@ -9,18 +9,18 @@ public class Crafting : MonoBehaviour
 
     public Image recipeImage;
 
-    public List<int> weaponRecipeList = new List<int>(3);
-    public List<int> consRecipeList = new List<int>(3);
-    public List<int> armorRecipeList = new List<int>(3);
+    public List<int> weaponRecipeList = new List<int>();
+    public List<int> consRecipeList = new List<int>();
+    public List<int> armorRecipeList = new List<int>();
     public List<Sprite> weaponSprites;
     public List<Sprite> consumableSprites;
     public List<Sprite> armorSprites;
 
 
-    private int currentItemSpriteList;
+    public int currentItemSpriteList;
     public int currentRecipeType;
     public int currentRecipe;
-    private int spriteCounter;
+    public int spriteCounter;
 
     public int recipeTypeWeapon = 0;
     public int recipeTypeConsumable = 1;
@@ -30,14 +30,30 @@ public class Crafting : MonoBehaviour
     public void Start() {
         Inventory.inventoryMaterials[0] = 2;
         Inventory.nonCombatConsumables[6] = 1;
+        FillLists();
         recipeImage.sprite = weaponSprites[0];
-        currentRecipe = 1;
-        //currentRecipe = weaponRecipeList[0];
+        currentRecipe = weaponRecipeList[0];
         currentRecipeType = recipeTypeWeapon;
         currentItemSpriteList = 0;
         spriteCounter = 0;
-        Debug.Log(weaponRecipeList.Count);
+        
+    }
 
+    
+    public void FillLists() {
+        List<Recipe> newRecipeList = new List<Recipe>();
+        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.weapon);
+        for (int i = 0; i < newRecipeList.Count; i++) {
+            weaponRecipeList.Add(i);
+        }
+        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.conCon);
+        for (int i = 0; i < newRecipeList.Count; i++) {
+            consRecipeList.Add(i);
+        }
+        newRecipeList = RecipeContainer.GetCraftRecipes(RecipeContainer.CraftingRecipeTypes.armor);
+        for (int i = 0; i < newRecipeList.Count; i++) {
+            armorRecipeList.Add(i);
+        }
     }
 
     public void ChangeRecipeOnwards() {
@@ -162,5 +178,6 @@ public class Crafting : MonoBehaviour
         else {
             Debug.Log("Error, combining failed");
         }
+        Debug.Log(Inventory.inventoryWeapons[0].subType);
     }
 }

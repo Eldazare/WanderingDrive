@@ -26,6 +26,7 @@ public static class Merge {
                 foreach (Recipe i in newRecipeList){
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
+                        Debug.Log("resepti löyty~");
                     }
                 }
                 //katso löytyykö tarvittavat tavarat
@@ -33,7 +34,7 @@ public static class Merge {
                     return false;
                 }
                 //Poistetaan tarvittavat materiaalit inventorysta
-                for (int i = 0; i <= newRecipe.materialList.Count; i++) {
+                for (int i = 0; i < newRecipe.materialList.Count; i++) {
                     Inventory.RemoveItem(newRecipe.materialList[i].type, newRecipe.materialList[i].subtype, newRecipe.materialList[i].itemId, newRecipe.materialList[i].amount);
                 }
                 //luodaan uusi item inventoryyn
