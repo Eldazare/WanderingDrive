@@ -5,8 +5,8 @@ using System;
 
 public enum NameType{
 	mat, nonCom, comCon, 
-	sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield, 
-	armor, 
+	sword, axe, spear, dagger, pistol, bow, Gbow, shieldS, ShieldL, 
+	helm, chest, arms, legs, boots,
 	enemySmall, enemyLarge, 
 	gather};
 

@@ -4,7 +4,11 @@
 #Possibility for bonus stats per armor piece
 #6 different elements
 
-%armor_armor_0_genericArmor
+%armor_helm_0_genericArmor
+%armor_chest_0_genericArmor
+%armor_arms_0_genericArmor
+%armor_legs_0_genericArmor
+%armor_boots_0_genericArmor
 armor_0_defense=1
 armor_0_speed=1
 armor_0_magicDefense=1
