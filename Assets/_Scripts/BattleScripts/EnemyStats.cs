@@ -8,6 +8,8 @@ public enum WeaknessType{swordW, axeW, daggerW, rangedW, magicW};
 
 public class EnemyStats {
 
+
+	public string subtype;
 	public int ID;
 	public float health;
 	public float maxHealth;
@@ -20,6 +22,6 @@ public class EnemyStats {
 	public float quickness;
 
 	public List<int> elementWeakness;
-	public List<EnemyPart> partList;
+	public List<EnemyPart> partList;  //0 is always the main body
 	
 }

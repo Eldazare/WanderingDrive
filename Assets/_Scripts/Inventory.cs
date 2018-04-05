@@ -6,13 +6,48 @@ public static class Inventory {
 
 
     public static List<Inventory_Armor> inventoryArmor = new List<Inventory_Armor>();
-    public  static List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
-    public  static List<int> inventoryMaterials = new List<int>();
-    public  static List<int> combatConsumables = new List<int>();
-    public  static List<int> nonCombatConsumables = new List<int>();
+    public static List<Inventory_Weapon> inventoryWeapons = new List<Inventory_Weapon>();
+    public static List<int> inventoryMaterials = new List<int>();
+    public static List<int> combatConsumables = new List<int>();
+    public static List<int> nonCombatConsumables = new List<int>();
     public static int capacity;
-    public  static int maxCapacity;
-    public  static int maxStack = 255;
+    public static int maxCapacity;
+    public static int maxStack = 255;
+
+	// TODO: Read counts from config file through DataManager
+	// ^^ Initialize script
+
+	/*
+	public Inventory(){
+		int materialCount = 1000;
+		int comConCount = 10;
+		int nonConCount = 10;
+		for (int i = 0; i < materialCount; i++) {
+			inventoryMaterials.Add (0);
+		}
+		for (int i = 0; i < comConCount; i++){
+			combatConsumables.Add (0);
+		}
+		for (int i = 0; i < nonConCount;i++){
+			nonCombatConsumables.Add (0);
+		}
+	}
+	*/
+
+	public static void Initialize(){
+		int materialCount = 1000;
+		int comConCount = 10;
+		int nonConCount = 10;
+		for (int i = 0; i < materialCount; i++) {
+			inventoryMaterials.Add (0);
+		}
+		for (int i = 0; i < comConCount; i++){
+			combatConsumables.Add (0);
+		}
+		for (int i = 0; i < nonConCount;i++){
+			nonCombatConsumables.Add (0);
+		}
+	}
 
     //katso löytyykö tavarat inventorysta
     public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
@@ -150,6 +185,11 @@ public static class Inventory {
         return Success;  
     }
 
+
+
+	public static bool InsertRecipeMaterial(RecipeMaterial recMat){
+		return PutItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);
+	}
      
 
 }

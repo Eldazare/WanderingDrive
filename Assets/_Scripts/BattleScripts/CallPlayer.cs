@@ -6,8 +6,6 @@ public class CallPlayer : MonoBehaviour {
 
 
 	public PlayerCombatScript player;
-	// Use this for initialization
-
 	public void Proceed(){
 		player.proceed = true;
 	}

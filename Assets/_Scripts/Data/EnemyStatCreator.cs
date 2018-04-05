@@ -6,17 +6,10 @@ public static class EnemyStatCreator {
 
 	public static EnemyStats LoadStatBlockData(int enemyIndex, string type){
 
-		string begin = "enemy";
-		switch (type) {
-		case "small":
-			begin += "Small_";
-			break;
-		case "large":
-			begin += "Large_";
-			break;
-		}
+		string begin = type+"_";
 		string indentifier = begin + enemyIndex + "_";
 		EnemyStats createe = new EnemyStats ();
+		createe.subtype = type;
 		createe.ID = enemyIndex;
 		createe.health = DataManager.ReadDataFloat(indentifier + "health");
 		createe.maxHealth = createe.health;
@@ -50,6 +43,7 @@ public static class EnemyStatCreator {
 				aPart.percentageHit = int.Parse (partDataSplit [1]);
 				aPart.damageMod = float.Parse (partDataSplit [2]);
 				aPart.hp = float.Parse (partDataSplit [3]);
+				aPart.maxHP = aPart.hp;
 				createe.partList.Add (aPart);
 				i++;
 			} else {

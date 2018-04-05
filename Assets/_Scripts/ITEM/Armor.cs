@@ -8,7 +8,7 @@ public class Armor {
 	public List<int> elementResists;
 	public float defense;
 	public float magicDefense;
-	public float speed;
+	public float speed; // needs averageing
 
 	public Armor(int elementCount, ArmorTypes type){
 		elementResists = new List<int>(){};

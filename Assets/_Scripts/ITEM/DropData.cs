@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class DropData {
 
-	List<RecipeMaterial> drops;
-	List<float> percentageList;
+	public List<RecipeMaterial> drops; // material id
+	public List<int> percentageList;
+
+	public DropData(){
+		drops = new List<RecipeMaterial> ();
+		percentageList = new List<int> ();
+	}
+
+	virtual
+	public List<DropData> GetPartDrops(){
+		return null;
+	
+	}
 }

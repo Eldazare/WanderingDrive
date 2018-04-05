@@ -14,8 +14,8 @@ public class Loadout {
 	public Inventory_Weapon mainHand = null;
 	public Inventory_Weapon offHand = null;
 	public Inventory_Armor[] wornArmor; // excludes accessories
-	public List<Inventory_Armor> wornAccessories; // 
-	public List<int> combatConsumableIndexes;
+	public List<Inventory_Armor> wornAccessories = new List<Inventory_Armor>(); // 
+	public List<int> combatConsumableIndexes = new List<int>();
 
 	public Loadout(int accessoryAmount){
 		accessoryCount = accessoryAmount;
