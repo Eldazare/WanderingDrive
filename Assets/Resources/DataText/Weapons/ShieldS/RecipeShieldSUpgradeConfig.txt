@@ -6,11 +6,10 @@
 
 
 %RecipeUp_ShieldS_0_better small shield
-RecipeUp_ShieldS_0_main=Wep_ShieldS_1
-RecipeUp_ShieldS_0_m1=Mat_Mat_1_2
-RecipeUp_ShieldS_0_m2=Mat_Mat_4_2
-RecipeUp_ShieldS_0_m3=Mat_Mat_5_1
-RecipeUp_ShieldS_0_m4=
-RecipeUp_ShieldS_0_result=Wep_ShieldS_2
-
+RecipeUpShieldS_0_main=Wep_ShieldS_1
+RecipeUpShieldS_0_m1=Mat_Mat_1_2
+RecipeUpShieldS_0_m2=Mat_Mat_4_2
+RecipeUpShieldS_0_m3=Mat_Mat_5_1
+RecipeUpShieldS_0_m4=
+RecipeUpShieldS_0_result=Wep_ShieldS_2
 

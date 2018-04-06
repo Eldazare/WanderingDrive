@@ -6,11 +6,11 @@
 
 
 %RecipeUp_Talisman_0_better Generic Talisman
-RecipeUp_Talisman_0_main=Wep_Talisman_1
-RecipeUp_Talisman_0_m1=Mat_Mat_1_2
-RecipeUp_Talisman_0_m2=Mat_Mat_4_2
-RecipeUp_Talisman_0_m3=Mat_Mat_5_1
-RecipeUp_Talisman_0_m4=
-RecipeUp_Talisman_0_result=Wep_Talisman_2
+RecipeUpTalisman_0_main=Wep_Talisman_1
+RecipeUpTalisman_0_m1=Mat_Mat_1_2
+RecipeUpTalisman_0_m2=Mat_Mat_4_2
+RecipeUpTalisman_0_m3=Mat_Mat_5_1
+RecipeUpTalisman_0_m4=
+RecipeUpTalisman_0_result=Wep_Talisman_2
 
 

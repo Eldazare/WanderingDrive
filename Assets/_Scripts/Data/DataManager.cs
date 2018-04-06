@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-
-
 public enum DataManagerDictionaryType{
-	Consumable, Material, Armor, Recipe, EnemySmall, EnemyLarge, Drop, Gather,
-	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, // copy of weaponType
-	RecipeUp, Node
+	Consumable, Material, Armor, Accessory, EnemySmall, EnemyLarge, Drop, Gather,
+	RecipeWeapon, RecipeArmor, RecipeAccessory, RecipeComCon, RecipeNonCom, 	// copy of RecipeType
+	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, 	// copy of WeaponType
+	RecipeUpSword, RecipeUpMace, RecipeUpSpear, RecipeUpDagger, RecipeUpPistol, RecipeUpBow, RecipeUpGBow,
+	RecipeUpShieldS, RecipeUpShieldL, RecipeUpTalisman, 						// "copy" of WeaponType
+	Node
 }
 
 public static class DataManager  {
@@ -67,8 +68,14 @@ public static class DataManager  {
 		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
 		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryType.Drop], nameListGeneric);
 		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryType.Gather], nameListGeneric);
-		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryType.Recipe], recipeNameList);
 		DownloadSingleFile ("MultiBattleNodes", configDatas [(int)DataManagerDictionaryType.Node], nameListGeneric);
+
+		string[] recipeEnumNames = System.Enum.GetNames (typeof(CraftingRecipeType));
+		foreach (string recipString in recipeEnumNames) {
+			string recipeFile = "Recipes/Recipe"+recipString+"Config";
+			string recipeDictionaryType = "Recipe" + recipString;
+			DownloadSingleFile (recipeFile, configDatas [(int)System.Enum.Parse (typeof(DataManagerDictionaryType), recipeDictionaryType)], recipeNameList);
+		}
 
 		string[] wepEnumNames = System.Enum.GetNames (typeof(WeaponType));
 		foreach (string wepString in wepEnumNames) {
@@ -106,7 +113,8 @@ public static class DataManager  {
 		string configPath = "Weapons/"+wepStr + "/Weapon" + wepStr + "Config";
 		string recipePath = "Weapons/"+wepStr + "/Recipe" + wepStr + "UpgradeConfig";
 		int dictionaryIndex = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), wepStr);
+		int dictionaryRecipeUpIndex = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), "RecipeUp" + wepStr);
 		DownloadSingleFile (configPath, configDatas [dictionaryIndex], nameListGeneric);
-		DownloadSingleFile (recipePath, configDatas [(int)DataManagerDictionaryType.RecipeUp], recipeNameList);
+		DownloadSingleFile (recipePath, configDatas [dictionaryRecipeUpIndex], recipeNameList);
 	}
 }
