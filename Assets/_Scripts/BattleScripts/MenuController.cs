@@ -82,7 +82,6 @@ public class MenuController : MonoBehaviour {
 	// Buttons.
 	public void Attack () {
 		DefaultButtons.SetActive(false);
-		//player.Attack ();
 		StartCoroutine(CameraToEnemy());
 	}
 
@@ -91,8 +90,15 @@ public class MenuController : MonoBehaviour {
 		yield return new WaitUntil(()=>proceed);
 		combatController.ActivatePartCanvas(targetedEnemy);
 	}
+	public void SelectEnemyPart(int partNbr){
+		foreach (var item in enemyPartCanvasButtons)
+		{
+			item.GetComponent<Button>().interactable = true;
+		}
+		enemyPartCanvasButtons[partNbr].GetComponent<Button>().interactable = false;
+		selectedPart = partNbr;
+	}
 	public void ChoosePartToAttack(){
-		//player.Attack(part);
 		combatController.ActivatePartCanvas(targetedEnemy);
 		StartCoroutine(PlayerAttack());
 	}
@@ -145,14 +151,7 @@ public class MenuController : MonoBehaviour {
 		textBoxText.text = "";
 		textBox.SetActive(false);
 	}
-	public void SelectEnemyPart(int partNbr){
-		foreach (var item in enemyPartCanvasButtons)
-		{
-			item.GetComponent<Button>().interactable = true;
-		}
-		enemyPartCanvasButtons[partNbr].GetComponent<Button>().interactable = false;
-		selectedPart = partNbr;
-	}
+	
 	IEnumerator AttackWaitTime(){
 		yield return new WaitForSeconds(1.5f);
 		PlayerTurnTextFade();
