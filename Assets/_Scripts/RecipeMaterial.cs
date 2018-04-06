@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RecipeMaterial  {
 
-	public string type; // wep | mat | consumable | arm
-	public string subtype; // mat | nonCom | comCon | (sword | axe | spear | dagger | pistol | bow | Gbow | shield | shil) | (head | torso | arms | legs | boots)
+	public ItemType type; // wep | mat | consumable | arm
+	public ItemSubType subtype; // mat | nonCom | comCon | (sword | axe | spear | dagger | pistol | bow | Gbow | shield | shil) | (head | torso | arms | legs | boots)
     public int itemId;
 	public string itemName; // TODO
 	public int amount;
@@ -14,8 +14,8 @@ public class RecipeMaterial  {
 
 	public RecipeMaterial(string identifier){
 		string[] matArr = identifier.Split ("_".ToCharArray ());
-		type = matArr [0];
-		subtype = matArr [1];
+		type = (ItemType)System.Enum.Parse(typeof(ItemType),matArr [0]);
+		subtype = (ItemSubType)System.Enum.Parse(typeof(ItemSubType),matArr [1]);
 		itemId = int.Parse (matArr [2]);
 		if (matArr.Length > 3) {
 			amount = int.Parse (matArr [3]);

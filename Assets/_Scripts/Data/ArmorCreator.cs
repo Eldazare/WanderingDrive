@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ArmorTypes{helm, chest, arms, legs, boots};
+public enum ArmorType{helm, chest, arms, legs, boots};
 
 public static class ArmorCreator {
 
-	public static Armor CreateArmor(ArmorTypes subtype, int id){
+	public static Armor CreateArmor(ArmorType subtype, int id){
 		string begin = "armor_" + id + "_";
 		Armor createe = new Armor (System.Enum.GetNames(typeof(Element)).Length, subtype);
 		createe.defense = DataManager.ReadDataFloat (begin + "defense");

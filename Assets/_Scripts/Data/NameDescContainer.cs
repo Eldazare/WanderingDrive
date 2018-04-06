@@ -8,7 +8,8 @@ public enum NameType{
 	sword, axe, spear, dagger, pistol, bow, Gbow, shieldS, ShieldL, 
 	helm, chest, arms, legs, boots,
 	enemySmall, enemyLarge, 
-	gather};
+	gather
+};
 
 public static class NameDescContainer  {
 

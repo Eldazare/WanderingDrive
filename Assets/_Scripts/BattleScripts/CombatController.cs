@@ -54,7 +54,7 @@ public class CombatController : MonoBehaviour {
 		if(loadout.wornArmor[0] != null){
 			foreach (var item in loadout.wornArmor)	
 			{
-				Armor armor = ArmorCreator.CreateArmor((ArmorTypes)System.Enum.Parse(typeof(ArmorTypes), item.subType), item.itemID);
+				Armor armor = ArmorCreator.CreateArmor((ArmorType)System.Enum.Parse(typeof(ArmorType), item.subType), item.itemID);
 				armorAmount += armor.defense;
 
 				int i = 0;

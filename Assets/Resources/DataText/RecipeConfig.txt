@@ -14,4 +14,4 @@ recipe_0_m1=mat_mat_0_2
 recipe_0_m2=cons_nonCom_6_1
 recipe_0_m3=
 recipe_0_m4=
-recipe_0_result=weapon_sword_1
+recipe_0_result=wep_sword_1

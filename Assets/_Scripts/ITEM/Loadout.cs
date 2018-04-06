@@ -59,7 +59,7 @@ public class Loadout {
 		}
 	}
 
-	public void AddArmor(InventoryArmor armor, ArmorTypes type){
+	public void AddArmor(InventoryArmor armor, ArmorType type){
 		wornArmor [System.Convert.ToInt32 (type)] = armor;
 	}
 

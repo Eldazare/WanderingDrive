@@ -14,14 +14,7 @@ public static class Inventory {
     public static int maxCapacity = 30;
     public static int maxStack = 255;
 
-    public enum ItemTypes{
-        weapon, armor, cons, mat
-    };
-    public enum ItemSubTypes {
-        nonCom, comCom, mat, sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield,
-        helm, chest, arms, legs, boots,
-        accessory
-    };
+    
 
 	// TODO: Read counts from config file through DataManager
 	// ^^ Initialize script
@@ -62,21 +55,21 @@ public static class Inventory {
     public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
         bool result = true;
         int temp = 0;
-        foreach (RecipeMaterial i in materialList) {
-            ItemSubTypes parsed_ItemSubType = (ItemSubTypes)System.Enum.Parse(typeof(ItemSubTypes), i.subtype);
-            if (parsed_ItemSubType == ItemSubTypes.nonCom) {
-                if (nonCombatConsumables[i.itemId] < i.amount) {
+		foreach (RecipeMaterial item in materialList) {
+			ItemSubType itemSubType = item.subtype;
+            if (itemSubType == ItemSubType.nonCom) {
+                if (nonCombatConsumables[item.itemId] < item.amount) {
                     result = false;
                 }
             }
-            else if (parsed_ItemSubType == ItemSubTypes.comCom) {
-                if (combatConsumables[i.itemId] < i.amount) {
+            else if (itemSubType == ItemSubType.comCon) {
+                if (combatConsumables[item.itemId] < item.amount) {
                     result = false;
                     
                 }
             }
-            else if (parsed_ItemSubType == ItemSubTypes.mat) {
-                if (inventoryMaterials[i.itemId] < i.amount) {
+            else if (itemSubType == ItemSubType.mat) {
+                if (inventoryMaterials[item.itemId] < item.amount) {
                     result = false;
                 }
             }
@@ -86,12 +79,10 @@ public static class Inventory {
     }
 
     //hae itemi inventorysta ja poista se
-    public static bool RemoveItem(string itemType, string subType, int itemId, int amount) {
-        ItemTypes parsed_ItemType = (ItemTypes)System.Enum.Parse(typeof(ItemTypes), itemType);
-        ItemSubTypes parsed_ItemSubType = (ItemSubTypes)System.Enum.Parse(typeof(ItemSubTypes), subType);
+	public static bool RemoveItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
-        switch (parsed_ItemType) {
-            case ItemTypes.weapon:
+        switch (itemType) {
+            case ItemType.wep:
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
                     if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
@@ -100,17 +91,17 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemTypes.armor:
+            case ItemType.armor:
                 for (int i = 0; i <= inventoryArmor.Count; i++) {
-                    if(itemId == inventoryArmor[i].itemID && subType == inventoryArmor[i].subType) {
+				if(itemId == inventoryArmor[i].itemID && subType.ToString() == inventoryArmor[i].subType) {
                         inventoryArmor.RemoveAt(i);
                         capacity--;
                         Success = true;
                     }
                 }
                 break;
-            case ItemTypes.cons:
-                if (parsed_ItemSubType == ItemSubTypes.nonCom) {
+            case ItemType.cons:
+                if (subType == ItemSubType.nonCom) {
                     if (nonCombatConsumables[itemId] < amount) {
                         break;
                     }
@@ -119,7 +110,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (parsed_ItemSubType == ItemSubTypes.comCom) {
+                else if (subType == ItemSubType.comCon) {
                     if ( combatConsumables[itemId] < amount) {
                         break;
                     }
@@ -129,7 +120,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemTypes.mat:
+            case ItemType.mat:
                 if(inventoryMaterials[itemId] < amount) {
                     break;
                 }
@@ -143,35 +134,33 @@ public static class Inventory {
     }
     
     //Laita uusi Itemi inventoryyn
-    public static bool PutItem(string itemType, string subType, int itemId, int amount) {
-        ItemTypes parsed_ItemType = (ItemTypes)System.Enum.Parse(typeof(ItemTypes), itemType);
-        ItemSubTypes parsed_ItemSubType = (ItemSubTypes)System.Enum.Parse(typeof(ItemSubTypes), subType);
+	public static bool PutItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
-        switch (parsed_ItemType) {
-            case ItemTypes.weapon:
+        switch (itemType) {
+            case ItemType.wep:
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
                 else {
-                    InventoryWeapon newWeapon = new InventoryWeapon(itemId, subType);
+					InventoryWeapon newWeapon = new InventoryWeapon(itemId, subType.ToString());
                     inventoryWeapons.Add(newWeapon);
                     capacity++;
                     Success = true;
                     break;
                 }
-            case ItemTypes.armor:
+            case ItemType.armor:
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
                 else {
-                    InventoryArmor newArmor = new InventoryArmor(itemId, subType);
+					InventoryArmor newArmor = new InventoryArmor(itemId, subType.ToString());
                     inventoryArmor.Add(newArmor);
                     capacity++;
                     Success = true;
                     break;
                 }
-            case ItemTypes.cons:
-                if(parsed_ItemSubType == ItemSubTypes.nonCom) {
+            case ItemType.cons:
+                if(subType == ItemSubType.nonCom) {
                     if (nonCombatConsumables[itemId] + amount > maxStack) {
                         break;
                     }
@@ -180,7 +169,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (parsed_ItemSubType == ItemSubTypes.comCom){
+                else if (subType == ItemSubType.comCon){
                     if (combatConsumables[itemId] + amount > maxStack){
                         break;
                     }
@@ -190,7 +179,7 @@ public static class Inventory {
                     }    
                 }
                 break;
-            case ItemTypes.mat:
+            case ItemType.mat:
                 if (inventoryMaterials[itemId] + amount > maxStack) {
                     break;
                 }

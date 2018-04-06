@@ -28,7 +28,7 @@ public static class Merge {
         switch (RecipeType) {
             case 0:
                 //Hae resepti
-				newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.weapon);
+				newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeType.weapon);
                 foreach (Recipe i in newRecipeList){
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -47,7 +47,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 1:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.armor);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeType.armor);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -62,7 +62,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 2:
-			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.nonconCon);
+			    newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeType.nonconCon);
                 foreach (Recipe i in newRecipeList) {
                     if (RecipeID == i.recipeId) {
                         newRecipe = i;
@@ -77,7 +77,7 @@ public static class Merge {
                 Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
                 break;
             case 3:
-                newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeTypes.conCon);
+                newRecipeList = RecipeContainer.GetCraftRecipes(CraftingRecipeType.conCon);
                 foreach (Recipe i in newRecipeList)
                 {
                     if (RecipeID == i.recipeId)
