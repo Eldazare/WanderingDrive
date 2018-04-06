@@ -680,15 +680,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1524175302687688}
-  m_LocalRotation: {x: 0, y: -0.910395, z: 0, w: 0.41374022}
-  m_LocalPosition: {x: 4.56, y: 0, z: 1.67}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.3159394, y: -0.089999914, z: 7.2771244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4987871386582188}
   - {fileID: 4574555509391876}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -131.12, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4574555509391876
 Transform:
   m_ObjectHideFlags: 1
@@ -696,7 +696,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1688156722184334}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.16, y: 0, z: 7.57}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4557782649099824}
@@ -1229,6 +1229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95355292181218182}
   combatController: {fileID: 0}
+  enemyName: 
   enemyID: 0
   proceed: 0
   cameraTarget: {fileID: 1688156722184334}
@@ -1237,6 +1238,7 @@ MonoBehaviour:
   - {fileID: 1019912044831470}
   - {fileID: 1745945132895318}
   - {fileID: 1019196179021916}
+  partButtons: []
 --- !u!114 &114408387564228860
 MonoBehaviour:
   m_ObjectHideFlags: 1

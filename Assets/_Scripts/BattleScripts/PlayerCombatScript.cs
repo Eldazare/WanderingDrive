@@ -17,12 +17,13 @@ public class PlayerCombatScript : MonoBehaviour{
 
 												//Perfect values are: if timer > maxDuration - perfect| Tiers are: if timer > maxDuration * tier
 	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 1f, perfectDodge = 0.5f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
-	float[] blockTiers = {0.75f, 0.5f, 0.25f};
+	float[] blockTiers = {0.90f,0.75f, 0.5f, 0.25f};
 	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
 	float focusDamageBuff=1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 1f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 2; //How close the player moves to the enemy
-	bool defended;
+	bool defended, stunned, paralyzed;
+	
 
 	public Animator animator;
 	
@@ -168,13 +169,14 @@ public class PlayerCombatScript : MonoBehaviour{
 			else{
 				//Dodged attack
 				returnedValue = "You dodged the attack!";
-				takeDamage(0, 0, 0);
+				takeDamage(0,0,0);
 			}
 		}
 		else if(blockTimer>0){
 			Debug.Log("BlockTimer: "+blockTimer);
 			if(blockTimer>blockDuration-perfectBlock){
-				returnedValue = "You blocked´the attack and took only "+takeDamage(damage,elementDamage, element, 0.9f)+" damage!";
+				returnedValue = "You blocked the attack and took no damage!";
+				takeDamage(0,0,0);
 			}else{
 				bool blocked = false;
 				foreach (var blockModifier in blockTiers){
@@ -183,6 +185,7 @@ public class PlayerCombatScript : MonoBehaviour{
 						returnedValue = "You blocked the attack but took "+takeDamage(damage,elementDamage, element, blockModifier)+"!";
 						blocked = true;
 						break;
+						
 					}
 				}
 				if(!blocked){

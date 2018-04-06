@@ -7,5 +7,4 @@ public class CombatConsumable : Consumable {
     public CombatConsumable(int id) : base (id) {
        
     }
-
 }

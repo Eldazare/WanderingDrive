@@ -68,9 +68,6 @@ public class CombatController : MonoBehaviour {
 			}
 			playerStats.speed = speed/j;
 		}
-		
-
-		
 
 		//Accessory generation
 		if(loadout.wornAccessories[0] != null){
@@ -88,7 +85,6 @@ public class CombatController : MonoBehaviour {
 	}
 
 	IEnumerator enemyAttacksRoutine(){
-		
 			yield return new WaitUntil(()=>menuController.proceed);
 			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade();
@@ -104,6 +100,7 @@ public class CombatController : MonoBehaviour {
 					break;
 				}
 			}
+
 			touchController.enemyTurn = false;
 			enemyTurns--;
 			if(enemyTurns<=0){
@@ -137,24 +134,19 @@ public class CombatController : MonoBehaviour {
 	}
 
 	public void EnemyDies(Enemy enemy){
-
 			
 		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyStats.ID);
 		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,2 ,enemy.enemyStats.partList);
 
 		encounterDrops.Add(list);
-		
 
-		//menuController.enemyHealthBars.Remove(menuController.enemyHealthBars[menuController.enemyHealthBars.Count]);
-		Destroy(menuController.enemyHealthBars[menuController.enemyHealthBars.Count-1]);
 		enemyList[enemyList.IndexOf(enemy)] = null;
-		Destroy(enemy.gameObject,2f);
+		Destroy(enemy.gameObject, 1f);
 		foreach (var item in enemyList)
 		{
 			if(item != null){
 				item.updateStats();
 			}
-			
 		}
 		foreach (var item in encounterDrops)
 		{
@@ -195,11 +187,15 @@ public class CombatController : MonoBehaviour {
 				menuController.enemyPartCanvasButtons[i].SetActive(true);
 				if(!enemy.enemyStats.partList[i].broken){
 					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%";
+					menuController.enemyPartCanvasButtons[i].GetComponent<Image>().color = Color.white;
 				}else{
 					menuController.enemyPartCanvasButtons[i].GetComponentInChildren<Text>().text = enemy.enemyStats.partList[i].name +"\n"+enemy.enemyStats.partList[i].percentageHit+"%"+"\nBroken";
 					menuController.enemyPartCanvasButtons[i].GetComponent<Image>().color = Color.red;
 				}
 				i++;
+			}
+			if(menuController.selectedPart < 0){
+				menuController.SelectEnemyPart(0);
 			}
 		}else{
 			foreach (var item in menuController.enemyPartCanvasButtons)

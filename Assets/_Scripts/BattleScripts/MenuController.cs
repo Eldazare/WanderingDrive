@@ -7,7 +7,6 @@ public class MenuController : MonoBehaviour {
 
 
 	public CombatController combatController;
-	[HideInInspector]
 	public Enemy targetedEnemy;
 
 
@@ -47,12 +46,15 @@ public class MenuController : MonoBehaviour {
 	//Uses the linked list concept, to switch targets
 	public void SelectTargetEnemy(int enemyNbr){
 		targetedEnemy = combatController.enemyList[enemyNbr];
-		foreach (var item in enemyHealthBars)
-		{
+		int i = enemyHealthBars.Count-1;
+		foreach (var item in combatController.enemyList){
 			if(item != null){
-				item.GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+				enemyHealthBars[i].SetActive(true);
+				enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+			}else{
+				enemyHealthBars[i].SetActive(false);
 			}
-			
+			i--;
 		}
 		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
@@ -88,8 +90,10 @@ public class MenuController : MonoBehaviour {
 	IEnumerator CameraToEnemy(){
 		combatController.cameraScript.MoveCamera(targetedEnemy.cameraTarget);
 		yield return new WaitUntil(()=>proceed);
+		proceed = false;
 		combatController.ActivatePartCanvas(targetedEnemy);
 	}
+
 	public void SelectEnemyPart(int partNbr){
 		foreach (var item in enemyPartCanvasButtons)
 		{
@@ -156,6 +160,31 @@ public class MenuController : MonoBehaviour {
 		yield return new WaitForSeconds(1.5f);
 		PlayerTurnTextFade();
 		DefaultButtons.SetActive(true);
+		int i = enemyHealthBars.Count-1;
+		foreach (var item in combatController.enemyList){
+			if(item != null){
+				enemyHealthBars[i].SetActive(true);
+				if(item == targetedEnemy){
+					enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
+				}else{
+					enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+				}
+				
+			}else{
+				enemyHealthBars[i].SetActive(false);
+				if(targetedEnemy == null){
+					foreach (var item1 in combatController.enemyList)
+					{
+						if(item != null){
+							targetedEnemy = item1;
+							break;
+						}
+					}
+				}
+			}
+			i--;
+		}
+		player.playerStats.ApplyPlayerBuffs();
 	}
 
 	public void EnemyTurnTextFade(){
