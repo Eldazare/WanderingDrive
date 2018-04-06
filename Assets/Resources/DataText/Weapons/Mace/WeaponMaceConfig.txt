@@ -1,0 +1,21 @@
+#This is a comment line
+#Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Maces are 1-handed
+#As the only "Smash" type weapon, they get variety of stuff
+
+#base is as follows: damage/accuracyBonus/weaknessType(int)
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
+
+Mace_speed=1
+
+%Weapon_Mace_0_generic Mace
+&Weapon_Mace_0_generic Mace description is here
+Mace_0_base=6/0/3
+Mace_0_element=0/0/0
+Mace_0_bonuses=0/0/0/0
+Mace_0_defenseMods=0.0/0.0
+

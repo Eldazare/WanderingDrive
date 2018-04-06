@@ -28,7 +28,7 @@ public class TestMain : MonoBehaviour {
 	private IEnumerator WaitLoadScene(){
 		yield return new WaitForSeconds(5);
 		Loadout loadout = new Loadout (1);
-		loadout.AddMainHand (new InventoryWeapon (0, "sword"));
+		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
 		und.loadoutList.InsertLoadout (loadout, 0);
 		WorldNode testNode = this.GetComponent<WorldNode> ();
 		testNode.Interact ();

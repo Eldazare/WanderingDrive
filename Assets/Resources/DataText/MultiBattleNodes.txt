@@ -1,8 +1,8 @@
 #This is a comment
 #node_multimonster_id=
 #S = Small, L = Large
-#then just the id
+#then just the id (of the monster)
 #_ is separator
 
 
-node_multimonster_0=S0_S0_S0_S0
+Node_multimonster_0=S0_S0_S0_S0

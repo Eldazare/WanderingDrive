@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType{sword, axe, spear, dagger, pistol, bow, Gbow, shieldS, shieldL};
+public enum WeaponType{Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman};
+// IMPORTANT: WeaponType content is copied to -> 
+// 					DictionaryType 		(in DataManager), 
+//					NameType 			(in NameDescContainer), 
+//					ItemSubType 		(in RecipeContainer),
+//					EquipmentSubtype 	(in RecipeContainer)
 
 public static class WeaponCreator  {
 
@@ -11,7 +16,7 @@ public static class WeaponCreator  {
 															1,1};
 
 	public static WeaponStats CreateWeaponStatBlock(WeaponType wepType, int id){
-		string begin = "weapon_" + System.Enum.GetName(typeof(WeaponType), wepType) + "_" + id + "_";
+		string begin = System.Enum.GetName(typeof(WeaponType), wepType) + "_" + id + "_";
 		WeaponStats createe = new WeaponStats ();
 		createe.id = id;
 		createe.subtype = wepType;

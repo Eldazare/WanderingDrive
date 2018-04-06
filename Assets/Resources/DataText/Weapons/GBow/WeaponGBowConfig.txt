@@ -2,19 +2,20 @@
 #Element{none, fire, ice, thunder, earth, light, shadow};
 #WeaknessType{slash, stab, smash, ranged, magic};
 
-#Swords are 2-handed
+#Greatbows are 2-handed (Ranged)
+#They boast massive damage, but penalized defensive mods
 
 #base is as follows: damage/accuracyBonus/weaknessType(int)
 #element is as follows: damage/element/bonus
 #bonuses are as follows: damage/magicDamage/armor/magicArmor
 #defenseMods are as follows: dodgeMod / BlockMod
 
-weapon_sword_speed=1
+Weapon_GBow_speed=1
 
-%weapon_sword_0_genericSword
-&weapon_sword_0_genericSword description is here
-weapon_sword_0_base=10/0/0
-weapon_sword_0_element=0/0/0
-weapon_sword_0_bonuses=0/0/0/0
-weapon_sword_0_defenseMods=0.0/0.0
+%Weapon_GBow_0_generic Greatbow
+&Weapon_GBow_0_generic Greatbow description is here
+GBow_0_base=15/0/4
+GBow_0_element=5/5/0
+GBow_0_bonuses=0/0/0/0
+GBow_0_defenseMods=0.0/0.0
 

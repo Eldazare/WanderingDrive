@@ -28,22 +28,22 @@ public static class NodeInteraction {
 				break;
 			case 1:
 				List<NodeEnemy> enemyList1 = new List<NodeEnemy> ();
-				enemyList1.Add (new NodeEnemy (id, "enemySmall"));
+				enemyList1.Add (new NodeEnemy (id, "EnemySmall"));
 				theObject.CombatPrompt (enemyList1);
 				break;
 			case 2:
 				List<NodeEnemy> enemyList2 = new List<NodeEnemy> ();
 				// Note: undefinedin config?
-				string[] enemyData = DataManager.ReadDataString ("node_multimonster_" + id).Split ("_".ToCharArray ());
+				string[] enemyData = DataManager.ReadDataString ("Node_multimonster_" + id).Split ("_".ToCharArray ());
 				foreach (string str in enemyData) {
 					int eId = str [1];
 					string eSubtype = "";
 					switch (str [0]) {
 					case 'S':
-						eSubtype = "enemySmall";
+						eSubtype = "EnemySmall";
 						break;
 					case 'L':
-						eSubtype = "enemyLarge";
+						eSubtype = "EnemyLarge";
 						break;
 					default:
 						Debug.LogError ("MultiBattle config contained false enemyType identifier (id: " + id + "), " + str [0]);
@@ -55,7 +55,7 @@ public static class NodeInteraction {
 				break;
 			case 3:
 				List<NodeEnemy> enemyList3 = new List<NodeEnemy> ();
-				enemyList3.Add (new NodeEnemy (id, "enemyLarge"));
+				enemyList3.Add (new NodeEnemy (id, "EnemyLarge"));
 				theObject.CombatPrompt (enemyList3);
 				break;
 			case 4:

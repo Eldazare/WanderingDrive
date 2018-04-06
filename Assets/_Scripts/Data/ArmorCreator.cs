@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ArmorType{helm, chest, arms, legs, boots};
+public enum ArmorType{Helm, Chest, Arms, Legs, Boots};
+// IMPORTANT: Copy to ->
+//				NameType			(in NameDescContainer)
+//				ItemSubType 		(in RecipeContainer)
+//				EquipmentSubtype 	(in RecipeContainer)
 
 public static class ArmorCreator {
 

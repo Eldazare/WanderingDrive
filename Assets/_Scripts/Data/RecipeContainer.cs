@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum CraftingRecipeType{
-	weapon, armor, accessory, conCon, nonconCon
+	Weapon, Armor, Accessory, ComCon, NonCon
 };
 
 public enum EquipmentSubtype{
-	sword, axe, spear, dagger, pistol, bow, greatbow, buckler, towershield,
-	helm, chest, arms, legs, boots,
-	accessory
+	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
+	Helm, Chest, Arms, Legs, Boots,
+	Accessory
 };
 
 public enum ItemType{
-	wep, armor, cons, mat
+	Wep, Armor, Cons, Mat
 };
 
 public enum ItemSubType {
-	nonCom, comCon, mat, 
-	sword, axe, spear, dagger, pistol, bow, Gbow, shieldS, shieldL,
-	helm, chest, arms, legs, boots,
-	accessory
+	NonCom, ComCon, Mat, 
+	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
+	Helm, Chest, Arms, Legs, Boots,
+	Accessory
 };
 
 public static class RecipeContainer {
@@ -41,11 +41,11 @@ public static class RecipeContainer {
 			generated = true;
 			foreach (string recipeName in recipeNames) {
 				string[] splitStr = recipeName.Split ("_".ToCharArray ());
-				if (splitStr [0] == "recipeUp") {
+				if (splitStr [0] == "RecipeUp") {
 					RecipeUpgrade recipeUp = RecipeCreator.CreateUpgradeRecipe (splitStr [1], int.Parse (splitStr [2]));
 					EquipmentSubtype eqSubT = (EquipmentSubtype)System.Enum.Parse (typeof(EquipmentSubtype), splitStr [1]);
 					equipmentUpgrades [System.Convert.ToInt32 (eqSubT)].Add (recipeUp);
-				} else if (splitStr [0] == "recipe") {
+				} else if (splitStr [0] == "Recipe") {
 					Recipe recipe = RecipeCreator.CreateRecipe (int.Parse (splitStr [2]));
 					CraftingRecipeType recipetype = (CraftingRecipeType)System.Enum.Parse (typeof(CraftingRecipeType), splitStr [1]);
 					craftingRecipes [System.Convert.ToInt32 (recipetype)].Add (recipe);

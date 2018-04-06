@@ -4,11 +4,10 @@ using UnityEngine;
 using System;
 
 public enum NameType{
-	mat, nonCom, comCon, 
-	sword, axe, spear, dagger, pistol, bow, Gbow, shieldS, ShieldL, 
-	helm, chest, arms, legs, boots,
-	enemySmall, enemyLarge, 
-	gather
+	Mat, NonCom, ComCon, 
+	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
+	Helm, Chest, Arms, Legs, Boots, Accessory,
+	EnemySmall, EnemyLarge, Gather
 };
 
 public static class NameDescContainer  {

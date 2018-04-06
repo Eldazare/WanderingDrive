@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DropperType{
-	enemySmall, enemyLarge, gather
-};
+public enum DropperType{EnemySmall, EnemyLarge, Gather};
+// Copy to NameType in NameDescContainer
 
 public static class DropDataCreator {
 
@@ -20,9 +19,9 @@ public static class DropDataCreator {
 
 
 	public static DropData CreateDropData(DropperType dropperType, int id){
-		string begin = "drop_" + System.Enum.GetName (typeof(DropperType), dropperType) + "_"+id+"_";
+		string begin = "Drop_" + System.Enum.GetName (typeof(DropperType), dropperType) + "_"+id+"_";
 		DropData createe = new DropData ();
-		if (dropperType != DropperType.gather) {
+		if (dropperType != DropperType.Gather) {
 			EnemyDropData createeEnemy = new EnemyDropData ();
 			createeEnemy.partDropDatas = new List<DropData> ();
 			for (int i = 1; i<10;i++){
@@ -39,7 +38,7 @@ public static class DropDataCreator {
 						break;
 					} else {
 						string[] datasplit = dataStr.Split ("_".ToCharArray ());
-						createeDrop.drops.Add (new RecipeMaterial ("mat_mat_" + datasplit[0]));
+						createeDrop.drops.Add (new RecipeMaterial ("Mat_Mat_" + datasplit[0]));
 						createeDrop.percentageList.Add (int.Parse (datasplit [1]));
 						j++;
 					}
@@ -54,7 +53,7 @@ public static class DropDataCreator {
 				break;
 			}
 			string[] partSplit = partString.Split ("_".ToCharArray ());
-			createe.drops.Add(new RecipeMaterial("mat_mat_"+partSplit[0]));
+			createe.drops.Add(new RecipeMaterial("Mat_Mat_"+partSplit[0]));
 			createe.percentageList.Add(int.Parse(partSplit[1]));
 			k++;
 		}

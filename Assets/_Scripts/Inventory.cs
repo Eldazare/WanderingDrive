@@ -57,18 +57,18 @@ public static class Inventory {
         int temp = 0;
 		foreach (RecipeMaterial item in materialList) {
 			ItemSubType itemSubType = item.subtype;
-            if (itemSubType == ItemSubType.nonCom) {
+            if (itemSubType == ItemSubType.NonCom) {
                 if (nonCombatConsumables[item.itemId] < item.amount) {
                     result = false;
                 }
             }
-            else if (itemSubType == ItemSubType.comCon) {
+            else if (itemSubType == ItemSubType.ComCon) {
                 if (combatConsumables[item.itemId] < item.amount) {
                     result = false;
                     
                 }
             }
-            else if (itemSubType == ItemSubType.mat) {
+            else if (itemSubType == ItemSubType.Mat) {
                 if (inventoryMaterials[item.itemId] < item.amount) {
                     result = false;
                 }
@@ -82,7 +82,7 @@ public static class Inventory {
 	public static bool RemoveItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
-            case ItemType.wep:
+            case ItemType.Wep:
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
                     if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
@@ -91,7 +91,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.armor:
+            case ItemType.Armor:
                 for (int i = 0; i <= inventoryArmor.Count; i++) {
 				if(itemId == inventoryArmor[i].itemID && subType.ToString() == inventoryArmor[i].subType) {
                         inventoryArmor.RemoveAt(i);
@@ -100,8 +100,8 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.cons:
-                if (subType == ItemSubType.nonCom) {
+            case ItemType.Cons:
+                if (subType == ItemSubType.NonCom) {
                     if (nonCombatConsumables[itemId] < amount) {
                         break;
                     }
@@ -110,7 +110,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == ItemSubType.comCon) {
+                else if (subType == ItemSubType.ComCon) {
                     if ( combatConsumables[itemId] < amount) {
                         break;
                     }
@@ -120,7 +120,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.mat:
+            case ItemType.Mat:
                 if(inventoryMaterials[itemId] < amount) {
                     break;
                 }
@@ -137,7 +137,7 @@ public static class Inventory {
 	public static bool PutItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
-            case ItemType.wep:
+            case ItemType.Wep:
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
@@ -148,7 +148,7 @@ public static class Inventory {
                     Success = true;
                     break;
                 }
-            case ItemType.armor:
+            case ItemType.Armor:
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }
@@ -159,8 +159,8 @@ public static class Inventory {
                     Success = true;
                     break;
                 }
-            case ItemType.cons:
-                if(subType == ItemSubType.nonCom) {
+            case ItemType.Cons:
+                if(subType == ItemSubType.NonCom) {
                     if (nonCombatConsumables[itemId] + amount > maxStack) {
                         break;
                     }
@@ -169,7 +169,7 @@ public static class Inventory {
                         Success = true;
                     }
                 }
-                else if (subType == ItemSubType.comCon){
+                else if (subType == ItemSubType.ComCon){
                     if (combatConsumables[itemId] + amount > maxStack){
                         break;
                     }
@@ -179,7 +179,7 @@ public static class Inventory {
                     }    
                 }
                 break;
-            case ItemType.mat:
+            case ItemType.Mat:
                 if (inventoryMaterials[itemId] + amount > maxStack) {
                     break;
                 }

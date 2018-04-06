@@ -1,0 +1,21 @@
+#This is a comment line
+#Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Bows are 2-handed (Ranged)
+#Bows generally cannot block, have below average damage but have high evade and element
+
+#base is as follows: damage/accuracyBonus/weaknessType(int)
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
+
+Bow_speed=1
+
+%Weapon_Bow_0_genericBow
+&Weapon_Bow_0_genericBow description is here
+Bow_0_base=4/0/4
+Bow_0_element=10/4/0
+Bow_0_bonuses=0/0/0/0
+Bow_0_defenseMods=0.0/-100.0
+

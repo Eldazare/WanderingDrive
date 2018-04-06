@@ -81,7 +81,7 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	public void GetGatherinNode(int nodeIndex, int dropAmount){
-		DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.gather, nodeIndex);
+		DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.Gather, nodeIndex);
 		List<RecipeMaterial> dropList = DropDataCreator.CalculateDrops (nodeDropData, dropAmount, null);
 		foreach (RecipeMaterial recMat in dropList) {
 			Inventory.InsertRecipeMaterial (recMat);

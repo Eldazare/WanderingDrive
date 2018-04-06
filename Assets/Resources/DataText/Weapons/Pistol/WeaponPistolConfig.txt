@@ -1,0 +1,22 @@
+#This is a comment line
+#Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Pistol crossbows are 1-handed
+#As the only oneHanded ranged, they usually boast no defenses (+/- 0)
+#Average element and damage
+
+#base is as follows: damage/accuracyBonus/weaknessType(int)
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
+
+Pistol_speed=1
+
+%Weapon_Pistol_0_generic Pistol
+&Weapon_Pistol_0_generic Pistol description is here
+Pistol_0_base=10/0/0
+Pistol_0_element=0/0/0
+Pistol_0_bonuses=0/0/0/0
+Pistol_0_defenseMods=0.0/0.0
+

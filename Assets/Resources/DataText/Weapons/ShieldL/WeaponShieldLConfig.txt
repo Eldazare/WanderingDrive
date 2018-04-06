@@ -1,0 +1,22 @@
+#This is a comment line
+#Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Large shields are 1-handed
+#Boast significant block bonus, but most of the time you cannot evade
+#Block bonus ratio to defensive stats varies by shield
+
+#base is as follows: damage/accuracyBonus/weaknessType(int)
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
+
+ShieldL_speed=1
+
+%Weapon_ShieldL_0_generic large shield
+&Weapon_ShieldL_0_generic large shield description is here
+ShieldL_0_base=10/0/0
+ShieldL_0_element=0/0/0
+ShieldL_0_bonuses=0/0/0/0
+ShieldL_0_defenseMods=0.0/0.0
+

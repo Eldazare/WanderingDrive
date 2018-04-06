@@ -1,0 +1,16 @@
+#This is a comment line
+#name: recipeUp, subtype, id, Name
+#upgraded weapon index (inside the subtype)
+#materials
+#result weapon index (inside the subtype)
+
+
+%RecipeUp_Dagger_0_new dagger
+RecipeUp_Dagger_0_main=Wep_Dagger_0
+RecipeUp_Dagger_0_m1=Mat_Mat_0_3
+RecipeUp_Dagger_0_m2=Mat_Mat_2_1
+RecipeUp_Dagger_0_m3=
+RecipeUp_Dagger_0_m4=
+RecipeUp_Dagger_0_result=Wep_Dagger_1
+
+

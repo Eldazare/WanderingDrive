@@ -1,0 +1,16 @@
+#This is a comment line
+#name: recipeUp, subtype, id, Name
+#upgraded weapon index (inside the subtype)
+#materials
+#result weapon index (inside the subtype)
+
+
+%RecipeUp_ShieldL_0_better generic large shield
+RecipeUp_ShieldL_0_main=Wep_ShieldL_1
+RecipeUp_ShieldL_0_m1=Mat_Mat_1_2
+RecipeUp_ShieldL_0_m2=Mat_Mat_4_2
+RecipeUp_ShieldL_0_m3=Mat_Mat_5_1
+RecipeUp_ShieldL_0_m4=
+RecipeUp_ShieldL_0_result=Wep_Sword_2
+
+

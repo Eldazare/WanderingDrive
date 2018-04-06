@@ -1,0 +1,23 @@
+#This is a comment line
+#Element{none, fire, ice, thunder, earth, light, shadow};
+#WeaknessType{slash, stab, smash, ranged, magic};
+
+#Talismans are 1-handed
+#Will always have 0 in both element and base damage
+#Generally gets little to no defenseMods
+#Generally increases damages or armors
+
+#base is as follows: damage/accuracyBonus/weaknessType(int)
+#element is as follows: damage/element/bonus
+#bonuses are as follows: damage/magicDamage/armor/magicArmor
+#defenseMods are as follows: dodgeMod / BlockMod
+
+Talisman_speed=1
+
+%Weapon_Talisman_0_generic Talisman
+&Weapon_Talisman_0_generic Talisman description is not ok
+Talisman_0_base=0/0/0
+Talisman_0_element=0/1/5
+Talisman_0_bonuses=5/5/0/0
+Talisman_0_defenseMods=0.0/0.0
+

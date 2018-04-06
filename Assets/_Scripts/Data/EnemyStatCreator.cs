@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Element{none, fire, ice, thunder, earth, light, shadow};
-public enum WeaknessType{slash, stab, smash, ranged, magic};
+public enum Element{None, Fire, Ice, Thunder, Earth, Light, Shadow};
+public enum WeaknessType{Slash, Stab, Smash, Ranged, Magic};
 
 public static class EnemyStatCreator {
 

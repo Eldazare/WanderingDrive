@@ -5,15 +5,15 @@ using System.IO;
 
 
 
-public enum DataManagerDictionaryTypes{
-	consumable, material, armor, recipe, enemySmall, enemyLarge, drop, gather,
-	weapon, recipeUp,
-	node
+public enum DataManagerDictionaryType{
+	Consumable, Material, Armor, Recipe, EnemySmall, EnemyLarge, Drop, Gather,
+	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, // copy of weaponType
+	RecipeUp, Node
 }
 
 public static class DataManager  {
 	static private bool readBool = false;
-	// TODO: Recipe/Weapon/Upgrade dictionary may BLOAT
+	// TODO: Recipe/RecipeUp dictionary may BLOAT
 
 	static List<Dictionary<string,string>> configDatas = new List<Dictionary<string,string>>{ };
 
@@ -29,7 +29,7 @@ public static class DataManager  {
 		string identifier = splitted [0];
 
 		try{
-			DataManagerDictionaryTypes dicType = (DataManagerDictionaryTypes)System.Enum.Parse (typeof(DataManagerDictionaryTypes), identifier);
+			DataManagerDictionaryType dicType = (DataManagerDictionaryType)System.Enum.Parse (typeof(DataManagerDictionaryType), identifier);
 			try{
 				return configDatas[System.Convert.ToInt32(dicType)][entryName];
 			} catch{
@@ -56,22 +56,24 @@ public static class DataManager  {
 
 
 	static private void DownloadTextData(){
-		for (int i = 0; i < System.Enum.GetNames (typeof(DataManagerDictionaryTypes)).Length; i++) {
+		for (int i = 0; i < System.Enum.GetNames (typeof(DataManagerDictionaryType)).Length; i++) {
 			configDatas.Add(new Dictionary<string,string>());
 		}
-		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryTypes.consumable], nameListGeneric);
-		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryTypes.consumable], nameListGeneric);
-		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryTypes.material], nameListGeneric);
-		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryTypes.enemySmall], nameListGeneric);
-		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryTypes.enemyLarge], nameListGeneric);
-		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryTypes.armor], nameListGeneric);
-		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryTypes.drop], nameListGeneric);
-		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryTypes.gather], nameListGeneric);
-		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryTypes.recipe], recipeNameList);
-		DownloadSingleFile ("MultiBattleNodes", configDatas [(int)DataManagerDictionaryTypes.node], nameListGeneric);
+		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryType.Consumable], nameListGeneric);
+		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryType.Consumable], nameListGeneric);
+		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryType.Material], nameListGeneric);
+		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryType.EnemySmall], nameListGeneric);
+		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryType.EnemyLarge], nameListGeneric);
+		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
+		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryType.Drop], nameListGeneric);
+		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryType.Gather], nameListGeneric);
+		DownloadSingleFile ("RecipeConfig", configDatas[(int)DataManagerDictionaryType.Recipe], recipeNameList);
+		DownloadSingleFile ("MultiBattleNodes", configDatas [(int)DataManagerDictionaryType.Node], nameListGeneric);
 
-		DownloadSingleFile ("RecipeSwordUpgradeConfig", configDatas[(int)DataManagerDictionaryTypes.recipeUp], recipeNameList);
-		DownloadSingleFile ("WeaponSwordConfig", configDatas[(int)DataManagerDictionaryTypes.weapon], nameListGeneric);
+		string[] wepEnumNames = System.Enum.GetNames (typeof(WeaponType));
+		foreach (string wepString in wepEnumNames) {
+			DownloadWeaponData (wepString);
+		}
 		readBool = true;
 		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
 		RecipeContainer.GenerateRecipes (recipeNameList);
@@ -79,7 +81,10 @@ public static class DataManager  {
 
 	static private void DownloadSingleFile(string filename, Dictionary<string,string> dic, List<string> namelist){
 		string path = "DataText/" + filename;
-		TextAsset fullData = Resources.Load (path) as TextAsset; 
+		TextAsset fullData = Resources.Load (path) as TextAsset;
+		if (fullData == null) {
+			Debug.LogError ("FILE: " + path + " NOT FOUND!");
+		}
 		string[] data = fullData.text.Split("\r\n".ToCharArray());
 		foreach (string line in data) {
 			if (line.Length > 0){
@@ -95,5 +100,13 @@ public static class DataManager  {
 				}
 			}
 		}
+	}
+
+	static private void DownloadWeaponData(string wepStr){
+		string configPath = "Weapons/"+wepStr + "/Weapon" + wepStr + "Config";
+		string recipePath = "Weapons/"+wepStr + "/Recipe" + wepStr + "UpgradeConfig";
+		int dictionaryIndex = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), wepStr);
+		DownloadSingleFile (configPath, configDatas [dictionaryIndex], nameListGeneric);
+		DownloadSingleFile (recipePath, configDatas [(int)DataManagerDictionaryType.RecipeUp], recipeNameList);
 	}
 }

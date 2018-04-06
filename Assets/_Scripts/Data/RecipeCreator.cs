@@ -9,7 +9,7 @@ public static class RecipeCreator {
 	public static Recipe CreateRecipe(int id){
 		Recipe createe = new Recipe ();
 		createe.recipeId = id;
-		string begin = "recipe_" + id + "_";
+		string begin = "Recipe_" + id + "_";
 		for (int i = 0; i < 4; i++) {
 			string matData = DataManager.ReadDataString (begin + "m" + (i + 1));
 			if (matData != "") {
@@ -26,7 +26,7 @@ public static class RecipeCreator {
 	public static RecipeUpgrade CreateUpgradeRecipe(string subtype, int id){
 		RecipeUpgrade createe = new RecipeUpgrade ();
 		createe.id = id;
-		string begin = "recipeUp_" + subtype + "_" + id + "_";
+		string begin = "RecipeUp_" + subtype + "_" + id + "_";
 		string baseMatStr = DataManager.ReadDataString (begin + "main");
 		createe.baseEquipment = new RecipeMaterial (baseMatStr);
 		for (int i = 0; i < 4; i++) {
