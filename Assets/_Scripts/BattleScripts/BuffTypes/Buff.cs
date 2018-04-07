@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Buff{
-	public PlayerCombatScript player;
+public abstract class Buff {
+	public PlayerStats player;
 	public int turnsRemaining;
-
-	public int encountersRemaining;
 	public abstract void DoYourThing();
-	
 }

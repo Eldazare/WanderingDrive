@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class ElementDamageMultiplier : Buff {
 	float multi;
+	public ElementDamageMultiplier(float multiplier){
+		multi = multiplier;
+		turnsRemaining = -1;
+	}
+	public ElementDamageMultiplier(float multiplier, int turns){
+		multi = multiplier;
+		turnsRemaining = turns;
+	}
 	override public void DoYourThing(){
-		player.playerStats.buffElementDamageMultiplier +=multi;
+		
+		if(player.buffElementDamageMultiplier<multi){
+			player.buffElementDamageMultiplier = multi;
+		}
+		if(turnsRemaining>0){
+			turnsRemaining--;
+		}
+		if(turnsRemaining == 0){
+			player.playerBuffs.Remove(this);
+		}
 	}
 }

@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlatDamage : Buff {
-
-	int flatDamage;
-	public FlatDamage(int flat){
-		flatDamage = flat;
+public class DamageOverTime : Buff {
+	float damageovertime;
+	public DamageOverTime(float damage){
+		damageovertime = damage;
 		turnsRemaining = -1;
 	}
-	public FlatDamage(int flat, int turns){
-		flatDamage = flat;
+	public DamageOverTime(float damage, int turns){
+		damageovertime = damage;
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		if(player.buffFlatDamage<flatDamage){
-			player.buffFlatDamage = flatDamage;
-		}
-		
+		player.health -= damageovertime;
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}

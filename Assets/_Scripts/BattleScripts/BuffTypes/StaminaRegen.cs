@@ -14,12 +14,13 @@ public class StaminaRegen : Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		player.playerStats.stamina += staminaRegen;
+		if(player.staminaRegen<staminaRegen)
+		player.staminaRegen = staminaRegen;
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}
 		if(turnsRemaining == 0){
-			player.playerStats.playerBuffs.Remove(this);
+			player.playerBuffs.Remove(this);
 		}
 	}
 }

@@ -12,18 +12,15 @@ public class HealthRegen : Buff {
 		heal = regen;
 		turnsRemaining = turns;
 	}
-	public HealthRegen(float regen, int turns, int encounters){
-		heal = regen;
-		turnsRemaining = turns;
-		encountersRemaining = encounters;
-	}
 	override public void DoYourThing(){
-		player.playerStats.health+=heal;
+
+		player.health+=heal;
+
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}
 		if(turnsRemaining == 0){
-			player.playerStats.playerBuffs.Remove(this);
+			player.playerBuffs.Remove(this);
 		}
 	}
 	

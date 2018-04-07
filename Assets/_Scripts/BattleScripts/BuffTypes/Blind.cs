@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageMultiplier : Buff {
-
-	float multi;
-	bool buffGiven;
-	public DamageMultiplier(float multiplier){
-		multi = multiplier;
+public class Blind : Buff{
+	float blinding;
+	public Blind(){
 		turnsRemaining = -1;
 	}
-	public DamageMultiplier(float multiplier, int turns){
-		multi = multiplier;
+	public Blind(int turns){
 		turnsRemaining = turns;
 	}
+	
 	override public void DoYourThing(){
-		if(player.buffDamageMultiplier<multi){
-			player.buffDamageMultiplier = multi;
+		if(player.blind<blinding){
+			player.blind = blinding;
 		}
 		if(turnsRemaining>0){
 			turnsRemaining--;

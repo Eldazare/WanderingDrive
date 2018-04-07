@@ -2,22 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlatDamage : Buff {
-
-	int flatDamage;
-	public FlatDamage(int flat){
-		flatDamage = flat;
+public class Confusion : Buff {
+	public Confusion(){
 		turnsRemaining = -1;
 	}
-	public FlatDamage(int flat, int turns){
-		flatDamage = flat;
+	public Confusion(int turns){
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		if(player.buffFlatDamage<flatDamage){
-			player.buffFlatDamage = flatDamage;
-		}
-		
+		player.confused = true;
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}
