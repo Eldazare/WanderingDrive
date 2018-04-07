@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ArmorType{Helm, Chest, Arms, Legs, Boots};
+public enum ArmorType{Helm, Chest, Arms, Legs, Boots, Accessory};
 // IMPORTANT: Copy to ->
 //				NameType			(in NameDescContainer)
 //				ItemSubType 		(in RecipeContainer)
@@ -11,7 +11,11 @@ public enum ArmorType{Helm, Chest, Arms, Legs, Boots};
 public static class ArmorCreator {
 
 	public static Armor CreateArmor(ArmorType subtype, int id){
-		string begin = "armor_" + id + "_";
+		if (subtype == ArmorType.Accessory) {
+			Debug.LogError ("Wrong armor creator used, use accessory creator instead");
+			return null;
+		}
+		string begin = "Armor_" + id + "_";
 		Armor createe = new Armor (System.Enum.GetNames(typeof(Element)).Length, subtype);
 		createe.defense = DataManager.ReadDataFloat (begin + "defense");
 		createe.magicDefense = DataManager.ReadDataFloat (begin + "magicDefense");
@@ -28,10 +32,14 @@ public static class ArmorCreator {
 	}
 
 	public static Accessory CreateAccessory(int id){
-		string begin = "accessory_" + id + "_";
+		string begin = "Accessory_" + id + "_";
 		Accessory createe = new Accessory (System.Enum.GetNames (typeof(Element)).Length);
-		createe.magicDefense = DataManager.ReadDataFloat (begin + "magicDefense");
-		createe.damage = DataManager.ReadDataFloat (begin + "damage");
+
+		string[] accessoryBonuses = DataManager.ReadDataString (begin + "bonuses").Split("/".ToCharArray());
+		createe.damage = int.Parse(accessoryBonuses [0]);
+		createe.elementDamage = int.Parse (accessoryBonuses [1]);
+		createe.magicDefense = int.Parse(accessoryBonuses [2]);
+
 		string elementResStr = DataManager.ReadDataString (begin + "elementResist");
 		string[] elementResStrSplit = elementResStr.Split (";".ToCharArray());
 		int i = 1;

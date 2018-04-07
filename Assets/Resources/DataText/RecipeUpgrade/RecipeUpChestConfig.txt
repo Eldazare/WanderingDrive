@@ -1,0 +1,11 @@
+#This is a comment line
+
+
+
+%RecipeUp_Chest_0_Basic Chest
+RecipeUpChest_0_main=Arm_Chest_0
+RecipeUpChest_0_m1=Mat_Mat_1_2
+RecipeUpChest_0_m2=Mat_Mat_0_2
+RecipeUpChest_0_m3=Mat_Mat_0_1
+RecipeUpChest_0_m4=
+RecipeUpChest_0_result=Arm_Chest_1

@@ -1,0 +1,11 @@
+#This is a comment line
+
+
+
+%RecipeUp_Boots_0_Basic helm
+RecipeUpBoots_0_main=Arm_Boots_0
+RecipeUpBoots_0_m1=Mat_Mat_1_2
+RecipeUpBoots_0_m2=Mat_Mat_0_2
+RecipeUpBoots_0_m3=
+RecipeUpBoots_0_m4=
+RecipeUpBoots_0_result=Arm_Boots_1

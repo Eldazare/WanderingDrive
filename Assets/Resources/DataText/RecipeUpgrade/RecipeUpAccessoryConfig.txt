@@ -1,0 +1,11 @@
+#This is a comment line
+
+
+
+%RecipeUp_Accessory_0_generic accessory zero
+RecipeUpAccessory_0_main=Arm_Accessory_0
+RecipeUpAccessory_0_m1=Mat_Mat_1_1
+RecipeUpAccessory_0_m2=Mat_Mat_2_1
+RecipeUpAccessory_0_m3=
+RecipeUpAccessory_0_m4=
+RecipeUpAccessory_0_result=Arm_Accessory_1

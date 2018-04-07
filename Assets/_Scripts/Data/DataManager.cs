@@ -9,6 +9,7 @@ public enum DataManagerDictionaryType{
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, 	// copy of WeaponType
 	RecipeUpSword, RecipeUpMace, RecipeUpSpear, RecipeUpDagger, RecipeUpPistol, RecipeUpBow, RecipeUpGBow,
 	RecipeUpShieldS, RecipeUpShieldL, RecipeUpTalisman, 						// "copy" of WeaponType
+	RecipeUpHelm, RecipeUpChest, RecipeUpArms, RecipeUpLegs, RecipeUpBoots, RecipeUpAccessory,
 	Node
 }
 
@@ -65,10 +66,18 @@ public static class DataManager  {
 		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryType.Material], nameListGeneric);
 		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryType.EnemySmall], nameListGeneric);
 		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryType.EnemyLarge], nameListGeneric);
-		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
 		DownloadSingleFile ("DropConfig", configDatas[(int)DataManagerDictionaryType.Drop], nameListGeneric);
 		DownloadSingleFile ("GatheringConfig", configDatas[(int)DataManagerDictionaryType.Gather], nameListGeneric);
 		DownloadSingleFile ("MultiBattleNodes", configDatas [(int)DataManagerDictionaryType.Node], nameListGeneric);
+
+		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
+		DownloadSingleFile ("AccessoryConfig", configDatas [(int)DataManagerDictionaryType.Accessory], nameListGeneric);
+		string[] armorEnumNames = System.Enum.GetNames (typeof(ArmorType));
+		foreach (string armorString in armorEnumNames) {
+			string armorRUPFile = "RecipeUpgrade/RecipeUp" + armorString + "Config";
+			int index = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), "RecipeUp" + armorString);
+			DownloadSingleFile (armorRUPFile, configDatas [index], recipeNameList);
+		}
 
 		string[] recipeEnumNames = System.Enum.GetNames (typeof(CraftingRecipeType));
 		foreach (string recipString in recipeEnumNames) {
