@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum CraftingRecipeType{
-	Weapon, Armor, Accessory, ComCon, NonCon
+	Weapon, Armor, Accessory, ComCon, NonCom
 };
 
 public enum EquipmentSubtype{
@@ -13,7 +13,7 @@ public enum EquipmentSubtype{
 };
 
 public enum ItemType{
-	Wep, Armor, Cons, Mat
+	Wep, Arm, Cons, Mat
 };
 
 public enum ItemSubType {
@@ -39,15 +39,16 @@ public static class RecipeContainer {
 				equipmentUpgrades.Add (new List<RecipeUpgrade> ());
 			}
 			generated = true;
+			// TODO HERE
 			foreach (string recipeName in recipeNames) {
 				string[] splitStr = recipeName.Split ("_".ToCharArray ());
 				if (splitStr [0] == "RecipeUp") {
-					RecipeUpgrade recipeUp = RecipeCreator.CreateUpgradeRecipe (splitStr [1], int.Parse (splitStr [2]));
 					EquipmentSubtype eqSubT = (EquipmentSubtype)System.Enum.Parse (typeof(EquipmentSubtype), splitStr [1]);
+					RecipeUpgrade recipeUp = RecipeCreator.CreateUpgradeRecipe (eqSubT, int.Parse (splitStr [2]));
 					equipmentUpgrades [System.Convert.ToInt32 (eqSubT)].Add (recipeUp);
 				} else if (splitStr [0] == "Recipe") {
-					Recipe recipe = RecipeCreator.CreateRecipe (int.Parse (splitStr [2]));
 					CraftingRecipeType recipetype = (CraftingRecipeType)System.Enum.Parse (typeof(CraftingRecipeType), splitStr [1]);
+					Recipe recipe = RecipeCreator.CreateRecipe (int.Parse (splitStr [2]), recipetype);
 					craftingRecipes [System.Convert.ToInt32 (recipetype)].Add (recipe);
 				} else {
 					Debug.LogError ("Recipe skipped: " + recipeName);

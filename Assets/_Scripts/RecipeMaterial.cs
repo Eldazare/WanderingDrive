@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RecipeMaterial  {
 
-	public ItemType type; // wep | mat | consumable | arm
-	public ItemSubType subtype; // mat | nonCom | comCon | (sword | axe | spear | dagger | pistol | bow | Gbow | shield | shil) | (head | torso | arms | legs | boots)
+	public ItemType type; 
+	public ItemSubType subtype; 
     public int itemId;
-	public string itemName; // TODO
+	public string itemName;
 	public int amount;
 
 

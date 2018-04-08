@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Recipe {
 
+	public CraftingRecipeType subtype;
     public int recipeId;
 	public List<RecipeMaterial> materialList;
 	public RecipeMaterial resultItem;
 
-	public Recipe() {
+	public Recipe(CraftingRecipeType recipeType) {
+		this.subtype = recipeType;
 		materialList = new List<RecipeMaterial>{ };
 	}
 

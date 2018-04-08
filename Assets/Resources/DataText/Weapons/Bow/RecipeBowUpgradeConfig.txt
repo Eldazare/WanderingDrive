@@ -6,11 +6,11 @@
 
 
 %RecipeUp_Bow_0_next bow
-RecipeUp_Bow_0_main=Wep_Bow_0
-RecipeUp_Bow_0_m1=Mat_Mat_0_2
-RecipeUp_Bow_0_m2=Mat_Mat_1_2
-RecipeUp_Bow_0_m3=
-RecipeUp_Bow_0_m4=
-RecipeUp_Bow_0_result=Wep_Bow_1
+RecipeUpBow_0_main=Wep_Bow_0
+RecipeUpBow_0_m1=Mat_Mat_0_2
+RecipeUpBow_0_m2=Mat_Mat_1_2
+RecipeUpBow_0_m3=
+RecipeUpBow_0_m4=
+RecipeUpBow_0_result=Wep_Bow_1
 
 

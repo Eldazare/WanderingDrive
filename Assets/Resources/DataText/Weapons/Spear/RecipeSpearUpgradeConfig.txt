@@ -6,11 +6,11 @@
 
 
 %RecipeUp_Spear_0_better generic Spear
-RecipeUp_Spear_0_main=Wep_Spear_1
-RecipeUp_Spear_0_m1=Mat_Mat_1_2
-RecipeUp_Spear_0_m2=Mat_Mat_4_2
-RecipeUp_Spear_0_m3=Mat_Mat_5_1
-RecipeUp_Spear_0_m4=
-RecipeUp_Spear_0_result=Wep_Spear_2
+RecipeUpSpear_0_main=Wep_Spear_1
+RecipeUpSpear_0_m1=Mat_Mat_1_2
+RecipeUpSpear_0_m2=Mat_Mat_4_2
+RecipeUpSpear_0_m3=Mat_Mat_5_1
+RecipeUpSpear_0_m4=
+RecipeUpSpear_0_result=Wep_Spear_2
 
 

@@ -91,7 +91,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.Armor:
+            case ItemType.Arm:
                 for (int i = 0; i <= inventoryArmor.Count; i++) {
 				if(itemId == inventoryArmor[i].itemID && subType.ToString() == inventoryArmor[i].subType) {
                         inventoryArmor.RemoveAt(i);
@@ -148,7 +148,7 @@ public static class Inventory {
                     Success = true;
                     break;
                 }
-            case ItemType.Armor:
+            case ItemType.Arm:
                 if (capacity + 1 > maxCapacity) {
                     break;
                 }

@@ -6,10 +6,10 @@ public static class RecipeCreator {
 
 	//TODO: Material / Consumable name and description implementation to RecipeMaterial
 
-	public static Recipe CreateRecipe(int id){
-		Recipe createe = new Recipe ();
+	public static Recipe CreateRecipe(int id, CraftingRecipeType subtype){
+		Recipe createe = new Recipe (subtype);
 		createe.recipeId = id;
-		string begin = "Recipe_" + id + "_";
+		string begin = "Recipe"+subtype.ToString() + "_" + id + "_";
 		for (int i = 0; i < 4; i++) {
 			string matData = DataManager.ReadDataString (begin + "m" + (i + 1));
 			if (matData != "") {
@@ -23,10 +23,10 @@ public static class RecipeCreator {
 		return createe;
 	}
 
-	public static RecipeUpgrade CreateUpgradeRecipe(string subtype, int id){
-		RecipeUpgrade createe = new RecipeUpgrade ();
+	public static RecipeUpgrade CreateUpgradeRecipe(EquipmentSubtype subtype, int id){
+		RecipeUpgrade createe = new RecipeUpgrade (subtype);
 		createe.id = id;
-		string begin = "RecipeUp_" + subtype + "_" + id + "_";
+		string begin = "RecipeUp"+subtype.ToString() + "_" + id + "_";
 		string baseMatStr = DataManager.ReadDataString (begin + "main");
 		createe.baseEquipment = new RecipeMaterial (baseMatStr);
 		for (int i = 0; i < 4; i++) {

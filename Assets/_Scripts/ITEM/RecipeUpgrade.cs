@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class RecipeUpgrade {
 
-	public string subtype;
+	public EquipmentSubtype subtype;
 	public int id;
 	public RecipeMaterial baseEquipment;
 	public List<RecipeMaterial> materialList;
 	public RecipeMaterial result;
 
-	public RecipeUpgrade(){
+	public RecipeUpgrade(EquipmentSubtype recipeType){
+		this.subtype = recipeType;
 		materialList = new List<RecipeMaterial>{ };
 	}
 }

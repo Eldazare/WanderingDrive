@@ -10,6 +10,10 @@ public enum NameType{
 	EnemySmall, EnemyLarge, Gather
 };
 
+public enum BuffType{
+	Regen, Damage
+};
+
 public static class NameDescContainer  {
 
 	private static bool genBool = false;

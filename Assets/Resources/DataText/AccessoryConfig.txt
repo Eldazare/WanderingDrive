@@ -1,0 +1,7 @@
+#This is a comment line
+#Bonuses are: damage/elementDamage/magicDefense
+
+%Armor_Accessory_0_generic accessory
+
+Accessory_0_bonuses=1/1/1
+Accessory_0_elementResist=0;0;0;0;0;0

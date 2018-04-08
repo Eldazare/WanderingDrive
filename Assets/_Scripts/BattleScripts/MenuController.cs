@@ -157,6 +157,7 @@ public class MenuController : MonoBehaviour {
 	}
 	
 	IEnumerator AttackWaitTime(){
+		proceed = false;
 		yield return new WaitForSeconds(1.5f);
 		PlayerTurnTextFade();
 		DefaultButtons.SetActive(true);

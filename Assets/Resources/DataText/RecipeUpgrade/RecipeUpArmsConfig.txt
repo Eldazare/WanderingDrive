@@ -1,0 +1,11 @@
+#This is a comment line
+
+
+
+%RecipeUp_Arms_0_Basic Arms
+RecipeUpArms_0_main=Arm_Arms_0
+RecipeUpArms_0_m1=Mat_Mat_1_2
+RecipeUpArms_0_m2=Mat_Mat_0_2
+RecipeUpArms_0_m3=
+RecipeUpArms_0_m4=
+RecipeUpArms_0_result=Arm_Arms_1

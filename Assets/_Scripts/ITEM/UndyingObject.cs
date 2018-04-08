@@ -12,11 +12,9 @@ public class UndyingObject : MonoBehaviour {
 
 	// TODO: Add visual map generation method?
 
-	float health;
-	float stamina;
-
 	// PUBLIC only for testing purposes
 	public LoadoutsContainer loadoutList;
+	public WorldStatsContainer playerWorldStats;
 
 	double locLatitude;
 	double locLongitude;
@@ -28,8 +26,7 @@ public class UndyingObject : MonoBehaviour {
 		Inventory.Initialize ();
 		// TODO: Potentially load player data
 		//ELSE:
-		health = 100;
-		stamina = 100;
+		playerWorldStats = new WorldStatsContainer();
 		int loadoutCount = 10;
 
 		loadoutList = new LoadoutsContainer(loadoutCount);
@@ -56,7 +53,9 @@ public class UndyingObject : MonoBehaviour {
 	private IEnumerator StartCombatIenum(Loadout loadout, List<NodeEnemy> enemyList){
 		yield return SceneManager.LoadSceneAsync ("BattleScene");
 		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController> ();
-		// TODO: Add health and stamina to startCombat
+		// TODO: Add health and stamina to startCombat??
+		List<WorldBuffAbstraction> buffList = playerWorldStats.GetWorldBuffs();
+		// TODO: Add buffs to StartCombat
 		comCon.StartCombat (loadout, enemyList);
 	}
 
@@ -71,8 +70,6 @@ public class UndyingObject : MonoBehaviour {
 				Inventory.InsertRecipeMaterial (recMat);
 			}
 		}
-		this.health = health;
-		this.stamina = stamina;
 		StartCoroutine (EndCombatIenum ());
 	}
 

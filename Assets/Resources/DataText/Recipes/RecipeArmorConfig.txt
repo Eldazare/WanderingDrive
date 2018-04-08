@@ -1,0 +1,18 @@
+#This is a comment line
+#name: recipeID, recipeType, Name
+#gather (identifier)
+#recipe id
+#mn/result (material/result) = materialtype, material id, material amount
+#result is : type, subtype, id
+#=id
+
+#RecipeType:
+#Weapon | Armor | Accessory | ComCon | NonCom
+
+
+%Recipe_Armor_0_Basic helm
+RecipeArmor_0_m1=Mat_Mat_0_2
+RecipeArmor_0_m2=Mat_Mat_1_2
+RecipeArmor_0_m3=
+RecipeArmor_0_m4=
+RecipeArmor_0_result=Arm_Helm_0
