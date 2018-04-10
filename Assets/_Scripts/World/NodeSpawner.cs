@@ -24,6 +24,8 @@ public class NodeSpawner : MonoBehaviour {
 	private List<List<int>> nodeTypesWeights 
 		= new List<List<int>>(){nodeType0Weights, nodeType1Weights, nodeType2Weights, nodeType3Weights};
 
+
+
 	public void LoadNodes(double currentLatitude, double currentLongitude){
 		foreach (GameObject go in localNodeList){
 			Destroy (go);
@@ -44,23 +46,20 @@ public class NodeSpawner : MonoBehaviour {
 			SpawnNode (nodeType, nodeId, nodeLatitude, nodeLongitude, nodeTime);
 		}
 		*/
-
-
-
-	
 	}
+
 
 	// LOCAL
 	private void SpawnNode(int nodeType, int id, double latitude, double longitude, int time){
-		// TODO: Resources.Load("NODEPREFAB PER TYPE AND ID);
-		GameObject nodePrefab = new GameObject();
-		GameObject node = Instantiate(nodePrefab, new Vector3(0,0,0), Quaternion.identity);
-		localNodeList.Add (node);
+		Sprite theSprite = NodeSpriteContainer.GetSprite (nodeType, id);
+		GameObject node = Instantiate(new GameObject(), new Vector3(0,0,0), Quaternion.identity) as GameObject;
+		node.AddComponent<SpriteRenderer> ().sprite = theSprite;
 		WorldNode wNode = node.AddComponent<WorldNode> ();
 		wNode.nodeType = nodeType;
 		wNode.id = id;
 		wNode.latitude = latitude;
 		wNode.longitude = longitude;
+		localNodeList.Add (node);
 		// TODO: World to local position
 	}
 

@@ -9,7 +9,7 @@ public static class NodeSpriteContainer  {
 
 	public static void LoadSpriteData(){
 		string begin = "Sprites/Nodes/";
-		for(int i = 0; i<5;i++){
+		for(int i = 0; i<5;i++) {
 			Sprite[] sprites = Resources.LoadAll (begin + "t" + i) as Sprite[];
 			nodeSpriteData.Add (sprites);
 		}
