@@ -9,9 +9,10 @@ public class WorldNode : MonoBehaviour {
 
 	public int nodeType;
 	public int id;
+	public int time; // in seconds
 
-	public float latitude;
-	public float longitude;
+	public double latitude;
+	public double longitude;
 
 
 	public void Interact(){
