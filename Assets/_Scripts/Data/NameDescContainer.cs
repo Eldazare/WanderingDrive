@@ -11,7 +11,8 @@ public enum NameType{
 };
 
 public enum BuffType{
-	Regen, Damage
+	Armor, Blind, Confusion, DamageMultiplier, DamageOverTime, DamageReduction, ElementDamageMultiplier, ElementResist,
+	FlatDamage, FlatElementDamage, Freeze, HealthRegen, Hold, Paralyze, StaminaRegen, Stun
 };
 
 public static class NameDescContainer  {

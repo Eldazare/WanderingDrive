@@ -12,7 +12,7 @@ public class PlayerStats {
 	public WeaponStats mainHand, offHand;
 
 	//Player buffs that reset every turn and buffs apply them everyturn
-	public List<Buff> playerBuffs = new List<Buff>();
+	public List<_Buff> playerBuffs = new List<_Buff>();
 	public float buffDamageMultiplier, buffElementDamageMultiplier, healthRegen, staminaRegen, blind;
 	public int buffFlatDamage, buffFlatElementDamage, buffArmor;
 	public bool stunned, confused, frozen, paralyzed;

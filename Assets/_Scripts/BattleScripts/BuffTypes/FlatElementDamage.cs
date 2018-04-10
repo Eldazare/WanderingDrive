@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlatElementDamage : Buff {
+public class FlatElementDamage : _Buff {
 	int flatDamage;
 	public FlatElementDamage(int flat){
 		flatDamage = flat;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageMultiplier : Buff {
+public class DamageMultiplier : _Buff {
 
 	float multi;
 	bool buffGiven;

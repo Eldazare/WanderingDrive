@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageOverTime : Buff {
+public class DamageOverTime : _Buff {
 	float damageovertime;
 	public DamageOverTime(float damage){
 		damageovertime = damage;

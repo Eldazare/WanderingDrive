@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Buff {
+public abstract class _Buff {
 	public PlayerStats player;
 	public int turnsRemaining;
 	public abstract void DoYourThing();

@@ -5,7 +5,9 @@ using UnityEngine;
 public class WorldNode : MonoBehaviour {
 
 	// TODO: How to link node visuals?
+	// TODO: How to interact? Button.onClick()?
 	// Maybe make List<List<Sprite>> and index it according to types and id:s.
+	// 	Add these sprites to the ListList object by loading all in specific folders.
 
 	public int nodeType;
 	public int id;

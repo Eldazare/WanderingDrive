@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Confusion : Buff {
+public class Confusion : _Buff {
 	public Confusion(){
 		turnsRemaining = -1;
 	}

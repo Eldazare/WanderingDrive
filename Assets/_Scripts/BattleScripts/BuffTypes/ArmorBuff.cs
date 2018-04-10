@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArmorBuff : Buff {
+public class ArmorBuff : _Buff {
 	int armor;
 	public ArmorBuff(int armorgain){
 		armor = armorgain;

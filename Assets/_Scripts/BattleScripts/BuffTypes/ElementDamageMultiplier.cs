@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementDamageMultiplier : Buff {
+public class ElementDamageMultiplier : _Buff {
 	float multi;
 	public ElementDamageMultiplier(float multiplier){
 		multi = multiplier;

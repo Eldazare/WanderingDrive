@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blind : Buff{
+public class Blind : _Buff{
 	float blinding;
 	public Blind(){
 		turnsRemaining = -1;

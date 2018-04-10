@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthRegen : Buff {
+public class HealthRegen : _Buff {
 	float heal;
 	public HealthRegen(float regen){
 		heal = regen;

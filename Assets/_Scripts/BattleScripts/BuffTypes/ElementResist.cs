@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElementResist : Buff {
+public class ElementResist : _Buff {
 	public List<int> buffElementalWeakness;
 
 	public ElementResist(List<int> resists){

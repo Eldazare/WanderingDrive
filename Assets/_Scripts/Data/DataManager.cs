@@ -91,8 +91,10 @@ public static class DataManager  {
 			DownloadWeaponData (wepString);
 		}
 		readBool = true;
+
 		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
 		RecipeContainer.GenerateRecipes (recipeNameList);
+		// NodeSpriteContainer.LoadSpriteData ();
 	}
 
 	static private void DownloadSingleFile(string filename, Dictionary<string,string> dic, List<string> namelist){

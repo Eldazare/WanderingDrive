@@ -5,11 +5,13 @@ using UnityEngine;
 public class WorldBuffAbstraction {
 
 	public BuffType buffType;
+	public float potency; // Magnitude
 	public int duration; // in encounter
 
 
-	public WorldBuffAbstraction(BuffType type, int duration){
+	public WorldBuffAbstraction(BuffType type, float magnitude, int duration){
 		this.buffType = type;
+		this.potency = magnitude;
 		this.duration = duration;
 	}
 }

@@ -15,6 +15,7 @@ public class UndyingObject : MonoBehaviour {
 	// PUBLIC only for testing purposes
 	public LoadoutsContainer loadoutList;
 	public WorldStatsContainer playerWorldStats;
+	private NodeSpawner nodeSpawner;
 
 	double locLatitude;
 	double locLongitude;
@@ -39,6 +40,7 @@ public class UndyingObject : MonoBehaviour {
 
 	private IEnumerator ToTheWorld(){
         yield return SceneManager.LoadSceneAsync ("TheWorld");
+		nodeSpawner = GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<NodeSpawner> ();
     }
 
 	//TODO: CHOOSE LOADOUT
@@ -64,17 +66,13 @@ public class UndyingObject : MonoBehaviour {
 		this.locLongitude = longitude;
 	}
 
-	public void EndCombat(List<List<RecipeMaterial>> dropListList, float health, float stamina){
+	public void EndCombat(List<List<RecipeMaterial>> dropListList){
 		foreach (List<RecipeMaterial> dropList in dropListList) {
 			foreach (RecipeMaterial recMat in dropList) {
 				Inventory.InsertRecipeMaterial (recMat);
 			}
 		}
-		StartCoroutine (EndCombatIenum ());
-	}
-
-	private IEnumerator EndCombatIenum(){
-		yield return SceneManager.LoadSceneAsync ("TheWorld");
+		StartCoroutine (ToTheWorld());
 	}
 
 	public void GetGatherinNode(int nodeIndex, int dropAmount){
@@ -96,11 +94,7 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	public void EndCrafting(){
-		StartCoroutine (EndCraftingIenum ());
-	}
-
-	private IEnumerator EndCraftingIenum(){
-		yield return SceneManager.LoadSceneAsync ("TheWorld");
+		StartCoroutine (ToTheWorld());
 	}
 
 
@@ -111,6 +105,7 @@ public class UndyingObject : MonoBehaviour {
 			// TODO: Get latitude and longitude from phone
 			locLatitude = 0;
 			locLongitude = 0;
+			nodeSpawner.LoadNodes (locLatitude, locLongitude);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StaminaRegen : Buff {
+public class StaminaRegen : _Buff {
 
 	float staminaRegen;
 	public StaminaRegen(float regen){

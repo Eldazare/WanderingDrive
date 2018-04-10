@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageReduction : Buff {
+public class DamageReduction : _Buff {
 
 	override public void DoYourThing(){
 		
