@@ -13,12 +13,24 @@ public class ArmorBuff : Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		
+		if(player != null){
+			if(player.buffArmor<armor){
+				player.buffArmor = armor;
+			}
+		}else{
+			if(enemy.buffArmor<armor){
+				enemy.buffArmor = armor;
+			}
+		}
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}
 		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+			if(player != null){
+				player.playerBuffs.Remove(this);
+			}else{
+				enemy.enemyBuffs.Remove(this);
+			}
 		}
 	}
 }

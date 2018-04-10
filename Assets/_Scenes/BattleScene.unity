@@ -1200,13 +1200,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e0cc35871d38347b7821005ee455be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 0}
   weapon: {fileID: 0}
   weaponSlot: {fileID: 648691132}
   stomach: {fileID: 604711506}
   proceed: 0
   menuController: {fileID: 425286907}
   combatController: {fileID: 847982939}
+  buffDamageMultiplier: 0
+  buffElementDamageMultiplier: 0
+  healthRegen: 0
+  staminaRegen: 0
+  blind: 0
+  buffDamageReduction: 0
+  buffFlatDamage: 0
+  buffFlatElementDamage: 0
+  buffArmor: 0
+  stunned: 0
+  confused: 0
+  frozen: 0
+  paralyzed: 0
+  hold: 0
+  buffElementalWeakness: 000000000000000000000000000000000000000000000000
   animator: {fileID: 1379186842}
 --- !u!1 &398869280
 GameObject:
@@ -1293,6 +1307,7 @@ MonoBehaviour:
   textBox: {fileID: 1180242608}
   focusButton: {fileID: 618837083}
   overloadButton: {fileID: 106527505}
+  abilityMenuButton: {fileID: 1041041124}
   player: {fileID: 337843892}
   enemyPartCanvas: {fileID: 1183807718}
   enemyPartCanvasButtons:
@@ -3308,6 +3323,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d7a8072785e28643839294ce83ddff8, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1041041124 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
+    type: 2}
+  m_PrefabInternal: {fileID: 650078839}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1075536592
 GameObject:
   m_ObjectHideFlags: 0

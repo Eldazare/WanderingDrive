@@ -2,15 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hold : MonoBehaviour {
+public class Hold : Buff {
 
-	// Use this for initialization
-	void Start () {
-		
+	public Hold (){
+		turnsRemaining = -1;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+	public Hold (int turns){
+		turnsRemaining = turns;
+	}
+	public override void DoYourThing(){
+		if(player != null){
+			player.hold = true;
+		}else{
+			enemy.hold = true;
+		}
 		
+		if(turnsRemaining>0){
+			turnsRemaining--;
+		}
+		if(turnsRemaining == 0){
+			if(player != null){
+				player.playerBuffs.Remove(this);
+			}else{
+				enemy.enemyBuffs.Remove(this);
+			}
+		}
 	}
 }

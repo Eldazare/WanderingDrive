@@ -12,7 +12,8 @@ public class EnemyStats {
 	public int armor;
 	public int evasion;
 	public WeaknessType weaknessType;
-	public float hitDistance; // TODO: What was this?
+	public float hitDistance; // TODO: What was this? Simo: Depending on model,
+							  // should be suited how close enemy gets to player before attacking
 	public float quickness;
 
 	public List<int> elementWeakness;

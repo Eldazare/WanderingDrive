@@ -22,7 +22,11 @@ public class FlatDamage : Buff {
 			turnsRemaining--;
 		}
 		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+			if(player != null){
+				player.playerBuffs.Remove(this);
+			}else{
+				enemy.enemyBuffs.Remove(this);
+			}
 		}
 	}
 }

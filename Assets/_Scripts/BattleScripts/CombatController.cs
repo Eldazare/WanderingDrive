@@ -7,30 +7,35 @@ using UnityEditor;
 public class CombatController : MonoBehaviour {
 
 	public List<Enemy> enemyList;
-	public PlayerCombatScript player;
+	public PlayerCombatScript player; //Drag from Hierarchy
 	public PlayerStats playerStats;
-	public GameObject enemyHost;
-	public MenuController menuController;
-	public TouchControlScript touchController;
-	public CameraController cameraScript;
+	public GameObject enemyHost; //Drag from Hierarchy
+	public MenuController menuController; //Drag from Hierarchy
+	public TouchControlScript touchController; //Drag from Hierarchy
+	public CameraController cameraScript; //Drag from Hierarchy
 	public bool enemyAttacked;
 	List<List<RecipeMaterial>> encounterDrops = new List<List<RecipeMaterial>>();
 	public int enemyTurns;
 	bool playerDead;
+	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}
 	public void ResetPlayerDefence(){
 		touchController.enemyTurn = true;
 	}
-
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
 		enemyList = new List<Enemy> ();
-		
-		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
+		//if(loadout.mainHand != null){
+			player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
+			player.playerStats.dodgeModifier += player.playerStats.mainHand.dodgeModifier;
+			player.playerStats.blockModifier += player.playerStats.mainHand.blockModifier;
+		//}
 		if(loadout.offHand != null){
 			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
+			player.playerStats.dodgeModifier += player.playerStats.offHand.dodgeModifier;
+			player.playerStats.blockModifier += player.playerStats.offHand.blockModifier;
 		}
 
 		GenerateArmors(loadout);
@@ -46,7 +51,6 @@ public class CombatController : MonoBehaviour {
 	}
 
 	void GenerateArmors(Loadout loadout){
-		float armorAmount = 0;
 		float speed = 0;
 		int j = 0;
 
@@ -55,12 +59,13 @@ public class CombatController : MonoBehaviour {
 			foreach (var item in loadout.wornArmor)	
 			{
 				Armor armor = ArmorCreator.CreateArmor((ArmorType)System.Enum.Parse(typeof(ArmorType), item.subType), item.itemID);
-				armorAmount += armor.defense;
+				playerStats.physicalArmor += armor.defense;
+				playerStats.magicArmor += armor.magicDefense;
 
 				int i = 0;
 				foreach (var item1 in armor.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;// + (int)(armor.magicDefense*100);
+					playerStats.elementalWeakness[i] += item1;
 					i++;
 				}
 				speed += armor.speed;
@@ -71,13 +76,15 @@ public class CombatController : MonoBehaviour {
 
 		//Accessory generation
 		if(loadout.wornAccessories[0] != null){
-			foreach (var item in loadout.wornAccessories)
-			{
+			foreach (var item in loadout.wornAccessories){
 				Accessory acc = ArmorCreator.CreateAccessory(item.itemID);
 				int i = 0;
+				playerStats.damage += acc.damage;
+				playerStats.elementDamage += acc.elementDamage;
+				playerStats.magicArmor += acc.magicDefense;
 				foreach (var item1 in acc.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;// + (int)(acc.magicDefense*100);
+					playerStats.elementalWeakness[i] += item1;
 					i++;
 				}
 			}
@@ -88,19 +95,21 @@ public class CombatController : MonoBehaviour {
 			yield return new WaitUntil(()=>menuController.proceed);
 			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade();
-			foreach (var item in enemyList)
-			{
+			foreach (var item in enemyList){
 				if(!playerDead){
-					if(item != null){
+					if(item != null && !item.stunned){
 						yield return new WaitForSeconds(3f);
 						StartCoroutine(item.Attack());
 						yield return new WaitUntil(()=>enemyAttacked);
+					}else if(item.stunned){
+						GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(item.transform.position.x, item.transform.position.y+3, item.transform.position.z)-item.transform.right, Quaternion.identity) as GameObject;
+						popup.GetComponent<TextMesh>().text = "Stunned";
+						yield return new WaitForSeconds(3f);
 					}
 				}else{
 					break;
 				}
 			}
-
 			touchController.enemyTurn = false;
 			enemyTurns--;
 			if(enemyTurns<=0){
@@ -166,15 +175,12 @@ public class CombatController : MonoBehaviour {
 	public void LoseEncounter(){
 		playerDead = true;
 	}
-
-	public void HitPlayer(float damage, float elementDamage, Element element, bool area){
-		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area));
+	public void HitPlayer(float damage, float elementDamage, Element element, bool area, int damageType){
+		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area, damageType));
 	}
-
-	public void HitEnemy(float damage, float elementDamage, Element element, int part, float damageMod){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, damageMod));
+	public void HitEnemy(float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, accuracy, weaknessType));
 	}
-
 	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
 		menuController.updateEnemyHealth(health, maxhealth, health/maxhealth, enemy);
 	}

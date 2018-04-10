@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
 
-	public CombatController combatController;
+	public CombatController combatController;  //Drag from Hierarchy
+	[HideInInspector]
 	public Enemy targetedEnemy;
 
 
-	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;
-	public Button focusButton, overloadButton; //Drag focus and overload buttons to menuController
-	public PlayerCombatScript player;
-	public GameObject enemyPartCanvas;
-	public List<GameObject> enemyPartCanvasButtons;
+	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;  //Drag from Hierarchy
+	public Button focusButton, overloadButton, abilityMenuButton; //Drag buttons to menuController
+	public PlayerCombatScript player;  //Drag from Hierarchy
+	public GameObject enemyPartCanvas;  //Drag from Hierarchy
+	public List<GameObject> enemyPartCanvasButtons;  //Drag from Hierarchy
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
-	public Image playerHealthFill, playerManaFill;
-	public Text playerHealthText, playerManaText, textBoxText;
-	public GameObject enemyHealthBarParent;
+	public Image playerHealthFill, playerManaFill;  //Drag from Hierarchy
+	public Text playerHealthText, playerManaText, textBoxText;  //Drag from Hierarchy
+	public GameObject enemyHealthBarParent;  //Drag from Hierarchy
+	[HideInInspector]
 	public List<GameObject> enemyHealthBars;
 	List<Image> enemyHealthFills;
 	List<Text> enemyHealthTexts;
-	public GameObject playerPovCamera;
-	public float textSpeed;
+	public GameObject playerPovCamera; //Drag from Hierarchy
+	public float textSpeed = 0.02f;
 	public bool proceed;
-	public int selectedPart;
+	public int selectedPart = -1;
 	public Text enemyTurnText, playerTurnText;
 	Color originalColor;
 	void Start(){
@@ -41,9 +44,7 @@ public class MenuController : MonoBehaviour {
 		newScript.targetbutton.onClick.AddListener(delegate{SelectTargetEnemy(number);});
 		newScript.buttonText.text = item.enemyName;
 	}
-
-	//Doesn't actually do anything yet
-	//Uses the linked list concept, to switch targets
+		//Buttons for button menus.
 	public void SelectTargetEnemy(int enemyNbr){
 		targetedEnemy = combatController.enemyList[enemyNbr];
 		int i = enemyHealthBars.Count-1;
@@ -58,12 +59,15 @@ public class MenuController : MonoBehaviour {
 		}
 		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
-
- 	//Buttons for button menus.
-
 	public void AbilitiesMenu() {
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
+		if(player.frozen){
+			overloadEnabled = false;
+		}
+		if(player.confused){
+			focusEnabled = false;
+		}
 		focusButton.interactable = focusEnabled;
 		overloadButton.interactable = overloadEnabled;
 	}
@@ -76,6 +80,11 @@ public class MenuController : MonoBehaviour {
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
 		combatController.cameraScript.ResetCamera();
+		if(player.paralyzed){
+			abilityMenuButton.enabled = false;
+		}else{
+			abilityMenuButton.enabled = true;
+		}
 	}
 	public void PlayersTurn(){
 		StartCoroutine(AttackWaitTime());
@@ -134,11 +143,11 @@ public class MenuController : MonoBehaviour {
 	//UI updates
 	public void updatePlayerHealth(float health, float maxHealth, float percentage){
 		playerHealthFill.fillAmount = percentage;
-		playerHealthText.text = health.ToString("00") + "/" + maxHealth.ToString("00");
+		playerHealthText.text = health.ToString("0") + "/" + maxHealth.ToString("0");
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
 		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
-		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString("00") +"/"+maxHealth.ToString("00");
+		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString("0") +"/"+maxHealth.ToString("00");
 	}
 
 	public void messageToScreen(string message){
@@ -158,34 +167,48 @@ public class MenuController : MonoBehaviour {
 	
 	IEnumerator AttackWaitTime(){
 		proceed = false;
-		yield return new WaitForSeconds(1.5f);
-		PlayerTurnTextFade();
-		DefaultButtons.SetActive(true);
-		int i = enemyHealthBars.Count-1;
-		foreach (var item in combatController.enemyList){
-			if(item != null){
-				enemyHealthBars[i].SetActive(true);
-				if(item == targetedEnemy){
-					enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
-				}else{
-					enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
-				}
-				
+		player.ApplyPlayerBuffs();
+		yield return new WaitUntil(()=>proceed);
+		yield return new WaitForSeconds(1f);
+		if(!player.stunned){
+			PlayerTurnTextFade();
+			DefaultButtons.SetActive(true);
+			if(player.paralyzed){
+				abilityMenuButton.enabled = false;
 			}else{
-				enemyHealthBars[i].SetActive(false);
-				if(targetedEnemy == null){
-					foreach (var item1 in combatController.enemyList)
-					{
-						if(item != null){
-							targetedEnemy = item1;
-							break;
+				abilityMenuButton.enabled = true;
+			}
+			//Enable enemy healthbars
+			int i = enemyHealthBars.Count-1;
+			foreach (var item in combatController.enemyList){
+				if(item != null){
+					enemyHealthBars[i].SetActive(true);
+					if(item == targetedEnemy){
+						enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
+					}else{
+						enemyHealthBars[i].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = true;
+					}
+				}else{
+					enemyHealthBars[i].SetActive(false);
+					if(targetedEnemy == null){
+						foreach (var item1 in combatController.enemyList)
+						{
+							if(item != null){
+								targetedEnemy = item1;
+								break;
+							}
 						}
 					}
 				}
+				i--;
 			}
-			i--;
+			
+		}else{
+			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(player.transform.position.x, player.transform.position.y+3, player.transform.position.z)-player.transform.right, Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh>().text = "Stunned";
+			yield return new WaitForSeconds(1f);
+			combatController.enemyAttacks();
 		}
-		player.playerStats.ApplyPlayerBuffs();
 	}
 
 	public void EnemyTurnTextFade(){
@@ -198,6 +221,10 @@ public class MenuController : MonoBehaviour {
 		playerTurnText.gameObject.SetActive(true);
 		playerTurnText.CrossFadeAlpha(1.0f, 0.0f, false);
 		playerTurnText.CrossFadeAlpha(0.0f, 3.0f, false);
+	}
+
+	public void RunAway(){
+		//SceneManager.LoadScene("MapScene");
 	}
 
 }

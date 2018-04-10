@@ -20,7 +20,7 @@ public class WeaponStats {
 	public int elementDamageBonus; // added to other hand attacks if same element
 	public Element element;
 
-	public float dodgeModifier; // may be negative, from -100 to 100?
+	public float dodgeModifier; // may be negative, from -1 to 1?
 	public float blockModifier; // may be negative
 
 

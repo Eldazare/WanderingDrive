@@ -17,8 +17,20 @@ public class Enemy : MonoBehaviour{
 	public GameObject[] partCanvas; //Legacy on target visual buttons
 	public GameObject[] partButtons; 
 
+	//Buffs have to know Enemy instead of EnemyStats so they can damage the right enemy with GetHit
+	public List<Buff> enemyBuffs = new List<Buff>();
+	public float buffDamageMultiplier, buffElementDamageMultiplier, healthRegen, blind, buffDamageReduction;
+	public int buffFlatDamage, buffFlatElementDamage, buffArmor;
+	public bool stunned, confused, frozen, paralyzed, hold;
+	public List<int> buffElementalWeakness = new List<int>{0, 0, 0, 0, 0, 0};
+	//Buffs end
+
 	public IEnumerator Attack() {
+		proceed = false;
 		startPos = transform.position;
+		ApplyEnemyBuffs();
+		yield return new WaitUntil(() =>proceed);
+		proceed = false;
 		InvokeRepeating("moveToPlayer", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
 		animator.SetTrigger("Attack");
@@ -27,11 +39,56 @@ public class Enemy : MonoBehaviour{
 		// TODO: Verify attack
 		int randIndex = Random.Range(0,enemyStats.attackList.Count);
 		EnemyAttack chosenAttack = enemyStats.attackList [randIndex];
-		combatController.HitPlayer(chosenAttack.damage, chosenAttack.elementDamage, chosenAttack.element, false);
-		proceed = false;
-		yield return new WaitUntil(() =>proceed);
+		float attackDamage = chosenAttack.damage;
+		float attackEleDamage = chosenAttack.elementDamage;
+		float damageMod = 1;
+		float eleDamageMod = 1;
+
+		attackDamage += buffFlatDamage;
+		attackEleDamage += buffFlatElementDamage;
+		damageMod+=buffDamageMultiplier;
+		eleDamageMod += buffElementDamageMultiplier;
+		if(Random.Range(0,100)<blind){
+			combatController.HitPlayer(-1, 0, 0, false, 0);
+		}else{
+			combatController.HitPlayer(attackDamage*damageMod, attackEleDamage*eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
+		}
 		InvokeRepeating("moveFromPlayer",0,Time.deltaTime);
 		proceed = false;
+	}
+	public void ApplyEnemyBuffs(){
+		buffDamageMultiplier = 0;
+		buffArmor = 0;
+		buffElementDamageMultiplier = 0;
+		buffFlatDamage = 0;
+		buffFlatElementDamage = 0;
+		healthRegen = 0;
+		blind = 0;
+		stunned = false;
+		confused = false;
+		frozen = false;
+		paralyzed = false;
+		hold = false;
+		for (int i = 0;i<buffElementalWeakness.Count;i++){
+			buffElementalWeakness[i] = 0;
+		}
+		foreach (var item in enemyBuffs)
+		{
+			if(item != null){
+				item.DoYourThing();
+			}
+		}
+		
+		if(healthRegen>0){
+			enemyStats.health +=healthRegen;
+			if(enemyStats.health>enemyStats.maxHealth){
+				enemyStats.health = enemyStats.maxHealth;
+			}
+			GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh>().text = healthRegen.ToString("0.#");
+		}
+		
+		proceed = true;
 	}
 
 	void moveToPlayer(){
@@ -52,17 +109,20 @@ public class Enemy : MonoBehaviour{
 			combatController.enemyAttacked = true;
 		}
 	}
-	public string GetHit (float damage, float elementDamage, Element element, int part, float damageMod){
-		float damageTaken, damageModifier=1+damageMod, eleModifier = 1;
+	public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType){
+		float damageTaken, damageModifier, eleModifier = 1, weaknessTypeAccuracy = 1;
+		if(weaknessType == enemyStats.weaknessType){
+			weaknessTypeAccuracy = 0.8f;
+		}
 		//0-100
-		if(Random.Range(0, 100)<enemyStats.partList[part].percentageHit){
+		if(weaknessTypeAccuracy*(Random.Range(0, 100)-accuracy)<enemyStats.partList[part].percentageHit|| damage > 0){
 			//Damage reduction calculations
 
 			eleModifier += enemyStats.elementWeakness[System.Convert.ToInt32(element)]/100;
-			damageModifier += enemyStats.armor;
+			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier+enemyStats.armor);
 
-			eleModifier += enemyStats.partList[part].damageMod;
-			damageModifier += enemyStats.partList[part].damageMod;
+			eleModifier *= enemyStats.partList[part].damageMod;
+			damageModifier *= enemyStats.partList[part].damageMod;
 
 			damage *= damageModifier;
 			elementDamage *= eleModifier;
@@ -71,19 +131,19 @@ public class Enemy : MonoBehaviour{
 
 			enemyStats.health -= damageTaken;
 			enemyStats.partList[part].DamageThisPart(damageTaken); // Part takes damage
-			// animator.SetTrigger("Ouch");
+			// animator.SetTrigger("TakeDamage");
 			updateStats();
 			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh>().text = damageTaken.ToString("00");
+			popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
 			if(enemyStats.health <= 0){
 				combatController.EnemyDies(this);
 				//animator.SetTrigger("Death");
-				return enemyName+" took "+damageTaken+" damage and died!";
+				return enemyName+" took "+damageTaken.ToString("0.#")+" damage and died!";
 			}else{
-				return enemyName+" took "+damageTaken+" damage!";
+				return enemyName+" took "+damageTaken.ToString("0.#")+" damage!";
 			}
 		}else{
-			return "Attack missed!";
+			return "Your attack missed!";
 		}
 	}
 

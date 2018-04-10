@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour {
 	GameObject targetObject;
 	Quaternion startRota, targetRota;
 	float lerpSpeed = 2;
-	public MenuController menuController;
+	public MenuController menuController; //Drag from hierarchy
 	public bool follow;
 	float startTime, movingLength;
 
@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour {
 		startPos = transform.position;
 		startRota = transform.rotation;
 	}
-
 	public void MoveCamera(GameObject target){
 		CancelInvoke("MoveFromTarget");
 		CancelInvoke("MoveCamera");

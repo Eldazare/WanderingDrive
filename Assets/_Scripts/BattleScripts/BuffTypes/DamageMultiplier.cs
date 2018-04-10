@@ -15,14 +15,25 @@ public class DamageMultiplier : Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		if(player.buffDamageMultiplier<multi){
-			player.buffDamageMultiplier = multi;
+		if(player != null){
+			if(player.buffDamageMultiplier<multi){
+				player.buffDamageMultiplier = multi;
+			}
+		}else{
+			if(enemy.buffDamageMultiplier<multi){
+				enemy.buffDamageMultiplier = multi;
+			}
 		}
+		
 		if(turnsRemaining>0){
 			turnsRemaining--;
 		}
 		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+			if(player != null){
+				player.playerBuffs.Remove(this);
+			}else{
+				enemy.enemyBuffs.Remove(this);
+			}
 		}
 	}
 }
