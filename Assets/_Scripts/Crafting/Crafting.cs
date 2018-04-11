@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Crafting : MonoBehaviour
-{
-
-
+public class Crafting : MonoBehaviour{
     public Image recipeImage;
 
 	List<List<int>> recipeList = new List<List<int>> ();
@@ -40,7 +37,6 @@ public class Crafting : MonoBehaviour
         currentRecipeType = recipeTypeWeapon;
         currentItemSpriteList = 0;
         spriteCounter = 0;
-        
     }
 
     
