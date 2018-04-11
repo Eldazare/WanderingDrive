@@ -15,16 +15,5 @@ public class Paralyze : Buff {
 		}else{
 			enemy.paralyzed = true;
 		}
-		
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			if(player != null){
-				player.playerBuffs.Remove(this);
-			}else{
-				enemy.enemyBuffs.Remove(this);
-			}
-		}
 	}
 }

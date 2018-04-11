@@ -22,15 +22,5 @@ public class ElementDamageMultiplier : Buff {
 				enemy.buffElementDamageMultiplier = multi;
 			}
 		}
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			if(player != null){
-				player.playerBuffs.Remove(this);
-			}else{
-				enemy.enemyBuffs.Remove(this);
-			}
-		}
 	}
 }

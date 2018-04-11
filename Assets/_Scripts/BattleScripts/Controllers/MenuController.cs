@@ -175,9 +175,9 @@ public class MenuController : MonoBehaviour {
 	
 	IEnumerator AttackWaitTime(){
 		proceed = false;
+		yield return new WaitForSeconds(1f);
 		player.ApplyPlayerBuffs();
 		yield return new WaitUntil(()=>proceed);
-		yield return new WaitForSeconds(1f);
 		if(!player.stunned){
 			PlayerTurnTextFade();
 			DefaultButtons.SetActive(true);

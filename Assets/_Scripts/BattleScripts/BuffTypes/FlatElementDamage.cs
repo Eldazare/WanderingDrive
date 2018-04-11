@@ -13,18 +13,15 @@ public class FlatElementDamage : Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		if(player.buffFlatDamage<flatDamage){
-			player.buffFlatDamage = flatDamage;
-		}
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			if(player != null){
-				player.playerBuffs.Remove(this);
-			}else{
-				enemy.enemyBuffs.Remove(this);
+		if(player != null){
+			if(player.buffFlatDamage<flatDamage){
+				player.buffFlatDamage = flatDamage;
+			}
+		}else{
+			if(enemy.buffFlatDamage<flatDamage){
+				enemy.buffFlatDamage = flatDamage;
 			}
 		}
+		
 	}
 }

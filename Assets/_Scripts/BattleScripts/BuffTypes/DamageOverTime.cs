@@ -21,20 +21,9 @@ public class DamageOverTime : Buff {
 	}
 	override public void DoYourThing(){
 		if(player != null){
-			player.combatController.HitEnemy(damageovertime, damageovertimeElement, element, 0, 0, 0);
+			player.combatController.HitPlayer(damageovertime, damageovertimeElement, element, true, 0);
 		}else{
 			enemy.combatController.HitEnemy(damageovertime, damageovertimeElement, element, 0, 0, 0);
-		}
-		
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			if(player != null){
-				player.playerBuffs.Remove(this);
-			}else{
-				enemy.enemyBuffs.Remove(this);
-			}
 		}
 	}
 }

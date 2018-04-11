@@ -19,14 +19,5 @@ public class StaminaRegen : Buff {
 				player.staminaRegen = staminaRegen;
 			}
 		}
-		
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			if(player != null){
-				player.playerBuffs.Remove(this);
-			}
-		}
 	}
 }

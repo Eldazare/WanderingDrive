@@ -57,10 +57,14 @@ public class PlayerCombatScript : MonoBehaviour{
 		for (int i = 0;i<buffElementalWeakness.Count;i++){
 			buffElementalWeakness[i] = 0;
 		}
-		foreach (var item in playerBuffs)
+		foreach (Buff item in playerBuffs)
 		{
 			if(item != null){
 				item.DoYourThing();
+				item.turnsRemaining--;
+				if(item.turnsRemaining == 0){
+					playerBuffs[playerBuffs.IndexOf(item)] = null;
+				}
 			}
 		}
 		playerStats.stamina += staminaRegen;
@@ -79,6 +83,9 @@ public class PlayerCombatScript : MonoBehaviour{
 			popup.GetComponent<TextMesh>().text = healthRegen.ToString("0");
 		}
 		menuController.proceed = true;
+	}
+	public void RemoveFromBuffList(Buff buff){
+		playerBuffs.Remove(buff);
 	}
 	IEnumerator AttackRoutine(Enemy target, int part) {
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
