@@ -78,6 +78,26 @@ public static class Inventory {
         return result;
     }
 
+	public static bool CheckIfExists(RecipeMaterial mat){
+		ItemType type = mat.type;
+		if (type == ItemType.Wep) {
+			foreach (InventoryWeapon invWep in inventoryWeapons) {
+				if (invWep.subType == mat.subtype.ToString ()) {
+					return true;
+				}
+			}
+		} else if (type == ItemType.Arm) {
+			foreach (InventoryArmor invArm in inventoryArmor) {
+				if (invArm.subType == mat.subtype.ToString ()) {
+					return true;
+				}
+			}
+		} else {
+			Debug.LogError ("NonEquipment asked from single (CHECKIFEXISTS)");
+		}
+		return false;
+	}
+
     //hae itemi inventorysta ja poista se
 	public static bool RemoveItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
@@ -195,6 +215,10 @@ public static class Inventory {
 
 	public static bool InsertRecipeMaterial(RecipeMaterial recMat){
 		return PutItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);
+	}
+
+	public static bool RemoveRecipeMaterial(RecipeMaterial recMat){
+		return RemoveItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);
 	}
      
 

@@ -77,7 +77,6 @@ public class NodeSpawner : MonoBehaviour {
 			int nodeTime = Random.Range (minTime, maxTime);
 			SpawnNode (nodeType, nodeID, nodeLat, nodeLong, nodeTime);
 		}
-
 	}
 
 	private int GetRandomIndexByWeight(List<int> weights){
