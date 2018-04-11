@@ -16,13 +16,14 @@ public class PlayerCombatScript : MonoBehaviour{
 	public CombatController combatController; //Drag from hierarchy
 
 												//Perfect values are: if timer > maxDuration - perfect| Tiers are: if timer > maxDuration * tier
-	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 1f, perfectDodge = 0.5f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
-	float[] blockTiers = {0.90f,0.75f, 0.5f, 0.25f};
+	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 1f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
+	float[] blockTiers = {0.75f, 0.5f, 0.25f};
 	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
-	float focusDamageBuff = 1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 1f;
+	float focusDamageBuff = 1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 1f, attackedPenalty = 0.5f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 2; //How close the player moves to the enemy
-	bool defended;
+	bool defended, attacked;
+	public int abilityID;
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<Buff> playerBuffs = new List<Buff>();
@@ -33,10 +34,7 @@ public class PlayerCombatScript : MonoBehaviour{
  
 
 	//Buffs and debuffs end here!
-	
-
 	public Animator animator;
-	
 	public void Attack (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
@@ -80,7 +78,6 @@ public class PlayerCombatScript : MonoBehaviour{
 			GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh>().text = healthRegen.ToString("0");
 		}
-		
 		menuController.proceed = true;
 	}
 	IEnumerator AttackRoutine(Enemy target, int part) {
@@ -109,10 +106,17 @@ public class PlayerCombatScript : MonoBehaviour{
 		damageMod +=buffDamageMultiplier;
 
 		if(playerStats.mainHand != null){
-			WeaponAttack(playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod, part);
+			if(playerStats.mainHand.damage>0){
+				WeaponAttack(playerStats.mainHand, playerStats.offHand, damageMod*attackedPenalty, eleDamageMod, part);
+				attacked = true;
+			}
+			
 		}	
 		if(playerStats.offHand != null){
-			WeaponAttack(playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod, part);
+			if(playerStats.offHand.damage>0){
+				WeaponAttack(playerStats.offHand, playerStats.mainHand, damageMod*attackedPenalty, eleDamageMod, part);
+			}
+			
 		}
 		yield return new WaitUntil(() =>proceed);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
@@ -132,7 +136,7 @@ public class PlayerCombatScript : MonoBehaviour{
 			playerDamage *= damageMod;
 			playerElementDamage *= eleDamageMod;
 			if(blind>0){
-				if(Random.Range(0,100)-weapon.accuracyBonus > blind){
+				if(Random.Range(0,100)+weapon.accuracyBonus > blind){
 					combatController.HitEnemy(-1, 0, 0, part, weapon.accuracyBonus,weapon.weaknessType);
 				}else{
 					combatController.HitEnemy(playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus,weapon.weaknessType);
@@ -142,18 +146,18 @@ public class PlayerCombatScript : MonoBehaviour{
 			}
 		}
 	}
-	public void Ability (int ID, int part) {
+	public void Ability (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
-		StartCoroutine(AbilityRoutine(playerStats.abilityDamage(ID), playerStats.abilityElementDamage(ID), playerStats.abilityElement(ID), part));
+		StartCoroutine(AbilityRoutine(playerStats.abilityDamage(abilityID), playerStats.abilityElementDamage(abilityID), playerStats.abilityElement(abilityID), part, abilityID));
 	}
 
-	IEnumerator AbilityRoutine(float abilityDamage,float abilityElementDamage, Element abilityElement, int part) {
-		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
-		yield return new WaitUntil(() =>proceed);
+	IEnumerator AbilityRoutine(float abilityDamage,float abilityElementDamage, Element abilityElement, int part, int ID) {
 		proceed = false;
 		animator.SetTrigger("Attack");
 		yield return new WaitUntil(() =>proceed);
+		playerStats.abilities[ID].UseAbility();
+		proceed = false;
 		float damageMod = 1;
 		float eleDamageMod = 1 ;
 		if(focusPlustOverloadBonus){
@@ -170,8 +174,8 @@ public class PlayerCombatScript : MonoBehaviour{
 			}
 		}
 		//Buff damage modifier apply
-		eleDamageMod +=buffElementDamageMultiplier;
-		damageMod +=buffDamageMultiplier;
+		eleDamageMod += buffElementDamageMultiplier;
+		damageMod += buffDamageMultiplier;
 
 		//Buff flat damage apply
 		abilityDamage += buffFlatDamage;
@@ -179,6 +183,7 @@ public class PlayerCombatScript : MonoBehaviour{
 
 		abilityDamage *= damageMod;
 		abilityElementDamage *= eleDamageMod;
+		yield return new WaitUntil(() =>proceed);
 		combatController.HitEnemy(abilityDamage,abilityElementDamage, abilityElement, part, 0, 0);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
@@ -261,8 +266,7 @@ public class PlayerCombatScript : MonoBehaviour{
 				}
 			}
 			else if(blockTimer>0){
-				Debug.Log("BlockTimer: "+blockTimer);
-				if(playerStats.blockModifier*blockTimer>blockDuration-perfectBlock){
+				if((playerStats.blockModifier*blockTimer)>(blockDuration-perfectBlock)){
 					returnedValue = "You blocked the attack and took no damage!";
 					takeDamage(0,0,0,0);
 				}else{
@@ -316,14 +320,19 @@ public class PlayerCombatScript : MonoBehaviour{
 
 		damageModifier -= playerStats.damageReduction;
 		damageModifier -= buffDamageReduction;
-		eleModifier -= ((float)playerStats.elementalWeakness[System.Convert.ToInt32(element)])/100;
+		eleModifier -= ((float)playerStats.elementWeakness[System.Convert.ToInt32(element)])/100;
 
 		damage = damage*damageModifier;
 		elementDamage = elementDamage*eleModifier;
 		damageTaken = damage+elementDamage;
 		playerStats.health -= damageTaken;
-		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
-		popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+		if(damageTaken < 0){
+			GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+		}else{
+			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+		}
 		updateStats();
 		return damageTaken;
 	}
@@ -347,7 +356,7 @@ public class PlayerCombatScript : MonoBehaviour{
 
 		damageModifier -= playerStats.damageReduction;
 		damageModifier -= buffDamageReduction;
-		eleModifier -= ((float)playerStats.elementalWeakness[System.Convert.ToInt32(element)])/100;
+		eleModifier -= ((float)playerStats.elementWeakness[System.Convert.ToInt32(element)])/100;
 
 		damage = damage*damageModifier;
 		elementDamage = elementDamage*eleModifier;

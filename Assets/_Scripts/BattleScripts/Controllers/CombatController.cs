@@ -26,16 +26,20 @@ public class CombatController : MonoBehaviour {
 	}
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
+		playerStats = player.playerStats;
 		enemyList = new List<Enemy> ();
 		//if(loadout.mainHand != null){
-			player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
-			player.playerStats.dodgeModifier += player.playerStats.mainHand.dodgeModifier;
-			player.playerStats.blockModifier += player.playerStats.mainHand.blockModifier;
+			playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
+			playerStats.dodgeModifier += playerStats.mainHand.dodgeModifier;
+			playerStats.blockModifier += playerStats.mainHand.blockModifier;
+			playerStats.magicArmor += playerStats.mainHand.magicArmorBonus;
 		//}
 		if(loadout.offHand != null){
-			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
-			player.playerStats.dodgeModifier += player.playerStats.offHand.dodgeModifier;
-			player.playerStats.blockModifier += player.playerStats.offHand.blockModifier;
+			playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
+			playerStats.dodgeModifier += playerStats.offHand.dodgeModifier;
+			playerStats.blockModifier += playerStats.offHand.blockModifier;
+			playerStats.magicArmor += playerStats.offHand.magicArmorBonus;
+			playerStats.physicalArmor += playerStats.offHand.armorBonus;
 		}
 
 		GenerateArmors(loadout);
@@ -45,6 +49,10 @@ public class CombatController : MonoBehaviour {
 		for(int i = 0;i<nodeEnemyList.Count;i++){
 			EnemyCreation(i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
 		}
+		
+		Ability spell = new FireBall(player);
+		playerStats.abilities.Add(spell);
+
 		menuController.targetedEnemy = enemyList[0];
 		CreateHealthBars();
 		menuController.PlayersTurn();
@@ -65,7 +73,7 @@ public class CombatController : MonoBehaviour {
 				int i = 0;
 				foreach (var item1 in armor.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;
+					playerStats.elementWeakness[i] += item1;
 					i++;
 				}
 				speed += armor.speed;
@@ -84,7 +92,7 @@ public class CombatController : MonoBehaviour {
 				playerStats.magicArmor += acc.magicDefense;
 				foreach (var item1 in acc.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;
+					playerStats.elementWeakness[i] += item1;
 					i++;
 				}
 			}
@@ -170,7 +178,7 @@ public class CombatController : MonoBehaviour {
 	}
 
 	void WinEncounter(){
-		
+		//Generate loot, health, stamina and rest of the returned values to a object and give it back to map scene upon transitioning there
 	}
 	public void LoseEncounter(){
 		playerDead = true;

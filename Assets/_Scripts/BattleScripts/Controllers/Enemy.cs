@@ -113,12 +113,14 @@ public class Enemy : MonoBehaviour{
 		float damageTaken, damageModifier, eleModifier = 1, weaknessTypeAccuracy = 1;
 		if(weaknessType == enemyStats.weaknessType){
 			weaknessTypeAccuracy = 0.8f;
+		}else{
+			weaknessTypeAccuracy = 1f;
 		}
 		//0-100
-		if(weaknessTypeAccuracy*(Random.Range(0, 100)-accuracy)<enemyStats.partList[part].percentageHit|| damage > 0){
+		if(weaknessTypeAccuracy*(Random.Range(0, 100)-accuracy)<enemyStats.partList[part].percentageHit && damage > 0){
 			//Damage reduction calculations
 
-			eleModifier += enemyStats.elementWeakness[System.Convert.ToInt32(element)]/100;
+			eleModifier -= enemyStats.elementWeakness[System.Convert.ToInt32(element)]/100;
 			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier+enemyStats.armor);
 
 			eleModifier *= enemyStats.partList[part].damageMod;
@@ -133,8 +135,14 @@ public class Enemy : MonoBehaviour{
 			enemyStats.partList[part].DamageThisPart(damageTaken); // Part takes damage
 			// animator.SetTrigger("TakeDamage");
 			updateStats();
-			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+			if(damageTaken < 0){
+				GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+			}else{
+				GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z), Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh>().text = damageTaken.ToString("0.#");
+			}
+			
 			if(enemyStats.health <= 0){
 				combatController.EnemyDies(this);
 				//animator.SetTrigger("Death");

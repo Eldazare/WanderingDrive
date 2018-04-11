@@ -28,8 +28,8 @@ public class MenuController : MonoBehaviour {
 	List<Text> enemyHealthTexts;
 	public GameObject playerPovCamera; //Drag from Hierarchy
 	public float textSpeed = 0.02f;
-	public bool proceed;
-	public int selectedPart = -1;
+	public bool proceed, abilityOrAttack;
+	public int selectedPart = -1, AbilityID;
 	public Text enemyTurnText, playerTurnText;
 	Color originalColor;
 	void Start(){
@@ -93,6 +93,7 @@ public class MenuController : MonoBehaviour {
 	// Buttons.
 	public void Attack () {
 		DefaultButtons.SetActive(false);
+		abilityOrAttack = false;
 		StartCoroutine(CameraToEnemy());
 	}
 
@@ -120,11 +121,18 @@ public class MenuController : MonoBehaviour {
 		combatController.cameraScript.MoveCamera(playerPovCamera);
 		yield return new WaitUntil(()=>proceed);
 		combatController.cameraScript.FollowTarget(playerPovCamera);
-		player.Attack(selectedPart);
+		if(abilityOrAttack){
+			player.Ability(selectedPart);
+		}else{
+			player.Attack(selectedPart);
+		}
+		
 	}
 	public void Ability(int slot) {
 		AbilityButtons.SetActive (false);
-		player.Ability (slot, selectedPart);
+		abilityOrAttack = true;
+		player.abilityID = slot;
+		StartCoroutine(CameraToEnemy());
 	}
 
 	public void Consumable(int slot){
@@ -202,7 +210,6 @@ public class MenuController : MonoBehaviour {
 				}
 				i--;
 			}
-			
 		}else{
 			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(player.transform.position.x, player.transform.position.y+3, player.transform.position.z)-player.transform.right, Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh>().text = "Stunned";

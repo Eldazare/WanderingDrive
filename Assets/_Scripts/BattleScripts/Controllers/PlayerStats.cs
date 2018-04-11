@@ -7,10 +7,10 @@ public class PlayerStats {
 	public float damage, elementDamage, magicDamageBonus;
 	public float health, maxHealth, stamina, maxStamina, speed, physicalArmor, magicArmor, blockModifier = 1, dodgeModifier = 1;
 	public int damageReduction;
-	public List<int> elementalWeakness = new List<int>{0, 0, 0, 0, 0, 0};
+	public List<int> elementWeakness = new List<int>{0, 0, 0, 0, 0, 0};
 	public WeaponStats mainHand, offHand;
 
-	public List<Ability> abilities;
+	public List<Ability> abilities = new List<Ability>();
 	
 	public int ability1ID, ability2ID, ability3ID, ability4ID;
 	
