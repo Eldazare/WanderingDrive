@@ -24,11 +24,6 @@ public static class Merge {
 		return true;
 	}
 
-	public static bool CombineUpgrade(EquipmentSubtype upgradeType, int equipmentId, int recipeId){
-		List<RecipeUpgrade> newRecipeList = RecipeContainer.GetEquipmentUpgradeRecipes (upgradeType,equipmentId);
-		return false;
-	}
-
 	public static bool CombineUpgradeRecipe(RecipeUpgrade upgradeRecipe){
 		if (!Inventory.CheckIfExists(upgradeRecipe.materialList)){
 			return false;
