@@ -212,6 +212,30 @@ public static class Inventory {
     }
 
 
+	public static int GetAmountInInventory (ItemType type, ItemSubType subtype, int id){
+		switch (type) {
+		case ItemType.Mat:
+			return inventoryMaterials [id];
+		case ItemType.Cons:
+			if (subtype == ItemSubType.ComCon) {
+				return combatConsumables [id];
+			} else if (subtype == ItemSubType.NonCom) {
+				return nonCombatConsumables [id];
+			} else {
+				Debug.LogError ("False Subtype");
+			}
+			break;
+		default:
+			break;
+		}
+		return -1;
+	}
+
+	public static int GetAmountInInventoryRecipMat(RecipeMaterial mat){
+		return GetAmountInInventory (mat.type, mat.subtype, mat.itemId);
+	}
+
+
 
 	public static bool InsertRecipeMaterial(RecipeMaterial recMat){
 		return PutItem (recMat.type, recMat.subtype, recMat.itemId, recMat.amount);

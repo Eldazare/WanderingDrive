@@ -4,9 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - enemy
   - CombatController
   - CraftingController
+  - UndyingObject
+  - Enemy
+  - NodeSpawner
   layers:
   - Default
   - TransparentFX

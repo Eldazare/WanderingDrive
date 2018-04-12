@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 1552149896}
   m_Layer: 0
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: UndyingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeType: 2
   id: 0
+  time: 9001
   latitude: 0
   longitude: 0
 --- !u!114 &1552149897

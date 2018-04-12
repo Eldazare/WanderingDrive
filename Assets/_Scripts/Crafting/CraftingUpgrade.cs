@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CraftingUpgrade : MonoBehaviour {
 
-	public GameObject inventoryPanel; // Choice of armor and weapons
+	public GameObject inventoryChoice; // Shows the choice of armor and weapon
 	public GameObject inventoryResult; // shows the armors or weapons
 	public Text recipeInfo;
 
@@ -21,11 +21,13 @@ public class CraftingUpgrade : MonoBehaviour {
 
 
 	public void StoreItemType(int type){
+		Debug.Log ("Got " + type);
 		itemType = (ItemType)type;
 		itemSubtypeChosen = false;
 	}
 
 	public void StoreEquipmentSubAndId(string subtype, int id){
+		Debug.Log ("Got " + subtype + " and " + id);
 		itemSubtype = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), subtype);
 		itemId = id;
 		itemSubtypeChosen = true;
@@ -75,10 +77,16 @@ public class CraftingUpgrade : MonoBehaviour {
 		}
 		string theText = "";
 		for (int i = 0; i< matNameList.Count ;i++) {
-			theText += "Material " + i + ": " + matNameList [i] + " x"+ recip.materialList[i].amount +"\n";
+			theText += "Mat " + i + ": " + matNameList [i];
+			if (matNameList [i] != "") {
+				int amountInInventory = Inventory.GetAmountInInventoryRecipMat (recip.materialList [i]);
+				theText += "  " + amountInInventory + "/" + recip.materialList [i].amount + "\n";
+			} else {
+				theText += "\n";
+			}
 		}
-		string resultName = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), recip.result.type.ToString ()), recip.result.itemId);
-		theText += "Result :" + resultName + " x" + recip.result.amount;
+		string resultName = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), recip.result.subtype.ToString ()), recip.result.itemId);
+		theText += ">> " + resultName;
 
 		recipeInfo.text = theText;
 	}
@@ -90,19 +98,37 @@ public class CraftingUpgrade : MonoBehaviour {
 
 	// TODO: Unify inventory abstraction?
 	public void GenerateInventoryItemButtons(){
+		foreach (Transform transf in inventoryResult.transform) {
+			Destroy (transf.gameObject);
+		}
 		GameObject prefab = Resources.Load ("CraftingUi/Button") as GameObject;
 		if (itemType == ItemType.Wep) {
 			foreach (InventoryWeapon invWep in Inventory.inventoryWeapons) {
+				Debug.Log ("WEP!");
 				GameObject button = Instantiate (prefab, inventoryResult.transform) as GameObject;
 				Button but = button.GetComponent<Button> ();
-				but.onClick.AddListener (delegate {StoreEquipmentSubAndId (invWep.subType, invWep.itemID);});
+				but.onClick.AddListener (delegate {
+					StoreEquipmentSubAndId (invWep.subType, invWep.itemID);
+				});
+				button.GetComponentInChildren<Text> ().text = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), invWep.subType.ToString ()), invWep.itemID);
 			}
 		} else if (itemType == ItemType.Arm) {
 			foreach (InventoryArmor invArm in Inventory.inventoryArmor) {
 				GameObject button = Instantiate (prefab, inventoryResult.transform) as GameObject;
 				Button but = button.GetComponent<Button> ();
-				but.onClick.AddListener( delegate{StoreEquipmentSubAndId(invArm.subType, invArm.itemID);});
+				but.onClick.AddListener (delegate {
+					StoreEquipmentSubAndId (invArm.subType, invArm.itemID);
+				});
+				button.GetComponentInChildren<Text> ().text = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), invArm.subType.ToString ()), invArm.itemID);
 			}
+		} else {
+			Debug.Log ("False itemtype for creating buttons?");
 		}
+	}
+
+
+
+	public void QuitCrafting(){
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndCrafting ();
 	}
 }

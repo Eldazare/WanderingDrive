@@ -29,10 +29,10 @@ public class Crafting : MonoBehaviour{
 
 
     public void Start() {
-        Inventory.inventoryMaterials[0] = 2;
-        Inventory.nonCombatConsumables[6] = 1;
+        //Inventory.inventoryMaterials[0] = 2;
+        //Inventory.nonCombatConsumables[6] = 1;
         FillLists();
-		recipeImage.sprite = sprites[0][0];
+		//recipeImage.sprite = sprites[0][0]; // Put sprites to Resources and load from there
 		currentRecipe = recipeList[0][0];
         currentRecipeType = recipeTypeWeapon;
         currentItemSpriteList = 0;

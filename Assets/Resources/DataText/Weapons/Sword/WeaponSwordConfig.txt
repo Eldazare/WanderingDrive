@@ -20,3 +20,10 @@ Sword_0_element=0/0/0
 Sword_0_bonuses=0/0/0/0
 Sword_0_defenseMods=0.0/0.0
 
+%Weapon_Sword_1_GOLEMSWORD
+&Weapon_Sword_1_Golemsword is cool
+Sword_1_base=11/0/0
+Sword_1_element=0/0/0
+Sword_1_bonuses=0/0/0/0
+Sword_1_defenseMods=0.0/0.0
+

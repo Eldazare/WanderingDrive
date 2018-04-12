@@ -22,9 +22,10 @@ public class UndyingObject : MonoBehaviour {
 
 	void Start () {
 		DontDestroyOnLoad (this);
-		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen data
+		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen -data (show loading bar or something)
 		NodeInteraction.InitializeUndyingObject(this);
 		Inventory.Initialize ();
+		FillInventoryForTest (); // TESTING ONLY
 		// TODO: Potentially load player data
 		//ELSE:
 		playerWorldStats = new WorldStatsContainer();
@@ -36,6 +37,12 @@ public class UndyingObject : MonoBehaviour {
         //StartCoroutine (UpdateLocationData(10)); // Enable this when testing
         //StartCoroutine (ToTheWorld ());
         StartCrafting();
+	}
+
+	private void FillInventoryForTest(){
+		Inventory.PutItem (ItemType.Wep, ItemSubType.Sword, 0, 1);
+		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 1, 4);
+		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 2, 1);
 	}
 
 	private IEnumerator ToTheWorld(){
@@ -91,6 +98,15 @@ public class UndyingObject : MonoBehaviour {
 		yield return SceneManager.LoadSceneAsync ("Crafting");
 		Crafting craft = GameObject.FindGameObjectWithTag ("CraftingController").GetComponent<Crafting> ();
 
+	}
+
+	public void StartUpgrading(){
+		StartCoroutine(StartUpgradingIenum());
+	}
+
+	private IEnumerator StartUpgradingIenum(){
+		yield return SceneManager.LoadSceneAsync ("CraftingUpgrade");
+		//CraftingUpgrade craft = GameObject.FindGameObjectWithTag ("CraftingUpgradeController").GetComponent<CraftingUpgrade> ();
 	}
 
 	public void EndCrafting(){
