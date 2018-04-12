@@ -25,5 +25,6 @@ public class DamageOverTime : _Buff {
 		}else{
 			enemy.combatController.HitEnemy(damageovertime, damageovertimeElement, element, 0, 0, 0);
 		}
+		
 	}
 }

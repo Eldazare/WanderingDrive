@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour {
     public IEnumerator Attack () {
         proceed = false;
         startPos = transform.position;
-        ApplyEnemyBuffs ();
         yield return new WaitUntil (() => proceed);
         proceed = false;
         InvokeRepeating ("moveToPlayer", 0, Time.deltaTime);
@@ -73,6 +72,7 @@ public class Enemy : MonoBehaviour {
             buffElementalWeakness[i] = 0;
         }
         foreach (var item in enemyBuffList) {
+            proceed = false;
             if (item != null) {
                 item.DoYourThing ();
             }

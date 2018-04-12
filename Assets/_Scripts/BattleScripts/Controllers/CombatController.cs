@@ -157,14 +157,12 @@ public class CombatController : MonoBehaviour {
 			menuController.EnemyTurnTextFade();
 			foreach (var item in enemyList){
 				if(!playerDead){
+					item.ApplyEnemyBuffs();
 					if(item != null && !item.stunned){
 						yield return new WaitForSeconds(3f);
 						StartCoroutine(item.Attack());
 						yield return new WaitUntil(()=>enemyAttacked);
 					}else if(item.stunned){
-						GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(item.transform.position.x, item.transform.position.y+3, item.transform.position.z)-item.transform.right, Quaternion.identity) as GameObject;
-						popup.GetComponent<TextMesh>().text = "Stunned";
-						yield return new WaitForSeconds(3f);
 					}
 				}else{
 					break;

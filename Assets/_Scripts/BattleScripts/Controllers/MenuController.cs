@@ -159,15 +159,17 @@ public class MenuController : MonoBehaviour {
 	}
 
 	public void messageToScreen(string message){
-		textBox.SetActive(true);
 		StartCoroutine(WriteText(message));
 	}
 	IEnumerator WriteText(string message){
-		foreach (var item in message)
+		textBox.SetActive(true);
+		textBoxText.text = "";
+		/* foreach (var item in message)
 		{
 			textBoxText.text += item;
 			yield return new WaitForSeconds(textSpeed);
-		}
+		} */
+		textBoxText.text = message;
 		yield return new WaitForSeconds(1.5f);
 		textBoxText.text = "";
 		textBox.SetActive(false);
