@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerStats {
 
-	public int damage;
-	public float health, maxHealth, stamina, speed;
+	public float damage, elementDamage, magicDamageBonus;
+	public float health, maxHealth, stamina, maxStamina, speed, physicalArmor, magicArmor, blockModifier = 1, dodgeModifier = 1;
 	public Element element;
-	public int damageReduction, elementalDamage, weaponType;
-	public List<int> elementalWeakness = new List<int>{0, 0, 0, 0, 0, 0};
+	public int damageReduction;
+	public List<int> elementWeakness = new List<int>{0, 0, 0, 0, 0, 0};
 	public WeaponStats mainHand, offHand;
+
+	public List<Ability> abilities = new List<Ability> ();
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff>();
@@ -46,11 +48,11 @@ public class PlayerStats {
 			}
 		}
 	}
-	public int abilityDamage(int abilityID){
+	public float abilityDamage(int abilityID){
 		return damage;
 	}
-	public int abilityElementDamage(int abilityId){
-		return elementalDamage;
+	public float abilityElementDamage(int abilityId){
+		return elementDamage;
 	}
 	public Element abilityElement(int abilityID){
 		return element;

@@ -7,30 +7,39 @@ using UnityEditor;
 public class CombatController : MonoBehaviour {
 
 	public List<Enemy> enemyList;
-	public PlayerCombatScript player;
+	public PlayerCombatScript player; //Drag from Hierarchy
 	public PlayerStats playerStats;
-	public GameObject enemyHost;
-	public MenuController menuController;
-	public TouchControlScript touchController;
-	public CameraController cameraScript;
+	public GameObject enemyHost; //Drag from Hierarchy
+	public MenuController menuController; //Drag from Hierarchy
+	public TouchControlScript touchController; //Drag from Hierarchy
+	public CameraController cameraScript; //Drag from Hierarchy
 	public bool enemyAttacked;
 	List<List<RecipeMaterial>> encounterDrops = new List<List<RecipeMaterial>>();
 	public int enemyTurns;
 	bool playerDead;
+	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
 	}
 	public void ResetPlayerDefence(){
 		touchController.enemyTurn = true;
 	}
-
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
+		playerStats = player.playerStats;
 		enemyList = new List<Enemy> ();
-		
-		player.playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
+		//if(loadout.mainHand != null){
+			playerStats.mainHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.mainHand.subType), loadout.mainHand.itemID);
+			playerStats.dodgeModifier += playerStats.mainHand.dodgeModifier;
+			playerStats.blockModifier += playerStats.mainHand.blockModifier;
+			playerStats.magicArmor += playerStats.mainHand.magicArmorBonus;
+		//}
 		if(loadout.offHand != null){
-			player.playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
+			playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);
+			playerStats.dodgeModifier += playerStats.offHand.dodgeModifier;
+			playerStats.blockModifier += playerStats.offHand.blockModifier;
+			playerStats.magicArmor += playerStats.offHand.magicArmorBonus;
+			playerStats.physicalArmor += playerStats.offHand.armorBonus;
 		}
 
 		GenerateArmors(loadout);
@@ -40,13 +49,68 @@ public class CombatController : MonoBehaviour {
 		for(int i = 0;i<nodeEnemyList.Count;i++){
 			EnemyCreation(i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
 		}
+		
+		Ability spell = new FireBall(player);
+		spell.staminaCost = 10;
+		playerStats.abilities.Add(spell);
+
+		_Buff buff = new ArmorBuff(50,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new Blind(50,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new Confusion(1);
+		buff.player = player;
+		player.playerBuffs.Add(buff); 
+		buff = new Paralyze(1);
+		buff.player = player;
+		player.playerBuffs.Add(buff); 
+		buff = new Freeze(1);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new DamageMultiplier(0.8f,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new DamageOverTime(10,10,0,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new ElementDamageMultiplier(0.8f,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new FlatDamage(10,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new FlatElementDamage(10,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new HealthRegen(10, 3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new StaminaRegen(10, 3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new ElementDamageMultiplier(0.8f,3);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+		buff = new Stun(2);
+		buff.player = player;
+		player.playerBuffs.Add(buff);
+
+		buff = new Stun(2);
+		buff.enemy = enemyList[1];
+		enemyList[1].enemyBuffList.Add(buff);
+
+		buff = new DamageOverTime(10, 10, 0, 3);
+		buff.enemy = enemyList[2];
+		enemyList[2].enemyBuffList.Add(buff);
+
 		menuController.targetedEnemy = enemyList[0];
 		CreateHealthBars();
 		menuController.PlayersTurn();
 	}
 
 	void GenerateArmors(Loadout loadout){
-		float armorAmount = 0;
 		float speed = 0;
 		int j = 0;
 
@@ -55,12 +119,13 @@ public class CombatController : MonoBehaviour {
 			foreach (var item in loadout.wornArmor)	
 			{
 				Armor armor = ArmorCreator.CreateArmor((ArmorType)System.Enum.Parse(typeof(ArmorType), item.subType), item.itemID);
-				armorAmount += armor.defense;
+				playerStats.physicalArmor += armor.defense;
+				playerStats.magicArmor += armor.magicDefense;
 
 				int i = 0;
 				foreach (var item1 in armor.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;// + (int)(armor.magicDefense*100);
+					playerStats.elementWeakness[i] += item1;
 					i++;
 				}
 				speed += armor.speed;
@@ -71,13 +136,15 @@ public class CombatController : MonoBehaviour {
 
 		//Accessory generation
 		if(loadout.wornAccessories[0] != null){
-			foreach (var item in loadout.wornAccessories)
-			{
+			foreach (var item in loadout.wornAccessories){
 				Accessory acc = ArmorCreator.CreateAccessory(item.itemID);
 				int i = 0;
+				playerStats.damage += acc.damage;
+				playerStats.elementDamage += acc.elementDamage;
+				playerStats.magicArmor += acc.magicDefense;
 				foreach (var item1 in acc.elementResists)
 				{
-					playerStats.elementalWeakness[i] += item1;// + (int)(acc.magicDefense*100);
+					playerStats.elementWeakness[i] += item1;
 					i++;
 				}
 			}
@@ -88,19 +155,21 @@ public class CombatController : MonoBehaviour {
 			yield return new WaitUntil(()=>menuController.proceed);
 			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade();
-			foreach (var item in enemyList)
-			{
+			foreach (var item in enemyList){
 				if(!playerDead){
-					if(item != null){
+					if(item != null && !item.stunned){
 						yield return new WaitForSeconds(3f);
 						StartCoroutine(item.Attack());
 						yield return new WaitUntil(()=>enemyAttacked);
+					}else if(item.stunned){
+						GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(item.transform.position.x, item.transform.position.y+3, item.transform.position.z)-item.transform.right, Quaternion.identity) as GameObject;
+						popup.GetComponent<TextMesh>().text = "Stunned";
+						yield return new WaitForSeconds(3f);
 					}
 				}else{
 					break;
 				}
 			}
-
 			touchController.enemyTurn = false;
 			enemyTurns--;
 			if(enemyTurns<=0){
@@ -161,20 +230,17 @@ public class CombatController : MonoBehaviour {
 	}
 
 	void WinEncounter(){
-		
+		//Generate loot, health, stamina and rest of the returned values to a object and give it back to map scene upon transitioning there
 	}
 	public void LoseEncounter(){
 		playerDead = true;
 	}
-
-	public void HitPlayer(float damage, float elementDamage, Element element, bool area){
-		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area));
+	public void HitPlayer(float damage, float elementDamage, Element element, bool area, int damageType){
+		menuController.messageToScreen(player.GetHit(damage, elementDamage, element, area, damageType));
 	}
-
-	public void HitEnemy(float damage, float elementDamage, Element element, int part, float damageMod){
-		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, damageMod));
+	public void HitEnemy(float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType){
+		menuController.messageToScreen(menuController.targetedEnemy.GetHit(damage, elementDamage, element, part, accuracy, weaknessType));
 	}
-
 	public void updateEnemyStats(float health, float maxhealth, Enemy enemy){
 		menuController.updateEnemyHealth(health, maxhealth, health/maxhealth, enemy);
 	}

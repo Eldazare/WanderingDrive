@@ -13,15 +13,14 @@ public class HealthRegen : _Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-
-		player.health+=heal;
-
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+		if(player != null){
+			if(player.healthRegen<heal){
+				player.healthRegen = heal;
+			}
+		}else{
+			if(enemy.healthRegen<heal){
+				enemy.healthRegen = heal;
+			}
 		}
 	}
-	
 }

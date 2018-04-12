@@ -14,16 +14,18 @@ public class ElementResist : _Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		for(int i = 0;i<player.buffElementalWeakness.Count;i++){
-			if(player.buffElementalWeakness[i]<buffElementalWeakness[i]){
-				player.buffElementalWeakness[i] = buffElementalWeakness[i];
+		if(player != null){
+			for(int i = 0;i<player.buffElementalWeakness.Count;i++){
+				if(player.buffElementalWeakness[i]<buffElementalWeakness[i]){
+					player.buffElementalWeakness[i] = buffElementalWeakness[i];
+				}
 			}
-		}
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+		}else{
+			for(int i = 0;i<enemy.buffElementalWeakness.Count;i++){
+				if(enemy.buffElementalWeakness[i]<buffElementalWeakness[i]){
+					enemy.buffElementalWeakness[i] = buffElementalWeakness[i];
+				}
+			}
 		}
 	}
 }

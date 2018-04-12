@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stun : MonoBehaviour {
+public class Stun : _Buff {
 
-	// Use this for initialization
-	void Start () {
-		
+	public Stun(){
+		turnsRemaining = -1;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public Stun(int turns){
+		turnsRemaining = turns;
+	}
+	public override void DoYourThing(){
+		if(player != null){
+			player.stunned = true;
+		}else{
+			enemy.stunned = true;
+		}
 	}
 }

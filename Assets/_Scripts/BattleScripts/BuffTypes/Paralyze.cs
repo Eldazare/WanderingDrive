@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Paralyze : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
+public class Paralyze : _Buff {
+	public Paralyze(){
+		turnsRemaining = -1;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public Paralyze(int turns){
+		turnsRemaining = turns;
+	}
+	public override void DoYourThing(){
+		if(player != null){
+			player.paralyzed = true;
+		}else{
+			enemy.paralyzed = true;
+		}
 	}
 }

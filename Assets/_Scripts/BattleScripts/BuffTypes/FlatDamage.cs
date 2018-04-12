@@ -14,15 +14,16 @@ public class FlatDamage : _Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		if(player.buffFlatDamage<flatDamage){
-			player.buffFlatDamage = flatDamage;
+		if(player != null){
+			if(player.buffFlatDamage<flatDamage){
+				player.buffFlatDamage = flatDamage;
+			}
+		}else{
+			if(enemy.buffFlatDamage<flatDamage){
+				enemy.buffFlatDamage = flatDamage;
+			}
 		}
 		
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
-		}
+		
 	}
 }

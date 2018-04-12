@@ -10,12 +10,10 @@ public class Confusion : _Buff {
 		turnsRemaining = turns;
 	}
 	override public void DoYourThing(){
-		player.confused = true;
-		if(turnsRemaining>0){
-			turnsRemaining--;
-		}
-		if(turnsRemaining == 0){
-			player.playerBuffs.Remove(this);
+		if(player != null){
+			player.confused = true;
+		}else{
+			enemy.confused = true;
 		}
 	}
 }

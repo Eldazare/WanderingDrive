@@ -16,7 +16,6 @@ public class TouchControlScript : MonoBehaviour {
     {
         dragDistance = Screen.height * 15 / 100; //dragDistance is 15% height of the screen
     }
- 
     void Update()
     {
        if (Input.touchCount == 1 && enemyTurn) // user is touching the screen with a single touch
@@ -32,9 +31,7 @@ public class TouchControlScript : MonoBehaviour {
                          if(hit.collider!=null && hit.collider.name=="Quad")
                          {
                              isTouchableArea = true;
-                             
                          }
-                         
                      }
                      else
                      {
@@ -45,7 +42,6 @@ public class TouchControlScript : MonoBehaviour {
             Touch touch = Input.GetTouch(0); // get the touch
             if (touch.phase == TouchPhase.Began && isTouchableArea) //check for the first touch
             {
-				
                 fp = touch.position;
                 lp = touch.position;
             }
@@ -67,7 +63,6 @@ public class TouchControlScript : MonoBehaviour {
                         {   //Right swipe
                             Debug.Log("Right Swipe");
                             player.Dodge(1);
-
                         }
                         else
                         {   //Left swipe
@@ -95,7 +90,6 @@ public class TouchControlScript : MonoBehaviour {
                         Debug.Log("Tap");
 					    player.Block();
                     }
-                    
                 }
             }
         }
