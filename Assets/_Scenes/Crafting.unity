@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -725,8 +725,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2047278553}
-        m_MethodName: ChangeRecipeListToCrafting
-        m_Mode: 1
+        m_MethodName: ChangeRecipeListTo
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1591,7 +1591,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2002165229}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2047278553}
+        m_MethodName: ChangeRecipeListTo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2002165229
@@ -1655,18 +1666,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeImage: {fileID: 260227942}
-  weaponRecipeList: 
-  consRecipeList: 
-  armorRecipeList: 
-  weaponSprites:
-  - {fileID: 21300002, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  - {fileID: 21300000, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  - {fileID: 21300004, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  consumableSprites:
-  - {fileID: 21300012, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  - {fileID: 21300006, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  - {fileID: 21300010, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
-  armorSprites: []
   currentItemSpriteList: 0
   currentRecipeType: 0
   currentRecipe: 0
@@ -1764,12 +1763,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2047278553}
-        m_MethodName: ChangeRecipeListToConsumable
-        m_Mode: 1
+        m_MethodName: ChangeRecipeListTo
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

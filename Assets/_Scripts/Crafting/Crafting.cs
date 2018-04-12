@@ -54,7 +54,7 @@ public class Crafting : MonoBehaviour{
     public void ChangeRecipeOnwards() {
         spriteCounter++;
 		if (spriteCounter >= recipeList [currentRecipeType].Count) {
-			recipeImage.sprite = sprites [currentRecipeType] [0];
+			//recipeImage.sprite = sprites [currentRecipeType] [0];
 			currentRecipe = recipeList [currentRecipeType] [0];
 			spriteCounter = 0;
 		}
@@ -68,7 +68,7 @@ public class Crafting : MonoBehaviour{
 		spriteCounter--;
 		int lastIndex = recipeList [currentRecipeType].Count - 1;
 		if (spriteCounter <= 0) {
-			recipeImage.sprite = sprites [currentRecipeType] [lastIndex];
+			//recipeImage.sprite = sprites [currentRecipeType] [lastIndex];
 			currentRecipe = recipeList [currentRecipeType] [lastIndex];
 			spriteCounter = 0;
 		}
@@ -78,9 +78,9 @@ public class Crafting : MonoBehaviour{
 		}
     }
 
-	public void ChangeRecipeListTo(CraftingRecipeType recipetype) {
-		int recipeIndex = System.Convert.ToInt32 (recipetype);
-		recipeImage.sprite = sprites[recipeIndex][0];
+	public void ChangeRecipeListTo(int recipeIndex) {
+		Debug.Log ("Recipes changed to " + ((CraftingRecipeType)recipeIndex).ToString ());
+		//recipeImage.sprite = sprites[recipeIndex][0];
 		currentRecipe = recipeList[recipeIndex][0];
 		currentRecipeType = recipeIndex;
         currentItemSpriteList = 0;

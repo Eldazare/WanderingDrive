@@ -25,7 +25,6 @@ public class UndyingObject : MonoBehaviour {
 		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen -data (show loading bar or something)
 		NodeInteraction.InitializeUndyingObject(this);
 		Inventory.Initialize ();
-		FillInventoryForTest (); // TESTING ONLY
 		// TODO: Potentially load player data
 		//ELSE:
 		playerWorldStats = new WorldStatsContainer();
@@ -34,15 +33,18 @@ public class UndyingObject : MonoBehaviour {
 		loadoutList = new LoadoutsContainer(loadoutCount);
 
         // Get location data here
-        //StartCoroutine (UpdateLocationData(10)); // Enable this when testing
-        //StartCoroutine (ToTheWorld ());
-        StartCrafting();
+        //StartCoroutine (UpdateLocationData(10)); // Enable this when testing location
+		FillInventoryForTest (); // TESTING ONLY
+        StartCoroutine (ToTheWorld ());
 	}
 
 	private void FillInventoryForTest(){
 		Inventory.PutItem (ItemType.Wep, ItemSubType.Sword, 0, 1);
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 1, 4);
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 2, 1);
+		Loadout loadout = new Loadout (1);
+		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
+		loadoutList.InsertLoadout (loadout, 0);
 	}
 
 	private IEnumerator ToTheWorld(){
