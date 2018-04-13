@@ -5,8 +5,13 @@ using UnityEngine.UI;
 
 public class Crafting : MonoBehaviour{
     public Image recipeImage;
+	public GameObject topPanel; // includes left/right/merge buttons.
+	public Text recipeInfo;
+	public Text resultInfo;
 
-	List<List<int>> recipeList = new List<List<int>> ();
+	// TODO: Sprites will be downloaded per type and per id from Resources. Their id's and counts will match the recipes.
+
+	List<List<Recipe>> recipeList = new List<List<Recipe>> ();
 	List<List<Sprite>> sprites = new List<List<Sprite>>();
 
 	/*
@@ -19,28 +24,24 @@ public class Crafting : MonoBehaviour{
 	*/
 
     public int currentItemSpriteList;
+	public int spriteCounter;
+
     public int currentRecipeType;
     public int currentRecipe;
-    public int spriteCounter;
-
-    public int recipeTypeWeapon = 0;
-    public int recipeTypeConsumable = 1;
-    public int recipeTypeArmor = 2;
 
 
     public void Start() {
-        //Inventory.inventoryMaterials[0] = 2;
-        //Inventory.nonCombatConsumables[6] = 1;
-        FillLists();
+        LoadRecipes();
 		//recipeImage.sprite = sprites[0][0]; // Put sprites to Resources and load from there
-		currentRecipe = recipeList[0][0];
-        currentRecipeType = recipeTypeWeapon;
-        currentItemSpriteList = 0;
-        spriteCounter = 0;
+		currentRecipe = -1;
+        currentRecipeType = -1;
+        currentItemSpriteList = -1;
+        spriteCounter = -1;
     }
 
     
-    public void FillLists() {
+    public void LoadRecipes() {
+		/*
 		int recipeTypes = System.Enum.GetNames (typeof(CraftingRecipeType)).Length;
 		for (int i = 0; i < recipeTypes; i++) {
 			List<int> newRecipeList = new List<int>();
@@ -49,9 +50,12 @@ public class Crafting : MonoBehaviour{
 			}
 			recipeList.Add (newRecipeList);
 		}
+		*/
+		recipeList = RecipeContainer.GetAllCraftRecipes ();
     }
 
     public void ChangeRecipeOnwards() {
+		/*
         spriteCounter++;
 		if (spriteCounter >= recipeList [currentRecipeType].Count) {
 			//recipeImage.sprite = sprites [currentRecipeType] [0];
@@ -62,12 +66,19 @@ public class Crafting : MonoBehaviour{
 			recipeImage.sprite = sprites[currentRecipeType][spriteCounter];
 			currentRecipe = recipeList[currentRecipeType][spriteCounter];
         }
+        */
+		currentRecipe++;
+		if (currentRecipe >= recipeList [currentRecipeType].Count) {
+			currentRecipe = 0;
+		}
+		UpdateInfoTexts ();
     }
 
     public void ChangeRecipeBackwards() {
+		/*
 		spriteCounter--;
 		int lastIndex = recipeList [currentRecipeType].Count - 1;
-		if (spriteCounter <= 0) {
+		if (spriteCounter < 0) {
 			//recipeImage.sprite = sprites [currentRecipeType] [lastIndex];
 			currentRecipe = recipeList [currentRecipeType] [lastIndex];
 			spriteCounter = 0;
@@ -76,26 +87,37 @@ public class Crafting : MonoBehaviour{
 			recipeImage.sprite = sprites[currentRecipeType][spriteCounter];
 			currentRecipe = recipeList[currentRecipeType][spriteCounter];
 		}
+		*/
+		currentRecipe--;
+		if (currentRecipe < 0) {
+			currentRecipe = recipeList [currentRecipeType].Count - 1;
+		}
+		UpdateInfoTexts ();
     }
 
 	public void ChangeRecipeListTo(int recipeIndex) {
+		topPanel.SetActive (true);
 		Debug.Log ("Recipes changed to " + ((CraftingRecipeType)recipeIndex).ToString ());
 		//recipeImage.sprite = sprites[recipeIndex][0];
-		currentRecipe = recipeList[recipeIndex][0];
+		currentRecipe = 0;
 		currentRecipeType = recipeIndex;
+
         currentItemSpriteList = 0;
         spriteCounter = 0;
+		UpdateInfoTexts ();
     }
 
     public void LetsMerge() {
-		if (Merge.CombineRecipe ((CraftingRecipeType)currentRecipeType, recipeList [currentRecipeType] [currentRecipe])){
-
+		if (Merge.CombineRecipe (recipeList[currentRecipeType] [currentRecipe])){
+			Debug.Log ("Merge'd");
 		}
         else {
             Debug.Log("Error, combining failed");
         }
-        Debug.Log("onnistui");
-        Debug.Log(Inventory.inventoryWeapons[0].subType);
-
     }
+
+	private void UpdateInfoTexts(){
+		recipeInfo.text = InfoBoxCreator.GetRecipeInfoString (recipeList [currentRecipeType] [currentRecipe]);
+		resultInfo.text = InfoBoxCreator.GetMaterialInfoString (recipeList [currentRecipeType] [currentRecipe].resultItem);
+	}
 }

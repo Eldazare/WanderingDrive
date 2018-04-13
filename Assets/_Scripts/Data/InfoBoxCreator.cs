@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class InfoBoxCreator  {
 
+
+	// TODO: NEXT: Finish infoboxes
+
+
 	public static string GetRecipeInfoString(Recipe recipe){
 		string returnee = "";
 		for (int i = 0; i < 4; i++) {

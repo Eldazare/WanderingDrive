@@ -5,6 +5,7 @@ using UnityEngine;
 // ENUMIT saatana
 
 public static class Merge {
+	/*
 	public static bool CombineRecipe(CraftingRecipeType recipeType, int recipeID) {
 		List<Recipe> newRecipeList = RecipeContainer.GetCraftRecipes(recipeType);
 		Recipe newRecipe = newRecipeList [recipeID];
@@ -21,6 +22,21 @@ public static class Merge {
 		}
 	 	//luodaan uusi item inventoryyn
 		Inventory.PutItem(newRecipe.resultItem.type, newRecipe.resultItem.subtype, newRecipe.resultItem.itemId, newRecipe.resultItem.amount);
+		return true;
+	}
+	*/
+
+	public static bool CombineRecipe(Recipe recipe){
+		//katso löytyykö tarvittavat tavarat
+		if (!Inventory.CheckIfExists(recipe.materialList)) {
+			return false;
+		}
+		//Poistetaan tarvittavat materiaalit inventorysta
+		for (int i = 0; i < recipe.materialList.Count; i++) {
+			Inventory.RemoveRecipeMaterial(recipe.materialList[i]);
+		}
+		//luodaan uusi item inventoryyn
+		Inventory.InsertRecipeMaterial(recipe.resultItem);
 		return true;
 	}
 

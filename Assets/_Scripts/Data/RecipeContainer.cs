@@ -28,15 +28,17 @@ public static class RecipeContainer {
 
 	static bool generated = false;
 
-	public static List<List<Recipe>> craftingRecipes = new List<List<Recipe>> (){ };
-	public static List<List<RecipeUpgrade>> equipmentUpgrades = new List<List<RecipeUpgrade>>(){};
+	private static List<List<Recipe>> craftingRecipes = new List<List<Recipe>> (){ };
+	private static List<List<RecipeUpgrade>> equipmentUpgrades = new List<List<RecipeUpgrade>>(){};
 
 
 	public static void GenerateRecipes(List<string> recipeNames){
 		if (!generated){
 			for (int i = 0; i < System.Enum.GetNames (typeof(EquipmentSubtype)).Length; i++) {
-				craftingRecipes.Add (new List<Recipe> ());
 				equipmentUpgrades.Add (new List<RecipeUpgrade> ());
+			} 
+			for (int i = 0; i < System.Enum.GetNames (typeof(CraftingRecipeType)).Length; i++) {
+				craftingRecipes.Add (new List<Recipe> ());
 			}
 			generated = true;
 			// TODO HERE
@@ -60,6 +62,10 @@ public static class RecipeContainer {
 
 	public static List<Recipe> GetCraftRecipes(CraftingRecipeType recipType){
 		return craftingRecipes [System.Convert.ToInt32 (recipType)];
+	}
+
+	public static List<List<Recipe>> GetAllCraftRecipes(){
+		return craftingRecipes;
 	}
 
 
