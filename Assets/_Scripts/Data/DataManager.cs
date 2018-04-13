@@ -92,7 +92,7 @@ public static class DataManager  {
 		}
 		readBool = true;
 
-		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric);
+		NameDescContainer.GenerateNames (nameListGeneric, descriptionListGeneric); // Must be before any other stuffgeneration
 		RecipeContainer.GenerateRecipes (recipeNameList);
 		// NodeSpriteContainer.LoadSpriteData ();
 	}

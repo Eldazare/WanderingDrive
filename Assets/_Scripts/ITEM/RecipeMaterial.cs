@@ -22,17 +22,15 @@ public class RecipeMaterial  {
 		} else {
 			amount = 1;
 		}
+		itemName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), subtype.ToString()), itemId);
 	}
 
 
 	public string GetIdentifier(){
-		return type + "_" + subtype + "_" + itemId;
+		return type.ToString() + "_" + subtype.ToString() + "_" + itemId;
 	}
 
 	public string GetName(){
 		return itemName;
 	}
-
-    //Efekti
-
 }
