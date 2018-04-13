@@ -8,6 +8,7 @@ public class CraftingUpgrade : MonoBehaviour {
 	public GameObject inventoryChoice; // Shows the choice of armor and weapon
 	public GameObject inventoryResult; // shows the armors or weapons
 	public Text recipeInfo;
+	public Text resultInfo;
 
 	private int recipeIndex;
 	private List<RecipeUpgrade> upgradeList;
@@ -66,29 +67,8 @@ public class CraftingUpgrade : MonoBehaviour {
 
 	private void UpdateRecipeInfo(){
 		RecipeUpgrade recip = upgradeList [recipeIndex];
-		List<string> matNameList = new List<string> ();
-		for (int i = 0; i < 4; i++) {
-			if (i < recip.materialList.Count) {
-				string matName = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), recip.materialList [i].type.ToString ()), recip.materialList[i].itemId);
-				matNameList.Add (matName);
-			} else {
-				matNameList.Add ("");
-			}
-		}
-		string theText = "";
-		for (int i = 0; i< matNameList.Count ;i++) {
-			theText += "Mat " + i + ": " + matNameList [i];
-			if (matNameList [i] != "") {
-				int amountInInventory = Inventory.GetAmountInInventoryRecipMat (recip.materialList [i]);
-				theText += "  " + amountInInventory + "/" + recip.materialList [i].amount + "\n";
-			} else {
-				theText += "\n";
-			}
-		}
-		string resultName = NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), recip.result.subtype.ToString ()), recip.result.itemId);
-		theText += ">> " + resultName;
-
-		recipeInfo.text = theText;
+		recipeInfo.text = InfoBoxCreator.GetRecipeUpgradeInfoString (recip);
+		resultInfo.text = InfoBoxCreator.GetMaterialInfoString (recip.result);
 	}
 
 	public void MergeUpgrade(){
@@ -104,7 +84,6 @@ public class CraftingUpgrade : MonoBehaviour {
 		GameObject prefab = Resources.Load ("CraftingUi/Button") as GameObject;
 		if (itemType == ItemType.Wep) {
 			foreach (InventoryWeapon invWep in Inventory.inventoryWeapons) {
-				Debug.Log ("WEP!");
 				GameObject button = Instantiate (prefab, inventoryResult.transform) as GameObject;
 				Button but = button.GetComponent<Button> ();
 				but.onClick.AddListener (delegate {

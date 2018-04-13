@@ -23,7 +23,7 @@ public static class InfoBoxCreator  {
 
 	public static string GetRecipeUpgradeInfoString(RecipeUpgrade recipe){
 		string returnee = "";
-		returnee += "Upgrading: " + recipe.baseEquipment.GetName ();
+		returnee += "Upgrading: " + recipe.baseEquipment.GetName ()+"\n";
 		for (int i = 0; i < 4; i++) {
 			if (i < recipe.materialList.Count) {
 				RecipeMaterial mat = recipe.materialList [i];
@@ -44,7 +44,15 @@ public static class InfoBoxCreator  {
 		switch (mat.type) {
 		case ItemType.Wep:
 			WeaponStats block = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse (typeof(WeaponType), mat.subtype.ToString ()), mat.itemId);
-
+			returnee += string.Format("{0,-20} {1,10} \n","Damage Type", block.weaknessType.ToString());
+			returnee += string.Format("{0,-20} {1,10} \n","Damage", block.damage); 
+			returnee += string.Format("{0,-20} {1,10} \n","Accuracy Bonus", block.accuracyBonus); 
+			returnee += string.Format("{0,-20} {1,10} \n","Element", block.element.ToString()); 
+			returnee += string.Format("{0,-20} {1,10} \n","Element Damage", block.elementDamage); 
+			returnee += string.Format("{0,-20} {1,10} \n","Armor", block.armorBonus); 
+			returnee += string.Format("{0,-20} {1,10} \n","Magic Armor", block.magicArmorBonus);  
+			returnee += string.Format("{0,-20} {1,10} \n","Block Modifier", block.blockModifier); 
+			returnee += string.Format("{0,-20} {1,10} \n","Dodge Modifier", block.dodgeModifier); 
 			break;
 		case ItemType.Mat:
 			string matDesc = NameDescContainer.GetDescription (NameType.Mat, mat.itemId);
