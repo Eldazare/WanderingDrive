@@ -1,6 +1,6 @@
 #This is a comment
 #material, id, name
 
-%Mat_Mat_0_golem rock
-%Mat_Mat_1_golem shiny rock
-%Mat_Mat_2_golem eyesocket
+%Mat_Mat_0_Golem Rock
+%Mat_Mat_1_Golem Shiny Rock
+%Mat_Mat_2_Golem Eyesocket
