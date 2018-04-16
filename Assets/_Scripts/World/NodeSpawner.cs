@@ -73,7 +73,7 @@ public class NodeSpawner : MonoBehaviour {
 			double nodeLong = tempVector.y + localLongitude;
 
 			int nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
-			int nodeID = GetRandomIndexByWeight (nodeTypesWeights [i]);
+			int nodeID = GetRandomIndexByWeight (nodeTypesWeights [nodeType]);
 			int nodeTime = Random.Range (minTime, maxTime);
 			SpawnNode (nodeType, nodeID, nodeLat, nodeLong, nodeTime);
 		}
