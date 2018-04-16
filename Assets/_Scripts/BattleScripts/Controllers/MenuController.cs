@@ -57,9 +57,10 @@ public class MenuController : MonoBehaviour {
 			}
 			i--;
 		}
+		player.transform.LookAt(targetedEnemy.transform.position);
 		enemyHealthBars[combatController.enemyList.Count-1-enemyNbr].GetComponent<EnemyHealthBarScript>().targetbutton.interactable = false;
 	}
-	public void AbilitiesMenu() {
+	public void AbilitiesMenu(){
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
 		if(player.frozen){
@@ -71,11 +72,11 @@ public class MenuController : MonoBehaviour {
 		focusButton.interactable = focusEnabled;
 		overloadButton.interactable = overloadEnabled;
 	}
-	public void ItemsMenu () {
+	public void ItemsMenu (){
 		ItemMenu.SetActive (true);
 		DefaultButtons.SetActive (false);
 	}
-	public void Back () {
+	public void Back (){
 		DefaultButtons.SetActive (true);
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
@@ -91,7 +92,7 @@ public class MenuController : MonoBehaviour {
 	}
 
 	// Buttons.
-	public void Attack () {
+	public void Attack (){
 		DefaultButtons.SetActive(false);
 		abilityOrAttack = false;
 		StartCoroutine(CameraToEnemy());
@@ -128,7 +129,7 @@ public class MenuController : MonoBehaviour {
 		}
 		
 	}
-	public void Ability(int slot) {
+	public void Ability(int slot){
 		AbilityButtons.SetActive (false);
 		abilityOrAttack = true;
 		player.abilityID = slot;
@@ -139,11 +140,11 @@ public class MenuController : MonoBehaviour {
 		ItemMenu.SetActive (false);
 		player.Consumable(slot);
 	}
-	public void Focus() {
+	public void Focus(){
 		AbilityButtons.SetActive (false);
 		player.PlayerFocus ();
 	}
-	public void Overload () {
+	public void Overload (){
 		AbilityButtons.SetActive (false);
 		player.PlayerOverload ();
 	}
@@ -159,15 +160,17 @@ public class MenuController : MonoBehaviour {
 	}
 
 	public void messageToScreen(string message){
-		textBox.SetActive(true);
 		StartCoroutine(WriteText(message));
 	}
 	IEnumerator WriteText(string message){
-		foreach (var item in message)
+		textBox.SetActive(true);
+		textBoxText.text = "";
+		/* foreach (var item in message)
 		{
 			textBoxText.text += item;
 			yield return new WaitForSeconds(textSpeed);
-		}
+		} */
+		textBoxText.text = message;
 		yield return new WaitForSeconds(1.5f);
 		textBoxText.text = "";
 		textBox.SetActive(false);
@@ -199,8 +202,7 @@ public class MenuController : MonoBehaviour {
 				}else{
 					enemyHealthBars[i].SetActive(false);
 					if(targetedEnemy == null){
-						foreach (var item1 in combatController.enemyList)
-						{
+						foreach (var item1 in combatController.enemyList){
 							if(item != null){
 								targetedEnemy = item1;
 								break;
@@ -211,9 +213,6 @@ public class MenuController : MonoBehaviour {
 				i--;
 			}
 		}else{
-			GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(player.transform.position.x, player.transform.position.y+3, player.transform.position.z)-player.transform.right, Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh>().text = "Stunned";
-			yield return new WaitForSeconds(1f);
 			combatController.enemyAttacks();
 		}
 	}

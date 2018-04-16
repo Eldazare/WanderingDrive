@@ -5,6 +5,7 @@ using UnityEngine;
 public class ElementResist : _Buff {
 	public List<int> buffElementalWeakness;
 
+	float returnDelay = 0;
 	public ElementResist(List<int> resists){
 		buffElementalWeakness = resists;
 		turnsRemaining = -1;
@@ -13,7 +14,7 @@ public class ElementResist : _Buff {
 		buffElementalWeakness = resists;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			for(int i = 0;i<player.buffElementalWeakness.Count;i++){
 				if(player.buffElementalWeakness[i]<buffElementalWeakness[i]){
@@ -27,5 +28,6 @@ public class ElementResist : _Buff {
 				}
 			}
 		}
+		return returnDelay;
 	}
 }

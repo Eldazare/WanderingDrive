@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HealthRegen : _Buff {
 	float heal;
+	float returnDelay = 0;
 	public HealthRegen(float regen){
 		heal = regen;
 		turnsRemaining = -1;
@@ -12,7 +13,7 @@ public class HealthRegen : _Buff {
 		heal = regen;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.healthRegen<heal){
 				player.healthRegen = heal;
@@ -22,5 +23,6 @@ public class HealthRegen : _Buff {
 				enemy.healthRegen = heal;
 			}
 		}
+		return returnDelay;
 	}
 }
