@@ -41,6 +41,9 @@ public class PlayerCombatScript : MonoBehaviour{
 		StartCoroutine(AttackRoutine(menuController.targetedEnemy, part));
 	}
 	public void ApplyPlayerBuffs(){
+		StartCoroutine(ApplyBuffs());
+	}
+	IEnumerator ApplyBuffs(){
 		buffDamageMultiplier = 0;
 		buffArmor = 0;
 		buffElementDamageMultiplier = 0;
@@ -54,17 +57,20 @@ public class PlayerCombatScript : MonoBehaviour{
 		frozen = false;
 		paralyzed = false;
 		hold = false;
+		yield return new WaitForSeconds(1f);
 		for (int i = 0;i<buffElementalWeakness.Count;i++){
 			buffElementalWeakness[i] = 0;
 		}
-		foreach (_Buff item in playerBuffs)
-		{
+		foreach (_Buff item in playerBuffs){
 			if(item != null){
-				item.DoYourThing();
-				item.turnsRemaining--;
 				if(item.turnsRemaining == 0){
 					playerBuffs[playerBuffs.IndexOf(item)] = null;
-				}
+				}else{
+					yield return new WaitForSeconds(item.DoYourThing());
+				}	
+				item.turnsRemaining--;
+				//item.DoYourThing();
+				
 			}
 		}
 		playerStats.stamina += staminaRegen;
@@ -77,12 +83,18 @@ public class PlayerCombatScript : MonoBehaviour{
 			if(playerStats.health>playerStats.maxHealth){
 				healthRegen -= playerStats.health-playerStats.maxHealth;
 				playerStats.health = playerStats.maxHealth;
-			
 			}
+			yield return new WaitForSeconds(1f);
 			GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh>().text = healthRegen.ToString("0");
+			updateStats();
+			yield return new WaitForSeconds(1f);
 		}
 		menuController.proceed = true;
+	}
+	public void StatusTextPopUp(string text){
+		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+		popup.GetComponent<TextMesh>().text = text;
 	}
 	public void RemoveFromBuffList(_Buff buff){
 		playerBuffs.Remove(buff);
@@ -261,7 +273,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		//focusDefensiveBonus
 		CancelInvoke("BlockCountDown");
 		CancelInvoke("DodgeCountDown");
-		if(damage >= 0){
+		if(damage >= 0 || elementDamage >= 0){
 			if(playerStats.dodgeModifier*dodgeTimer>(dodgeDuration-perfectDodge)){
 				if(area){
 					returnedValue = "You dodged but took "+takeDamage(damage, elementDamage, element, damageType).ToString("0.#")+" area damage!";
@@ -319,6 +331,10 @@ public class PlayerCombatScript : MonoBehaviour{
 			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier+playerStats.magicArmor);
 		}else{
 			damageModifier = 1;
+		}
+		if(element == Element.None){
+			damage = elementDamage;
+			elementDamage = 0;
 		}
 		if(overloadedTurn>0){
 			damageModifier += overloadDebuff;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ArmorBuff : _Buff {
 	int armor;
+	float returnDelay = 0;
 	public ArmorBuff(int armorgain){
 		armor = armorgain;
 		turnsRemaining = -1;
@@ -12,7 +13,7 @@ public class ArmorBuff : _Buff {
 		armor = armorgain;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.buffArmor<armor){
 				player.buffArmor = armor;
@@ -22,5 +23,6 @@ public class ArmorBuff : _Buff {
 				enemy.buffArmor = armor;
 			}
 		}
+		return returnDelay;
 	}
 }

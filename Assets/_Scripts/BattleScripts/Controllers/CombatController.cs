@@ -16,7 +16,7 @@ public class CombatController : MonoBehaviour {
 	public bool enemyAttacked;
 	List<List<RecipeMaterial>> encounterDrops = new List<List<RecipeMaterial>>();
 	public int enemyTurns;
-	bool playerDead;
+	public bool playerDead;
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 	public void enemyAttacks(){
 		StartCoroutine(enemyAttacksRoutine());
@@ -50,11 +50,15 @@ public class CombatController : MonoBehaviour {
 			EnemyCreation(i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
 		}
 		
+		//Temporary ability generation
 		Ability spell = new FireBall(player);
 		spell.staminaCost = 10;
+		spell.damage = 0;
+		spell.elementDamage = 20;
+		spell.element = Element.Fire;
 		playerStats.abilities.Add(spell);
 
-		_Buff buff = new ArmorBuff(50,3);
+		/* _Buff buff = new ArmorBuff(50,3);
 		buff.player = player;
 		player.playerBuffs.Add(buff);
 		buff = new Blind(50,3);
@@ -95,17 +99,18 @@ public class CombatController : MonoBehaviour {
 		player.playerBuffs.Add(buff);
 		buff = new Stun(2);
 		buff.player = player;
-		player.playerBuffs.Add(buff);
+		player.playerBuffs.Add(buff); */
 
-		buff = new Stun(2);
+		/* buff = new Stun(2);
 		buff.enemy = enemyList[1];
 		enemyList[1].enemyBuffList.Add(buff);
 
 		buff = new DamageOverTime(10, 10, 0, 3);
 		buff.enemy = enemyList[2];
-		enemyList[2].enemyBuffList.Add(buff);
+		enemyList[2].enemyBuffList.Add(buff); */
 
 		menuController.targetedEnemy = enemyList[0];
+		player.transform.LookAt(enemyList[0].transform.position);
 		CreateHealthBars();
 		menuController.PlayersTurn();
 	}
@@ -152,37 +157,37 @@ public class CombatController : MonoBehaviour {
 	}
 
 	IEnumerator enemyAttacksRoutine(){
-			yield return new WaitUntil(()=>menuController.proceed);
-			touchController.enemyTurn = true;
-			menuController.EnemyTurnTextFade();
-			foreach (var item in enemyList){
-				if(!playerDead){
-					item.ApplyEnemyBuffs();
-					if(item != null && !item.stunned){
+		touchController.enemyTurn = true;
+		menuController.EnemyTurnTextFade();
+		foreach (var item in enemyList){
+			if(!playerDead){
+				if(item != null){
+						item.ApplyEnemyBuffs();
+					if(!item.stunned){
 						yield return new WaitForSeconds(3f);
 						StartCoroutine(item.Attack());
 						yield return new WaitUntil(()=>enemyAttacked);
-					}else if(item.stunned){
+					}else{
+						yield return new WaitForSeconds(1f);
 					}
-				}else{
-					break;
 				}
 			}
-			touchController.enemyTurn = false;
-			enemyTurns--;
-			if(enemyTurns<=0){
-				enemyTurns = 0;
-				menuController.PlayersTurn();
-			}else{
-				enemyAttacks();
-			}
-		
+		}
+		touchController.enemyTurn = false;
+		enemyTurns--;
+		if(enemyTurns<=0){
+			enemyTurns = 0;
+			menuController.PlayersTurn();
+		}else{
+			enemyAttacks();
+		}	
 	}
 	void EnemyCreation(int enemySpacing, string enemyType, int id){
 		Vector3 enemyPos = enemyHost.transform.position;
 		//Adds spacing
-		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem",typeof(GameObject)),new Vector3(enemyPos.x-enemySpacing, enemyPos.y, enemyPos.z+(enemySpacing*4)),enemyHost.transform.rotation) as GameObject;
+		GameObject enemyObject = Instantiate(Resources.Load("EnemyModels/BigGolem",typeof(GameObject)),new Vector3(enemyPos.x-(enemySpacing*2), enemyPos.y, enemyPos.z+(enemySpacing*4)),enemyHost.transform.rotation) as GameObject;
 		Enemy enemy = enemyObject.GetComponent<Enemy>();
+		enemyObject.transform.LookAt(player.transform.position);
 		enemy.enemyName = NameDescContainer.GetName((NameType)System.Enum.Parse(typeof(NameType), enemyType), id);
 		enemy.enemyStats = EnemyStatCreator.LoadStatBlockData(id, enemyType);
 		
@@ -213,6 +218,13 @@ public class CombatController : MonoBehaviour {
 		{
 			if(item != null){
 				item.updateStats();
+			}
+		}
+		foreach (var item in enemyList)
+		{
+			if(item != null){
+				menuController.targetedEnemy = item;
+				break;
 			}
 		}
 		foreach (var item in encounterDrops)

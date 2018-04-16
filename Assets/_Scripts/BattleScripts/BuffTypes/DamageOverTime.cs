@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageOverTime : _Buff {
-	float damageovertime;
-	float damageovertimeElement;
+	float damageovertime; // = Potency
 	Element element;
 	public int damageType;
-	public DamageOverTime(float damage, float damageElement, Element ele){
+	float returnDelay = 1f;
+	public DamageOverTime(float damage, Element ele){
 		damageovertime = damage;
-		damageovertimeElement = damageElement;
 		element = ele;
 		turnsRemaining = -1;
 	}
-	public DamageOverTime(float damage,float damageElement, Element ele, int turns){
+	public DamageOverTime(float damage, Element ele, int turns){
 		damageovertime = damage;
-		damageovertimeElement = damageElement;
 		element = ele;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
-			player.combatController.HitPlayer(damageovertime, damageovertimeElement, element, true, 0);
+			player.combatController.HitPlayer(0,damageovertime, element, true, 1);
 		}else{
-			enemy.combatController.HitEnemy(damageovertime, damageovertimeElement, element, 0, 0, 0);
+			enemy.combatController.HitEnemy(0,damageovertime, element, 0, 0, 0);
 		}
-		
+		return returnDelay;
 	}
 }

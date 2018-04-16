@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class DamageMultiplier : _Buff {
 
-	float multi;
+	float multi; // = Potency
 	bool buffGiven;
+	float returnDelay = 0;
 	public DamageMultiplier(float multiplier){
 		multi = multiplier;
 		turnsRemaining = -1;
@@ -14,7 +15,7 @@ public class DamageMultiplier : _Buff {
 		multi = multiplier;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.buffDamageMultiplier<multi){
 				player.buffDamageMultiplier = multi;
@@ -24,5 +25,6 @@ public class DamageMultiplier : _Buff {
 				enemy.buffDamageMultiplier = multi;
 			}
 		}
+		return returnDelay;
 	}
 }

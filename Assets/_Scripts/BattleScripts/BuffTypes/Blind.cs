@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Blind : _Buff{
 	float blinding;  //0-100
+	float returnDelay = 1f;
 	public Blind(float blind){
 		blinding = blind;
 		turnsRemaining = -1;
@@ -15,15 +16,18 @@ public class Blind : _Buff{
 		turnsRemaining = turns;
 	}
 	
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.blind<blinding){
 				player.blind = blinding;
+				player.StatusTextPopUp("Blinded");
 			}
 		}else{
 			if(enemy.blind<blinding){
 				enemy.blind = blinding;
+				enemy.StatusTextPopUp("Blinded");
 			}
 		}
+		return returnDelay;
 	}
 }
