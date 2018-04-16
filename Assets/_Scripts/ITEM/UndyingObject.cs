@@ -19,6 +19,8 @@ public class UndyingObject : MonoBehaviour {
 
 	double locLatitude;
 	double locLongitude;
+	int chosenLoadout;
+	List<NodeEnemy> storedNode;
 
 	void Start () {
 		DontDestroyOnLoad (this);
@@ -42,6 +44,8 @@ public class UndyingObject : MonoBehaviour {
 		Inventory.PutItem (ItemType.Wep, ItemSubType.Sword, 0, 1);
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 1, 4);
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 2, 1);
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Accessory, 0, 1);
+
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
 		loadoutList.InsertLoadout (loadout, 0);
@@ -52,12 +56,19 @@ public class UndyingObject : MonoBehaviour {
 		nodeSpawner = GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<NodeSpawner> ();
     }
 
-	//TODO: CHOOSE LOADOUT
+	public void ReceiveChosenLoadout(int loadoutIndex){
+		if (storedNode != null) {
+			StartCombat (loadoutIndex, storedNode);
+		}
+	}
+
 	public void CombatPrompt (List<NodeEnemy> enemyList){
-		StartCombat (0, enemyList);
+		storedNode = enemyList;
+		GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().GenerateLoadoutButtons ();
 	}
 
 	private void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){
+		Debug.Log (loadoutIndex + " is loadoutIndex");
 		StartCoroutine (StartCombatIenum (loadoutList.GetLoadout(loadoutIndex), enemyList));
 	}
 
@@ -125,5 +136,9 @@ public class UndyingObject : MonoBehaviour {
 			locLongitude = 0;
 			nodeSpawner.LoadNodes (locLatitude, locLongitude);
 		}
+	}
+
+	public void NullNodeData(){
+		storedNode = null;
 	}
 }

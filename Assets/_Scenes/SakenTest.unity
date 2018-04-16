@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 1552149897}
   - component: {fileID: 1552149896}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: UndyingTest
   m_TagString: UndyingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
