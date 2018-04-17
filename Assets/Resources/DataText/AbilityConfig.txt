@@ -1,0 +1,18 @@
+#This is comment file
+#Each ability takes one row, and knows how to parse the data
+#"Key" is Ability_<AbilityName>_<LevelNumber>
+#Abilities have levels
+
+#Most likely no namerows, since each ability is unique class
+
+#Focus and overload descriptions.
+Ability_Focus_0=0/0/0
+&Ability_Ability_Focus_Basic defensive action. Forfeit your current turn for more favorable defensive timing, attack bonus and two actions next turn.
+
+Ability_Overload_0=0/0/0
+&Ability_Ability_Overload_Reckless offensive action. Gain (small) attack boost and two actions immediately, but become vulnerable and forfeit your next turn.
+
+#Example on how this would go (ex. fireball has 3 types of int/float numbers it needs to use)
+Ability_Fireball_0=1/0/0
+Ability_Fireball_1=2/0/0
+&Ability_Ability_Fireball_Fireball deals damage. :O

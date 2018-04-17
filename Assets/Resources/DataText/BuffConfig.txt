@@ -1,0 +1,4 @@
+#This is comment line
+#Should contain only name and description rows
+
+#NOTE: BUFF INFORMATION IS IN BUFF CLASSES

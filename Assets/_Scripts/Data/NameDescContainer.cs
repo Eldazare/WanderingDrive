@@ -7,13 +7,18 @@ public enum NameType{
 	Mat, NonCom, ComCon, 
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
 	Helm, Chest, Arms, Legs, Boots, Accessory,
-	EnemySmall, EnemyLarge, Gather
+	EnemySmall, EnemyLarge, Gather,
+	Ability
 };
 
 public enum BuffType{
 	Armor, Blind, Confusion, DamageMultiplier, DamageOverTime, DamageReduction, ElementDamageMultiplier, ElementResist,
 	FlatDamage, FlatElementDamage, Freeze, HealthRegen, Hold, Paralyze, StaminaRegen, Stun
 };
+
+public enum AbilityEnum{
+	Focus, Overload, Fireball
+}
 
 public static class NameDescContainer  {
 
@@ -33,13 +38,23 @@ public static class NameDescContainer  {
 			foreach (string str in namelist) {
 				string[] splitStr = str.Split ("_".ToCharArray ());
 				NameType nametype = (NameType)System.Enum.Parse (typeof(NameType), splitStr [1]);
-				names [Convert.ToInt32 (nametype)] [int.Parse (splitStr [2])] = splitStr [3];
+				int nameIndex = -1;
+				if (int.TryParse(splitStr [2], out nameIndex)) {
+				} else { // Was not int, was probably abilityName instead
+					nameIndex = (int)System.Enum.Parse (typeof(AbilityEnum), splitStr [2]);
+				}
+				names [Convert.ToInt32 (nametype)] [nameIndex] = splitStr [3];
 			}
 
 			foreach (string str in descList) {
 				string[] splitStr = str.Split ("_".ToCharArray ());
 				NameType nametype = (NameType)System.Enum.Parse (typeof(NameType), splitStr [1]);
-				descriptions [Convert.ToInt32 (nametype)] [int.Parse (splitStr [2])] = splitStr [3];
+				int descIndex = -1;
+				if (int.TryParse(splitStr [2], out descIndex)) {
+				} else { // Was not int, was probably abilityName instead
+					descIndex = (int)System.Enum.Parse (typeof(AbilityEnum), splitStr [2]);
+				}
+				descriptions [Convert.ToInt32 (nametype)] [descIndex] = splitStr [3];
 			}
 		} else {
 			Debug.LogError ("GenerateNames called twice or more");
@@ -60,5 +75,9 @@ public static class NameDescContainer  {
 
 	public static string GetDescription(NameType subtype, int index){
 		return descriptions [Convert.ToInt32 (subtype)] [index];
+	}
+
+	public static string GetAbilityDescription(string abilityName){
+		return descriptions [Convert.ToInt32 (NameType.Ability)] [Convert.ToInt32 ((AbilityEnum)System.Enum.Parse (typeof(AbilityEnum), abilityName))]; 
 	}
 }
