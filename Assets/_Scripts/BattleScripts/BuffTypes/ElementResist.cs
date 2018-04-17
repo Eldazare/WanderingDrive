@@ -9,10 +9,12 @@ public class ElementResist : _Buff {
 	public ElementResist(List<int> resists){
 		buffElementalWeakness = resists;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public ElementResist(List<int> resists, int turns){
 		buffElementalWeakness = resists;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

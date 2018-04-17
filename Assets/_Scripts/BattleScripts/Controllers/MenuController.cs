@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour {
 
 
 	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;  //Drag from Hierarchy
-	public Button focusButton, overloadButton, abilityMenuButton; //Drag buttons to menuController
+	public Button focusButton, overloadButton, abilityMenuButton, playerProfileButton; //Drag buttons to menuController
 	public PlayerCombatScript player;  //Drag from Hierarchy
 	public GameObject enemyPartCanvas;  //Drag from Hierarchy
 	public List<GameObject> enemyPartCanvasButtons;  //Drag from Hierarchy

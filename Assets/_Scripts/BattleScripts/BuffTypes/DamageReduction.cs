@@ -10,10 +10,12 @@ public class DamageReduction : _Buff {
 	public DamageReduction(int redu){
 		reduction = redu;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public DamageReduction(int redu, int turns){
 		reduction = redu;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

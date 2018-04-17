@@ -9,10 +9,12 @@ public class FlatDamage : _Buff {
 	public FlatDamage(int flat){
 		flatDamage = flat;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public FlatDamage(int flat, int turns){
 		flatDamage = flat;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

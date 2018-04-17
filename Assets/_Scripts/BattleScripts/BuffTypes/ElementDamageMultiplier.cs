@@ -9,10 +9,12 @@ public class ElementDamageMultiplier : _Buff {
 	public ElementDamageMultiplier(float multiplier){
 		multi = multiplier;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public ElementDamageMultiplier(float multiplier, int turns){
 		multi = multiplier;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

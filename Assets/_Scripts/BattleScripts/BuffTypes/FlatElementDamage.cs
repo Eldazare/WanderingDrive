@@ -8,10 +8,12 @@ public class FlatElementDamage : _Buff {
 	public FlatElementDamage(int flat){
 		flatDamage = flat;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public FlatElementDamage(int flat, int turns){
 		flatDamage = flat;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){
