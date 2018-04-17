@@ -1874,12 +1874,12 @@ MonoBehaviour:
     loadingTexture: {fileID: 0}
   _imagery:
     _layerProperty:
-      sourceType: 0
+      sourceType: 6
       sourceOptions:
         isActive: 1
         layerSource:
           Name: Streets
-          Id: mapbox://styles/mapbox/streets-v10
+          Id: mapbox://styles/allulul/cjfus3jcx0q682so5wic5troz
           Modified: 
           UserName: 
       rasterOptions:
@@ -2168,7 +2168,7 @@ Transform:
   m_GameObject: {fileID: 1926499057}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 1850690987}
   m_RootOrder: 1
@@ -2302,8 +2302,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 100
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
