@@ -24,6 +24,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	int attackRange = 2; //How close the player moves to the enemy
 	bool defended, attacked;
 	public int abilityID;
+	float distanceCovered, movingLength, startTime, lerpSpeed = 5f;
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff>();
@@ -100,6 +101,8 @@ public class PlayerCombatScript : MonoBehaviour{
 		playerBuffs.Remove(buff);
 	}
 	IEnumerator AttackRoutine(Enemy target, int part) {
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, enemyPos);
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
 		animator.SetTrigger("Attack");
@@ -138,6 +141,8 @@ public class PlayerCombatScript : MonoBehaviour{
 			
 		}
 		yield return new WaitUntil(() =>proceed);
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, startPos);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
 		proceed = false;
 	}
@@ -206,7 +211,9 @@ public class PlayerCombatScript : MonoBehaviour{
 		combatController.HitEnemy(abilityDamage,abilityElementDamage, abilityElement, part, 0, 0);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, startPos);
+		InvokeRepeating("moveFromEnemy",Time.deltaTime,Time.deltaTime);
 		proceed = false;
 	}
 	
@@ -396,16 +403,20 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	void moveToEnemy(){
+		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(enemyPos, transform.position)>attackRange){
-			transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
+			transform.position = Vector3.Lerp(transform.position, enemyPos, distanceCovered/movingLength);
+			//transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		}else{
 			proceed = true;
 			CancelInvoke("moveToEnemy");
 		}
 	}
 	void moveFromEnemy(){
+		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(startPos, transform.position)>0.1){
-			transform.Translate((startPos-transform.position)*Time.deltaTime*5);
+			transform.position = Vector3.Lerp(transform.position, startPos, distanceCovered/movingLength);
+			//transform.Translate((startPos-transform.position)*Time.deltaTime*5);
 		}else{
 			CancelInvoke("moveFromEnemy");
 			EndPlayerTurn(false);
