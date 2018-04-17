@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FlatElementDamage : _Buff {
 	int flatDamage;
+	float returnDelay = 0;
 	public FlatElementDamage(int flat){
 		flatDamage = flat;
 		turnsRemaining = -1;
@@ -12,16 +13,17 @@ public class FlatElementDamage : _Buff {
 		flatDamage = flat;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
-			if(player.buffFlatDamage<flatDamage){
-				player.buffFlatDamage = flatDamage;
+			if(player.buffFlatElementDamage<flatDamage){
+				player.buffFlatElementDamage = flatDamage;
 			}
 		}else{
-			if(enemy.buffFlatDamage<flatDamage){
-				enemy.buffFlatDamage = flatDamage;
+			if(enemy.buffFlatElementDamage<flatDamage){
+				enemy.buffFlatElementDamage = flatDamage;
 			}
 		}
+		return returnDelay;
 		
 	}
 }

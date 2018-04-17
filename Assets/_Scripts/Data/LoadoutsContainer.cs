@@ -45,4 +45,8 @@ public class LoadoutsContainer {
 		return lod;
 	}
 
+	public int GetLoadoutCount (){
+		return loadoutList.Count;
+	}
+
 }

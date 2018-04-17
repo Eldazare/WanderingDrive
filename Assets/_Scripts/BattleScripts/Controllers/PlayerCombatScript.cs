@@ -24,6 +24,7 @@ public class PlayerCombatScript : MonoBehaviour{
 	int attackRange = 2; //How close the player moves to the enemy
 	bool defended, attacked;
 	public int abilityID;
+	float distanceCovered, movingLength, startTime, lerpSpeed = 5f;
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff>();
@@ -41,6 +42,9 @@ public class PlayerCombatScript : MonoBehaviour{
 		StartCoroutine(AttackRoutine(menuController.targetedEnemy, part));
 	}
 	public void ApplyPlayerBuffs(){
+		StartCoroutine(ApplyBuffs());
+	}
+	IEnumerator ApplyBuffs(){
 		buffDamageMultiplier = 0;
 		buffArmor = 0;
 		buffElementDamageMultiplier = 0;
@@ -54,17 +58,20 @@ public class PlayerCombatScript : MonoBehaviour{
 		frozen = false;
 		paralyzed = false;
 		hold = false;
+		yield return new WaitForSeconds(1f);
 		for (int i = 0;i<buffElementalWeakness.Count;i++){
 			buffElementalWeakness[i] = 0;
 		}
-		foreach (_Buff item in playerBuffs)
-		{
+		foreach (_Buff item in playerBuffs){
 			if(item != null){
-				item.DoYourThing();
-				item.turnsRemaining--;
 				if(item.turnsRemaining == 0){
 					playerBuffs[playerBuffs.IndexOf(item)] = null;
-				}
+				}else{
+					yield return new WaitForSeconds(item.DoYourThing());
+				}	
+				item.turnsRemaining--;
+				//item.DoYourThing();
+				
 			}
 		}
 		playerStats.stamina += staminaRegen;
@@ -77,17 +84,25 @@ public class PlayerCombatScript : MonoBehaviour{
 			if(playerStats.health>playerStats.maxHealth){
 				healthRegen -= playerStats.health-playerStats.maxHealth;
 				playerStats.health = playerStats.maxHealth;
-			
 			}
+			yield return new WaitForSeconds(1f);
 			GameObject popup = Instantiate(Resources.Load("CombatResources/HealPopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh>().text = healthRegen.ToString("0");
+			updateStats();
+			yield return new WaitForSeconds(1f);
 		}
 		menuController.proceed = true;
+	}
+	public void StatusTextPopUp(string text){
+		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+		popup.GetComponent<TextMesh>().text = text;
 	}
 	public void RemoveFromBuffList(_Buff buff){
 		playerBuffs.Remove(buff);
 	}
 	IEnumerator AttackRoutine(Enemy target, int part) {
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, enemyPos);
 		InvokeRepeating("moveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil(() =>proceed);
 		animator.SetTrigger("Attack");
@@ -126,6 +141,8 @@ public class PlayerCombatScript : MonoBehaviour{
 			
 		}
 		yield return new WaitUntil(() =>proceed);
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, startPos);
 		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
 		proceed = false;
 	}
@@ -194,7 +211,9 @@ public class PlayerCombatScript : MonoBehaviour{
 		combatController.HitEnemy(abilityDamage,abilityElementDamage, abilityElement, part, 0, 0);
 		proceed = false;
 		yield return new WaitUntil(() =>proceed);
-		InvokeRepeating("moveFromEnemy",0,Time.deltaTime);
+		startTime = Time.time;
+		movingLength = Vector3.Distance(transform.position, startPos);
+		InvokeRepeating("moveFromEnemy",Time.deltaTime,Time.deltaTime);
 		proceed = false;
 	}
 	
@@ -261,7 +280,7 @@ public class PlayerCombatScript : MonoBehaviour{
 		//focusDefensiveBonus
 		CancelInvoke("BlockCountDown");
 		CancelInvoke("DodgeCountDown");
-		if(damage >= 0){
+		if(damage >= 0 || elementDamage >= 0){
 			if(playerStats.dodgeModifier*dodgeTimer>(dodgeDuration-perfectDodge)){
 				if(area){
 					returnedValue = "You dodged but took "+takeDamage(damage, elementDamage, element, damageType).ToString("0.#")+" area damage!";
@@ -319,6 +338,10 @@ public class PlayerCombatScript : MonoBehaviour{
 			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier+playerStats.magicArmor);
 		}else{
 			damageModifier = 1;
+		}
+		if(element == Element.None){
+			damage = elementDamage;
+			elementDamage = 0;
 		}
 		if(overloadedTurn>0){
 			damageModifier += overloadDebuff;
@@ -380,16 +403,20 @@ public class PlayerCombatScript : MonoBehaviour{
 	}
 
 	void moveToEnemy(){
+		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(enemyPos, transform.position)>attackRange){
-			transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
+			transform.position = Vector3.Lerp(transform.position, enemyPos, distanceCovered/movingLength);
+			//transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		}else{
 			proceed = true;
 			CancelInvoke("moveToEnemy");
 		}
 	}
 	void moveFromEnemy(){
+		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(startPos, transform.position)>0.1){
-			transform.Translate((startPos-transform.position)*Time.deltaTime*5);
+			transform.position = Vector3.Lerp(transform.position, startPos, distanceCovered/movingLength);
+			//transform.Translate((startPos-transform.position)*Time.deltaTime*5);
 		}else{
 			CancelInvoke("moveFromEnemy");
 			EndPlayerTurn(false);

@@ -10,7 +10,8 @@ public enum DataManagerDictionaryType{
 	RecipeUpSword, RecipeUpMace, RecipeUpSpear, RecipeUpDagger, RecipeUpPistol, RecipeUpBow, RecipeUpGBow,
 	RecipeUpShieldS, RecipeUpShieldL, RecipeUpTalisman, 						// "copy" of WeaponType
 	RecipeUpHelm, RecipeUpChest, RecipeUpArms, RecipeUpLegs, RecipeUpBoots, RecipeUpAccessory,
-	Node
+	Node,
+	Ability
 }
 
 public static class DataManager  {
@@ -72,6 +73,8 @@ public static class DataManager  {
 
 		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
 		DownloadSingleFile ("AccessoryConfig", configDatas [(int)DataManagerDictionaryType.Accessory], nameListGeneric);
+		DownloadSingleFile ("AbilityConfig", configDatas [(int)DataManagerDictionaryType.Ability], nameListGeneric);
+
 		string[] armorEnumNames = System.Enum.GetNames (typeof(ArmorType));
 		foreach (string armorString in armorEnumNames) {
 			string armorRUPFile = "RecipeUpgrade/RecipeUp" + armorString + "Config";

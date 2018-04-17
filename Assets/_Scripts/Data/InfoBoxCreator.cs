@@ -5,9 +5,6 @@ using UnityEngine;
 public static class InfoBoxCreator  {
 
 
-	// TODO: NEXT: Finish infoboxes
-
-
 	public static string GetRecipeInfoString(Recipe recipe){
 		string returnee = "";
 		for (int i = 0; i < 4; i++) {
@@ -69,10 +66,20 @@ public static class InfoBoxCreator  {
 			if (aType == ArmorType.Accessory){
 				Accessory accessory = ArmorCreator.CreateAccessory(mat.itemId);
 				returnee += string.Format("{0,-18} {1,7} \n","Damage Bonus", accessory.damage);
-				returnee += string.Format("{0,-18} {1,7} \n","Damage Bonus", accessory.damage);
+				returnee += string.Format("{0,-18} {1,7} \n","Element damage", accessory.elementDamage);
+				returnee += string.Format("{0,-18} {1,7} \n","Magic defense", accessory.magicDefense);
+				for (int i = 1; i<accessory.elementResists.Count;i++) {
+					returnee += string.Format("{0,-18} {1,7} \n", ((Element)i).ToString() + " resist", accessory.elementResists[i]);
+				}
 			} else {
 				Armor armor = ArmorCreator.CreateArmor(aType, mat.itemId);
-
+				returnee += string.Format("{0,-18} {1,7} \n","Slot: ", armor.armorType);
+				returnee += string.Format("{0,-18} {1,7} \n","Armor: ", armor.defense);
+				returnee += string.Format("{0,-18} {1,7} \n","Magic Defense: ", armor.magicDefense);
+				returnee += string.Format("{0,-18} {1,7} \n","Armor Speed: ", armor.speed);
+				for (int i = 1; i<armor.elementResists.Count;i++) {
+					returnee += string.Format("{0,-18} {1,7} \n", ((Element)i).ToString() + " resist", armor.elementResists[i]);
+				}
 			}
 			break;
 		}

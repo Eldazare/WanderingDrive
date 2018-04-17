@@ -26,9 +26,7 @@ public class Enemy : MonoBehaviour {
     //Buffs end
 
     public IEnumerator Attack () {
-        proceed = false;
         startPos = transform.position;
-        ApplyEnemyBuffs ();
         yield return new WaitUntil (() => proceed);
         proceed = false;
         InvokeRepeating ("moveToPlayer", 0, Time.deltaTime);
@@ -57,6 +55,9 @@ public class Enemy : MonoBehaviour {
         proceed = false;
     }
     public void ApplyEnemyBuffs () {
+        StartCoroutine(ApplyBuffs());
+    }
+    IEnumerator ApplyBuffs(){
         buffDamageMultiplier = 0;
         buffArmor = 0;
         buffElementDamageMultiplier = 0;
@@ -69,24 +70,31 @@ public class Enemy : MonoBehaviour {
         frozen = false;
         paralyzed = false;
         hold = false;
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < buffElementalWeakness.Count; i++) {
             buffElementalWeakness[i] = 0;
         }
         foreach (var item in enemyBuffList) {
-            if (item != null) {
-                item.DoYourThing ();
+            if(item != null){
+                if(item.turnsRemaining == 0){
+					enemyBuffList[enemyBuffList.IndexOf(item)] = null;
+				}else{
+					yield return new WaitForSeconds(item.DoYourThing());
+				}
+                item.turnsRemaining--;
             }
         }
-
         if (healthRegen > 0) {
             enemyStats.health += healthRegen;
             if (enemyStats.health > enemyStats.maxHealth) {
                 enemyStats.health = enemyStats.maxHealth;
             }
+            yield return new WaitForSeconds(1f);
             GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
             popup.GetComponent<TextMesh> ().text = healthRegen.ToString ("0.#");
+            updateStats();
+            yield return new WaitForSeconds(1f);
         }
-
         proceed = true;
     }
 
@@ -116,7 +124,7 @@ public class Enemy : MonoBehaviour {
             weaknessTypeAccuracy = 1f;
         }
         //0-100
-        if (weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy) < enemyStats.partList[part].percentageHit && damage > 0) {
+        if (weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy) < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
             eleModifier -= enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100;
@@ -153,6 +161,10 @@ public class Enemy : MonoBehaviour {
             return "Your attack missed!";
         }
     }
+    public void StatusTextPopUp(string text){
+		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
+		popup.GetComponent<TextMesh>().text = text;
+	}
     public void RemoveFromBuffList (_Buff buff) {
         enemyBuffList.Remove (buff);
     }

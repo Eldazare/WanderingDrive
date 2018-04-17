@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamageReduction : _Buff {
 
 	float reduction;
+	float returnDelay = 0;
 
 	public DamageReduction(int redu){
 		reduction = redu;
@@ -14,7 +15,7 @@ public class DamageReduction : _Buff {
 		reduction = redu;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.buffDamageReduction<reduction){
 				player.buffDamageReduction = reduction;
@@ -24,5 +25,6 @@ public class DamageReduction : _Buff {
 				enemy.buffDamageReduction = reduction;
 			}
 		}
+		return returnDelay;
 	}
 }

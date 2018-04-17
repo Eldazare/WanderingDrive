@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ElementDamageMultiplier : _Buff {
 	float multi;
+
+	float returnDelay = 0;
 	public ElementDamageMultiplier(float multiplier){
 		multi = multiplier;
 		turnsRemaining = -1;
@@ -12,7 +14,7 @@ public class ElementDamageMultiplier : _Buff {
 		multi = multiplier;
 		turnsRemaining = turns;
 	}
-	override public void DoYourThing(){
+	override public float DoYourThing(){
 		if(player != null){
 			if(player.buffElementDamageMultiplier<multi){
 				player.buffElementDamageMultiplier = multi;
@@ -22,5 +24,6 @@ public class ElementDamageMultiplier : _Buff {
 				enemy.buffElementDamageMultiplier = multi;
 			}
 		}
+		return returnDelay;
 	}
 }
