@@ -20,4 +20,8 @@ public class WorldNode : MonoBehaviour {
 	public void Interact(){
 		NodeInteraction.HandleNodeInteraction (nodeType, id);
 	}
+
+	void OnMouseDown(){
+		Debug.Log ("Hit: " + this.gameObject);
+	}
 }
