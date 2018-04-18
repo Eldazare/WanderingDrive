@@ -30,32 +30,32 @@ public class LoadoutManager : MonoBehaviour {
     void Start () {
         counter = -1;
         //Sprites to recources and load
-        foreach (InventoryArmor i in armorList) {
-            ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), i.subType);
+        for (int i = 0; i <= armorList.Count; i++) {
+            ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), armorList[i].subType);
             switch (parsed_enum) {
                 case ItemSubType.Accessory:
-                    accessoryList.Add(i);
-                    armorList.Remove(i);
+                    accessoryList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Arms:
-                    armsList.Add(i);
-                    armorList.Remove(i);
+                    armsList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Boots:
-                    bootsList.Add(i);
-                    armorList.Remove(i);
+                    bootsList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Chest:
-                    chestList.Add(i);
-                    armorList.Remove(i);
+                    chestList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Helm:
-                    helmList.Add(i);
-                    armorList.Remove(i);
+                    helmList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Legs:
-                    legsList.Add(i);
-                    armorList.Remove(i);
+                    legsList.Add(armorList[i]);
+                    armorList.RemoveAt(i);
                     break;
             }       
         }		
