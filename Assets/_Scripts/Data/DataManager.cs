@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 
 public enum DataManagerDictionaryType{
-	Consumable, Material, Armor, Accessory, EnemySmall, EnemyLarge, Drop, Gather,
+	ComCon, NonCom, Material, Armor, Accessory, EnemySmall, EnemyLarge, Drop, Gather,
 	RecipeWeapon, RecipeArmor, RecipeAccessory, RecipeComCon, RecipeNonCom, 	// copy of RecipeType
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, 	// copy of WeaponType
 	RecipeUpSword, RecipeUpMace, RecipeUpSpear, RecipeUpDagger, RecipeUpPistol, RecipeUpBow, RecipeUpGBow,
@@ -62,8 +62,8 @@ public static class DataManager  {
 		for (int i = 0; i < System.Enum.GetNames (typeof(DataManagerDictionaryType)).Length; i++) {
 			configDatas.Add(new Dictionary<string,string>());
 		}
-		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryType.Consumable], nameListGeneric);
-		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryType.Consumable], nameListGeneric);
+		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryType.ComCon], nameListGeneric);
+		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryType.NonCom], nameListGeneric);
 		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryType.Material], nameListGeneric);
 		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryType.EnemySmall], nameListGeneric);
 		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryType.EnemyLarge], nameListGeneric);

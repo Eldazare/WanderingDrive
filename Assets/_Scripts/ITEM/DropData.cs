@@ -15,6 +15,5 @@ public class DropData {
 	virtual
 	public List<DropData> GetPartDrops(){
 		return null;
-	
 	}
 }

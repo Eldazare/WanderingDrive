@@ -1,6 +1,44 @@
 #This is a comment
 #material, id, name
+#Every monster "type" get 10 parts.
+#If those are full and need to allocate more, allocate next 10 batch from the next
 
-%Mat_Mat_0_Golem Rock
-%Mat_Mat_1_Golem Shiny Rock
-%Mat_Mat_2_Golem Eyesocket
+#Remember to change (and check) this when adding more.
+#Do not change existing id/name, just
+
+#update this when adding new batches
+Material_Count=50
+
+#Golem Parts (0-9)
+%Mat_Mat_0_Small Golem Rock
+%Mat_Mat_1_Golem Shard
+%Mat_Mat_2_Golem Boulder
+%Mat_Mat_3_Golem Steel Crystal_RARE
+%Mat_Mat_4_Golem Shiny Rock
+%Mat_Mat_5_Golem Eyesocket
+%Mat_Mat_6_Golem Arm Shard
+%Mat_Mat_7_Soft soil
+
+#Ground lizard parts (10-19)
+%Mat_Mat_10_Lizard Scale
+%Mat_Mat_11_Lizard Hide
+%Mat_Mat_12_Lizard Fur
+%Mat_Mat_13_Lizard Crystal_RARE
+%Mat_Mat_14_Lizard Ear
+%Mat_Mat_15_Lizard Fang
+%Mat_Mat_16_Lizard Claw
+%Mat_Mat_17_Lizard Tail Leaf
+
+#Mushoom parts (20-29)
+%Mat_Mat_20_Fungus Root
+%Mat_Mat_21_Fungus Mold
+%Mat_Mat_22_Fungal Cell
+%Mat_Mat_23_Fungal Crystal_RARE
+%Mat_Mat_24_Fungus Truffel
+%Mat_Mat_25_Fungus Redcap
+%Mat_Mat_26_Fungus Leaf
+%Mat_Mat_27_Fungus Spore
+
+#Gathering bush parts (30-39)
+
+#Gathering mineral parts (40-49)
