@@ -5,7 +5,7 @@
 #(Name the lines accordingly, use straight from the subclass)
 #Get number of consumables from nameList
 
-NonCom_Count=1
+NonCom_Count=10
 
 %NonCom_NonCom_0_whetstone
 

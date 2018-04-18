@@ -28,7 +28,6 @@ public static class DropDataCreator {
 		if (dropperType != DropperType.Gather) {
 			EnemyDropData createeEnemy = new EnemyDropData ();
 			for (int i = 0; i<9;i++){
-				int j = 0;
 				string dataStr = DataManager.ReadDataString (begin + "p" + i);
 				if (dataStr == null) {
 					createeEnemy.partDropDatas.Add (null);

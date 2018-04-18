@@ -15,7 +15,7 @@ Pistol_speed=1
 
 %Weapon_Pistol_0_generic Pistol
 &Weapon_Pistol_0_generic Pistol description is here
-Pistol_0_base=10/0/0
+Pistol_0_base=4/0/3
 Pistol_0_element=0/0/0
 Pistol_0_bonuses=0/0/0/0
 Pistol_0_defenseMods=0.0/0.0

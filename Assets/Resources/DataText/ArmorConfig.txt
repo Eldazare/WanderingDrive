@@ -3,13 +3,37 @@
 #Differences come from the material each piece requires
 #Possibility for bonus stats per armor piece
 #6 different elements
+#Fire, Ice, Thunder, Earth, Light, Shadow
 
-%Armor_Helm_0_genericArmor
-%Armor_Chest_0_genericArmor
-%Armor_Arms_0_genericArmor
-%Armor_Legs_0_genericArmor
-%Armor_Boots_0_genericArmor
+#0: Starter
+%Armor_Helm_0_Starter Helm
+%Armor_Chest_0_Starter Chest
+%Armor_Arms_0_Starter Arms
+%Armor_Legs_0_Starter Legs
+%Armor_Boots_0_Starter Boots
 Armor_0_defense=1
 Armor_0_speed=1
 Armor_0_magicDefense=1
 Armor_0_elementResist=0;0;0;0;0;0
+
+#1: Starter+
+%Armor_Helm_1_Starter Helm+
+%Armor_Chest_1_Starter Chest+
+%Armor_Arms_1_Starter Arms+
+%Armor_Legs_1_Starter Legs+
+%Armor_Boots_1_Starter Boots+
+Armor_1_defense=2
+Armor_1_speed=1.1
+Armor_1_magicDefense=2
+Armor_1_elementResist=1;1;1;1;1;1
+
+#2: GOLEM
+%Armor_Helm_2_Golem Helm
+%Armor_Chest_2_Golem Chest
+%Armor_Arms_2_Golem Arms
+%Armor_Legs_2_Golem Legs
+%Armor_Boots_2_Golem Boots
+Armor_2_defense=3
+Armor_2_speed=1
+Armor_2_magicDefense=1
+Armor_2_elementResist=2;-4;2;5;0;0

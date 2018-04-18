@@ -5,7 +5,7 @@
 #(Name the lines accordingly, use straight from the subclass)
 #Get number of consumables from nameList
 
-ComCon_Count=1
+ComCon_Count=10
 
 %ComCon_ComCon_0_flash
 

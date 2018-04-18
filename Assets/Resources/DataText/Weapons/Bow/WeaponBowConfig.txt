@@ -14,7 +14,7 @@ Bow_speed=1
 
 %Weapon_Bow_0_genericBow
 &Weapon_Bow_0_genericBow description is here
-Bow_0_base=4/0/4
+Bow_0_base=4/0/3
 Bow_0_element=10/4/0
 Bow_0_bonuses=0/0/0/0
 Bow_0_defenseMods=0.0/-100.0

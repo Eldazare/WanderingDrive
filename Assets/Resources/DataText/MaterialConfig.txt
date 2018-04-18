@@ -40,5 +40,23 @@ Material_Count=50
 %Mat_Mat_27_Fungus Spore
 
 #Gathering bush parts (30-39)
+%Mat_Mat_30_Green Herb
+%Mat_Mat_31_Brightleaf
+%Mat_Mat_32_Antidote herb
+%Mat_Mat_33_Gloombranch
+%Mat_Mat_34_Fern
+%Mat_Mat_35_Ivy
+%Mat_Mat_36_Blue Herb
+%Mat_Mat_37_Red Herb
 
 #Gathering mineral parts (40-49)
+%Mat_Mat_40_Iron ore
+%Mat_Mat_41_Rock
+%Mat_Mat_42_
+%Mat_Mat_43_Light Crystal
+%Mat_Mat_44_Shadow Crystal
+%Mat_Mat_45_Lizardite ore
+%Mat_Mat_46_Adamantite ore
+%Mat_Mat_47_
+
+#Gathering fish nodes?
