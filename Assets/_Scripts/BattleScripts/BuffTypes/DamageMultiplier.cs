@@ -10,10 +10,12 @@ public class DamageMultiplier : _Buff {
 	public DamageMultiplier(float multiplier){
 		multi = multiplier;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public DamageMultiplier(float multiplier, int turns){
 		multi = multiplier;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

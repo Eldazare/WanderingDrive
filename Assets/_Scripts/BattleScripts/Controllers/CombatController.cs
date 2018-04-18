@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class CombatController : MonoBehaviour {
 
@@ -58,61 +57,27 @@ public class CombatController : MonoBehaviour {
 		spell.element = Element.Fire;
 		playerStats.abilities.Add(spell);
 
-		/* _Buff buff = new ArmorBuff(50,3);
-		buff.player = player;
+		//Temporary buff generation
+		_Buff buff = new DamageOverTime(10, Element.Fire,1);
 		player.playerBuffs.Add(buff);
-		buff = new Blind(50,3);
 		buff.player = player;
+		buff = new ArmorBuff(10);
 		player.playerBuffs.Add(buff);
-		buff = new Confusion(1);
 		buff.player = player;
-		player.playerBuffs.Add(buff); 
-		buff = new Paralyze(1);
-		buff.player = player;
-		player.playerBuffs.Add(buff); 
-		buff = new Freeze(1);
-		buff.player = player;
+		buff = new ArmorBuff(10,2);
 		player.playerBuffs.Add(buff);
-		buff = new DamageMultiplier(0.8f,3);
 		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new DamageOverTime(10,10,0,3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new ElementDamageMultiplier(0.8f,3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new FlatDamage(10,3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new FlatElementDamage(10,3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new HealthRegen(10, 3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new StaminaRegen(10, 3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new ElementDamageMultiplier(0.8f,3);
-		buff.player = player;
-		player.playerBuffs.Add(buff);
-		buff = new Stun(2);
-		buff.player = player;
-		player.playerBuffs.Add(buff); */
-
-		/* buff = new Stun(2);
-		buff.enemy = enemyList[1];
-		enemyList[1].enemyBuffList.Add(buff);
-
-		buff = new DamageOverTime(10, 10, 0, 3);
-		buff.enemy = enemyList[2];
-		enemyList[2].enemyBuffList.Add(buff); */
 
 		menuController.targetedEnemy = enemyList[0];
 		player.transform.LookAt(enemyList[0].transform.position);
 		CreateHealthBars();
 		menuController.PlayersTurn();
+		foreach (var item in player.playerBuffs)
+		{
+			if(item!=null){
+				Debug.Log(item.GetType().Name);
+			}
+		}
 	}
 
 	void GenerateArmors(Loadout loadout){
