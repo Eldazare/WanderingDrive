@@ -7,8 +7,8 @@ public class LoadoutManager : MonoBehaviour {
 
     public Image itemImage;
     public Text itemInfo;
-    public Text resultInfo;
     public RecipeMaterial currentMaterial;
+    public Loadout myLoadout = new Loadout(2);
 
     public List<Sprite> spriteList = new List<Sprite>();
     List<InventoryArmor> armorList = Inventory.inventoryArmor;
@@ -24,10 +24,13 @@ public class LoadoutManager : MonoBehaviour {
 
     public int currentItem;
     public int counter;
+    public int chosenHand;
     ItemSubType currentItemSubType;
     ItemType currentItemType;
 
     void Start () {
+        currentItem = -1;
+        chosenHand = -1;
         counter = -1;
         //Sprites to recources and load
         for (int i = 0; i <= armorList.Count; i++) {
@@ -65,44 +68,76 @@ public class LoadoutManager : MonoBehaviour {
         counter++;
         if (currentItemType == ItemType.Wep) {
             if (counter >= weaponList.Count) {
+                counter = 0;
                 currentItem = weaponList[0].itemID;
+            }
+            else {
+                currentItem = weaponList[counter].itemID;
             }
         }
         else {
             switch (currentItemSubType) {
                 case ItemSubType.Accessory:
                     if (counter >= accessoryList.Count) {
+                        counter = 0;
                         currentItem = accessoryList[0].itemID;
+                    }
+                    else {
+                        currentItem = accessoryList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Arms:
                     if (counter >= armsList.Count) {
+                        counter = 0;
                         currentItem = armorList[0].itemID;
+                    }
+                    else {
+                        currentItem = armsList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Boots:
                     if (counter >= bootsList.Count) {
+                        counter = 0;
                         currentItem = bootsList[0].itemID;
+                    }
+                    else {
+                        currentItem = bootsList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Chest:
                     if (counter >= chestList.Count) {
+                        counter = 0;
                         currentItem = chestList[0].itemID; }
+                    else {
+                        currentItem = chestList[counter].itemID;
+                    }
                     break;
                 case ItemSubType.ComCon:
                     if (counter >= combatConsumables.Count) {
+                        counter = 0;
                         currentItem = combatConsumables[0];
+                    }
+                    else {
+                        currentItem = combatConsumables[counter];
                     }
                     break;
                 case ItemSubType.Helm:
                     if (counter >= helmList.Count) {
+                        counter = 0;
                         currentItem = helmList[0].itemID;
+                    }
+                    else {
+                        currentItem = helmList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Legs:
                     if (counter >= legsList.Count) {
+                        counter = 0;
                         currentItem = legsList[0].itemID;
-                    }                   
+                    }
+                    else {
+                        currentItem = legsList[counter].itemID;
+                    }
                     break;
                 default:
                     Debug.Log("Error, unsuitable parameters");
@@ -118,42 +153,73 @@ public class LoadoutManager : MonoBehaviour {
             if (counter < 0) {
                 currentItem = weaponList[0].itemID;
             }
+            else {
+                currentItem = weaponList[counter].itemID;
+            }
         }
         else {
             switch (currentItemSubType) {
                 case ItemSubType.Accessory:
                     if (counter < 0) {
                         currentItem = accessoryList[accessoryList.Count -1].itemID;
+                        counter = accessoryList.Count - 1;
+                    }
+                    else {
+                        currentItem = accessoryList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Arms:
                     if (counter < 0) {
                         currentItem = armsList[armsList.Count - 1].itemID;
+                        counter = armsList.Count - 1;
+                    }
+                    else {
+                        currentItem = armorList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Boots:
                     if (counter < 0) {
                         currentItem = bootsList[bootsList.Count - 1].itemID;
+                        counter = bootsList.Count - 1;
+                    }
+                    else {
+                        currentItem = bootsList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Chest:
                     if (counter < 0) {
                         currentItem = chestList[chestList.Count - 1].itemID;
+                        counter = chestList.Count - 1;
+                    }
+                    else {
+                        currentItem = chestList[counter].itemID;
                     }
                     break;
                 case ItemSubType.ComCon:
                     if (counter < 0) {
                         currentItem = combatConsumables[combatConsumables.Count -1];
+                        counter = combatConsumables.Count - 1;
+                    }
+                    else {
+                        currentItem = combatConsumables[counter];
                     }
                     break;
                 case ItemSubType.Helm:
                     if (counter < 0) {
                         currentItem = helmList[helmList.Count - 1].itemID;
+                        counter = helmList.Count - 1;
+                    }
+                    else {
+                        currentItem = helmList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Legs:
                     if (counter < 0) {
                         currentItem = legsList[legsList.Count - 1].itemID;
+                        counter = legsList.Count - 1;
+                    }
+                    else {
+                        currentItem = legsList[counter].itemID;
                     }
                     break;
                 default:
@@ -164,11 +230,13 @@ public class LoadoutManager : MonoBehaviour {
         UpdateInfoTexts();
     }
 
-    public void ChangeWeaponSlot() {
+    public void ChangeWeaponSlot(int slot) {
         currentItemType = ItemType.Wep;
         ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
         currentItemSubType = parsed_enum;
         currentItem = weaponList[0].itemID;
+        chosenHand = slot;
+        counter = 0;
         UpdateInfoTexts();
     }
 
@@ -215,7 +283,17 @@ public class LoadoutManager : MonoBehaviour {
 
     private void UpdateInfoTexts() {
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
-        itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
-        //resultInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
+        itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);     
+    }
+
+    public void AddToLoadout() {
+        if(currentItemType == ItemType.Wep) {
+            if(chosenHand == 1) {
+                myLoadout.AddMainHand(weaponList[counter]);
+            }
+            
+        }
+
+        Debug.Log(myLoadout.mainHand.subType);
     }
 }
