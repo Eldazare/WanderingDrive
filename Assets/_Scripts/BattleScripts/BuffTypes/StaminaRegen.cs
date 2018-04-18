@@ -9,10 +9,12 @@ public class StaminaRegen : _Buff {
 	public StaminaRegen(float regen){
 		staminaRegen = regen;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public StaminaRegen(float regen, int turns){
 		staminaRegen = regen;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){

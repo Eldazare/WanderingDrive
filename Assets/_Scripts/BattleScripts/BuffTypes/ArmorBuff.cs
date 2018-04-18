@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ArmorBuff : _Buff {
-	int armor;
 	float returnDelay = 0;
+	
 	public ArmorBuff(int armorgain){
-		armor = armorgain;
+		potency = armorgain;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public ArmorBuff(int armorgain, int turns){
-		armor = armorgain;
+		potency = armorgain;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){
-			if(player.buffArmor<armor){
-				player.buffArmor = armor;
+			if(player.buffArmor<potency){
+				player.buffArmor = (int)potency;
 			}
 		}else{
-			if(enemy.buffArmor<armor){
-				enemy.buffArmor = armor;
+			if(enemy.buffArmor<potency){
+				enemy.buffArmor = (int)potency;
 			}
 		}
 		return returnDelay;

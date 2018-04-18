@@ -5,26 +5,25 @@ using UnityEngine;
 
 
 public class Blind : _Buff{
-	float blinding;  //0-100
 	float returnDelay = 1f;
 	public Blind(float blind){
-		blinding = blind;
+		potency = blind;
 		turnsRemaining = -1;
 	}
 	public Blind(float blind, int turns){
-		blinding = blind;
+		potency = blind;
 		turnsRemaining = turns;
 	}
 	
 	override public float DoYourThing(){
 		if(player != null){
-			if(player.blind<blinding){
-				player.blind = blinding;
+			if(player.blind<potency){
+				player.blind = potency;
 				player.StatusTextPopUp("Blinded");
 			}
 		}else{
-			if(enemy.blind<blinding){
-				enemy.blind = blinding;
+			if(enemy.blind<potency){
+				enemy.blind = potency;
 				enemy.StatusTextPopUp("Blinded");
 			}
 		}

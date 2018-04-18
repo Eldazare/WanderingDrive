@@ -8,10 +8,12 @@ public class HealthRegen : _Buff {
 	public HealthRegen(float regen){
 		heal = regen;
 		turnsRemaining = -1;
+		helpful = true;
 	}
 	public HealthRegen(float regen, int turns){
 		heal = regen;
 		turnsRemaining = turns;
+		helpful = true;
 	}
 	override public float DoYourThing(){
 		if(player != null){
