@@ -113,6 +113,14 @@ public class UndyingObject : MonoBehaviour {
 
 	}
 
+    public void StartDoLoadout() {
+        StartCoroutine(StartLoadoutEnum());
+    }
+
+    private IEnumerator StartLoadoutEnum() {
+        yield return SceneManager.LoadSceneAsync ("Loadout");
+    }
+
 	public void StartUpgrading(){
 		StartCoroutine(StartUpgradingIenum());
 	}

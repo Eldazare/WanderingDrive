@@ -190,7 +190,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1891578426}
-        m_MethodName: DoCraft
+        m_MethodName: DoLoadout
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
