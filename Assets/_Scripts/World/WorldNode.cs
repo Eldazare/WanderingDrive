@@ -23,5 +23,6 @@ public class WorldNode : MonoBehaviour {
 
 	void OnMouseDown(){
 		Debug.Log ("Hit: " + this.gameObject);
+		Interact ();
 	}
 }

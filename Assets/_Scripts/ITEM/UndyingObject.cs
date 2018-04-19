@@ -109,9 +109,16 @@ public class UndyingObject : MonoBehaviour {
 
 	private IEnumerator StartCraftingIenum(){
 		yield return SceneManager.LoadSceneAsync ("Crafting");
-		Crafting craft = GameObject.FindGameObjectWithTag ("CraftingController").GetComponent<Crafting> ();
-
+		//Crafting craft = GameObject.FindGameObjectWithTag ("CraftingController").GetComponent<Crafting> ();
 	}
+
+    public void StartLoadoutManagement() {
+        StartCoroutine(StartLoadoutManagementEnum());
+    }
+
+    private IEnumerator StartLoadoutManagementEnum() {
+        yield return SceneManager.LoadSceneAsync ("Loadout");
+    }
 
 	public void StartUpgrading(){
 		StartCoroutine(StartUpgradingIenum());

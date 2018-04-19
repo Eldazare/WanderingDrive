@@ -5,6 +5,8 @@
 #=droprate
 
 
-%Gather_Gather_0_herb bush
-Drop_Gather_0_0=2_50
-Drop_Gather_0_1=3_50
+%Gather_Gather_0_Herb bush
+Drop_Gather_0_Normal=30_50/31_50
+
+%Gather_Gather_1_Ore deposit
+Drop_Gather_1_Normal=40_50/41_50

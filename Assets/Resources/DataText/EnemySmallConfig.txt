@@ -1,5 +1,6 @@
 #This is a comment line
 
+#Elements: Fire, Ice, Thunder, Earth, Light, Shadow
 #Defenses: health/armor/evasion/weaknessType(int)
 #assortment: quickness/hitDistance [dodgeDifficulty and ???]
 
@@ -9,9 +10,11 @@
 
 %Enemy_EnemySmall_0_TESTGOLEM
 EnemySmall_0_defenses=100/3/0/2
-EnemySmall_0_elementWeakness=0;0;0;0;0;0
+EnemySmall_0_elementWeakness=80;0;100;150;50;50
 EnemySmall_0_assortment=1.2/5.0
-EnemySmall_0_p1=torso_100_0.8_9001
-EnemySmall_0_p2=head_45_1.3_4
-EnemySmall_0_p3=tail_80_1.0_3
+EnemySmall_0_p0=Torso_100_0.8_9001
+EnemySmall_0_p1=Head_45_1.3_4
+EnemySmall_0_p2=Tail_75_1.0_3
+EnemySmall_0_p3=Arm (Left)_100_0.4_5
+EnemySmall_0_p4=Arm (Right)_100_0.4_5
 EnemySmall_0_a1=10;2;Earth;0;1.0

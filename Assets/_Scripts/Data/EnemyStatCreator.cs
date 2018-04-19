@@ -37,7 +37,7 @@ public static class EnemyStatCreator {
 		}
 
 		createe.partList = new List<EnemyPart> ();
-		int i = 1;
+		int i = 0;
 		while (true) {
 			string partData = DataManager.ReadDataString (identifier + "p" + i);
 			if (partData != null) {

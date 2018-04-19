@@ -64,6 +64,28 @@ public static class RecipeContainer {
 		return craftingRecipes [System.Convert.ToInt32 (recipType)];
 	}
 
+	public static List<Recipe> GetSpecificWeaponCraftingRecipes(string weaponSubtype){
+		System.Enum.Parse (typeof(WeaponType), weaponSubtype); // DEBUG
+		List<Recipe> createe = new List<Recipe> ();
+		foreach (Recipe recip in craftingRecipes[(int)CraftingRecipeType.Weapon]) {
+			if (recip.resultItem.subtype.ToString() == weaponSubtype) {
+				createe.Add (recip);
+			}
+		}
+		return createe;
+	}
+
+	public static List<Recipe> GetSpecificArmorSlotCraftingRecipes(string armorSubtype){
+		System.Enum.Parse (typeof(ArmorType), armorSubtype); // DEBUG
+		List<Recipe> createe = new List<Recipe> ();
+		foreach (Recipe recip in craftingRecipes[(int)CraftingRecipeType.Armor]) {
+			if (recip.resultItem.subtype.ToString() == armorSubtype) {
+				createe.Add (recip);
+			}
+		}
+		return createe;
+	}
+
 	public static List<List<Recipe>> GetAllCraftRecipes(){
 		return craftingRecipes;
 	}

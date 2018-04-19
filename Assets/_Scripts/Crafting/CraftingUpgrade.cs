@@ -43,6 +43,7 @@ public class CraftingUpgrade : MonoBehaviour {
 				UpdateRecipeInfo ();
 			} else {
 				recipeInfo.text = "No Recipes for this";
+				resultInfo.text = "";
 			}
 		} else {
 			Debug.LogError ("No choices made");

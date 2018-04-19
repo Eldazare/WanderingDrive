@@ -9,6 +9,9 @@ public class Crafting : MonoBehaviour{
 	public Text recipeInfo;
 	public Text resultInfo;
 
+	public GameObject weaponTypeChoicePanel;
+	public GameObject armorTypeChoicePanel;
+
 	// TODO: Sprites will be downloaded per type and per id from Resources. Their id's and counts will match the recipes.
 
 	List<List<Recipe>> recipeList = new List<List<Recipe>> ();
@@ -28,6 +31,9 @@ public class Crafting : MonoBehaviour{
 
     public int currentRecipeType;
     public int currentRecipe;
+	private int currentRecipeListCount;
+	private bool filter;
+	private List<Recipe> filteredList;
 
 
     public void Start() {
@@ -68,7 +74,7 @@ public class Crafting : MonoBehaviour{
         }
         */
 		currentRecipe++;
-		if (currentRecipe >= recipeList [currentRecipeType].Count) {
+		if (currentRecipe >= currentRecipeListCount) {
 			currentRecipe = 0;
 		}
 		UpdateInfoTexts ();
@@ -90,22 +96,49 @@ public class Crafting : MonoBehaviour{
 		*/
 		currentRecipe--;
 		if (currentRecipe < 0) {
-			currentRecipe = recipeList [currentRecipeType].Count - 1;
+			currentRecipe = currentRecipeListCount - 1;
 		}
 		UpdateInfoTexts ();
     }
 
 	public void ChangeRecipeListTo(int recipeIndex) {
 		topPanel.SetActive (true);
+		filter = false;
 		Debug.Log ("Recipes changed to " + ((CraftingRecipeType)recipeIndex).ToString ());
 		//recipeImage.sprite = sprites[recipeIndex][0];
 		currentRecipe = 0;
 		currentRecipeType = recipeIndex;
-
-        currentItemSpriteList = 0;
-        spriteCounter = 0;
+		currentRecipeListCount = recipeList [currentRecipeType].Count;
 		UpdateInfoTexts ();
+
+		if (recipeIndex == (int)CraftingRecipeType.Weapon) {
+			weaponTypeChoicePanel.SetActive (true);
+		} else {
+			weaponTypeChoicePanel.SetActive (false);
+		}
+		if (recipeIndex == (int)CraftingRecipeType.Armor) {
+			armorTypeChoicePanel.SetActive (true);
+		} else {
+			armorTypeChoicePanel.SetActive (false);
+		}
     }
+
+	public void FilterWeapons(string weaponType){
+		filter = true;
+		filteredList = RecipeContainer.GetSpecificWeaponCraftingRecipes (weaponType);
+		currentRecipe = 0;
+		currentRecipeListCount = filteredList.Count;
+		UpdateInfoTexts ();
+	}
+
+	public void FilterArmor(string armorType){
+		filter = true;
+		filteredList = RecipeContainer.GetSpecificArmorSlotCraftingRecipes (armorType);
+		currentRecipe = 0;
+		currentRecipeListCount = filteredList.Count;
+		UpdateInfoTexts ();
+	}
+		
 
     public void LetsMerge() {
 		if (Merge.CombineRecipe (recipeList[currentRecipeType] [currentRecipe])){
@@ -117,7 +150,26 @@ public class Crafting : MonoBehaviour{
     }
 
 	private void UpdateInfoTexts(){
-		recipeInfo.text = InfoBoxCreator.GetRecipeInfoString (recipeList [currentRecipeType] [currentRecipe]);
-		resultInfo.text = InfoBoxCreator.GetMaterialInfoString (recipeList [currentRecipeType] [currentRecipe].resultItem);
+		Recipe infoRecipe = null;
+		if (filter) {
+			try{
+				infoRecipe = filteredList[currentRecipe];
+			} catch{
+			
+			}
+		} else {
+			try{
+				infoRecipe = recipeList [currentRecipeType] [currentRecipe];
+			} catch{
+			
+			}
+		}
+		if (infoRecipe != null) {
+			recipeInfo.text = InfoBoxCreator.GetRecipeInfoString (infoRecipe);
+			resultInfo.text = InfoBoxCreator.GetMaterialInfoString (infoRecipe.resultItem);
+		} else {
+			recipeInfo.text = "No recipes found";
+			resultInfo.text = "";
+		}
 	}
 }

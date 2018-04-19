@@ -16,7 +16,7 @@ public class MarkerScript : MonoBehaviour {
 	*/
 	public float SpawnRange = 0.001f;
 	public float NonSpawnRange = 0.0f;
-	float InitialNonSpawnRange = 0.001f;
+	float InitialNonSpawnRange = 0.0005f;
 	public int NumberOfMarkers = 1;
 	public float DespawnDistance = 100.0f;
 
@@ -65,7 +65,8 @@ public class MarkerScript : MonoBehaviour {
 	void Start () {
 
 
-		//PlopMarkers ();
+
+		//NodeSpriteContainer.LoadSpriteData ();
 
 		_locations = new List<Vector2d> ();
 		_spawnedObjects = new List<GameObject>();
@@ -282,7 +283,7 @@ public class MarkerScript : MonoBehaviour {
 
 	// LOCAL
 	private void SpawnNode(int nodeType, int id, Vector2d location, int time){
-		
+
 		//Sprite theSprite = NodeSpriteContainer.GetSprite (nodeType, id);
 		//GameObject node = Instantiate(new GameObject(), new Vector3(0,0,0), Quaternion.identity) as GameObject;
 		GameObject node = Instantiate(_markerPrefab);

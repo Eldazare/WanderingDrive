@@ -10,9 +10,9 @@
 #Weapon | Armor | Accessory | ComCon | NonCom
 
 
-%Recipe_Armor_0_Basic helm
+%Recipe_Armor_0_Golem Helm
 RecipeArmor_0_m1=Mat_Mat_0_2
 RecipeArmor_0_m2=Mat_Mat_1_2
 RecipeArmor_0_m3=
 RecipeArmor_0_m4=
-RecipeArmor_0_result=Arm_Helm_0
+RecipeArmor_0_result=Arm_Helm_2

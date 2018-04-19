@@ -23,3 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/CraftingUpgrade.unity
     guid: 4828f2e6dcdf7ab40a641dace6fdfe1b
+  - enabled: 1
+    path: Assets/_Scenes/Loadout.unity
+    guid: d4f78dfc878b3fb43b2920c495687173

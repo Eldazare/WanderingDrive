@@ -37,9 +37,9 @@ public static class Inventory {
 	*/
 
 	public static void Initialize(){
-		int materialCount = 1000;
-		int comConCount = 10;
-		int nonConCount = 10;
+		int materialCount = DataManager.ReadDataInt ("Material_Count");
+		int comConCount = DataManager.ReadDataInt ("ComCon_Count");
+		int nonConCount = DataManager.ReadDataInt ("NonCom_Count");
 		for (int i = 0; i < materialCount; i++) {
 			inventoryMaterials.Add (0);
 		}
