@@ -23,7 +23,7 @@ public class LoadoutManager : MonoBehaviour
     public List<InventoryWeapon> weaponList = Inventory.inventoryWeapons;
     public List<int> combatConsumables = Inventory.combatConsumables;
 
-    public List<InventoryArmor> currentList = new List<InventoryArmor>();
+    public List<InventoryArmor> currentList;
     public int currentItem;
     public int counter;
     public int chosenHand;
@@ -42,27 +42,27 @@ public class LoadoutManager : MonoBehaviour
             switch (parsed_enum) {
                 case ItemSubType.Accessory:
                     accessoryList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Arms:
                     armsList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Boots:
                     bootsList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Chest:
                     chestList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Helm:
                     helmList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
                 case ItemSubType.Legs:
                     legsList.Add(armorList[i]);
-                    //armorList.RemoveAt(i);
+                    armorList.RemoveAt(i);
                     break;
             }
         }
@@ -142,11 +142,11 @@ public class LoadoutManager : MonoBehaviour
     public void ChangeWeaponSlot(int slot) {
         currentItemType = ItemType.Wep;
         ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
-        currentItemSubType = parsed_enum;
-        currentItem = weaponList[0].itemID;
+        currentItemSubType = parsed_enum; 
         chosenHand = slot;
         counter = 0;
         if (weaponList.Count > 0) {
+            currentItem = weaponList[0].itemID;
             UpdateInfoTexts();
         }
         else {
@@ -168,10 +168,10 @@ public class LoadoutManager : MonoBehaviour
         currentItemType = ItemType.Arm;
         currentItemSubType = ItemSubType.Accessory;
         currentList = itemList[0];
-        currentItem = currentList[0].itemID;
         chosenAccessorySlot = slot;
         counter = 0;
         if (currentList.Count > 0) {
+            currentItem = currentList[0].itemID;
             UpdateInfoTexts();
         }
         else {
@@ -183,6 +183,7 @@ public class LoadoutManager : MonoBehaviour
         currentItemType = ItemType.Arm;
         currentItemSubType = (ItemSubType)_itemSubtype;
         counter = 0;
+        Debug.Log(currentList);
         switch (currentItemSubType) {
             case ItemSubType.Arms:
                 currentList = itemList[3];
@@ -203,8 +204,9 @@ public class LoadoutManager : MonoBehaviour
                 Debug.Log("Error, unsuitable parameters");
                 break;
         }
-        currentItem = currentList[0].itemID;
+        Debug.Log(currentList);
         if (currentList.Count > 0) {
+            currentItem = currentList[0].itemID;
             UpdateInfoTexts();
         }
         else {

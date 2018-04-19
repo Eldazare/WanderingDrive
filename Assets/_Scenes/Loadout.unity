@@ -779,6 +779,8 @@ MonoBehaviour:
   currentItem: 0
   counter: 0
   chosenHand: 0
+  chosenConsSlot: 0
+  chosenAccessorySlot: 0
 --- !u!1 &420003898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,12 +1108,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 405029662}
-        m_MethodName: ChangeArmorSlot
+        m_MethodName: ChangeAccessorySlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 18
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2830,12 +2832,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 405029662}
-        m_MethodName: ChangeArmorSlot
+        m_MethodName: ChangeAccessorySlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 18
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
