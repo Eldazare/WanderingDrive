@@ -15,15 +15,27 @@ public class NodeSpawner : MonoBehaviour {
 	private int minTime = 260;
 	private int maxTime = 600;
 
-	private List<int> nodeTypeWeightList = new List<int>(){35, 45, 10, 10};
+	private static List<int> nodeTypeWeightList;
+	private static List<List<int>> nodeTypesWeights;
 
-	private static List<int> nodeType0Weights = new List<int>(){33,33,34};
-	private static List<int> nodeType1Weights = new List<int>(){50, 50};
-	private static List<int> nodeType2Weights = new List<int>(){50, 50};
-	private static List<int> nodeType3Weights = new List<int>(){100};
-	private List<List<int>> nodeTypesWeights 
-		= new List<List<int>>(){nodeType0Weights, nodeType1Weights, nodeType2Weights, nodeType3Weights};
 
+	public static void InitializeWeights(){
+		nodeTypeWeightList = new List<int> ();
+		string[] typeWeights = DataManager.ReadDataString ("Node_TypeWeights").Split("/".ToCharArray());
+		foreach (string str in typeWeights) {
+			nodeTypeWeightList.Add (int.Parse (str));
+		}
+		int nodeTypeAmount = DataManager.ReadDataInt ("Node_NodeTypeAmount");
+		nodeTypesWeights = new List<List<int>> ();
+		for (int i = 0; i < nodeTypeAmount; i++) {
+			List<int> nodeTypeWeight = new List<int> ();
+			string[] weightArr = DataManager.ReadDataString ("Node_Weights_" + i).Split ("/".ToCharArray ());
+			foreach (string str in weightArr) {
+				nodeTypeWeight.Add (int.Parse (str));
+			}
+			nodeTypesWeights.Add (nodeTypeWeight);
+		}
+	}
 
 
 	public void LoadNodes(double currentLatitude, double currentLongitude){

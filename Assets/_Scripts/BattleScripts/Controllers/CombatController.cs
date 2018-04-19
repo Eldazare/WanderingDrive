@@ -173,7 +173,7 @@ public class CombatController : MonoBehaviour {
 	public void EnemyDies(Enemy enemy){
 			
 		DropData drop = DropDataCreator.CreateDropData(DropDataCreator.parseDroppertype(enemy.enemyStats.subtype),enemy.enemyStats.ID);
-		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,2 ,enemy.enemyStats.partList);
+		List<RecipeMaterial> list = DropDataCreator.CalculateDrops(drop ,DropDataCreator.DefaultNormalDropAmount() ,enemy.enemyStats.partList);
 
 		encounterDrops.Add(list);
 

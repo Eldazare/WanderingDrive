@@ -6,7 +6,7 @@ public static class NodeInteraction {
 
 	private static UndyingObject theObject;
 	private static bool initialized = false;
-	private static int gatheringAmount = 3;
+	private static int gatheringAmount;
 
 	//TYPES: (INT because database cannot really store Enum)
 	// 0 = Gather
@@ -18,6 +18,7 @@ public static class NodeInteraction {
 	public static void InitializeUndyingObject (UndyingObject obj){
 		theObject = obj;
 		initialized = true;
+		gatheringAmount = DataManager.ReadDataInt ("Gather_GatherNormalAmount");
 	}
 
 	public static void HandleNodeInteraction(int type, int id){

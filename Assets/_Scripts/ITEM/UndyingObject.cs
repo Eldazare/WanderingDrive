@@ -10,8 +10,6 @@ public class UndyingObject : MonoBehaviour {
 	// add more stuff as it comes up
 
 
-	// TODO: Add visual map generation method?
-
 	// PUBLIC only for testing purposes
 	public LoadoutsContainer loadoutList;
 	public WorldStatsContainer playerWorldStats;
@@ -27,6 +25,7 @@ public class UndyingObject : MonoBehaviour {
 		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen -data (show loading bar or something)
 		NodeInteraction.InitializeUndyingObject(this);
 		Inventory.Initialize ();
+		NodeSpawner.InitializeWeights ();
 		// TODO: Potentially load player data
 		//ELSE:
 		playerWorldStats = new WorldStatsContainer();

@@ -4,9 +4,13 @@
 #Material id
 #=droprate
 
+Gather_GatherNormalAmount=3
 
 %Gather_Gather_0_Herb bush
-Drop_Gather_0_Normal=30_50/31_50
+Gather_Gather_0_Normal=30_50/31_50
 
 %Gather_Gather_1_Ore deposit
-Drop_Gather_1_Normal=40_50/41_50
+Gather_Gather_1_Normal=40_50/41_50
+
+%Gather_Gather_2_Rare Ore Reposit
+Gather_Gather_2_Normal=45_40/46_40/40_20

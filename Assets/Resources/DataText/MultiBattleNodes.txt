@@ -4,5 +4,16 @@
 #then just the id (of the monster)
 #_ is separator
 
+#NodeTypes: Gather / SingleB / MultiBattle / BigBattle / (Dungeon)
+
+Node_NodeTypeAmount=4
+Node_TypeWeights=35/45/10/10
+
+Node_Weights_0=35/45/10/10
+Node_Weights_1=30/30/30
+Node_Weights_2=50/50
+Node_Weights_3=100
+Node_Weights_4=100
 
 Node_multimonster_0=S0_S0_S0_S0
+Node_multimonster_1=S0_S0
