@@ -141,7 +141,6 @@ public class Enemy : MonoBehaviour {
             enemyStats.health -= damageTaken;
             enemyStats.partList[part].DamageThisPart (damageTaken); // Part takes damage
             // animator.SetTrigger("TakeDamage");
-            updateStats ();
             if (damageTaken < 0) {
                 GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
                 popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");

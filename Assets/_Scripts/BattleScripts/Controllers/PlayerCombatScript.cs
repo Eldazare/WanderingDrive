@@ -15,13 +15,13 @@ public class PlayerCombatScript : MonoBehaviour {
 	public CombatController combatController; //Drag from hierarchy
 
 	//Perfect values are: if timer > maxDuration - perfect| Tiers are: if timer > maxDuration * tier
-	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 1f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
+	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 0.5f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
 	float[] blockTiers = { 0.75f, 0.5f, 0.25f };
 	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
-	float focusDamageBuff = 1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 1f, attackedPenalty = 0.5f;
+	float focusDamageBuff = 1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 2; //How close the player moves to the enemy
-	bool defended, attacked;
+	public bool defended, attacked;
 	public int abilityID;
 	float distanceCovered, movingLength, startTime, lerpSpeed = 5f;
 
@@ -257,33 +257,37 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 
 	void EndPlayerTurn (bool setBool) {
-		if (focusBuffTurns > 0) {
-			focusBuffTurns--;
-		}
-		if (focusPlusOverloadTurn) {
-			menuController.focusEnabled = false;
-			menuController.overloadEnabled = false;
-			focusPlusOverloadTurn = setBool;
-			menuController.PlayersTurn ();
-		} else if (focusedTurn) {
-			focusedTurn = false;
-			menuController.overloadEnabled = false;
-			menuController.PlayersTurn ();
-		} else if (overloadedTurn > 0) {
-			overloadedTurn--;
-			if (overloadedTurn == 0) {
-				menuController.focusEnabled = true;
-				menuController.overloadEnabled = true;
-				combatController.enemyAttacks ();
-			} else {
-				menuController.PlayersTurn ();
+		if(playerStats.health>0){
+			if (focusBuffTurns > 0) {
+				focusBuffTurns--;
 			}
-		} else {
-			focusedTurn = setBool;
-			menuController.focusEnabled = !setBool;
-			menuController.overloadEnabled = true;
-			focusPlustOverloadBonus = false;
-			combatController.enemyAttacks ();
+			if (focusPlusOverloadTurn) {
+				menuController.focusEnabled = false;
+				menuController.overloadEnabled = false;
+				focusPlusOverloadTurn = setBool;
+				menuController.PlayersTurn ();
+			} else if (focusedTurn) {
+				focusedTurn = false;
+				menuController.overloadEnabled = false;
+				menuController.PlayersTurn ();
+			} else if (overloadedTurn > 0) {
+				overloadedTurn--;
+				if (overloadedTurn == 0) {
+					menuController.focusEnabled = true;
+					menuController.overloadEnabled = true;
+					combatController.enemyAttacks ();
+				} else {
+					menuController.PlayersTurn ();
+				}
+			} else {
+				focusedTurn = setBool;
+				menuController.focusEnabled = !setBool;
+				menuController.overloadEnabled = true;
+				focusPlustOverloadBonus = false;
+				combatController.enemyAttacks ();
+			}
+		}else{
+			combatController.LoseEncounter();
 		}
 	}
 
@@ -294,53 +298,56 @@ public class PlayerCombatScript : MonoBehaviour {
 		//focusDefensiveBonus
 		CancelInvoke ("BlockCountDown");
 		CancelInvoke ("DodgeCountDown");
+		if(playerStats.speed != 0){
+			playerStats.dodgeModifier = playerStats.speed;
+		}
+		Debug.Log("Dodge Timer: "+dodgeTimer*playerStats.dodgeModifier);
 		if (damage >= 0 || elementDamage >= 0) {
 			if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
 				if (area) {
-					returnedValue = "You dodged but took " + takeDamage (damage, elementDamage, element, damageType).ToString ("0.#") + " area damage!";
+					returnedValue = "You dodged but took " + takeDamage (damage, elementDamage, element, damageType) + " area damage!";
 				} else {
 					//Dodged attack
 					returnedValue = "You dodged the attack!";
 					takeDamage (0, 0, 0, 0);
 				}
 			} else if (blockTimer > 0) {
+				Debug.Log("Block Timer: "+blockTimer*playerStats.blockModifier);
 				if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
 					returnedValue = "You blocked the attack and took no damage!";
 					takeDamage (0, 0, 0, 0);
 				} else {
 					bool blocked = false;
 					foreach (var blockModifier in blockTiers) {
-						Debug.Log ("Blockmod*blockdura " + (blockModifier * blockDuration));
 						if (blockTimer >= (blockModifier * blockDuration)) {
-							returnedValue = "You blocked the attack but took " + takeDamage (damage, elementDamage, element, blockModifier, damageType).ToString ("0.#") + "!";
+							returnedValue = "You blocked the attack but took " + takeDamage (damage, elementDamage, element, 1-blockModifier, damageType) + "!";
 							blocked = true;
 							break;
 						}
 					}
 					if (!blocked) {
-						returnedValue = "Your block failed and you took " + takeDamage (damage, elementDamage, element, damageType).ToString ("0.#") + " damage!";
+						returnedValue = "Your block failed and you took " + takeDamage (damage, elementDamage, element, damageType) + " damage!";
 					}
 				}
 			} else {
 				//Damage taken calculations
-				returnedValue = "You took " + takeDamage (damage, elementDamage, element, damageType).ToString ("0.#") + " damage!";
+				returnedValue = "You took " + takeDamage (damage, elementDamage, element, damageType) + " damage!";
 			}
 		} else {
 			returnedValue = "Enemy attack missed!";
 		}
-
 		combatController.ResetPlayerDefence ();
 		blockTimer = 0;
 		dodgeTimer = 0;
-		defended = false;
 		if (playerStats.health <= 0) {
 			combatController.LoseEncounter ();
 			returnedValue += "\nYou died!";
 		}
 		return returnedValue;
 	}
+	
 
-	float takeDamage (float damage, float elementDamage, Element element, int damageType) {
+	string takeDamage (float damage, float elementDamage, Element element, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
 
 		if (damageType == 0) {
@@ -351,17 +358,18 @@ public class PlayerCombatScript : MonoBehaviour {
 			damageModifier = 1;
 		}
 		if (element == Element.None) {
-			damage = elementDamage;
+			damage += elementDamage;
 			elementDamage = 0;
 		}
 		if (overloadedTurn > 0) {
-			damageModifier += overloadDebuff;
-			eleModifier += overloadDebuff;
+			damageModifier *= overloadDebuff;
+			eleModifier *= overloadDebuff;
 		}
-
-		damageModifier -= playerStats.damageReduction;
-		damageModifier -= buffDamageReduction;
-		eleModifier -= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
+		if(buffDamageReduction != 0){
+			damageModifier *= buffDamageReduction;
+		}
+		
+		eleModifier *= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
 
 		damage = damage * damageModifier;
 		elementDamage = elementDamage * eleModifier;
@@ -375,10 +383,14 @@ public class PlayerCombatScript : MonoBehaviour {
 			popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
 		}
 		updateStats ();
-		return damageTaken;
+		if(elementDamage == 0){
+			return damage.ToString("0.#");
+		}else{
+			return damage+" + "+ elementDamage + " "+element.GetType().Name;
+		}
 	}
 
-	float takeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
+	string takeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
 		if (damageType == 0) {
 			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.physicalArmor);
@@ -387,26 +399,37 @@ public class PlayerCombatScript : MonoBehaviour {
 		} else {
 			damageModifier = 1;
 		}
+		if (element == Element.None) {
+			damage += elementDamage;
+			elementDamage = 0;
+		}
 		if (overloadedTurn > 0) {
-			damageModifier += overloadDebuff;
-			eleModifier += overloadDebuff;
+			damageModifier *= overloadDebuff;
+			eleModifier *= overloadDebuff;
 		}
 
-		damageModifier -= blockModifier;
-		eleModifier -= blockModifier;
+		damageModifier *= blockModifier;
+		eleModifier *= blockModifier;
 
-		damageModifier -= playerStats.damageReduction;
-		damageModifier -= buffDamageReduction;
-		eleModifier -= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
+		if(buffDamageReduction > 0){
+			damageModifier *= buffDamageReduction;
+		}
 
-		damage = damage * damageModifier;
-		elementDamage = elementDamage * eleModifier;
+		eleModifier *= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
+
+		damage *= damageModifier;
+		elementDamage *= eleModifier;
 		damageTaken = damage + elementDamage;
 		playerStats.health -= damageTaken;
 		GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 		popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
 		updateStats ();
-		return damageTaken;
+		if(elementDamage == 0){
+			return damage.ToString("0.#");
+		}else{
+			return damage+" + "+ elementDamage + " "+element.GetType().Name;
+		}
+		
 	}
 
 	public void updateStats () {
