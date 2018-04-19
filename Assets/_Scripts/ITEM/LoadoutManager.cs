@@ -89,7 +89,7 @@ public class LoadoutManager : MonoBehaviour {
                 case ItemSubType.Arms:
                     if (counter >= armsList.Count) {
                         counter = 0;
-                        currentItem = armorList[0].itemID;
+                        currentItem = armsList[0].itemID;
                     }
                     else {
                         currentItem = armsList[counter].itemID;
@@ -174,7 +174,7 @@ public class LoadoutManager : MonoBehaviour {
                         counter = armsList.Count - 1;
                     }
                     else {
-                        currentItem = armorList[counter].itemID;
+                        currentItem = armsList[counter].itemID;
                     }
                     break;
                 case ItemSubType.Boots:

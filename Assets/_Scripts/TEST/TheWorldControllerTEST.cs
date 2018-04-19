@@ -20,8 +20,8 @@ public class TheWorldControllerTEST : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().StartUpgrading ();
 	}
 
-    public void DoLoadout() {
-        GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().StartDoLoadout();
+    public void DoLoadoutManagement() {
+        GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().StartLoadoutManagement();
     }
 
     public void GenerateLoadoutButtons(){
