@@ -458,10 +458,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4affd45f7a248514ea4203985f93e5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnRange: 0.001
-  NonSpawnRange: 0
-  NumberOfMarkers: 1
-  DespawnDistance: 100
+  SpawnRange: 0.004
+  NonSpawnRange: 0.0038
+  NumberOfMarkers: 40
+  DespawnDistance: 145
   _player: {fileID: 1926499057}
   _map: {fileID: 1850690986}
   _locations: []
@@ -540,11 +540,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 429665309}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 481.98663, y: 516.32965, z: 18.850952}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 96.39733, y: 103.26593, z: 3.7701905}
+  m_LocalScale: {x: 0.2, y: 0.20000002, z: 0.19999999}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 1926499058}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &556311739
 GameObject:
@@ -664,7 +664,7 @@ MonoBehaviour:
   _autoFireEvent: 1
   _updateInterval: 0.05
   _sendEvent: 0
-  _latitudeLongitude: 60.192059, 24.945831
+  _latitudeLongitude: 60.221810, 24.804813
   _targetTransform: {fileID: 1033370517}
 --- !u!1 &1144914539
 GameObject:
@@ -2044,7 +2044,7 @@ MonoBehaviour:
   _initializeOnStart: 1
   _options:
     locationOptions:
-      latitudeLongitude: 60.192059, 24.945831
+      latitudeLongitude: 60.221810, 24.804813
       zoom: 16
     extentOptions:
       extentType: 2
@@ -2234,9 +2234,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0792176b53560194690f60e634472a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localNodeList: []
-  trueRadius: 0
-  nodeCount: 0
+  localNodeList:
+  - {fileID: 1564252737533862, guid: 2ef71cf688f17e246a871cd5f8db0050, type: 2}
+  trueRadius: 2
+  nodeCount: 20
 --- !u!4 &1891578425
 Transform:
   m_ObjectHideFlags: 0
@@ -2366,7 +2367,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
-  m_Children: []
+  m_Children:
+  - {fileID: 429665311}
   m_Father: {fileID: 1850690987}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2459,6 +2461,7 @@ GameObject:
   - component: {fileID: 1975627621}
   - component: {fileID: 1975627620}
   - component: {fileID: 1975627619}
+  - component: {fileID: 1975627623}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2498,8 +2501,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 75
+  orthographic: 0
   orthographic size: 100
   m_Depth: -1
   m_CullingMask:
@@ -2522,13 +2525,25 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1975627618}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 263, z: 0}
+  m_LocalRotation: {x: 0.5735764, y: -0, z: -0, w: 0.8191521}
+  m_LocalPosition: {x: 0, y: 30, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
+--- !u!114 &1975627623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1975627618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59cdc8f741ec02f41ab1e5b6346ce9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 1926499057}
 --- !u!1 &1995018757
 GameObject:
   m_ObjectHideFlags: 0

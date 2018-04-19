@@ -14,7 +14,6 @@ public class MarkerScript : MonoBehaviour {
 	/*
 	This is heavily based on the "SpawnOnMap" script, that came with MapBoxSDK.
 	*/
-
 	public float SpawnRange = 0.001f;
 	public float NonSpawnRange = 0.0f;
 	float InitialNonSpawnRange = 0.001f;
@@ -23,20 +22,43 @@ public class MarkerScript : MonoBehaviour {
 
 	[SerializeField]
 	GameObject _player;
-
 	[SerializeField]
 	AbstractMap _map;
 
-	//[SerializeField]
-	//[Geocode]
-	//public string[] _locationStrings;
 	public List <Vector2d> _locations;
 
 	[SerializeField]
 	GameObject _markerPrefab;
-
 	[SerializeField]
 	List<GameObject> _spawnedObjects;
+
+
+
+
+
+
+
+
+	public List<GameObject> localNodeList;
+	public float trueRadius;
+	public int nodeCount;
+
+	private int minTime = 260;
+	private int maxTime = 600;
+
+	private List<int> nodeTypeWeightList = new List<int>(){35, 45, 10, 10};
+
+	private static List<int> nodeType0Weights = new List<int>(){33,33,34};
+	private static List<int> nodeType1Weights = new List<int>(){50, 50};
+	private static List<int> nodeType2Weights = new List<int>(){50, 50};
+	private static List<int> nodeType3Weights = new List<int>(){100};
+	private List<List<int>> nodeTypesWeights 
+	= new List<List<int>>(){nodeType0Weights, nodeType1Weights, nodeType2Weights, nodeType3Weights};
+
+
+
+
+
 
 
 	// Use this for initialization
@@ -117,10 +139,15 @@ public class MarkerScript : MonoBehaviour {
 			// Instantiating a marker for each coordinate on list and adding it to the _spawnedObjects list
 			for (int i = 0; i < _locations.Count; i++)
 			{
-				GameObject instance = Instantiate(_markerPrefab);
-				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
+				//GameObject instance = Instantiate(_markerPrefab);
+				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
+				//_spawnedObjects.Add(instance);
 
-				_spawnedObjects.Add(instance);
+				int nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
+				int nodeID = GetRandomIndexByWeight (nodeTypesWeights [nodeType]);
+				int nodeTime = Random.Range (minTime, maxTime);
+				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
+				SpawnNode (nodeType, nodeID, _locations[i], nodeTime);
 			}
 		}
 	}
@@ -188,10 +215,19 @@ public class MarkerScript : MonoBehaviour {
 
 			// Instantiating a marker for each coordinate on _locations list and adding it to the _spawnedObjects list
 			for (int i = 0; i < _locations.Count; i++) {
-				GameObject instance = Instantiate(_markerPrefab);
-				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
 
-				_spawnedObjects.Add(instance);
+
+				//GameObject instance = Instantiate(_markerPrefab);
+				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
+				//_spawnedObjects.Add(instance);
+
+
+
+				int nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
+				int nodeID = GetRandomIndexByWeight (nodeTypesWeights [nodeType]);
+				int nodeTime = Random.Range (minTime, maxTime);
+				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
+				SpawnNode (nodeType, nodeID, _locations[i], nodeTime);
 			}
 		}
 	}
@@ -237,6 +273,52 @@ public class MarkerScript : MonoBehaviour {
 		rem.Clear ();
 
 
+	}
+
+
+
+
+
+
+	// LOCAL
+	private void SpawnNode(int nodeType, int id, Vector2d location, int time){
+		
+		//Sprite theSprite = NodeSpriteContainer.GetSprite (nodeType, id);
+		//GameObject node = Instantiate(new GameObject(), new Vector3(0,0,0), Quaternion.identity) as GameObject;
+		GameObject node = Instantiate(_markerPrefab);
+		node.transform.localPosition = _map.GeoToWorldPosition(location);
+
+		//node.AddComponent<SpriteRenderer> ().sprite = theSprite;
+		WorldNode wNode = node.AddComponent<WorldNode> ();
+		wNode.nodeType = nodeType;
+
+		wNode.id = id;
+		wNode.latitude = location.x;
+		wNode.longitude = location.y;
+
+		localNodeList.Add (node); // <- This may be reduntant
+		_spawnedObjects.Add(node);
+		// TODO: World to local position
+	}
+
+
+
+	private int GetRandomIndexByWeight(List<int> weights){
+		int count = weights.Count;
+		int total = 0;
+		int calc = 0;
+		foreach (int wInt in weights) {
+			total += wInt;
+		}
+		int randomInt = Random.Range (0, total);
+		for (int i = 0; i < count; i++) {
+			calc += weights [i];
+			if (calc > randomInt) {
+				return i;
+			}
+		}
+		Debug.LogError ("RandomIndexByWeight went over...");
+		return -1;
 	}
 
 
