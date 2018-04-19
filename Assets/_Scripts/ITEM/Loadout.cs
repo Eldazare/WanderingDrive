@@ -59,8 +59,9 @@ public class Loadout {
 		}
 	}
 
-	public void AddArmor(InventoryArmor armor, ArmorType type){
-		wornArmor [System.Convert.ToInt32 (type)] = armor;
+	public void AddArmor(InventoryArmor armor){
+		int type = (int)System.Enum.Parse (typeof(ArmorType), armor.subType);
+		wornArmor [type] = armor;
 	}
 
 	public void AddAccessory(InventoryArmor accessory, int slot){

@@ -342,16 +342,16 @@ public class PlayerCombatScript : MonoBehaviour {
 
 	float takeDamage (float damage, float elementDamage, Element element, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
-
+		float armorAlgMod = CombatController.armorAlgorithmModifier;
 		if (damageType == 0) {
-			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.physicalArmor);
+			damageModifier = armorAlgMod / (armorAlgMod + playerStats.physicalArmor);
 		} else if (damageType == 1) {
-			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.magicArmor);
+			damageModifier = armorAlgMod / (armorAlgMod + playerStats.magicArmor);
 		} else {
 			damageModifier = 1;
 		}
 		if (element == Element.None) {
-			damage = elementDamage;
+			damage += elementDamage;
 			elementDamage = 0;
 		}
 		if (overloadedTurn > 0) {

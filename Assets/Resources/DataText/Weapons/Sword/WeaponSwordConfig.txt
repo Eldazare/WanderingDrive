@@ -13,12 +13,12 @@
 
 Sword_speed=1
 
-%Weapon_Sword_0_generic Sword
-&Weapon_Sword_0_generic Sword description is here
+%Weapon_Sword_0_Starter Sword
+&Weapon_Sword_0_Don't keep it too long....
 Sword_0_base=10/0/0
 Sword_0_element=0/0/0
 Sword_0_bonuses=0/0/0/0
-Sword_0_defenseMods=0.0/0.0
+Sword_0_defenseMods=-0.3/-0.1
 
 %Weapon_Sword_1_GOLEMSWORD
 &Weapon_Sword_1_Golemsword is cool

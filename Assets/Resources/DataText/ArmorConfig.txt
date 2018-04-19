@@ -5,6 +5,9 @@
 #6 different elements
 #Fire, Ice, Thunder, Earth, Light, Shadow
 
+#Formula: (C / (C+armor) = Damage Taken
+Armor_Correspondance=50
+
 #0: Starter
 %Armor_Helm_0_Starter Helm
 %Armor_Chest_0_Starter Chest

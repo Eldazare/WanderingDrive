@@ -44,7 +44,6 @@ public static class DataManager  {
 			}
 			return null;
 		}
-
 	}
 
 	static public float ReadDataFloat(string entryName){
@@ -81,7 +80,7 @@ public static class DataManager  {
 			int index = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), "RecipeUp" + armorString);
 			DownloadSingleFile (armorRUPFile, configDatas [index], recipeNameList);
 		}
-
+			
 		string[] recipeEnumNames = System.Enum.GetNames (typeof(CraftingRecipeType));
 		foreach (string recipString in recipeEnumNames) {
 			string recipeFile = "Recipes/Recipe"+recipString+"Config";

@@ -25,6 +25,7 @@ public class CombatController : MonoBehaviour {
 	}
 	
 	public void StartCombat(Loadout loadout, List<NodeEnemy> nodeEnemyList){
+		armorAlgorithmModifier = DataManager.ReadDataFloat ("Armor_Correspondance");
 		playerStats = player.playerStats;
 		enemyList = new List<Enemy> ();
 		//if(loadout.mainHand != null){
@@ -32,6 +33,7 @@ public class CombatController : MonoBehaviour {
 			playerStats.dodgeModifier += playerStats.mainHand.dodgeModifier;
 			playerStats.blockModifier += playerStats.mainHand.blockModifier;
 			playerStats.magicArmor += playerStats.mainHand.magicArmorBonus;
+			playerStats.physicalArmor += playerStats.mainHand.armorBonus;
 		//}
 		if(loadout.offHand != null){
 			playerStats.offHand = WeaponCreator.CreateWeaponStatBlock ((WeaponType)System.Enum.Parse(typeof(WeaponType),loadout.offHand.subType), loadout.offHand.itemID);

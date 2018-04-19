@@ -8,7 +8,7 @@ public class PlayerStats {
 	public float health, maxHealth, stamina, maxStamina, speed, physicalArmor, magicArmor, blockModifier = 1, dodgeModifier = 1;
 	public Element element;
 	public int damageReduction;
-	public List<int> elementWeakness = new List<int>{0, 0, 0, 0, 0, 0};
+	public List<int> elementWeakness = new List<int>{0, 0, 0, 0, 0, 0, 0}; // Need element for "NONE" also, for indexing purposes
 	public WeaponStats mainHand, offHand;
 
 	public List<Ability> abilities = new List<Ability> ();

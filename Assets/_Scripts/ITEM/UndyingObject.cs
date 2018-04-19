@@ -44,10 +44,26 @@ public class UndyingObject : MonoBehaviour {
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 1, 4);
 		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 2, 1);
 		Inventory.PutItem (ItemType.Arm, ItemSubType.Accessory, 0, 1);
-
+		InsertBasicArmorToInventory ();
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
 		loadoutList.InsertLoadout (loadout, 0);
+	}
+
+	private void InsertBasicArmorToInventory(){
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Helm, 0, 1);
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Chest, 0, 1);
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Arms, 0, 1);
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Legs, 0, 1);
+		Inventory.PutItem (ItemType.Arm, ItemSubType.Boots, 0, 1);
+		Loadout loadout = new Loadout (1);
+		loadout.AddArmor (new InventoryArmor (0, "Helm"));
+		loadout.AddArmor (new InventoryArmor (0, "Chest"));
+		loadout.AddArmor (new InventoryArmor (0, "Arms"));
+		loadout.AddArmor (new InventoryArmor (0, "Legs"));
+		loadout.AddArmor (new InventoryArmor (0, "Boots"));
+		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
+		loadoutList.InsertLoadout (loadout, 9);
 	}
 
 	private IEnumerator ToTheWorld(){
