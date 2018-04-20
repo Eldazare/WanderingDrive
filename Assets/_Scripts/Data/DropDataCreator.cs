@@ -23,12 +23,13 @@ public static class DropDataCreator {
 
 
 	public static DropData CreateDropData(DropperType dropperType, int id){
-		string begin = "Drop_" + dropperType.ToString() + "_"+id+"_";
+		string beginEnemy = "Drop_" + dropperType.ToString() + "_"+id+"_";
+		string beginGather = "Gather_" + dropperType.ToString () + "_" + id + "_";
 		DropData createe = new DropData ();
 		if (dropperType != DropperType.Gather) {
 			EnemyDropData createeEnemy = new EnemyDropData ();
 			for (int i = 0; i<9;i++){
-				string dataStr = DataManager.ReadDataString (begin + "p" + i);
+				string dataStr = DataManager.ReadDataString (beginEnemy + "p" + i);
 				if (dataStr == null) {
 					createeEnemy.partDropDatas.Add (null);
 				} else {
@@ -44,9 +45,9 @@ public static class DropDataCreator {
 			}
 			createe = createeEnemy;
 		}
-		string partString = DataManager.ReadDataString (begin + "Normal");
+		string partString = DataManager.ReadDataString (beginGather + "Normal");
 		if (partString == null) {
-			Debug.LogError ("Null Normal drop" + dropperType.ToString ());
+			Debug.LogError ("Null Normal drop: " + beginGather+"Normal");
 		}
 		string[] normalDrops = partString.Split ("/".ToCharArray ());
 		foreach (string str in normalDrops) {
@@ -95,8 +96,8 @@ public static class DropDataCreator {
 				break;
 			}
 		}
-		Debug.Log (resultIndex + " & count: " + drops.Count + " Percentages count: "+percentages.Count);
-		Debug.Log (choice + "/" + max);
+		//Debug.Log (resultIndex + " & count: " + drops.Count + " Percentages count: "+percentages.Count);
+		//Debug.Log (choice + "/" + max);
 		return drops [resultIndex];
 	}
 }

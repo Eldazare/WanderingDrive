@@ -76,8 +76,10 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	public void CombatPrompt (List<NodeEnemy> enemyList){
+		TheWorldControllerTEST testCon = GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ();
+		testCon.ReturnFromLoadoutMenu ();
 		storedNode = enemyList;
-		GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().GenerateLoadoutButtons ();
+		testCon.GenerateLoadoutButtons ();
 	}
 
 	private void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){

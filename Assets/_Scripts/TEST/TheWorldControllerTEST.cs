@@ -26,18 +26,20 @@ public class TheWorldControllerTEST : MonoBehaviour {
 
     public void GenerateLoadoutButtons(){
 		loadoutChoicePanel.SetActive (true);
-		UndyingObject undObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
-		LoadoutsContainer container = undObject.loadoutList;
-		GameObject buttonPrefab = Resources.Load ("CraftingUi/Button") as GameObject;
-		for (int i = 0; i< container.GetLoadoutCount();i++) {
-			if (container.GetLoadout (i) != null) {
-				GameObject button = Instantiate (buttonPrefab, loadoutsPanel.transform);
-				Button but = button.GetComponent<Button> ();
-				int ind = i;
-				but.onClick.AddListener (delegate {
-					undObject.ReceiveChosenLoadout (ind);
-				});
-				button.GetComponentInChildren<Text> ().text = "Loadout " + (i + 1);
+		if (loadoutsPanel.transform.childCount == 0) {
+			UndyingObject undObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
+			LoadoutsContainer container = undObject.loadoutList;
+			GameObject buttonPrefab = Resources.Load ("CraftingUi/Button") as GameObject;
+			for (int i = 0; i < container.GetLoadoutCount (); i++) {
+				if (container.GetLoadout (i) != null) {
+					GameObject button = Instantiate (buttonPrefab, loadoutsPanel.transform);
+					Button but = button.GetComponent<Button> ();
+					int ind = i;
+					but.onClick.AddListener (delegate {
+						undObject.ReceiveChosenLoadout (ind);
+					});
+					button.GetComponentInChildren<Text> ().text = "Loadout " + (i + 1);
+				}
 			}
 		}
 	}
