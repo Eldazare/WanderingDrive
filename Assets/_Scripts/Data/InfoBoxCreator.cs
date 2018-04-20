@@ -85,4 +85,70 @@ public static class InfoBoxCreator  {
 		}
 		return returnee;
 	}
+
+	public static string GetLoadoutNamesString(Loadout loadout) {
+		string returnee = "";
+		if (loadout.mainHand != null) {
+			returnee += string.Format ("{0,-18} {1,7} \n", "Main-hand: ", GetAName(loadout.mainHand.subType, loadout.mainHand.itemID));
+		}
+		if (loadout.mainHand != null) {
+			returnee += string.Format ("{0,-18} {1,7} \n", "Off-hand:  ", GetAName(loadout.offHand.subType, loadout.offHand.itemID));
+		}
+		foreach (InventoryArmor invArm in loadout.wornArmor) {
+			if (invArm != null) {
+				returnee += string.Format("{0,-18} {1,7} \n",invArm.subType + ": ", GetAName(invArm.subType, invArm.itemID));
+			}
+		}
+		foreach (InventoryArmor invArm in loadout.wornAccessories) {
+			if (invArm != null) {
+				returnee += string.Format ("{0,-18} {1,7} \n", invArm.subType + ": ", GetAName (invArm.subType, invArm.itemID));
+			}
+		}
+		return returnee;
+	}
+
+	public static string GetLoadoutTotalArmorStats(Loadout loadout){
+		List<int> elementTotals = new List<int> ();
+		int elementCount = System.Enum.GetNames (typeof(Element)).Length;
+		for (int i = 0; i < elementCount; i++) {
+			elementTotals.Add (0);
+		}
+		float totalMagicArmor = 0;
+		float totalArmor = 0;
+		float speedAvg = 0;
+		int speedsCount = 0;
+
+		foreach (InventoryArmor invArmor in loadout.wornArmor) {
+			if (invArmor != null) {
+				Armor armor = ArmorCreator.CreateArmor ((ArmorType)System.Enum.Parse (typeof(ArmorType), invArmor.subType), invArmor.itemID);
+				if (armor != null) {
+					totalArmor += armor.defense;
+					totalMagicArmor += armor.magicDefense;
+					for (int i = 0; i < elementCount; i++) {
+						elementTotals [i] += armor.elementResists [i];
+					}
+					speedAvg += armor.speed;
+				} else {
+					speedAvg += 1;
+				}
+			}else {
+				speedAvg += 1;
+			}
+			speedsCount++;
+		}
+		speedAvg /= (float)speedsCount;
+
+		string returnee = "";
+		returnee += string.Format ("{0,-18} {1,7} \n", "Armor: ", totalArmor);
+		returnee += string.Format ("{0,-18} {1,7} \n", "MagicArmor: ", totalMagicArmor);
+		for (int i = 1; i < elementCount; i++){
+			returnee += string.Format ("{0,-18} {1,7} \n", ((Element)i).ToString() + " resist: ", elementTotals[i]);
+		}
+		returnee += string.Format ("{0,-18} {1,7} \n", "Speed: ", speedAvg);
+		return returnee;
+	}
+	
+	private static string GetAName(string subtype, int id){
+		return NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), subtype), id);
+	}
 }

@@ -49,4 +49,16 @@ public class LoadoutsContainer {
 		return loadoutList.Count;
 	}
 
+	public List<bool> GetUsedLoadouts(){
+		List<bool> createe = new List<bool> ();
+		foreach (Loadout lod in loadoutList) {
+			if (lod == null) {
+				createe.Add (false);
+			} else {
+				createe.Add (true);
+			}
+		}
+		return createe;
+	}
+
 }
