@@ -35,7 +35,7 @@ public class MarkerScript : MonoBehaviour {
 
 
 
-
+	UndyingObject theObject;
 
 
 	public List<GameObject> localNodeList;
@@ -51,98 +51,39 @@ public class MarkerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject>();
+		theObject.GetLastMarkers (_locations);
 
 
-
-		//NodeSpriteContainer.LoadSpriteData ();
-
-		_locations = new List<Vector2d> ();
 		_spawnedObjects = new List<GameObject>();
-
+		if (_locations.Count == 0) {
+			Debug.Log ("Empty _locations list");
+			_locations = new List<Vector2d> ();
+			Invoke ("PlopMarkers", 0.8f);
+		} else {
+			Debug.Log ("NOT empty _locations list");
+			Invoke ("storedPlop", 0.8f);
+		}
+			
 		// It appears that the markers will not end up where they're supposed to, unless you invoke with +0.4 seconds.
 		// I don't know why this happens but if I had to guess, the map is probably doing some loading so the prefabs don't spawn quite in the right place.
-		Invoke ("InitialMarkerPlop", 0.8f);
-
 
 		InvokeRepeating ("DistanceCheck", 1.0f, 1.0f);
 
 	}
 
 
-
-
-	public void InitialMarkerPlop () {
-
-		//_locations.Clear ();
-		if (_spawnedObjects.Count < NumberOfMarkers) {
-
-			// Adding coordinates to a list
-			int l = _spawnedObjects.Count;
-			for (int i = 0; i < (NumberOfMarkers - l); i++) {
-
-
-				// Randomly generates X and Y coordinates between negative spawn range and spawn range
-				// For instance, -0.001 and 0.001. The numbers are lat-long wise.
-				Vector2d vec = _map.WorldToGeoPosition (_player.transform.position);
-				double randomX = (double)Random.Range (-SpawnRange, SpawnRange);
-				double randomY = (double)Random.Range (-SpawnRange, SpawnRange);
-
-
-				// Calculates distance between the player and the marker coordinates (before instansiation), using the pythagoran theorem
-				// Unsure if this is the most efficient way to do this, but it doesn't appear to produce lag.
-				float xD = Mathf.Pow ((float)randomX, 2);
-				float zD = Mathf.Pow ((float)randomY, 2);
-				float distance = Mathf.Sqrt (xD + zD);
-				Debug.Log ("Distance spawn:" + distance);
-
-				if (distance < InitialNonSpawnRange) {
-
-					// If the random coordinate is too close to the player, the algorithm adds a random amount of X and Y distances,
-					// that total the minimum of NonSpawnRange. 
-					Debug.Log ("Correcting...");
-					double correctionX = Random.Range (0, InitialNonSpawnRange);
-					double correctionY = InitialNonSpawnRange - correctionX;
-
-					int modifierX = 1;
-					int modifierY = 1;
-					if (randomX < 0) {
-						modifierX = -1;
-					}
-					if (randomY < 0) {
-						modifierY = -1;
-					}
-
-					randomX += (correctionX * modifierX);
-					randomY += (correctionY * modifierY);
-
-				}
-
-
-				vec.x += randomX; 
-				vec.y += randomY;
-				_locations.Add (vec);
-
-
-			}
-
-			// Instantiating a marker for each coordinate on list and adding it to the _spawnedObjects list
-			for (int i = 0; i < _locations.Count; i++)
-			{
-				//GameObject instance = Instantiate(_markerPrefab);
-				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
-				//_spawnedObjects.Add(instance);
-				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
-				SpawnNode (_locations[i]);
-			}
+	void storedPlop(){
+		for (int i = 0; i < _locations.Count; i++) {
+			SpawnNode (_locations[i]);
 		}
 	}
-
-
 
 	// "Plops" markers in place.
 	public void PlopMarkers () {
 
-		// _locations list needs to be clear for this.
+		float nonRange = InitialNonSpawnRange;
 		_locations.Clear ();
 
 		if (_spawnedObjects.Count < NumberOfMarkers) {
@@ -163,16 +104,16 @@ public class MarkerScript : MonoBehaviour {
 				float xD = Mathf.Pow ((float)randomX, 2);
 				float zD = Mathf.Pow ((float)randomY, 2);
 				float distance = Mathf.Sqrt (xD + zD);
-				Debug.Log ("Distance spawn:" + distance);
+				//Debug.Log ("Distance spawn:" + distance);
 
 
 
 				// If the random coordinate is too close to the player, the algorithm adds a random amount of X and Y distances,
 				// that total the minimum of NonSpawnRange. 
 				if (distance < NonSpawnRange) {
-					Debug.Log ("Correcting...");
-					double correctionX = Random.Range (0, NonSpawnRange);
-					double correctionY = NonSpawnRange - correctionX;
+					//Debug.Log ("Correcting...");
+					double correctionX = Random.Range (0, nonRange);
+					double correctionY = nonRange - correctionX;
 
 					// Determines the "closest way out". Or at least its direction.
 					int modifierX = 1;
@@ -210,9 +151,20 @@ public class MarkerScript : MonoBehaviour {
 				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
 				SpawnNode (_locations[i]);
 			}
+
+			InitialNonSpawnRange = NonSpawnRange;
+
+
+			List<Vector2d> temp = new List<Vector2d> ();
+			for (int i = 0; i < _spawnedObjects.Count; i++) {
+				temp.Add (_map.WorldToGeoPosition(_spawnedObjects[i].transform.position));
+			}
+
+			theObject.SetLastMarkers (temp);
+
+			//_locations.Clear ();
 		}
 	}
-
 
 
 	// Checks the distance between the player and each marker on map.
@@ -248,6 +200,7 @@ public class MarkerScript : MonoBehaviour {
 		for (int i = 0; i < rem.Count; i++) {
 			_spawnedObjects.Remove(rem[i]);
 			Destroy (rem[i]);
+
 
 			PlopMarkers ();
 		}
