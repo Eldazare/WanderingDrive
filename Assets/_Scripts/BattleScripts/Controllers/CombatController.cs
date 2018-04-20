@@ -189,7 +189,8 @@ public class CombatController : MonoBehaviour {
 
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 		dropdata.Add (drop);
-		enemypartListList.Add (enemy.enemyStats.partList);
+		//enemypartListList.Add (enemy.enemyStats.partList);
+		encounterDrops.Add = DropDataCreator.CalculateDrops(drop, DropDataCreator.DefaultNormalDropAmount(), enemy.enemyStats.partList);
 
 		enemyList[enemyList.IndexOf (enemy)] = null;
 		Destroy (enemy.gameObject, 1f);
@@ -246,20 +247,24 @@ public class CombatController : MonoBehaviour {
 			if (enemy != null) {
 				DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 				List<RecipeMaterial> newList = DropDataCreator.CalculateDrops (drop, 0, enemy.enemyStats.partList);
+				if (newList.Count > 0) {
+					encounterDrops.Add (newList);
+				}
 			}
 		}
 		proceed = true;
 	}
 	IEnumerator WinCombatRoutine () {
 		menuController.victoryScreen.SetActive (true);
+		/*
 		foreach (var item in dropdata) {
 			List<RecipeMaterial> list = DropDataCreator.CalculateDrops (item, 2, enemypartListList[dropdata.IndexOf (item)]);
 			encounterDrops.Add (list);
 		}
-
+		*/
 		yield return new WaitForSeconds (2f);
 		BattleEndCombat (player.playerStats.health, playerStats.stamina, encounterDrops);
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (1f); // <- no purpose
 	}
 	public void BattleEndCombat (float health, float stamina, List<List<RecipeMaterial>> loots) {
 		UndyingObject worldObj = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
