@@ -23,11 +23,12 @@ public class WorldNode : MonoBehaviour {
 	}
 
 	public void Interact(){
+		NodeInteraction.GiveInteractedNodeForward (this.gameObject);
 		NodeInteraction.HandleNodeInteraction (nodeType, id);
 	}
 
 	void OnMouseDown(){
-		Debug.Log ("Hit: " + this.gameObject);
+		Debug.Log ("Hit:" +this.nodeType+ " / " + this.id);
 		Interact ();
 	}
 }

@@ -2290,7 +2290,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1891578425}
-  - component: {fileID: 1891578424}
   - component: {fileID: 1891578426}
   m_Layer: 0
   m_Name: WorldController
@@ -2299,21 +2298,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1891578424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1891578423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0792176b53560194690f60e634472a75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localNodeList:
-  - {fileID: 1564252737533862, guid: 2ef71cf688f17e246a871cd5f8db0050, type: 2}
-  trueRadius: 2
-  nodeCount: 20
 --- !u!4 &1891578425
 Transform:
   m_ObjectHideFlags: 0

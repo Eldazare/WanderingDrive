@@ -23,13 +23,18 @@ public static class DropDataCreator {
 
 
 	public static DropData CreateDropData(DropperType dropperType, int id){
-		string beginEnemy = "Drop_" + dropperType.ToString() + "_"+id+"_";
-		string beginGather = "Gather_" + dropperType.ToString () + "_" + id + "_";
+		string begin = "";
+		if (dropperType == DropperType.Gather) {
+			begin += "Gather_";
+		} else {
+			begin += "Drop_";
+		}
+		begin += dropperType.ToString () + "_" + id + "_";
 		DropData createe = new DropData ();
 		if (dropperType != DropperType.Gather) {
 			EnemyDropData createeEnemy = new EnemyDropData ();
 			for (int i = 0; i<9;i++){
-				string dataStr = DataManager.ReadDataString (beginEnemy + "p" + i);
+				string dataStr = DataManager.ReadDataString (begin + "p" + i);
 				if (dataStr == null) {
 					createeEnemy.partDropDatas.Add (null);
 				} else {
@@ -45,9 +50,9 @@ public static class DropDataCreator {
 			}
 			createe = createeEnemy;
 		}
-		string partString = DataManager.ReadDataString (beginGather + "Normal");
+		string partString = DataManager.ReadDataString (begin + "Normal");
 		if (partString == null) {
-			Debug.LogError ("Null Normal drop: " + beginGather+"Normal");
+			Debug.LogError ("Null Normal drop: " + begin+"Normal");
 		}
 		string[] normalDrops = partString.Split ("/".ToCharArray ());
 		foreach (string str in normalDrops) {

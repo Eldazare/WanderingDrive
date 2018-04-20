@@ -8,6 +8,7 @@ public static class NodeInteraction {
 	private static bool initialized = false;
 	private static int gatheringAmount;
 
+
 	//TYPES: (INT because database cannot really store Enum)
 	// 0 = Gather
 	// 1 = Single small monster - Indexes same as small monsters
@@ -19,6 +20,10 @@ public static class NodeInteraction {
 		theObject = obj;
 		initialized = true;
 		gatheringAmount = DataManager.ReadDataInt ("Gather_GatherNormalAmount");
+	}
+
+	public static void GiveInteractedNodeForward(GameObject go){
+		theObject.interactedNode = go;
 	}
 
 	public static void HandleNodeInteraction(int type, int id){

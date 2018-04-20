@@ -19,6 +19,8 @@ public class UndyingObject : MonoBehaviour {
 	int chosenLoadout;
 	List<NodeEnemy> storedNode;
 
+	public GameObject interactedNode;
+
 	void Start () {
 		DontDestroyOnLoad (this);
 		DataManager.ReadDataString ("nonexistent"); // TODO: Loading screen -data (show loading bar or something)
@@ -83,15 +85,17 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	private void StartCombat(int loadoutIndex, List<NodeEnemy> enemyList){
-		Debug.Log (loadoutIndex + " is loadoutIndex");
-		StartCoroutine (StartCombatIenum (loadoutList.GetLoadout(loadoutIndex), enemyList));
+		if (interactedNode != null) {
+			DisableInteractedNode ();
+			Debug.Log (loadoutIndex + " is loadoutIndex");
+			StartCoroutine (StartCombatIenum (loadoutList.GetLoadout (loadoutIndex), enemyList));
+		}
 	}
 
 	private IEnumerator StartCombatIenum(Loadout loadout, List<NodeEnemy> enemyList){
 		yield return SceneManager.LoadSceneAsync ("BattleScene");
 		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController> ();
-		// TODO: Add health and stamina to startCombat??
-		List<WorldBuffAbstraction> buffList = playerWorldStats.GetWorldBuffs();
+		//playerWorldStats;
 		// TODO: Add buffs to StartCombat
 		comCon.StartCombat (loadout, enemyList);
 	}
@@ -111,10 +115,13 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	public void GetGatherinNode(int nodeIndex, int dropAmount){
-		DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.Gather, nodeIndex);
-		List<RecipeMaterial> dropList = DropDataCreator.CalculateDrops (nodeDropData, dropAmount, null);
-		foreach (RecipeMaterial recMat in dropList) {
-			Inventory.InsertRecipeMaterial (recMat);
+		if (interactedNode != null) {
+			DisableInteractedNode ();
+			DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.Gather, nodeIndex);
+			List<RecipeMaterial> dropList = DropDataCreator.CalculateDrops (nodeDropData, dropAmount, null);
+			foreach (RecipeMaterial recMat in dropList) {
+				Inventory.InsertRecipeMaterial (recMat);
+			}
 		}
 	}
 
@@ -162,5 +169,11 @@ public class UndyingObject : MonoBehaviour {
 
 	public void NullNodeData(){
 		storedNode = null;
+	}
+
+	private void DisableInteractedNode(){
+		if (interactedNode != null) {
+			interactedNode.SetActive (false);
+		}
 	}
 }
