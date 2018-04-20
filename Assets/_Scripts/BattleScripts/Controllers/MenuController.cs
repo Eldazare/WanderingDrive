@@ -19,9 +19,10 @@ public class MenuController : MonoBehaviour {
 	public List<GameObject> enemyPartCanvasButtons;  //Drag from Hierarchy
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
-	public Image playerHealthFill, playerManaFill;  //Drag from Hierarchy
+	public Image playerHealthFill, playerHealthRedFill, playerManaFill;  //Drag from Hierarchy
 	public Text playerHealthText, playerManaText, textBoxText;  //Drag from Hierarchy
 	public GameObject enemyHealthBarParent;  //Drag from Hierarchy
+	public GameObject victoryScreen, loseScreen, runAwayScreen;
 	[HideInInspector]
 	public List<GameObject> enemyHealthBars;
 	List<Image> enemyHealthFills;
@@ -78,6 +79,7 @@ public class MenuController : MonoBehaviour {
 	}
 	public void Back (){
 		DefaultButtons.SetActive (true);
+		UpdateAllEnemyStats();
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
 		combatController.cameraScript.ResetCamera();
@@ -96,6 +98,9 @@ public class MenuController : MonoBehaviour {
 		DefaultButtons.SetActive(false);
 		abilityOrAttack = false;
 		StartCoroutine(CameraToEnemy());
+	}
+	public void RunAwayButton(){
+		combatController.RunAway();
 	}
 
 	IEnumerator CameraToEnemy(){
@@ -152,11 +157,22 @@ public class MenuController : MonoBehaviour {
 	//UI updates
 	public void updatePlayerHealth(float health, float maxHealth, float percentage){
 		playerHealthFill.fillAmount = percentage;
-		playerHealthText.text = health.ToString("0") + "/" + maxHealth.ToString("0");
+		playerHealthText.text = health.ToString("0.#") + "/" + maxHealth.ToString("0");
+		StartCoroutine(LerpStatusBar(playerHealthRedFill, playerHealthFill.fillAmount));
 	}
 	public void updateEnemyHealth(float health, float maxHealth, float percentage, Enemy enemyForListSearch){
-		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthImage.fillAmount = percentage;
-		enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>().healthText.text = health.ToString("0") +"/"+maxHealth.ToString("00");
+		EnemyHealthBarScript healthbar = enemyHealthBars[enemyHealthBars.Count-1-(combatController.enemyList.IndexOf(enemyForListSearch))].GetComponent<EnemyHealthBarScript>();
+		Debug.Log(healthbar);
+		healthbar.healthImage.fillAmount = percentage;
+		healthbar.healthText.text = health.ToString("0.#") +"/"+maxHealth.ToString("0");
+		StartCoroutine(LerpStatusBar(healthbar.healthFill2, healthbar.healthImage.fillAmount));
+	}
+	IEnumerator LerpStatusBar(Image fill, float goal){
+		yield return new WaitForSeconds(1f);
+		while(fill.fillAmount > goal){
+			fill.fillAmount -= Time.deltaTime;
+			yield return new WaitForSeconds(Time.deltaTime);
+		}
 	}
 
 	public void messageToScreen(string message){
@@ -184,6 +200,7 @@ public class MenuController : MonoBehaviour {
 		if(!player.stunned){
 			PlayerTurnTextFade();
 			DefaultButtons.SetActive(true);
+			UpdateAllEnemyStats();
 			if(player.paralyzed){
 				abilityMenuButton.enabled = false;
 			}else{
@@ -216,7 +233,14 @@ public class MenuController : MonoBehaviour {
 			combatController.enemyAttacks();
 		}
 	}
-
+	void UpdateAllEnemyStats(){
+		foreach (var enemy in combatController.enemyList)
+		{
+			if(enemy != null){
+				enemy.updateStats();
+			}
+		}
+	}
 	public void EnemyTurnTextFade(){
 		enemyTurnText.gameObject.SetActive(true);
 		enemyTurnText.CrossFadeAlpha(1.0f, 0.0f, false);
@@ -228,9 +252,4 @@ public class MenuController : MonoBehaviour {
 		playerTurnText.CrossFadeAlpha(1.0f, 0.0f, false);
 		playerTurnText.CrossFadeAlpha(0.0f, 3.0f, false);
 	}
-
-	public void RunAway(){
-		//SceneManager.LoadScene("MapScene");
-	}
-
 }

@@ -634,9 +634,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 637f12ea-028c-40ec-aa5c-f6d29b548054
-  projectName: WanderingDrive_0.0.1
-  organizationId: chainreacton
+  cloudProjectId: 65217ea2-2db7-4e92-babd-16965dbfc139
+  projectName: WanderingDrive
+  organizationId: zimb000
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

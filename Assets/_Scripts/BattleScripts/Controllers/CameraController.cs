@@ -20,9 +20,7 @@ public class CameraController : MonoBehaviour {
 		startRota = transform.rotation;
 	}
 	public void MoveCamera(GameObject target){
-		CancelInvoke("MoveFromTarget");
-		CancelInvoke("MoveCamera");
-		CancelInvoke("FollowTargetRepeat");
+		CancelAllInvokes();
 		targetObject = target;
 		targetLoc = targetObject.transform.position;
 		startTime = Time.time;
@@ -30,9 +28,7 @@ public class CameraController : MonoBehaviour {
 		InvokeRepeating("MoveToTarget", 0, Time.deltaTime);
 	}
 	public void ResetCamera(){
-		CancelInvoke("MoveFromTarget");
-		CancelInvoke("MoveCamera");
-		CancelInvoke("FollowTargetRepeat");
+		CancelAllInvokes();
 		menuController.enemyPartCanvas.SetActive(false);
 		targetLoc = startPos;
 		startTime = Time.time;
@@ -40,11 +36,15 @@ public class CameraController : MonoBehaviour {
 		InvokeRepeating("MoveFromTarget", Time.deltaTime, Time.deltaTime);
 	}
 	public void FollowTarget(GameObject target){
-		CancelInvoke("MoveFromTarget");
-		CancelInvoke("MoveCamera");
-		CancelInvoke("FollowTargetRepeat");
+		CancelAllInvokes();
 		targetObject = target;
 		InvokeRepeating("FollowTargetRepeat", 0, Time.deltaTime);
+	}
+	void CancelAllInvokes(){
+		CancelInvoke("MoveFromTarget");
+		CancelInvoke("MoveToTarget");
+		CancelInvoke("MoveCamera");
+		CancelInvoke("FollowTargetRepeat");
 	}
 
 	void FollowTargetRepeat(){
