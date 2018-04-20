@@ -6007,9 +6007,7 @@ Prefab:
     - target: {fileID: 114702808977453888, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_Text
-      value: 'Run
-
-'
+      value: Run
       objectReference: {fileID: 0}
     - target: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
