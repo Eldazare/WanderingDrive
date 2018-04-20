@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeSpawner : MonoBehaviour {
+public static class NodeSpawner  {
 
 	// object that exists in TheWorld, that is used to spawn (local) and control the nodes
 	// Contains php script addresses.... maybe
 	// Dunno what kind of database we should use
-
+	/*
 	public List<GameObject> localNodeList;
 	public float trueRadius;
 	public int nodeCount;
-
-	private int minTime = 260;
-	private int maxTime = 600;
+*/
+	private static int minTime = 260;
+	private static int maxTime = 600;
 
 	private static List<int> nodeTypeWeightList;
 	private static List<List<int>> nodeTypesWeights;
@@ -37,7 +37,7 @@ public class NodeSpawner : MonoBehaviour {
 		}
 	}
 
-
+	/*
 	public void LoadNodes(double currentLatitude, double currentLongitude){
 		foreach (GameObject go in localNodeList){
 			Destroy (go);
@@ -57,9 +57,8 @@ public class NodeSpawner : MonoBehaviour {
 			int nodeTime = int.Parse (echoData [4]);
 			SpawnNode (nodeType, nodeId, nodeLatitude, nodeLongitude, nodeTime);
 		}
-		*/
 	}
-
+	
 
 	// LOCAL
 	private void SpawnNode(int nodeType, int id, double latitude, double longitude, int time){
@@ -90,8 +89,15 @@ public class NodeSpawner : MonoBehaviour {
 			SpawnNode (nodeType, nodeID, nodeLat, nodeLong, nodeTime);
 		}
 	}
+	*/
 
-	private int GetRandomIndexByWeight(List<int> weights){
+	public static void WorldNodeRandoms(WorldNode wNode){
+		wNode.nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
+		wNode.id = GetRandomIndexByWeight (nodeTypesWeights [wNode.nodeType]);
+		wNode.time = Random.Range (minTime, maxTime);
+	}
+
+	public static int GetRandomIndexByWeight(List<int> weights){
 		int count = weights.Count;
 		int total = 0;
 		int calc = 0;

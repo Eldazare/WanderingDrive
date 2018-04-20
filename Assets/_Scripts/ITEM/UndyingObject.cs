@@ -13,7 +13,6 @@ public class UndyingObject : MonoBehaviour {
 	// PUBLIC only for testing purposes
 	public LoadoutsContainer loadoutList;
 	public WorldStatsContainer playerWorldStats;
-	private NodeSpawner nodeSpawner;
 
 	double locLatitude;
 	double locLongitude;
@@ -68,7 +67,6 @@ public class UndyingObject : MonoBehaviour {
 
 	private IEnumerator ToTheWorld(){
         yield return SceneManager.LoadSceneAsync ("TheWorld");
-		nodeSpawner = GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<NodeSpawner> ();
     }
 
 	public void ReceiveChosenLoadout(int loadoutIndex){
@@ -156,7 +154,7 @@ public class UndyingObject : MonoBehaviour {
 			// TODO: Get latitude and longitude from phone
 			locLatitude = 0;
 			locLongitude = 0;
-			nodeSpawner.LoadNodes (locLatitude, locLongitude);
+			//LoadNodes (locLatitude, locLongitude);
 		}
 	}
 

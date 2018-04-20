@@ -10,7 +10,6 @@ using Mapbox.Unity.Map;
 
 public class MarkerScript : MonoBehaviour {
 
-
 	/*
 	This is heavily based on the "SpawnOnMap" script, that came with MapBoxSDK.
 	*/
@@ -43,17 +42,6 @@ public class MarkerScript : MonoBehaviour {
 	public float trueRadius;
 	public int nodeCount;
 
-	private int minTime = 260;
-	private int maxTime = 600;
-
-	private List<int> nodeTypeWeightList = new List<int>(){35, 45, 10, 10};
-
-	private static List<int> nodeType0Weights = new List<int>(){33,33,34};
-	private static List<int> nodeType1Weights = new List<int>(){50, 50};
-	private static List<int> nodeType2Weights = new List<int>(){50, 50};
-	private static List<int> nodeType3Weights = new List<int>(){100};
-	private List<List<int>> nodeTypesWeights 
-	= new List<List<int>>(){nodeType0Weights, nodeType1Weights, nodeType2Weights, nodeType3Weights};
 
 
 
@@ -143,12 +131,8 @@ public class MarkerScript : MonoBehaviour {
 				//GameObject instance = Instantiate(_markerPrefab);
 				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
 				//_spawnedObjects.Add(instance);
-
-				int nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
-				int nodeID = GetRandomIndexByWeight (nodeTypesWeights [nodeType]);
-				int nodeTime = Random.Range (minTime, maxTime);
 				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
-				SpawnNode (nodeType, nodeID, _locations[i], nodeTime);
+				SpawnNode (_locations[i]);
 			}
 		}
 	}
@@ -223,12 +207,8 @@ public class MarkerScript : MonoBehaviour {
 				//_spawnedObjects.Add(instance);
 
 
-
-				int nodeType = GetRandomIndexByWeight (nodeTypeWeightList);
-				int nodeID = GetRandomIndexByWeight (nodeTypesWeights [nodeType]);
-				int nodeTime = Random.Range (minTime, maxTime);
 				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
-				SpawnNode (nodeType, nodeID, _locations[i], nodeTime);
+				SpawnNode (_locations[i]);
 			}
 		}
 	}
@@ -282,7 +262,7 @@ public class MarkerScript : MonoBehaviour {
 
 
 	// LOCAL
-	private void SpawnNode(int nodeType, int id, Vector2d location, int time){
+	private void SpawnNode(Vector2d location){
 
 		//Sprite theSprite = NodeSpriteContainer.GetSprite (nodeType, id);
 		//GameObject node = Instantiate(new GameObject(), new Vector3(0,0,0), Quaternion.identity) as GameObject;
@@ -291,9 +271,8 @@ public class MarkerScript : MonoBehaviour {
 
 		//node.AddComponent<SpriteRenderer> ().sprite = theSprite;
 		WorldNode wNode = node.AddComponent<WorldNode> ();
-		wNode.nodeType = nodeType;
-
-		wNode.id = id;
+		NodeSpawner.WorldNodeRandoms (wNode);
+		wNode.GetNodeColor ();
 		wNode.latitude = location.x;
 		wNode.longitude = location.y;
 

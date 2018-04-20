@@ -16,6 +16,11 @@ public class WorldNode : MonoBehaviour {
 	public double latitude;
 	public double longitude;
 
+	public static Color[] colors = {Color.green, Color.red, Color.magenta, Color.black};
+
+	public void GetNodeColor(){
+		gameObject.GetComponent<MeshRenderer> ().material.color = colors [nodeType];
+	}
 
 	public void Interact(){
 		NodeInteraction.HandleNodeInteraction (nodeType, id);
