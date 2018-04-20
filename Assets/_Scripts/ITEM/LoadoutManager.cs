@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class LoadoutManager : MonoBehaviour
-{
+public class LoadoutManager : MonoBehaviour {
+
+	// TODO: AddToLoadoutContainer? (Created loadout has to be stored somewhere)
+	// TODO: Exit + ComCon buttons don't have onClick()
+
 
     public Image itemImage;
     public Text itemInfo;
@@ -12,7 +15,8 @@ public class LoadoutManager : MonoBehaviour
     public Loadout myLoadout = new Loadout(2);
 
     public List<Sprite> spriteList = new List<Sprite>();
-    List<List<InventoryArmor>> itemList = new List<List<InventoryArmor>>();
+	List<List<InventoryArmor>> itemList;
+	/*
     List<InventoryArmor> armorList = Inventory.inventoryArmor;
     List<InventoryArmor> accessoryList = new List<InventoryArmor>();
     List<InventoryArmor> helmList = new List<InventoryArmor>();
@@ -20,6 +24,7 @@ public class LoadoutManager : MonoBehaviour
     List<InventoryArmor> armsList = new List<InventoryArmor>();
     List<InventoryArmor> legsList = new List<InventoryArmor>();
     List<InventoryArmor> bootsList = new List<InventoryArmor>();
+    */
     public List<InventoryWeapon> weaponList = Inventory.inventoryWeapons;
     public List<int> combatConsumables = Inventory.combatConsumables;
 
@@ -37,42 +42,14 @@ public class LoadoutManager : MonoBehaviour
         chosenHand = -1;
         counter = -1;
         //Sprites to recources and load
-        for (int i = 0; i <= armorList.Count; i++) {
-            ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), armorList[i].subType);
-            switch (parsed_enum) {
-                case ItemSubType.Accessory:
-                    accessoryList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-                case ItemSubType.Arms:
-                    armsList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-                case ItemSubType.Boots:
-                    bootsList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-                case ItemSubType.Chest:
-                    chestList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-                case ItemSubType.Helm:
-                    helmList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-                case ItemSubType.Legs:
-                    legsList.Add(armorList[i]);
-                    armorList.RemoveAt(i);
-                    break;
-            }
+		itemList = new List<List<InventoryArmor>>();
+		for (int i = 0; i < System.Enum.GetNames (typeof(ArmorType)).Length; i++) {
+			itemList.Add (new List<InventoryArmor> ());
+		}
+		foreach (InventoryArmor invArmor in Inventory.inventoryArmor) {
+			ArmorType parsedEnum = (ArmorType)System.Enum.Parse(typeof(ArmorType), invArmor.subType);
+			itemList [(int)parsedEnum].Add (invArmor);
         }
-        itemList.Add(accessoryList);
-        itemList.Add(helmList);
-        itemList.Add(chestList);
-        itemList.Add(armsList);
-        itemList.Add(legsList);
-        itemList.Add(bootsList);
-
     }
 
     public void ChangeItemOnwards() {
@@ -184,26 +161,7 @@ public class LoadoutManager : MonoBehaviour
         currentItemSubType = (ItemSubType)_itemSubtype;
         counter = 0;
         Debug.Log(currentList);
-        switch (currentItemSubType) {
-            case ItemSubType.Arms:
-                currentList = itemList[3];
-                break;
-            case ItemSubType.Boots:
-                currentList = itemList[5];
-                break;
-            case ItemSubType.Chest:
-                currentList = itemList[2];
-                break;
-            case ItemSubType.Helm:
-                currentList = itemList[1];
-                break;
-            case ItemSubType.Legs:
-                currentList = itemList[4];
-                break;
-            default:
-                Debug.Log("Error, unsuitable parameters");
-                break;
-        }
+		currentList = itemList[(int)System.Enum.Parse(typeof(ArmorType),currentItemSubType.ToString())];
         Debug.Log(currentList);
         if (currentList.Count > 0) {
             currentItem = currentList[0].itemID;
@@ -218,6 +176,7 @@ public class LoadoutManager : MonoBehaviour
 
     private void UpdateInfoTexts() {
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
+		Debug.Log (currentMaterial.GetName ());
         itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
     }
 

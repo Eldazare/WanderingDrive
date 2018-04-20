@@ -61,10 +61,10 @@ public class CombatController : MonoBehaviour {
 		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.updateStats ();
 
-		/* for (int i = 0; i < nodeEnemyList.Count; i++) {
+		for (int i = 0; i < nodeEnemyList.Count; i++) {
 			EnemyCreation (i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
-		} */
-		EnemyCreation (0, nodeEnemyList[0].subtype, nodeEnemyList[0].id);
+		} 
+		//EnemyCreation (0, nodeEnemyList[0].subtype, nodeEnemyList[0].id);
 		//Temporary ability generation
 		Ability spell = new FireBall (player);
 		spell.staminaCost = 10;
@@ -190,7 +190,7 @@ public class CombatController : MonoBehaviour {
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 		dropdata.Add (drop);
 		//enemypartListList.Add (enemy.enemyStats.partList);
-		encounterDrops.Add = DropDataCreator.CalculateDrops(drop, DropDataCreator.DefaultNormalDropAmount(), enemy.enemyStats.partList);
+		encounterDrops.Add(DropDataCreator.CalculateDrops(drop, DropDataCreator.DefaultNormalDropAmount(), enemy.enemyStats.partList));
 
 		enemyList[enemyList.IndexOf (enemy)] = null;
 		Destroy (enemy.gameObject, 1f);
