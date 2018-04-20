@@ -11,6 +11,7 @@ public class LoadoutManager : MonoBehaviour {
 
     public Image itemImage;
     public Text itemInfo;
+    public GameObject loadoutSlotPanel;
     public RecipeMaterial currentMaterial;
     Loadout myLoadout = new Loadout(2);
 
@@ -209,8 +210,17 @@ public class LoadoutManager : MonoBehaviour {
     }
 
     public void Confirm() {
+        loadoutSlotPanel.SetActive(true);
+    }
+
+    public void SaveLoadout(int slot) {
         LoadoutsContainer myContainer = GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().loadoutList;
-        myContainer.InsertLoadout(myLoadout, 0);
+        myContainer.InsertLoadout(myLoadout, slot);
+        Cancel();
+    }
+
+    public void Cancel() {
+        loadoutSlotPanel.SetActive(false);
     }
 
     public void Exit() {
