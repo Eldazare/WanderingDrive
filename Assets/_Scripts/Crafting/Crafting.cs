@@ -17,15 +17,6 @@ public class Crafting : MonoBehaviour{
 	List<List<Recipe>> recipeList = new List<List<Recipe>> ();
 	List<List<Sprite>> sprites = new List<List<Sprite>>();
 
-	/*
-    public List<int> weaponRecipeList = new List<int>();
-    public List<int> consRecipeList = new List<int>();
-    public List<int> armorRecipeList = new List<int>();
-    public List<Sprite> weaponSprites;
-    public List<Sprite> consumableSprites;
-    public List<Sprite> armorSprites;
-	*/
-
     public int currentItemSpriteList;
 	public int spriteCounter;
 
@@ -61,18 +52,6 @@ public class Crafting : MonoBehaviour{
     }
 
     public void ChangeRecipeOnwards() {
-		/*
-        spriteCounter++;
-		if (spriteCounter >= recipeList [currentRecipeType].Count) {
-			//recipeImage.sprite = sprites [currentRecipeType] [0];
-			currentRecipe = recipeList [currentRecipeType] [0];
-			spriteCounter = 0;
-		}
-        else {
-			recipeImage.sprite = sprites[currentRecipeType][spriteCounter];
-			currentRecipe = recipeList[currentRecipeType][spriteCounter];
-        }
-        */
 		currentRecipe++;
 		if (currentRecipe >= currentRecipeListCount) {
 			currentRecipe = 0;
@@ -81,19 +60,6 @@ public class Crafting : MonoBehaviour{
     }
 
     public void ChangeRecipeBackwards() {
-		/*
-		spriteCounter--;
-		int lastIndex = recipeList [currentRecipeType].Count - 1;
-		if (spriteCounter < 0) {
-			//recipeImage.sprite = sprites [currentRecipeType] [lastIndex];
-			currentRecipe = recipeList [currentRecipeType] [lastIndex];
-			spriteCounter = 0;
-		}
-		else {
-			recipeImage.sprite = sprites[currentRecipeType][spriteCounter];
-			currentRecipe = recipeList[currentRecipeType][spriteCounter];
-		}
-		*/
 		currentRecipe--;
 		if (currentRecipe < 0) {
 			currentRecipe = currentRecipeListCount - 1;

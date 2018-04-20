@@ -1116,7 +1116,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BATTLE
+  m_Text: 'BATTLE
+
+    (debug)'
 --- !u!222 &1454726780
 CanvasRenderer:
   m_ObjectHideFlags: 0

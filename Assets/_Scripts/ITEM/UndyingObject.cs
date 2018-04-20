@@ -68,6 +68,7 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	private IEnumerator ToTheWorld(){
+		yield return new WaitForSeconds (3.0f); // DEBUG & VIDEO
         yield return SceneManager.LoadSceneAsync ("TheWorld");
     }
 
