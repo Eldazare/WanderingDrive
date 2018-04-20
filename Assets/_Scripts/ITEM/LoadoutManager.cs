@@ -11,8 +11,9 @@ public class LoadoutManager : MonoBehaviour {
 
     public Image itemImage;
     public Text itemInfo;
+    public GameObject loadoutSlotPanel;
     public RecipeMaterial currentMaterial;
-    public Loadout myLoadout = new Loadout(2);
+    Loadout myLoadout = new Loadout(2);
 
     public List<Sprite> spriteList = new List<Sprite>();
 	List<List<InventoryArmor>> itemList;
@@ -38,6 +39,7 @@ public class LoadoutManager : MonoBehaviour {
     ItemType currentItemType;
 
     void Start(){
+
         currentItem = -1;
         chosenHand = -1;
         counter = -1;
@@ -205,6 +207,24 @@ public class LoadoutManager : MonoBehaviour {
                 myLoadout.AddAccessory(currentList[counter], chosenAccessorySlot);
             }
         }
-        Debug.Log(myLoadout.mainHand.subType);
     }
+
+    public void Confirm() {
+        loadoutSlotPanel.SetActive(true);
+    }
+
+    public void SaveLoadout(int slot) {
+        LoadoutsContainer myContainer = GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().loadoutList;
+        myContainer.InsertLoadout(myLoadout, slot);
+        Cancel();
+    }
+
+    public void Cancel() {
+        loadoutSlotPanel.SetActive(false);
+    }
+
+    public void Exit() {
+        GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().EndCrafting();
+    }
+
 }

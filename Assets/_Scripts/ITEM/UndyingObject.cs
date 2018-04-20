@@ -48,7 +48,7 @@ public class UndyingObject : MonoBehaviour {
 		InsertBasicArmorToInventory ();
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
-		loadoutList.InsertLoadout (loadout, 0);
+		//loadoutList.InsertLoadout (loadout, 0);
 	}
 
 	private void InsertBasicArmorToInventory(){

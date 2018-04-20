@@ -172,4 +172,8 @@ public class Crafting : MonoBehaviour{
 			resultInfo.text = "";
 		}
 	}
+
+    public void Exit() {
+        GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().EndCrafting();
+    }
 }
