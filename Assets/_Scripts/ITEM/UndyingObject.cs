@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using Mapbox.Utils;
+
 public class UndyingObject : MonoBehaviour {
 
 	// container of all player data
@@ -20,6 +22,8 @@ public class UndyingObject : MonoBehaviour {
 	List<NodeEnemy> storedNode;
 
 	public GameObject interactedNode;
+	public List<Vector2d> storedMarkers;
+
 
 	void Start () {
 		DontDestroyOnLoad (this);
@@ -71,6 +75,20 @@ public class UndyingObject : MonoBehaviour {
 		yield return new WaitForSeconds (3.0f); // DEBUG & VIDEO
         yield return SceneManager.LoadSceneAsync ("TheWorld");
     }
+
+	public void GetLastMarkers(List<Vector2d> vl){
+		//vl = storedMarkers;
+		for (int i = 0; i < storedMarkers.Count; i++) {
+			vl.Add (storedMarkers [i]);
+		}
+	}
+	public void SetLastMarkers(List<Vector2d> vl){
+		//storedMarkers = vl;
+		storedMarkers.Clear();
+		for (int i = 0; i < vl.Count; i++) {
+			storedMarkers.Add (vl[i]);
+		}
+	}
 
 	public void ReceiveChosenLoadout(int loadoutIndex){
 		if (storedNode != null) {
