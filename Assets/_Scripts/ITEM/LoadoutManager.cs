@@ -207,4 +207,9 @@ public class LoadoutManager : MonoBehaviour {
         }
         Debug.Log(myLoadout.mainHand.subType);
     }
+
+    public void Exit() {
+        GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().EndCrafting();
+    }
+
 }
