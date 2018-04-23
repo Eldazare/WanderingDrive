@@ -1,18 +1,18 @@
 #This is a comment line
 
 #Elements: Fire, Ice, Thunder, Earth, Light, Shadow
-#Defenses: health/armor/evasion/weaknessType(int)
+#Defenses: health(int)/armor(int)/evasion(int)/weaknessType(int)
 #assortment: quickness/hitDistance [dodgeDifficulty and ???]
 
-#Parts: pn identifier | Attacks: an identifier
-#name | base chance | damageModifier | partHP for break
+#Parts: "pn" identifier | Attacks: "an" identifier
+#name | base chance to hit | damageModifier | partHP for break
 #damage |elementDamage | element(str/enum) | damagetype(physical/magical) | animationSpeed
 
 %Enemy_EnemyLarge_0_TESTGOLEM L
 EnemyLarge_0_defenses=9001/0/-30/2
 EnemyLarge_0_elementWeakness=0;0;0;0;0;0
 EnemyLarge_0_assortment=0.9/5.0
-EnemyLarge_0_p1=torso_100_0.8_9001
-EnemyLarge_0_p2=head_45_1.3_4
-EnemyLarge_0_p3=tail_80_1.0_3
+EnemyLarge_0_p0=Torso_100_0.8_10000
+EnemyLarge_0_p1=Head_45_2.0_4
+EnemyLarge_0_p2=Tail_80_1.0_3
 EnemyLarge_0_a1=10;2;Earth;0;1.0

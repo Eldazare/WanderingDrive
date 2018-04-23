@@ -51,6 +51,7 @@ public static class EnemyStatCreator {
 				createe.partList.Add (aPart);
 				i++;
 			} else {
+				Debug.Log (identifier + "p" + i);
 				break;
 			}
 		}

@@ -1,11 +1,11 @@
 #This is a comment line
 
 #Elements: Fire, Ice, Thunder, Earth, Light, Shadow
-#Defenses: health/armor/evasion/weaknessType(int)
+#Defenses: health(int)/armor(int)/evasion(int)/weaknessType(int)
 #assortment: quickness/hitDistance [dodgeDifficulty and ???]
 
-#Parts: pn identifier | Attacks: an identifier
-#name | base chance | damageModifier | partHP for break
+#Parts: "pn" identifier | Attacks: "an" identifier
+#name | base chance to hit | damageModifier | partHP for break
 #damage |elementDamage | element(str/enum) | damagetype(physical/magical) | animationSpeed
 
 %Enemy_EnemySmall_0_TESTGOLEM
