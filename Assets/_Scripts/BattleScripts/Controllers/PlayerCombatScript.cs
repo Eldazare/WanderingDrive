@@ -186,6 +186,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		attackList.Add(attack);
 	}
 	public void CalculateDamage (AttackMode attackmod) {
+		attackList.Clear();
 		float damageMod = 1;
 		float eleDamageMod = 1;
 		damageDone = 0;
