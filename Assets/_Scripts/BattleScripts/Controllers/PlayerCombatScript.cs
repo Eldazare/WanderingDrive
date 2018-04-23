@@ -17,8 +17,8 @@ public class PlayerCombatScript : MonoBehaviour {
 	//Perfect values are: if timer > maxDuration - perfect| Tiers are: if timer > maxDuration * tier
 	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 0.5f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
 	float[] blockTiers = { 0.75f, 0.5f, 0.25f };
-	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, focusPlusOverloadTurn, focusPlustOverloadBonus; //Focus and overload logic booleans
-	float focusDamageBuff = 1.5f, focusplustoverloadDamageBuff = 2f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
+	bool focusedTurn, focusDefensiveBonus, skipTurn, overloadDamageTakenBonus, overFocusTurn, overFocusBonus; //Focus and overload logic booleans
+	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 2; //How close the player moves to the enemy
 	public bool defended, attacked;
@@ -105,17 +105,17 @@ public class PlayerCombatScript : MonoBehaviour {
 		proceed = false;
 		float damageMod = 1;
 		float eleDamageMod = 1;
-		if (focusPlustOverloadBonus) {
-			damageMod += focusplustoverloadDamageBuff;
-			eleDamageMod += focusplustoverloadDamageBuff;
+		if (overFocusBonus) {
+			damageMod *= focusDamageBuff*overloadDamageBuff;
+			eleDamageMod *= focusDamageBuff*overloadDamageBuff;
 		} else {
 			if (focusBuffTurns > 0) {
-				damageMod += focusDamageBuff;
-				eleDamageMod += focusDamageBuff;
+				damageMod *= focusDamageBuff;
+				eleDamageMod *= focusDamageBuff;
 			}
 			if (overloadedTurn > 0) {
-				damageMod += overloadDamageBuff;
-				eleDamageMod += overloadDamageBuff;
+				damageMod *= overloadDamageBuff;
+				eleDamageMod *= overloadDamageBuff;
 			}
 		}
 		eleDamageMod += buffElementDamageMultiplier;
@@ -178,22 +178,22 @@ public class PlayerCombatScript : MonoBehaviour {
 		proceed = false;
 		float damageMod = 1;
 		float eleDamageMod = 1;
-		if (focusPlustOverloadBonus) {
-			damageMod += focusplustoverloadDamageBuff;
-			eleDamageMod += focusplustoverloadDamageBuff;
-		} else {
+		if (overFocusBonus) {
+			damageMod *=focusDamageBuff*overloadDamageBuff;
+			eleDamageMod *= focusDamageBuff*overloadDamageBuff;
+		}else{
 			if (focusBuffTurns > 0) {
-				damageMod += focusBuffTurns;
-				eleDamageMod += focusBuffTurns;
+				damageMod *= focusBuffTurns;
+				eleDamageMod *= focusBuffTurns;
 			}
 			if (overloadedTurn > 0) {
-				damageMod += overloadDamageBuff;
-				eleDamageMod += overloadDamageBuff;
+				damageMod *= overloadDamageBuff;
+				eleDamageMod *= overloadDamageBuff;
 			}
 		}
 		//Buff damage modifier apply
-		eleDamageMod += buffElementDamageMultiplier;
-		damageMod += buffDamageMultiplier;
+		eleDamageMod *= buffElementDamageMultiplier;
+		damageMod *= buffDamageMultiplier;
 
 		//Buff flat damage apply
 		abilityDamage += buffFlatDamage;
@@ -245,8 +245,8 @@ public class PlayerCombatScript : MonoBehaviour {
 			_Buff buff = new OverFocus (4);
 			buff.player = this;
 			playerBuffs.Add (buff);
-			focusPlusOverloadTurn = true;
-			focusPlustOverloadBonus = true;
+			overFocusTurn = true;
+			overFocusBonus = true;
 			EndPlayerTurn (true);
 		} else {
 			_Buff buff = new Overload (2);
@@ -261,10 +261,10 @@ public class PlayerCombatScript : MonoBehaviour {
 			if (focusBuffTurns > 0) {
 				focusBuffTurns--;
 			}
-			if (focusPlusOverloadTurn) {
+			if (overFocusTurn) {
 				menuController.focusEnabled = false;
 				menuController.overloadEnabled = false;
-				focusPlusOverloadTurn = setBool;
+				overFocusTurn = setBool;
 				menuController.PlayersTurn ();
 			} else if (focusedTurn) {
 				focusedTurn = false;
@@ -283,7 +283,7 @@ public class PlayerCombatScript : MonoBehaviour {
 				focusedTurn = setBool;
 				menuController.focusEnabled = !setBool;
 				menuController.overloadEnabled = true;
-				focusPlustOverloadBonus = false;
+				overFocusBonus = false;
 				combatController.enemyAttacks ();
 			}
 		}else{
