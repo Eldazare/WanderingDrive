@@ -23,6 +23,9 @@ public class CombatController : MonoBehaviour {
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 
 	//For Debugging purposes
+	void Start(){
+		Screen.orientation = ScreenOrientation.LandscapeLeft;
+	}
 	void Update() {
 		if(Input.GetKey(KeyCode.D)){
 			player.Dodge(0);
