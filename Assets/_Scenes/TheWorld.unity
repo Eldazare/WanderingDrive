@@ -2133,7 +2133,68 @@ MonoBehaviour:
       performanceOptions:
         isEnabled: 1
         entityPerCoroutine: 20
-      vectorSubLayers: []
+      vectorSubLayers:
+      - coreOptions:
+          isActive: 1
+          sublayerName: Test
+          geometryType: 1
+          layerName: road
+          snapToTerrain: 1
+          groupFeatures: 0
+          lineWidth: 1
+        filterOptions:
+          filters:
+          - Key: type
+            PropertyValue: path
+            Min: 0
+            Max: 0
+            filterOperator: 0
+          - Key: type
+            PropertyValue: pedestrian
+            Min: 0
+            Max: 0
+            filterOperator: 0
+          - Key: type
+            PropertyValue: sidewalk
+            Min: 0
+            Max: 0
+            filterOperator: 0
+          - Key: type
+            PropertyValue: footway
+            Min: 0
+            Max: 0
+            filterOperator: 0
+          - Key: type
+            PropertyValue: hiking
+            Min: 0
+            Max: 0
+            filterOperator: 0
+          combinerType: 0
+        extrusionOptions:
+          extrusionType: 0
+          extrusionGeometryType: 0
+          propertyName: height
+          minimumHeight: 0
+          maximumHeight: 0
+        materialOptions:
+          projectMapImagery: 0
+          texturingType: 0
+          materials:
+          - Materials:
+            - {fileID: 0}
+          - Materials:
+            - {fileID: 0}
+          atlasInfo: {fileID: 0}
+          colorPallete: {fileID: 0}
+        buildingsWithUniqueIds: 0
+        moveFeaturePositionTo: 0
+        MeshModifiers: []
+        GoModifiers:
+        - {fileID: 11400000, guid: e7441c24f173f454facead995cb75bae, type: 2}
+        - {fileID: 11400000, guid: 5438d521f31ff874d9bf644211340a22, type: 2}
+        - {fileID: 11400000, guid: 56b24ced3918fd84997b1c536e37f008, type: 2}
+        - {fileID: 11400000, guid: 16984a0ca7ec208449a615f986d103fb, type: 2}
+        - {fileID: 11400000, guid: 9e1e6f9274770f54db699772216079f2, type: 2}
   _tileProvider: {fileID: 0}
 --- !u!4 &1850690987
 Transform:

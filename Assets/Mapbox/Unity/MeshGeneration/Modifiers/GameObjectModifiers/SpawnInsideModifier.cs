@@ -51,6 +51,14 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 
 		public override void Run(VectorEntity ve, UnityTile tile)
 		{
+
+			// This is REALLY roundabout, and I don't like it.
+			// Gonna look for a better way.
+			ve.GameObject.transform.parent.gameObject.tag = "MapTile";
+
+
+
+
 			_spawnedCount = 0;
 			var collider = ve.GameObject.GetComponent<Collider>();
 			var bounds = collider.bounds;
@@ -122,6 +130,10 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			else
 			{
 				ob = ((GameObject)Instantiate(_prefabs[index], go.transform, false));
+
+				Debug.Log ("Name of 'go': " + go.name);
+				//go.transform.parent.gameObject.tag = "MapTile";
+
 			}
 			if (_objects.ContainsKey(go))
 			{

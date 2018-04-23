@@ -11,6 +11,7 @@ namespace Mapbox.Unity.MeshGeneration.Data
 
 	public class UnityTile : MonoBehaviour
 	{
+
 		[SerializeField]
 		Texture2D _rasterData;
 

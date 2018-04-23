@@ -614,11 +614,6 @@ MonoBehaviour:
             Min: 0
             Max: 0
             filterOperator: 0
-          - Key: type
-            PropertyValue: footway
-            Min: 0
-            Max: 0
-            filterOperator: 0
           combinerType: 0
         extrusionOptions:
           extrusionType: 0
@@ -1082,6 +1077,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 815899468}
+  posX: 0
+  posY: 30
+  posZ: -20
 --- !u!1 &1304606098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,6 +1550,9 @@ MonoBehaviour:
   _markerPrefab: {fileID: 1564252737533862, guid: 2ef71cf688f17e246a871cd5f8db0050,
     type: 2}
   _spawnedObjects: []
+  localNodeList: []
+  trueRadius: 0
+  nodeCount: 0
 --- !u!1 &2019595230
 GameObject:
   m_ObjectHideFlags: 0
