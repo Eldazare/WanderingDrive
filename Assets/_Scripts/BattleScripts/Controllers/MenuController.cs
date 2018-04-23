@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+public enum AttackMode{
+		Attack, Ability, Item
+	};
 public class MenuController : MonoBehaviour {
 
 
@@ -12,7 +14,7 @@ public class MenuController : MonoBehaviour {
 	public Enemy targetedEnemy;
 
 
-	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox;  //Drag from Hierarchy
+	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox, targetHealthBar;  //Drag from Hierarchy
 	public Button focusButton, overloadButton, abilityMenuButton, playerProfileButton; //Drag buttons to menuController
 	public PlayerCombatScript player;  //Drag from Hierarchy
 	public GameObject enemyPartCanvas;  //Drag from Hierarchy
@@ -33,11 +35,12 @@ public class MenuController : MonoBehaviour {
 	public int selectedPart = -1, AbilityID;
 	public Text enemyTurnText, playerTurnText;
 	Color originalColor;
+	public AttackMode attackMode;
+	
 	void Start(){
 		focusEnabled = true;
 		overloadEnabled = true;
-	}	
-
+	}
 	public void GenerateHealthBars(int number, Enemy item){
 		GameObject newHealthBar = Instantiate(Resources.Load("CombatResources/EnemyHealthBar"),transform.position, Quaternion.identity,enemyHealthBarParent.transform) as GameObject;
 		enemyHealthBars.Add(newHealthBar);
@@ -45,7 +48,7 @@ public class MenuController : MonoBehaviour {
 		newScript.targetbutton.onClick.AddListener(delegate{SelectTargetEnemy(number);});
 		newScript.buttonText.text = item.enemyName;
 	}
-		//Buttons for button menus.
+	//Buttons for button menus.
 	public void SelectTargetEnemy(int enemyNbr){
 		targetedEnemy = combatController.enemyList[enemyNbr];
 		int i = enemyHealthBars.Count-1;
@@ -74,6 +77,7 @@ public class MenuController : MonoBehaviour {
 		overloadButton.interactable = overloadEnabled;
 	}
 	public void ItemsMenu (){
+		attackMode = AttackMode.Item;
 		ItemMenu.SetActive (true);
 		DefaultButtons.SetActive (false);
 	}
@@ -95,6 +99,7 @@ public class MenuController : MonoBehaviour {
 
 	// Buttons.
 	public void Attack (){
+		attackMode = AttackMode.Attack;
 		DefaultButtons.SetActive(false);
 		abilityOrAttack = false;
 		StartCoroutine(CameraToEnemy());
@@ -135,6 +140,7 @@ public class MenuController : MonoBehaviour {
 		
 	}
 	public void Ability(int slot){
+		attackMode = AttackMode.Ability;
 		AbilityButtons.SetActive (false);
 		abilityOrAttack = true;
 		player.abilityID = slot;

@@ -24,7 +24,7 @@ public class CombatController : MonoBehaviour {
 
 	//For Debugging purposes
 	void Start(){
-		Screen.orientation = ScreenOrientation.LandscapeLeft;
+		Screen.orientation = ScreenOrientation.LandscapeRight;
 	}
 	void Update() {
 		if(Input.GetKey(KeyCode.D)){

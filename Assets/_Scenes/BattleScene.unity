@@ -1776,6 +1776,9 @@ MonoBehaviour:
   hold: 0
   buffElementalWeakness: 000000000000000000000000000000000000000000000000
   animator: {fileID: 1379186842}
+  damageDone: 0
+  elementDamageDone: 0
+  elementDone: 0
 --- !u!114 &337843893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1944,6 +1947,7 @@ MonoBehaviour:
   AbilityButtons: {fileID: 2119960641}
   ItemMenu: {fileID: 512216535}
   textBox: {fileID: 1180242608}
+  targetHealthBar: {fileID: 1472786753}
   focusButton: {fileID: 618837083}
   overloadButton: {fileID: 106527505}
   abilityMenuButton: {fileID: 1041041124}
@@ -1978,6 +1982,7 @@ MonoBehaviour:
   AbilityID: 0
   enemyTurnText: {fileID: 1492696842}
   playerTurnText: {fileID: 1099489115}
+  attackMode: 0
 --- !u!1001 &436022145
 Prefab:
   m_ObjectHideFlags: 0
@@ -6840,6 +6845,12 @@ Prefab:
       propertyPath: m_Name
       value: TargetHealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 114213452878721238, guid: 4f0c054b51af0c44b9b72a5dc110ce9c,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 239de47a92984af409f170679190cc9c,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 114148107440979236, guid: 4f0c054b51af0c44b9b72a5dc110ce9c, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4f0c054b51af0c44b9b72a5dc110ce9c, type: 2}
