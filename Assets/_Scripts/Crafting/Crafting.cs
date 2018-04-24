@@ -107,12 +107,13 @@ public class Crafting : MonoBehaviour{
 		
 
     public void LetsMerge() {
-		if (Merge.CombineRecipe (recipeList[currentRecipeType] [currentRecipe])){
-			Debug.Log ("Merge'd");
+		bool success = false;
+		if (filter) {
+			success = Merge.CombineRecipe (filteredList [currentRecipe]);
+		} else {
+			success = Merge.CombineRecipe (recipeList [currentRecipeType] [currentRecipe]);
 		}
-        else {
-            Debug.Log("Error, combining failed");
-        }
+		Debug.Log("Merge status: "+success.ToString());
     }
 
 	private void UpdateInfoTexts(){
