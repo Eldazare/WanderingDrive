@@ -7,5 +7,5 @@
 
 NonCom_Count=10
 
-%NonCom_NonCom_0_whetstone
+%NonCom_NonCom_0_Potion
 

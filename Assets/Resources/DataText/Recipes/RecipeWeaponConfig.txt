@@ -11,15 +11,22 @@
 
 
 %Recipe_Weapon_0_genericSword
-RecipeWeapon_0_m1=Mat_Mat_0_2
-RecipeWeapon_0_m2=Cons_NonCom_6_1
-RecipeWeapon_0_m3=
+RecipeWeapon_0_m1=Mat_Mat_40_2
+RecipeWeapon_0_m2=Mat_Mat_41_2
+RecipeWeapon_0_m3=Mat_Mat_30_1
 RecipeWeapon_0_m4=
 RecipeWeapon_0_result=Wep_Sword_0
 
 %Recipe_Weapon_1_Generic mace
-RecipeWeapon_1_m1=Mat_Mat_0_2
-RecipeWeapon_1_m2=Mat_Mat_1_2
-RecipeWeapon_1_m3=
+RecipeWeapon_1_m1=Mat_Mat_40_2
+RecipeWeapon_1_m2=Mat_Mat_41_2
+RecipeWeapon_1_m3=Mat_Mat_30_1
 RecipeWeapon_1_m4=
 RecipeWeapon_1_result=Wep_Mace_0
+
+%Recipe_Weapon_2_LizardSword
+RecipeWeapon_2_m1=Mat_Mat_11_3
+RecipeWeapon_2_m2=Mat_Mat_15_1
+RecipeWeapon_2_m3=Mat_Mat_16_1
+RecipeWeapon_2_m4=
+RecipeWeapon_2_result=Wep_Sword_2

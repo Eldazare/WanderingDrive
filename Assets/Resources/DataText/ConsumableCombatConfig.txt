@@ -7,5 +7,5 @@
 
 ComCon_Count=10
 
-%ComCon_ComCon_0_flash
+%ComCon_ComCon_0_Flashbang
 

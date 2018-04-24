@@ -2,10 +2,18 @@
 
 
 
-%RecipeUp_Accessory_0_generic accessory zero
+%RecipeUp_Accessory_0_Power+
 RecipeUpAccessory_0_main=Arm_Accessory_0
-RecipeUpAccessory_0_m1=Mat_Mat_1_1
-RecipeUpAccessory_0_m2=Mat_Mat_2_1
+RecipeUpAccessory_0_m1=Mat_Mat_3_1
+RecipeUpAccessory_0_m2=Mat_Mat_7_2
 RecipeUpAccessory_0_m3=
 RecipeUpAccessory_0_m4=
 RecipeUpAccessory_0_result=Arm_Accessory_1
+
+%RecipeUp_Accessory_1_Ele+
+RecipeUpAccessory_1_main=Arm_Accessory_2
+RecipeUpAccessory_1_m1=Mat_Mat_23_1
+RecipeUpAccessory_1_m2=Mat_Mat_25_1
+RecipeUpAccessory_1_m3=
+RecipeUpAccessory_1_m4=
+RecipeUpAccessory_1_result=Arm_Accessory_3

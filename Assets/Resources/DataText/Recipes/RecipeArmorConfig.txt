@@ -9,10 +9,75 @@
 #RecipeType:
 #Weapon | Armor | Accessory | ComCon | NonCom
 
-
+#GOLEM T1 armor
 %Recipe_Armor_0_Golem Helm
-RecipeArmor_0_m1=Mat_Mat_0_2
-RecipeArmor_0_m2=Mat_Mat_1_2
-RecipeArmor_0_m3=
+RecipeArmor_0_m1=Mat_Mat_5_1
+RecipeArmor_0_m2=Mat_Mat_2_2
+RecipeArmor_0_m3=Mat_Mat_0_2
 RecipeArmor_0_m4=
 RecipeArmor_0_result=Arm_Helm_2
+
+%Recipe_Armor_1_Golem Chest
+RecipeArmor_1_m1=Mat_Mat_1_3
+RecipeArmor_1_m2=Mat_Mat_4_1
+RecipeArmor_1_m3=Mat_Mat_0_3
+RecipeArmor_1_m4=
+RecipeArmor_1_result=Arm_Chest_2
+
+%Recipe_Armor_2_Golem Arms
+RecipeArmor_2_m1=Mat_Mat_6_4
+RecipeArmor_2_m2=Mat_Mat_4_1
+RecipeArmor_2_m3=Mat_Mat_0_5
+RecipeArmor_2_m4=
+RecipeArmor_2_result=Arm_Arms_2
+
+%Recipe_Armor_3_Golem Legs
+RecipeArmor_3_m1=Mat_Mat_2_2
+RecipeArmor_3_m2=Mat_Mat_1_2
+RecipeArmor_3_m3=Mat_Mat_0_3
+RecipeArmor_3_m4=Mat_Mat_7_1
+RecipeArmor_3_result=Arm_Legs_2
+
+%Recipe_Armor_4_Golem Boots
+RecipeArmor_4_m1=Mat_Mat_5_1
+RecipeArmor_4_m2=Mat_Mat_4_1
+RecipeArmor_4_m3=Mat_Mat_0_3
+RecipeArmor_4_m4=Mat_Mat_7_1
+RecipeArmor_4_result=Arm_Boots_2
+
+
+#LIZARD T1 armor
+%Recipe_Armor_5_Lizard Helm
+RecipeArmor_5_m1=Mat_Mat_14_2
+RecipeArmor_5_m2=Mat_Mat_15_1
+RecipeArmor_5_m3=Mat_Mat_12_2
+RecipeArmor_5_m4=
+RecipeArmor_5_result=Arm_Helm_3
+
+%Recipe_Armor_6_Lizard chest
+RecipeArmor_6_m1=Mat_Mat_10_4
+RecipeArmor_6_m2=Mat_Mat_11_4
+RecipeArmor_6_m3=
+RecipeArmor_6_m4=
+RecipeArmor_6_result=Arm_Chest_3
+
+%Recipe_Armor_7_Lizard arms
+RecipeArmor_7_m1=Mat_Mat_16_2
+RecipeArmor_7_m2=Mat_Mat_15_1
+RecipeArmor_7_m3=Mat_Mat_10_3
+RecipeArmor_7_m4=Mat_Mat_11_1
+RecipeArmor_7_result=Arm_Arms_3
+
+%Recipe_Armor_8_Lizard Legs
+RecipeArmor_8_m1=Mat_Mat_17_2
+RecipeArmor_8_m2=Mat_Mat_10_3
+RecipeArmor_8_m3=Mat_Mat_11_3
+RecipeArmor_8_m4=
+RecipeArmor_8_result=Arm_Legs_3
+
+%Recipe_Armor_9_Lizard boots
+RecipeArmor_9_m1=Mat_Mat_15_1
+RecipeArmor_9_m2=Mat_Mat_12_3
+RecipeArmor_9_m3=Mat_Mat_11_3
+RecipeArmor_9_m4=
+RecipeArmor_9_result=Arm_Boots_3

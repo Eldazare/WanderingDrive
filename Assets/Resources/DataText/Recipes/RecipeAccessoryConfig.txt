@@ -11,8 +11,16 @@
 
 
 %Recipe_Accessory_0_generic accessory zero
-RecipeAccessory_0_m1=Mat_Mat_0_2
-RecipeAccessory_0_m2=Mat_Mat_1_1
-RecipeAccessory_0_m3=
-RecipeAccessory_0_m4=
+RecipeAccessory_0_m1=Mat_Mat_6_2
+RecipeAccessory_0_m2=Mat_Mat_7_1
+RecipeAccessory_0_m3=Mat_Mat_4_1
+RecipeAccessory_0_m4=Mat_Mat_40_3
 RecipeAccessory_0_result=Arm_Accessory_0
+
+
+%Recipe_Accessory_1_Ele bracelet base
+RecipeAccessory_1_m1=Mat_Mat_22_2
+RecipeAccessory_1_m2=Mat_Mat_27_1
+RecipeAccessory_1_m3=Mat_Mat_31_2
+RecipeAccessory_1_m4=
+RecipeAccessory_1_result=Arm_Accessory_2

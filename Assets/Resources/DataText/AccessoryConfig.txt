@@ -8,3 +8,11 @@ Accessory_0_elementResist=0;0;0;0;0;0
 %Armor_Accessory_1_Power Bracelet+
 Accessory_1_bonuses=7/0/0
 Accessory_1_elementResist=0;0;0;0;0;0
+
+%Armor_Accessory_2_Elemental bracelet
+Accessory_2_bonuses=0/4/0
+Accessory_2_elementResist=1;1;1;1;0;0
+
+%Armor_Accessory_3_Elemental bracelet+
+Accessory_3_bonuses=0/6/0
+Accessory_3_elementResist=2;2;2;2;1;1

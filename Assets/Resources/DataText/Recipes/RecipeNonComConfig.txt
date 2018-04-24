@@ -11,8 +11,8 @@
 
 
 %Recipe_NonCom_0_potion
-RecipeNonCom_0_m1=Mat_Mat_0_2
-RecipeNonCom_0_m2=Cons_NonCom_6_1
+RecipeNonCom_0_m1=Mat_Mat_30_2
+RecipeNonCom_0_m2=
 RecipeNonCom_0_m3=
 RecipeNonCom_0_m4=
-RecipeNonCom_0_result=Cons_NonCom_0
+RecipeNonCom_0_result=Cons_NonCom_0_1

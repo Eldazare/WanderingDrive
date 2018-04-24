@@ -29,3 +29,13 @@ EnemySmall_1_p2=Tail_75_1.0_3
 EnemySmall_1_p3=Arm (Left)_100_0.4_5
 EnemySmall_1_p4=Arm (Right)_100_0.4_5
 EnemySmall_1_a1=10;2;Earth;0;1.0
+
+%Enemy_EnemySmall_2_LIZARD
+EnemySmall_2_defenses=50/0/0/0
+EnemySmall_2_elementWeakness=150;-30;70;70;50;50
+EnemySmall_2_assortment=1.7/5.0
+EnemySmall_2_p0=Body_100_0.9_9001
+EnemySmall_2_p1=Head_60_1.5_4
+EnemySmall_2_p2=Tail_40_2.0_3
+EnemySmall_2_p3=Claws_70_1.0_5
+EnemySmall_2_a1=10;2;Fire;0;1.0

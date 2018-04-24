@@ -11,8 +11,8 @@
 
 
 %Recipe_ComCon_0_rrreeeee
-RecipeComCon_0_m1=Mat_Mat_0_2
-RecipeComCon_0_m2=Cons_NonCom_6_1
+RecipeComCon_0_m1=Mat_Mat_31_2
+RecipeComCon_0_m2=Mat_Mat_35_3
 RecipeComCon_0_m3=
 RecipeComCon_0_m4=
-RecipeComCon_0_result=Cons_ComCon_0_2
+RecipeComCon_0_result=Cons_ComCon_0_1

@@ -46,12 +46,13 @@ public class UndyingObject : MonoBehaviour {
 
 	private void FillInventoryForTest(){
 		Inventory.PutItem (ItemType.Wep, ItemSubType.Sword, 0, 1);
-		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 1, 4);
-		Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, 2, 1);
 		Inventory.PutItem (ItemType.Arm, ItemSubType.Accessory, 0, 1);
 		InsertBasicArmorToInventory ();
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
+		for (int i = 0; i < 50; i++) {
+			Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, i, 50);
+		}
 		//loadoutList.InsertLoadout (loadout, 0);
 	}
 
@@ -72,7 +73,7 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	private IEnumerator ToTheWorld(){
-		yield return new WaitForSeconds (3.0f); // DEBUG & VIDEO
+		//yield return new WaitForSeconds (3.0f); // DEBUG & VIDEO
         yield return SceneManager.LoadSceneAsync ("TheWorld");
     }
 

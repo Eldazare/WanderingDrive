@@ -158,6 +158,7 @@ public class LoadoutManager : MonoBehaviour {
         }
     }
 
+	// Possibly use ArmorType id (int) as parameter? (Instead of itemSubtype)
     public void ChangeArmorSlot(int _itemSubtype) {
         currentItemType = ItemType.Arm;
         currentItemSubType = (ItemSubType)_itemSubtype;
