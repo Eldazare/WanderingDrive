@@ -90,7 +90,8 @@ public class LoadoutManager : MonoBehaviour {
         counter--;
         if (currentItemType == ItemType.Wep) {
             if (counter < 0) {
-                currentItem = weaponList[0].itemID;
+                currentItem = weaponList[weaponList.Count - 1].itemID;
+                counter = weaponList.Count - 1;
             }
             else {
                 currentItem = weaponList[counter].itemID;
