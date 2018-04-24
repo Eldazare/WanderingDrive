@@ -90,7 +90,8 @@ public class LoadoutManager : MonoBehaviour {
         counter--;
         if (currentItemType == ItemType.Wep) {
             if (counter < 0) {
-                currentItem = weaponList[0].itemID;
+                currentItem = weaponList[weaponList.Count - 1].itemID;
+                counter = weaponList.Count - 1;
             }
             else {
                 currentItem = weaponList[counter].itemID;
@@ -120,11 +121,11 @@ public class LoadoutManager : MonoBehaviour {
 
     public void ChangeWeaponSlot(int slot) {
         currentItemType = ItemType.Wep;
-        ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
-        currentItemSubType = parsed_enum; 
         chosenHand = slot;
         counter = 0;
         if (weaponList.Count > 0) {
+            ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
+            currentItemSubType = parsed_enum;
             currentItem = weaponList[0].itemID;
             UpdateInfoTexts();
         }
@@ -198,7 +199,7 @@ public class LoadoutManager : MonoBehaviour {
             }
         }
         else if (currentItemType == ItemType.Cons) {
-            myLoadout.AddCombatConsumable(chosenConsSlot, currentItem);
+            myLoadout.AddCombatConsumable(chosenConsSlot, combatConsumables.IndexOf(currentItem));
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
