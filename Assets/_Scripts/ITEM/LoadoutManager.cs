@@ -16,7 +16,7 @@ public class LoadoutManager : MonoBehaviour {
     Loadout myLoadout = new Loadout(2);
 
     public List<Sprite> spriteList = new List<Sprite>();
-	List<List<InventoryArmor>> itemList;
+	List<List<InventoryArmor>> armorLists;
 	/*
     List<InventoryArmor> armorList = Inventory.inventoryArmor;
     List<InventoryArmor> accessoryList = new List<InventoryArmor>();
@@ -26,10 +26,11 @@ public class LoadoutManager : MonoBehaviour {
     List<InventoryArmor> legsList = new List<InventoryArmor>();
     List<InventoryArmor> bootsList = new List<InventoryArmor>();
     */
-    public List<InventoryWeapon> weaponList = Inventory.inventoryWeapons;
-    public List<int> combatConsumables = Inventory.combatConsumables;
+	public List<InventoryWeapon> weaponList;
+	public List<int> combatConsumables;
 
-    public List<InventoryArmor> currentList;
+    //public List<InventoryArmor> currentList;
+	private int currentArmorIndex = -1;
     public int currentItem;
     public int counter;
     public int chosenHand;
@@ -39,85 +40,80 @@ public class LoadoutManager : MonoBehaviour {
     ItemType currentItemType;
 
     void Start(){
-
+		weaponList = Inventory.inventoryWeapons;
+		combatConsumables = Inventory.combatConsumables;
         currentItem = -1;
         chosenHand = -1;
         counter = -1;
         //Sprites to recources and load
-		itemList = new List<List<InventoryArmor>>();
+		armorLists = new List<List<InventoryArmor>>();
 		for (int i = 0; i < System.Enum.GetNames (typeof(ArmorType)).Length; i++) {
-			itemList.Add (new List<InventoryArmor> ());
+			armorLists.Add (new List<InventoryArmor> ());
 		}
 		foreach (InventoryArmor invArmor in Inventory.inventoryArmor) {
 			ArmorType parsedEnum = (ArmorType)System.Enum.Parse(typeof(ArmorType), invArmor.subType);
-			itemList [(int)parsedEnum].Add (invArmor);
+			armorLists [(int)parsedEnum].Add (invArmor);
         }
     }
 
     public void ChangeItemOnwards() {
         counter++;
-        if (currentItemType == ItemType.Wep) {
-            if (counter >= weaponList.Count) {
-                counter = 0;
-                currentItem = weaponList[0].itemID;
-            }
-            else {
-                currentItem = weaponList[counter].itemID;
-            }
-        }
-        else if (currentItemType == ItemType.Cons) {
-            if (counter >= currentList.Count) {
-                counter = 0;
-                currentItem = combatConsumables[0];
-            }
-            else {
-                currentItem = combatConsumables[counter];
-            }
-        }
-        else {
-            if (counter >= currentList.Count) {
-                counter = 0;
-                currentItem = currentList[0].itemID;
-            }
-            else {
-                currentItem = currentList[counter].itemID;
-            }
-        }
+		switch (currentItemType) {
+		case ItemType.Wep:
+			if (counter >= weaponList.Count) {
+				counter = 0;
+			}
+			currentItem = weaponList[counter].itemID;
+			currentItemSubType = (ItemSubType)System.Enum.Parse (typeof(ItemSubType), weaponList [counter].subType);
+			break;
+		case ItemType.Cons:
+			if (counter >= combatConsumables.Count) {
+				counter = 0;
+			}
+			currentItem = combatConsumables[counter];
+			break;
+		case ItemType.Arm:
+			if (counter >= armorLists [currentArmorIndex].Count) {
+				counter = 0;
+			}
+			currentItem = armorLists [currentArmorIndex] [counter].itemID;
+			break;
+		default:
+			Debug.LogError ("FUCK");
+			break;
+		}
         UpdateInfoTexts();
     }
 
     public void ChangeItemBackwards() {
-        counter--;
-        if (currentItemType == ItemType.Wep) {
-            if (counter < 0) {
-                currentItem = weaponList[weaponList.Count - 1].itemID;
-                counter = weaponList.Count - 1;
-            }
-            else {
-                currentItem = weaponList[counter].itemID;
-            }
-        }
-        else if (currentItemType == ItemType.Cons) {
-            if (counter < 0) {
-                currentItem = combatConsumables[combatConsumables.Count - 1];
-                counter = combatConsumables.Count - 1;
-            }
-            else {
-                currentItem = combatConsumables[counter];
-            }
-        }
-        else {
-            if (counter < 0) {
-                currentItem = currentList[currentList.Count - 1].itemID;
-                counter = currentList.Count - 1;
-            }
-            else {
-                currentItem = currentList[counter].itemID;
-            }
+		counter--;
+		switch (currentItemType) {
+		case ItemType.Wep:
+			if (counter < 0) {
+				counter = weaponList.Count - 1;
+			}
+			currentItem = weaponList[counter].itemID;
+			currentItemSubType = (ItemSubType)System.Enum.Parse (typeof(ItemSubType), weaponList [counter].subType);
+			break;
+		case ItemType.Cons:
+			if (counter < 0) {
+				counter = combatConsumables.Count - 1;
+			}
+			currentItem = combatConsumables [counter];
+			break;
+		case ItemType.Arm:
+			if (counter < 0) {
+				counter = armorLists [currentArmorIndex].Count - 1;
+			}
+			currentItem = armorLists[currentArmorIndex][counter].itemID;
+			break;
+		default:
+			Debug.LogError ("FUCK");
+			break;
+		}
+		UpdateInfoTexts();
+	}
 
-        }
-        UpdateInfoTexts();
-    }
 
     public void ChangeWeaponSlot(int slot) {
         currentItemType = ItemType.Wep;
@@ -147,11 +143,11 @@ public class LoadoutManager : MonoBehaviour {
     public void ChangeAccessorySlot(int slot) {
         currentItemType = ItemType.Arm;
         currentItemSubType = ItemSubType.Accessory;
-        currentList = itemList[0];
+		currentArmorIndex = (int)ArmorType.Accessory;
         chosenAccessorySlot = slot;
         counter = 0;
-        if (currentList.Count > 0) {
-            currentItem = currentList[0].itemID;
+		if (armorLists[currentArmorIndex].Count > 0) {
+			currentItem = armorLists[currentArmorIndex][0].itemID;
             UpdateInfoTexts();
         }
         else {
@@ -160,15 +156,13 @@ public class LoadoutManager : MonoBehaviour {
     }
 
 	// Possibly use ArmorType id (int) as parameter? (Instead of itemSubtype)
-    public void ChangeArmorSlot(int _itemSubtype) {
+    public void ChangeArmorSlot(int armorTypeGiven) {
         currentItemType = ItemType.Arm;
-        currentItemSubType = (ItemSubType)_itemSubtype;
+		currentItemSubType = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), ((ArmorType)armorTypeGiven).ToString());
         counter = 0;
-        Debug.Log(currentList);
-		currentList = itemList[(int)System.Enum.Parse(typeof(ArmorType),currentItemSubType.ToString())];
-        Debug.Log(currentList);
-        if (currentList.Count > 0) {
-            currentItem = currentList[0].itemID;
+		currentArmorIndex = armorTypeGiven;
+		if (armorLists[currentArmorIndex].Count > 0) {
+			currentItem = armorLists[currentArmorIndex][0].itemID;
             UpdateInfoTexts();
         }
         else {
@@ -179,6 +173,7 @@ public class LoadoutManager : MonoBehaviour {
 
 
     private void UpdateInfoTexts() {
+		Debug.Log ("currentItem: "+currentItem);
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
 		Debug.Log (currentMaterial.GetName ());
         itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
@@ -203,10 +198,10 @@ public class LoadoutManager : MonoBehaviour {
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
-                myLoadout.AddArmor(currentList[counter]);
+				myLoadout.AddArmor(armorLists[currentArmorIndex][counter]);
             }
             else if (currentItemSubType == ItemSubType.Accessory) {
-                myLoadout.AddAccessory(currentList[counter], chosenAccessorySlot);
+				myLoadout.AddAccessory(armorLists[currentArmorIndex][counter], chosenAccessorySlot);
             }
         }
     }

@@ -114,6 +114,7 @@ public class Crafting : MonoBehaviour{
 			success = Merge.CombineRecipe (recipeList [currentRecipeType] [currentRecipe]);
 		}
 		Debug.Log("Merge status: "+success.ToString());
+		UpdateInfoTexts ();
     }
 
 	private void UpdateInfoTexts(){
