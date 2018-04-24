@@ -27,10 +27,10 @@ public class CombatController : MonoBehaviour {
 		Screen.orientation = ScreenOrientation.LandscapeRight;
 	}
 	void Update() {
-		if(Input.GetKey(KeyCode.D)){
+		if(Input.GetKeyDown(KeyCode.D)){
 			player.Dodge(0);
 		}
-		if(Input.GetKey(KeyCode.B)){
+		if(Input.GetKeyDown(KeyCode.B)){
 			player.Block();
 		}
 	}
@@ -148,8 +148,7 @@ public class CombatController : MonoBehaviour {
 			foreach (var item in enemyList) {
 				item.ApplyEnemyBuffs ();
 				if (!item.stunned) {
-					yield return new WaitForSeconds (3f);
-					StartCoroutine (item.Attack ());
+					yield return item.Attack ();
 					yield return new WaitUntil (() => enemyAttacked);
 				} else {
 					GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (item.transform.position.x, item.transform.position.y + 3, item.transform.position.z) - item.transform.right, Quaternion.identity) as GameObject;
