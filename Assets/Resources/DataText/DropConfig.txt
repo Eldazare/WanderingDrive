@@ -30,5 +30,3 @@ Drop_EnemySmall_2_p3=16_90/10_10
 Drop_EnemyLarge_0_Normal=0_30/1_30/3_2/2_18/7_10
 Drop_EnemyLarge_0_p1=5_85/3_5/7_10
 Drop_EnemyLarge_0_p2=7_60/2_40
-Drop_EnemyLarge_0_p3=6_100
-Drop_EnemyLarge_0_p4=6_100

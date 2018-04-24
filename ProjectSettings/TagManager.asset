@@ -11,6 +11,7 @@ TagManager:
   - NodeSpawner
   - marker
   - MapTile
+  - TestNode
   layers:
   - Default
   - TransparentFX

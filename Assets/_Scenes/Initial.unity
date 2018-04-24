@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 556896197}
   m_Layer: 0
   m_Name: Undying
-  m_TagString: Untagged
+  m_TagString: UndyingObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,6 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154ce6a67e3fdc64fbda1edb78caf4fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactedNode: {fileID: 0}
+  storedMarkers: []
 --- !u!4 &556896198
 Transform:
   m_ObjectHideFlags: 0

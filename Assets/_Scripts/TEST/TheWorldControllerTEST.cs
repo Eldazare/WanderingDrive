@@ -9,7 +9,7 @@ public class TheWorldControllerTEST : MonoBehaviour {
 	public GameObject loadoutsPanel; // sub, contains loadout buttons
 
 	public void DoBattle(){
-		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<WorldNode> ().Interact ();
+		GameObject.FindGameObjectWithTag("TestNode").GetComponent<WorldNode> ().Interact ();
 	}
 
 	public void DoCraft(){
