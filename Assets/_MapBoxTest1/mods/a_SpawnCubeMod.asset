@@ -15,7 +15,7 @@ MonoBehaviour:
   _spawnRateInSquareMeters: 2000
   _maxSpawn: 300
   _prefabs:
-  - {fileID: 0}
+  - {fileID: 1676729722770256, guid: 1db9d86d7e1870643ac4e8af5209ca3c, type: 2}
   _layerMask:
     serializedVersion: 2
     m_Bits: 256

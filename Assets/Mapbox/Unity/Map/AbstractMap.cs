@@ -486,6 +486,7 @@ namespace Mapbox.Unity.Map
 				_mapScaleFactor.y = 1;
 				Root.localScale = _mapScaleFactor;
 			}
+
 		}
 		/// <summary>
 		/// Resets the map.
