@@ -145,9 +145,9 @@ public class MenuController : MonoBehaviour {
 		player.CalculateDamage(AttackMode.Ability);
 		AbilityButtons.SetActive (false);
 		abilityOrAttack = true;
-		player.abilityID = slot;
+		player.abilityID = slot;/* 
 		targetHealthBar.SetActive (true);
-		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart);
+		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
 		StartCoroutine (CameraToEnemy ());
 	}
 

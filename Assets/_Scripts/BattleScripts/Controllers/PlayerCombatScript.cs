@@ -78,7 +78,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (playerStats.stamina < playerStats.maxStamina) {
 			playerStats.stamina = playerStats.maxStamina;
 		}
-		
+
 		if (healthRegen > 0) {
 			playerStats.health += healthRegen;
 			if (playerStats.health > playerStats.maxHealth) {
@@ -207,8 +207,8 @@ public class PlayerCombatScript : MonoBehaviour {
 						eleDamageMod *= overloadDamageBuff;
 					}
 				}
-				eleDamageMod += buffElementDamageMultiplier;
-				damageMod += buffDamageMultiplier;
+				eleDamageMod *= buffElementDamageMultiplier+1;
+				damageMod *= buffDamageMultiplier+1;
 				if (playerStats.mainHand != null) {
 					if (playerStats.mainHand.damage > 0) {
 						WeaponAttackCalculation(playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
@@ -242,7 +242,7 @@ public class PlayerCombatScript : MonoBehaviour {
 				playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
 				attackList.Add(attack);
 				break;
-			//Generate item's attack
+				//Generate item's attack
 			case AttackMode.Item:
 
 				break;
@@ -263,6 +263,8 @@ public class PlayerCombatScript : MonoBehaviour {
 		yield return new WaitUntil (() => proceed);
 		playerStats.abilities[ID].UseAbility ();
 		proceed = false;
+		Debug.Log("Damage1: "+ abilityDamage);
+		Debug.Log("DamageEle1: "+ abilityElementDamage);
 		float damageMod = 1;
 		float eleDamageMod = 1;
 		if (overFocusTurn > 0) {
@@ -270,8 +272,8 @@ public class PlayerCombatScript : MonoBehaviour {
 			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
 		} else {
 			if (focusBuffTurns > 0) {
-				damageMod *= focusBuffTurns;
-				eleDamageMod *= focusBuffTurns;
+				damageMod *= focusDamageBuff;
+				eleDamageMod *= focusDamageBuff;
 			}
 			if (overloadedTurn > 0) {
 				damageMod *= overloadDamageBuff;
@@ -279,9 +281,10 @@ public class PlayerCombatScript : MonoBehaviour {
 			}
 		}
 		//Buff damage modifier apply
-		eleDamageMod *= buffElementDamageMultiplier;
-		damageMod *= buffDamageMultiplier;
-
+		eleDamageMod *= buffElementDamageMultiplier+1;
+		damageMod *= buffDamageMultiplier+1;
+		Debug.Log("DamageMod: "+ damageMod);
+		Debug.Log("DamageEleMod: "+ eleDamageMod);
 		//Buff flat damage apply
 		abilityDamage += buffFlatDamage;
 		abilityElementDamage += buffFlatElementDamage;

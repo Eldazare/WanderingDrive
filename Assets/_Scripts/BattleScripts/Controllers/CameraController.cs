@@ -72,7 +72,7 @@ public class CameraController : MonoBehaviour {
 	}
 	
 	void MoveFromTarget(){
-		float distanceCovered = (Time.time-startTime)*lerpSpeed*0.4f;
+		float distanceCovered = (Time.time-startTime)*lerpSpeed;
 		if(Vector3.Distance(transform.position, targetLoc)>0.1){
 			transform.position = Vector3.Lerp(transform.position, targetLoc, distanceCovered/movingLength);
 			transform.rotation = Quaternion.Lerp(transform.rotation, startRota, distanceCovered/movingLength);

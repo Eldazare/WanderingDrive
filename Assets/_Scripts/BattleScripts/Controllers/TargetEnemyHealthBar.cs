@@ -31,7 +31,6 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 		bar.healthImage.fillAmount = menu.targetedEnemy.enemyStats.health / menu.targetedEnemy.enemyStats.maxHealth;
 		yield return new WaitForSeconds(1f);
 		while(bar.healthFill2.fillAmount > bar.healthImage.fillAmount){
-			bar.healthText.text = menu.targetedEnemy.enemyStats.health.ToString ("0.#") + " -> " + (menu.targetedEnemy.enemyStats.health-damageTaken).ToString ("0.#");
 			bar.healthFill2.fillAmount -= Time.deltaTime;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}

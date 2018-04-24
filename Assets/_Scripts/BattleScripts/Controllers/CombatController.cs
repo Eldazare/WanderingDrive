@@ -175,12 +175,27 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 	void EnemyCreation (int enemySpacing, string enemyType, int id) {
+		string enemyName =  NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
+		Debug.Log(enemyName);
 		Vector3 enemyPos = enemyHost.transform.position;
 		//Adds spacing
-		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/BigGolem", typeof (GameObject)), new Vector3 (enemyPos.x - (enemySpacing * 2), enemyPos.y, enemyPos.z + (enemySpacing * 4)), enemyHost.transform.rotation) as GameObject;
+		var i = ((enemySpacing * 1.0 + 6.7) / 14);
+             
+        //angle in radians, full circle has a radian angle of 2PI, so we find the radian angle between 
+        //2 of our points by dividing 2PI by the number of points
+        var angle = (float)(i * Mathf.PI * 2);
+             
+        var radiusX = 15;
+        var radiusZ = 15;
+             
+        var x = (float)( Mathf.Sin (angle) * radiusX);
+        var z = (float)( Mathf.Cos (angle) * radiusZ);
+
+		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/"+enemyName, typeof (GameObject)), new Vector3 (enemyPos.x - z, enemyPos.y, enemyPos.z - x), enemyHost.transform.rotation) as GameObject;
+		
 		Enemy enemy = enemyObject.GetComponent<Enemy> ();
 		enemyObject.transform.LookAt (player.transform.position);
-		enemy.enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
+		enemy.enemyName = enemyName;
 		enemy.enemyStats = EnemyStatCreator.LoadStatBlockData (id, enemyType);
 
 		enemyList.Add (enemy);

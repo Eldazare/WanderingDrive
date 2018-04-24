@@ -127,17 +127,18 @@ public class Enemy : MonoBehaviour {
         if (weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy) < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
-            eleModifier -= enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100;
+            eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;
             damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
-
+            /* Debug.Log("DamageElement: " +elementDamage); */
             eleModifier *= enemyStats.partList[part].damageMod;
             damageModifier *= enemyStats.partList[part].damageMod;
-
             damage *= damageModifier;
             elementDamage *= eleModifier;
 
-            damageTaken = damage + elementDamage;
-
+            damageTaken = damage + elementDamage;/* 
+            Debug.Log("Damage: " +damage);
+            Debug.Log("DamageElement: " +elementDamage);
+            Debug.Log("DamageTaken: " +damageTaken); */
             enemyStats.health -= damageTaken;
             enemyStats.partList[part].DamageThisPart (damageTaken); // Part takes damage
             combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateCurrentHP();
@@ -162,8 +163,8 @@ public class Enemy : MonoBehaviour {
         }
     }
     public float DamageTakenCalculation(float damage, float elementDamage, Element element, int part){
-            float damageTaken, damageModifier, eleModifier = 1;
-            eleModifier -= enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100;
+            float damageTaken, damageModifier, eleModifier = 1 ;
+            eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;
             damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
 
             eleModifier *= enemyStats.partList[part].damageMod;

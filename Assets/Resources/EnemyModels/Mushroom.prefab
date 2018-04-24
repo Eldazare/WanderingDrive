@@ -789,6 +789,20 @@ MonoBehaviour:
   cameraTarget: {fileID: 1816901584668520}
   partCanvas: []
   partButtons: []
+  buffDamageMultiplier: 0
+  buffElementDamageMultiplier: 0
+  healthRegen: 0
+  blind: 0
+  buffDamageReduction: 0
+  buffFlatDamage: 0
+  buffFlatElementDamage: 0
+  buffArmor: 0
+  stunned: 0
+  confused: 0
+  frozen: 0
+  paralyzed: 0
+  hold: 0
+  buffElementalWeakness: 000000000000000000000000000000000000000000000000
 --- !u!137 &137513675596770516
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -1732,14 +1732,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 337843890}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.94698626, z: 0, w: 0.32127425}
   m_LocalPosition: {x: 161.48787, y: -1.13, z: 221.85571}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1379186844}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 142.52, z: 0}
 --- !u!114 &337843892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1894,7 +1894,7 @@ Transform:
   - {fileID: 875010432}
   - {fileID: 173571378}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &411497423 stripped
 RectTransform:
@@ -5734,7 +5734,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1249714403
 GameObject:
@@ -5811,14 +5811,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1249714403}
-  m_LocalRotation: {x: 0.111443356, y: -0, z: -0, w: 0.9937708}
-  m_LocalPosition: {x: 169.12, y: 4.41, z: 210.94}
+  m_LocalRotation: {x: 0.2232513, y: 0.13015734, z: -0.030248499, w: 0.96555835}
+  m_LocalPosition: {x: 165.24, y: 4.392053, z: 207.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 167662285}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 12.797001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.04, y: 15.35, z: -0.019000001}
 --- !u!114 &1249714408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9354,13 +9354,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2043879772}
-  m_LocalRotation: {x: -0, y: 0.8660254, z: -0, w: -0.5}
-  m_LocalPosition: {x: 174.81787, y: -0.8100003, z: 219.69571}
+  m_LocalRotation: {x: -0, y: 0.94698626, z: -0, w: 0.32127425}
+  m_LocalPosition: {x: 161.48787, y: -1.13, z: 221.85571}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 240, z: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &2065344634 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
