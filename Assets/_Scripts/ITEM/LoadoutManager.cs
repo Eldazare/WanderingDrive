@@ -120,11 +120,11 @@ public class LoadoutManager : MonoBehaviour {
 
     public void ChangeWeaponSlot(int slot) {
         currentItemType = ItemType.Wep;
-        ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
-        currentItemSubType = parsed_enum; 
         chosenHand = slot;
         counter = 0;
         if (weaponList.Count > 0) {
+            ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
+            currentItemSubType = parsed_enum;
             currentItem = weaponList[0].itemID;
             UpdateInfoTexts();
         }
