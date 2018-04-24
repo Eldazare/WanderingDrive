@@ -198,7 +198,7 @@ public class LoadoutManager : MonoBehaviour {
             }
         }
         else if (currentItemType == ItemType.Cons) {
-            myLoadout.AddCombatConsumable(chosenConsSlot, currentItem);
+            myLoadout.AddCombatConsumable(chosenConsSlot, combatConsumables.IndexOf(currentItem));
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
