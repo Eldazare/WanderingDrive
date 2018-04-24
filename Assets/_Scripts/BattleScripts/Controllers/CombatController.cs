@@ -24,7 +24,7 @@ public class CombatController : MonoBehaviour {
 
 	//For Debugging purposes
 	void Start(){
-		Screen.orientation = ScreenOrientation.LandscapeLeft;
+		Screen.orientation = ScreenOrientation.LandscapeRight;
 	}
 	void Update() {
 		if(Input.GetKey(KeyCode.D)){
@@ -140,7 +140,9 @@ public class CombatController : MonoBehaviour {
 	}
 
 	IEnumerator enemyAttacksRoutine () {
+		yield return new WaitForSeconds (1f);
 		if (!playerDead) {
+			menuController.targetHealthBar.SetActive (false);
 			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade ();
 			foreach (var item in enemyList) {
@@ -189,7 +191,6 @@ public class CombatController : MonoBehaviour {
 	}
 		
 	public void EnemyDies (Enemy enemy) {
-
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 		dropdata.Add (drop);
 		//enemypartListList.Add (enemy.enemyStats.partList);

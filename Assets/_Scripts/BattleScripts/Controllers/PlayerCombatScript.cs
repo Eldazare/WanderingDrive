@@ -34,6 +34,10 @@ public class PlayerCombatScript : MonoBehaviour {
 
 	//Buffs and debuffs end here!
 	public Animator animator;
+	public float damageDone, elementDamageDone;
+	public Element elementDone;
+	public List<Attack> attackList = new List<Attack>();
+
 	public void Attack (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
@@ -95,6 +99,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		popup.GetComponent<TextMesh> ().text = text;
 	}
 	IEnumerator AttackRoutine (Enemy target, int part) {
+		attacked = false;
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, enemyPos);
 		InvokeRepeating ("moveToEnemy", 0, Time.deltaTime);
@@ -106,8 +111,8 @@ public class PlayerCombatScript : MonoBehaviour {
 		float damageMod = 1;
 		float eleDamageMod = 1;
 		if (overFocusBonus) {
-			damageMod *= focusDamageBuff*overloadDamageBuff;
-			eleDamageMod *= focusDamageBuff*overloadDamageBuff;
+			damageMod *= focusDamageBuff * overloadDamageBuff;
+			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
 		} else {
 			if (focusBuffTurns > 0) {
 				damageMod *= focusDamageBuff;
@@ -123,16 +128,14 @@ public class PlayerCombatScript : MonoBehaviour {
 
 		if (playerStats.mainHand != null) {
 			if (playerStats.mainHand.damage > 0) {
-				WeaponAttack (playerStats.mainHand, playerStats.offHand, damageMod * attackedPenalty, eleDamageMod, part);
+				WeaponAttack (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod, part);
 				attacked = true;
 			}
-
 		}
 		if (playerStats.offHand != null) {
 			if (playerStats.offHand.damage > 0) {
-				WeaponAttack (playerStats.offHand, playerStats.mainHand, damageMod * attackedPenalty, eleDamageMod, part);
+				WeaponAttack (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod, part);
 			}
-
 		}
 		yield return new WaitUntil (() => proceed);
 		startTime = Time.time;
@@ -144,13 +147,17 @@ public class PlayerCombatScript : MonoBehaviour {
 	void WeaponAttack (WeaponStats weapon, WeaponStats otherWep, float damageMod, float eleDamageMod, int part) {
 		if (weapon.damage > 0) {
 			float playerDamage = weapon.damage;
-			float playerElementDamage = weapon.damage;
+			float playerElementDamage = weapon.elementDamage;
 			if (otherWep != null) {
 				playerDamage += otherWep.damageBonus;
 				playerElementDamage += otherWep.elementDamageBonus;
 			}
 			playerDamage += buffFlatDamage;
 			playerElementDamage += buffFlatElementDamage;
+			if(attacked){
+				damageMod *= attackedPenalty;
+				eleDamageMod *= attackedPenalty;
+			}
 			playerDamage *= damageMod;
 			playerElementDamage *= eleDamageMod;
 			if (blind > 0) {
@@ -163,6 +170,86 @@ public class PlayerCombatScript : MonoBehaviour {
 				combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus, weapon.weaknessType);
 			}
 		}
+	}
+	void WeaponAttackCalculation (WeaponStats weapon, WeaponStats otherWep, float damageMod, float eleDamageMod) {
+		float playerDamage = weapon.damage;
+		float playerElementDamage = weapon.elementDamage;
+		if (otherWep != null) {
+			playerDamage += otherWep.damageBonus;
+			playerElementDamage += otherWep.elementDamageBonus;
+		}
+		playerDamage += buffFlatDamage;
+		playerElementDamage += buffFlatElementDamage;
+		playerDamage *= damageMod;
+		playerElementDamage *= eleDamageMod;
+		Attack attack = new Attack(playerDamage, playerElementDamage,weapon.element);
+		attackList.Add(attack);
+	}
+	public void CalculateDamage (AttackMode attackmod) {
+		attackList.Clear();
+		float damageMod = 1;
+		float eleDamageMod = 1;
+		damageDone = 0;
+		elementDamageDone = 0;
+		switch (attackmod) {
+			//Generate weapon attacks
+			case AttackMode.Attack:
+				if (overFocusBonus) {
+					damageMod *= focusDamageBuff * overloadDamageBuff;
+					eleDamageMod *= focusDamageBuff * overloadDamageBuff;
+				} else {
+					if (focusBuffTurns > 0) {
+						damageMod *= focusDamageBuff;
+						eleDamageMod *= focusDamageBuff;
+					}
+					if (overloadedTurn > 0) {
+						damageMod *= overloadDamageBuff;
+						eleDamageMod *= overloadDamageBuff;
+					}
+				}
+				eleDamageMod += buffElementDamageMultiplier;
+				damageMod += buffDamageMultiplier;
+				if (playerStats.mainHand != null) {
+					if (playerStats.mainHand.damage > 0) {
+						WeaponAttackCalculation(playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
+						attacked = true;
+					}
+				}
+				if (playerStats.offHand != null) {
+					if (playerStats.offHand.damage > 0) {
+						WeaponAttackCalculation(playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod);
+					}
+				}
+				break;
+			//Generate ability attack
+			case AttackMode.Ability:
+				if (overFocusBonus) {
+					damageMod *= focusDamageBuff * overloadDamageBuff;
+					eleDamageMod *= focusDamageBuff * overloadDamageBuff;
+				} else {
+					if (focusBuffTurns > 0) {
+						damageMod *= focusDamageBuff;
+						eleDamageMod *= focusDamageBuff;
+					}
+					if (overloadedTurn > 0) {
+						damageMod *= overloadDamageBuff;
+						eleDamageMod *= overloadDamageBuff;
+					}
+				}
+				eleDamageMod += buffElementDamageMultiplier;
+				damageMod += buffDamageMultiplier;
+				Attack attack = new Attack(playerStats.abilities[abilityID].damage * damageMod,
+				playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
+				attackList.Add(attack);
+				break;
+			//Generate item's attack
+			case AttackMode.Item:
+
+				break;
+			default:
+				break;
+		}
+
 	}
 	public void Ability (int part) {
 		startPos = transform.position;
@@ -179,9 +266,9 @@ public class PlayerCombatScript : MonoBehaviour {
 		float damageMod = 1;
 		float eleDamageMod = 1;
 		if (overFocusBonus) {
-			damageMod *=focusDamageBuff*overloadDamageBuff;
-			eleDamageMod *= focusDamageBuff*overloadDamageBuff;
-		}else{
+			damageMod *= focusDamageBuff * overloadDamageBuff;
+			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
+		} else {
 			if (focusBuffTurns > 0) {
 				damageMod *= focusBuffTurns;
 				eleDamageMod *= focusBuffTurns;
@@ -257,7 +344,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 
 	void EndPlayerTurn (bool setBool) {
-		if(playerStats.health>0){
+		if (playerStats.health > 0) {
 			if (focusBuffTurns > 0) {
 				focusBuffTurns--;
 			}
@@ -286,8 +373,8 @@ public class PlayerCombatScript : MonoBehaviour {
 				overFocusBonus = false;
 				combatController.enemyAttacks ();
 			}
-		}else{
-			combatController.LoseEncounter();
+		} else {
+			combatController.LoseEncounter ();
 		}
 	}
 
@@ -298,10 +385,10 @@ public class PlayerCombatScript : MonoBehaviour {
 		//focusDefensiveBonus
 		CancelInvoke ("BlockCountDown");
 		CancelInvoke ("DodgeCountDown");
-		if(playerStats.speed != 0){
+		if (playerStats.speed != 0) {
 			playerStats.dodgeModifier = playerStats.speed;
 		}
-		Debug.Log("Dodge Timer: "+dodgeTimer*playerStats.dodgeModifier);
+		Debug.Log ("Dodge Timer: " + dodgeTimer * playerStats.dodgeModifier);
 		if (damage >= 0 || elementDamage >= 0) {
 			if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
 				if (area) {
@@ -312,7 +399,7 @@ public class PlayerCombatScript : MonoBehaviour {
 					takeDamage (0, 0, 0, 0);
 				}
 			} else if (blockTimer > 0) {
-				Debug.Log("Block Timer: "+blockTimer*playerStats.blockModifier);
+				Debug.Log ("Block Timer: " + blockTimer * playerStats.blockModifier);
 				if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
 					returnedValue = "You blocked the attack and took no damage!";
 					takeDamage (0, 0, 0, 0);
@@ -320,7 +407,7 @@ public class PlayerCombatScript : MonoBehaviour {
 					bool blocked = false;
 					foreach (var blockModifier in blockTiers) {
 						if (blockTimer >= (blockModifier * blockDuration)) {
-							returnedValue = "You blocked the attack but took " + takeDamage (damage, elementDamage, element, 1-blockModifier, damageType) + "!";
+							returnedValue = "You blocked the attack but took " + takeDamage (damage, elementDamage, element, 1 - blockModifier, damageType) + "!";
 							blocked = true;
 							break;
 						}
@@ -345,7 +432,6 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		return returnedValue;
 	}
-	
 
 	string takeDamage (float damage, float elementDamage, Element element, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
@@ -365,10 +451,10 @@ public class PlayerCombatScript : MonoBehaviour {
 			damageModifier *= overloadDebuff;
 			eleModifier *= overloadDebuff;
 		}
-		if(buffDamageReduction != 0){
+		if (buffDamageReduction != 0) {
 			damageModifier *= buffDamageReduction;
 		}
-		
+
 		eleModifier *= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
 
 		damage = damage * damageModifier;
@@ -383,10 +469,10 @@ public class PlayerCombatScript : MonoBehaviour {
 			popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
 		}
 		updateStats ();
-		if(elementDamage == 0){
-			return damage.ToString("0.#");
-		}else{
-			return damage+" + "+ elementDamage + " "+element.GetType().Name;
+		if (elementDamage == 0) {
+			return damage.ToString ("0.#");
+		} else {
+			return damage + " + " + elementDamage + " " + element.GetType ().Name;
 		}
 	}
 
@@ -411,7 +497,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		damageModifier *= blockModifier;
 		eleModifier *= blockModifier;
 
-		if(buffDamageReduction > 0){
+		if (buffDamageReduction > 0) {
 			damageModifier *= buffDamageReduction;
 		}
 
@@ -424,12 +510,12 @@ public class PlayerCombatScript : MonoBehaviour {
 		GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 		popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
 		updateStats ();
-		if(elementDamage == 0){
-			return damage.ToString("0.#");
-		}else{
-			return damage+" + "+ elementDamage + " "+element.GetType().Name;
+		if (elementDamage == 0) {
+			return damage.ToString ("0.#");
+		} else {
+			return damage + " + " + elementDamage + " " + element.GetType ().Name;
 		}
-		
+
 	}
 
 	public void updateStats () {

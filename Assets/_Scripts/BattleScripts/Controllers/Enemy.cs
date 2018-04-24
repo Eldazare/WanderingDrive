@@ -140,6 +140,7 @@ public class Enemy : MonoBehaviour {
 
             enemyStats.health -= damageTaken;
             enemyStats.partList[part].DamageThisPart (damageTaken); // Part takes damage
+            combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateCurrentHP();
             // animator.SetTrigger("TakeDamage");
             if (damageTaken < 0) {
                 GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
@@ -159,6 +160,20 @@ public class Enemy : MonoBehaviour {
         } else {
             return "Your attack missed!";
         }
+    }
+    public float DamageTakenCalculation(float damage, float elementDamage, Element element, int part){
+            float damageTaken, damageModifier, eleModifier = 1;
+            eleModifier -= enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100;
+            damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
+
+            eleModifier *= enemyStats.partList[part].damageMod;
+            damageModifier *= enemyStats.partList[part].damageMod;
+
+            damage *= damageModifier;
+            elementDamage *= eleModifier;
+
+            damageTaken = damage + elementDamage;
+            return damageTaken;
     }
     public void StatusTextPopUp(string text){
 		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
