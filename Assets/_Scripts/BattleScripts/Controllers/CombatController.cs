@@ -127,16 +127,18 @@ public class CombatController : MonoBehaviour {
 		playerStats.speed = speed / j;
 
 		//Accessory generation
-		if (loadout.wornAccessories[0] != null) {
+		if (loadout.wornAccessories != null) {
 			foreach (var item in loadout.wornAccessories) {
-				Accessory acc = ArmorCreator.CreateAccessory (item.itemID);
-				int i = 0;
-				playerStats.damage += acc.damage;
-				playerStats.elementDamage += acc.elementDamage;
-				playerStats.magicArmor += acc.magicDefense;
-				foreach (var item1 in acc.elementResists) {
-					playerStats.elementWeakness[i] += item1;
-					i++;
+				if (item != null) {
+					Accessory acc = ArmorCreator.CreateAccessory (item.itemID);
+					int i = 0;
+					playerStats.damage += acc.damage;
+					playerStats.elementDamage += acc.elementDamage;
+					playerStats.magicArmor += acc.magicDefense;
+					foreach (var item1 in acc.elementResists) {
+						playerStats.elementWeakness [i] += item1;
+						i++;
+					}
 				}
 			}
 		}
