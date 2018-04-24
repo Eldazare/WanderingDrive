@@ -66,8 +66,6 @@ public class MenuController : MonoBehaviour {
 	}
 	public void AbilitiesMenu () {
 		DefaultButtons.SetActive (false);
-		targetHealthBar.SetActive (true);
-		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart);
 		AbilityButtons.SetActive (true);
 		if (player.frozen) {
 			overloadEnabled = false;
@@ -106,8 +104,6 @@ public class MenuController : MonoBehaviour {
 	public void Attack () {
 		player.CalculateDamage (AttackMode.Attack);
 		DefaultButtons.SetActive (false);
-		targetHealthBar.SetActive (true);
-		//targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(selectedPart);
 		abilityOrAttack = false;
 		StartCoroutine (CameraToEnemy ());
 	}
@@ -144,13 +140,14 @@ public class MenuController : MonoBehaviour {
 		} else {
 			player.Attack (selectedPart);
 		}
-
 	}
 	public void Ability (int slot) {
+		player.CalculateDamage(AttackMode.Ability);
 		AbilityButtons.SetActive (false);
 		abilityOrAttack = true;
 		player.abilityID = slot;
-		//player.CalculateDamage(AttackMode.Ability);
+		targetHealthBar.SetActive (true);
+		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart);
 		StartCoroutine (CameraToEnemy ());
 	}
 

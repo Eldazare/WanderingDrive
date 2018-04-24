@@ -21,6 +21,7 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health - damageTaken) / menu.targetedEnemy.enemyStats.maxHealth;
 		bar.healthText.text = (menu.targetedEnemy.enemyStats.health - damageTaken).ToString ("0.#") + "/" + menu.targetedEnemy.enemyStats.maxHealth.ToString ("0.#");
 		bar.healthFill2.fillAmount = (menu.targetedEnemy.enemyStats.health) / menu.targetedEnemy.enemyStats.maxHealth;
+		bar.buttonText.text = menu.targetedEnemy.name;
 	}
 	public void UpdateCurrentHP(){
 		StartCoroutine(LerpStatusBar());
@@ -34,5 +35,7 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 			bar.healthFill2.fillAmount -= Time.deltaTime;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}
+		yield return new WaitForSeconds(1f);
+		gameObject.SetActive(false);
 	}
 }

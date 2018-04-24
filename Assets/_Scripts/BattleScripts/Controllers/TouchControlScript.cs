@@ -16,7 +16,7 @@ public class TouchControlScript : MonoBehaviour {
         dragDistance = Screen.height * 15 / 100; //dragDistance is 15% height of the screen
     }
     void Update () {
-        if (Input.touchCount == 1 && enemyTurn) // user is touching the screen with a single touch
+        if (Input.touchCount == 1) // user is touching the screen with a single touch
         {
             if (Input.GetTouch (0).phase == TouchPhase.Began) {
                 Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);

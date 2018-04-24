@@ -38,7 +38,7 @@ public class CombatController : MonoBehaviour {
 		StartCoroutine (enemyAttacksRoutine ());
 	}
 	public void ResetPlayerDefence () {
-		touchController.enemyTurn = true;
+		player.defended = false;
 	}
 
 	public void StartCombat (Loadout loadout, List<NodeEnemy> nodeEnemyList) {
@@ -151,17 +151,17 @@ public class CombatController : MonoBehaviour {
 					yield return new WaitForSeconds (3f);
 					StartCoroutine (item.Attack ());
 					yield return new WaitUntil (() => enemyAttacked);
-					player.defended = false;
 				} else {
 					GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (item.transform.position.x, item.transform.position.y + 3, item.transform.position.z) - item.transform.right, Quaternion.identity) as GameObject;
 					popup.GetComponent<TextMesh> ().text = "Stunned";
 					yield return new WaitForSeconds (1f);
 				}
+				ResetPlayerDefence();
 			}
-			touchController.enemyTurn = false;
 			enemyTurns--;
 			if (enemyTurns <= 0) {
 				enemyTurns = 0;
+				touchController.enemyTurn = false;
 				menuController.PlayersTurn ();
 			} else {
 				enemyAttacks ();
@@ -303,7 +303,14 @@ public class CombatController : MonoBehaviour {
 			}
 			if (menuController.selectedPart < 0) {
 				menuController.SelectEnemyPart (0);
+				menuController.targetHealthBar.SetActive (true);
+				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(0);
+			}else{
+				menuController.targetHealthBar.SetActive (true);
+			menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(menuController.selectedPart);
 			}
+			
+			
 		} else {
 			foreach (var item in menuController.enemyPartCanvasButtons) {
 				item.SetActive (false);
