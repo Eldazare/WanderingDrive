@@ -9,6 +9,8 @@ TagManager:
   - UndyingObject
   - Enemy
   - NodeSpawner
+  - marker
+  - MapTile
   layers:
   - Default
   - TransparentFX

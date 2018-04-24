@@ -6,6 +6,8 @@ using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using Mapbox.Unity.Map;
 
+using Mapbox.Unity.MeshGeneration.Data;
+
 //using Mapbox.Examples;
 
 public class MarkerScript : MonoBehaviour {
@@ -71,6 +73,21 @@ public class MarkerScript : MonoBehaviour {
 
 		InvokeRepeating ("DistanceCheck", 1.0f, 1.0f);
 
+
+
+
+		Debug.Log ("LayerType: " + _map.VectorData.LayerType.ToString());
+		//UnityTile _tile;
+
+		//AbstractMapVisualizer _v;
+		//_v = ScriptableObject.CreateInstance<> ();
+
+
+		// !!!
+		//var collider = ve.GameObject.GetComponent<Collider>();
+		//var bounds = collider.bounds;
+		//var center = bounds.center;
+		//VectorEntity ent;
 	}
 
 
