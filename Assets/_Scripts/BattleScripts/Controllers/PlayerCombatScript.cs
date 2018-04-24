@@ -20,7 +20,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	bool focusedTurn, skipTurn, overloadDamageTakenBonus; //Focus and overload logic booleans
 	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
 	int overloadedTurn, focusBuffTurns;
-	int attackRange = 2; //How close the player moves to the enemy
+	int attackRange = 4; //How close the player moves to the enemy
 	public bool defended, attacked;
 	public int abilityID;
 	float distanceCovered, movingLength, startTime, lerpSpeed = 5f, overFocusTurn;
@@ -78,7 +78,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (playerStats.stamina < playerStats.maxStamina) {
 			playerStats.stamina = playerStats.maxStamina;
 		}
-
+		
 		if (healthRegen > 0) {
 			playerStats.health += healthRegen;
 			if (playerStats.health > playerStats.maxHealth) {
@@ -88,7 +88,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			yield return new WaitForSeconds (1f);
 			GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh> ().text = healthRegen.ToString ("0");
-			updateStats ();
+			UpdateStats ();
 			yield return new WaitForSeconds (1f);
 		}
 		menuController.proceed = true;
@@ -102,7 +102,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		attacked = false;
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, enemyPos);
-		InvokeRepeating ("moveToEnemy", 0, Time.deltaTime);
+		InvokeRepeating ("MoveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil (() => proceed);
 		animator.SetTrigger ("Attack");
 		proceed = false;
@@ -140,7 +140,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		yield return new WaitUntil (() => proceed);
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, startPos);
-		InvokeRepeating ("moveFromEnemy", 0, Time.deltaTime);
+		InvokeRepeating ("MoveFromEnemy", 0, Time.deltaTime);
 		proceed = false;
 	}
 
@@ -254,7 +254,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	public void Ability (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
-		StartCoroutine (AbilityRoutine (playerStats.abilityDamage (abilityID), playerStats.abilityElementDamage (abilityID), playerStats.abilityElement (abilityID), part, abilityID));
+		StartCoroutine (AbilityRoutine (playerStats.AbilityDamage (abilityID), playerStats.AbilityElementDamage (abilityID), playerStats.AbilityElement (abilityID), part, abilityID));
 	}
 
 	IEnumerator AbilityRoutine (float abilityDamage, float abilityElementDamage, Element abilityElement, int part, int ID) {
@@ -294,7 +294,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		yield return new WaitUntil (() => proceed);
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, startPos);
-		InvokeRepeating ("moveFromEnemy", Time.deltaTime, Time.deltaTime);
+		InvokeRepeating ("MoveFromEnemy", Time.deltaTime, Time.deltaTime);
 		proceed = false;
 	}
 
@@ -352,7 +352,7 @@ public class PlayerCombatScript : MonoBehaviour {
 				menuController.focusEnabled = false;
 				menuController.overloadEnabled = false;
 				if(overFocusTurn == 0){
-					combatController.enemyAttacks ();
+					combatController.EnemyAttacks ();
 				}else{
 					menuController.PlayersTurn ();
 				}
@@ -365,7 +365,7 @@ public class PlayerCombatScript : MonoBehaviour {
 				if (overloadedTurn == 0) {
 					menuController.focusEnabled = true;
 					menuController.overloadEnabled = true;
-					combatController.enemyAttacks ();
+					combatController.EnemyAttacks ();
 				} else {
 					menuController.PlayersTurn ();
 				}
@@ -373,7 +373,7 @@ public class PlayerCombatScript : MonoBehaviour {
 				focusedTurn = setBool;
 				menuController.focusEnabled = !setBool;
 				menuController.overloadEnabled = true;
-				combatController.enemyAttacks ();
+				combatController.EnemyAttacks ();
 			}
 		} else {
 			combatController.LoseEncounter ();
@@ -395,33 +395,33 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (damage >= 0 || elementDamage >= 0) {
 			if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
 				if (area) {
-					returnedValue = "You dodged but took " + takeDamage (damage, elementDamage, element, damageType) + " area damage!";
+					returnedValue = "You dodged but took " + TakeDamage (damage, elementDamage, element, damageType) + " area damage!";
 				} else {
 					//Dodged attack
 					returnedValue = "You dodged the attack!";
-					takeDamage (0, 0, 0, 0);
+					TakeDamage (0, 0, 0, 0);
 				}
 			} else if (blockTimer > 0) {
 				Debug.Log ("Block Timer: " + blockTimer * playerStats.blockModifier);
 				if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
 					returnedValue = "You blocked the attack and took no damage!";
-					takeDamage (0, 0, 0, 0);
+					TakeDamage (0, 0, 0, 0);
 				} else {
 					bool blocked = false;
 					foreach (var blockModifier in blockTiers) {
 						if (blockTimer >= (blockModifier * blockDuration)) {
-							returnedValue = "You blocked the attack but took " + takeDamage (damage, elementDamage, element, 1 - blockModifier, damageType) + "!";
+							returnedValue = "You blocked the attack but took " + TakeDamage (damage, elementDamage, element, 1 - blockModifier, damageType) + "!";
 							blocked = true;
 							break;
 						}
 					}
 					if (!blocked) {
-						returnedValue = "Your block failed and you took " + takeDamage (damage, elementDamage, element, damageType) + " damage!";
+						returnedValue = "Your block failed and you took " + TakeDamage (damage, elementDamage, element, damageType) + " damage!";
 					}
 				}
 			} else {
 				//Damage taken calculations
-				returnedValue = "You took " + takeDamage (damage, elementDamage, element, damageType) + " damage!";
+				returnedValue = "You took " + TakeDamage (damage, elementDamage, element, damageType) + " damage!";
 			}
 		} else {
 			returnedValue = "Enemy attack missed!";
@@ -435,7 +435,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		return returnedValue;
 	}
 
-	string takeDamage (float damage, float elementDamage, Element element, int damageType) {
+	string TakeDamage (float damage, float elementDamage, Element element, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
 		float armorAlgMod = CombatController.armorAlgorithmModifier;
 		if (damageType == 0) {
@@ -470,7 +470,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
 			popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
 		}
-		updateStats ();
+		UpdateStats ();
 		if (elementDamage == 0) {
 			return damage.ToString ("0.#");
 		} else {
@@ -478,7 +478,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 	}
 
-	string takeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
+	string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
 		if (damageType == 0) {
 			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.physicalArmor);
@@ -511,7 +511,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		playerStats.health -= damageTaken;
 		GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 		popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
-		updateStats ();
+		UpdateStats ();
 		if (elementDamage == 0) {
 			return damage.ToString ("0.#");
 		} else {
@@ -520,29 +520,29 @@ public class PlayerCombatScript : MonoBehaviour {
 
 	}
 
-	public void updateStats () {
-		menuController.updatePlayerHealth (playerStats.health, playerStats.maxHealth, playerStats.health / playerStats.maxHealth);
+	public void UpdateStats () {
+		menuController.UpdatePlayerHealth (playerStats.health, playerStats.maxHealth, playerStats.health / playerStats.maxHealth);
 	}
 
-	void moveToEnemy () {
+	void MoveToEnemy () {
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		if (Vector3.Distance (enemyPos, transform.position) > attackRange) {
 			transform.position = Vector3.Lerp (transform.position, enemyPos, distanceCovered / movingLength);
 			//transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		} else {
 			proceed = true;
-			CancelInvoke ("moveToEnemy");
+			CancelInvoke ("MoveToEnemy");
 		}
 	}
-	void moveFromEnemy () {
+	void MoveFromEnemy () {
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		if (Vector3.Distance (startPos, transform.position) > 0.1) {
 			transform.position = Vector3.Lerp (transform.position, startPos, distanceCovered / movingLength);
 			//transform.Translate((startPos-transform.position)*Time.deltaTime*5);
 		} else {
-			CancelInvoke ("moveFromEnemy");
+			CancelInvoke ("MoveFromEnemy");
 			EndPlayerTurn (false);
-			combatController.cameraScript.ResetCamera ();
+			combatController.cameraScript.ResetCameraAfterAttack ();
 		}
 	}
 	void BlockCountDown () {

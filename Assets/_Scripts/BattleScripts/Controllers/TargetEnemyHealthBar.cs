@@ -19,19 +19,19 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 			}
 		}
 		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health - damageTaken) / menu.targetedEnemy.enemyStats.maxHealth;
-		bar.healthText.text = (menu.targetedEnemy.enemyStats.health - damageTaken).ToString ("0.#") + "/" + menu.targetedEnemy.enemyStats.maxHealth.ToString ("0.#");
-		bar.healthFill2.fillAmount = (menu.targetedEnemy.enemyStats.health) / menu.targetedEnemy.enemyStats.maxHealth;
-		bar.buttonText.text = menu.targetedEnemy.name;
+		bar.healthText.text = menu.targetedEnemy.enemyStats.health.ToString ("0.#") + " -> " + (menu.targetedEnemy.enemyStats.health-damageTaken).ToString ("0.#");
+		bar.healthFill2.fillAmount = menu.targetedEnemy.enemyStats.health / menu.targetedEnemy.enemyStats.maxHealth;
+		bar.buttonText.text = menu.targetedEnemy.enemyName;
 	}
 	public void UpdateCurrentHP(){
 		StartCoroutine(LerpStatusBar());
 	}
 	IEnumerator LerpStatusBar(){
 		EnemyHealthBarScript bar = GetComponent<EnemyHealthBarScript> ();
-		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health) / menu.targetedEnemy.enemyStats.maxHealth;
-		bar.healthText.text = (menu.targetedEnemy.enemyStats.health).ToString ("0.#") + "/" + menu.targetedEnemy.enemyStats.maxHealth.ToString ("0.#");
+		bar.healthImage.fillAmount = menu.targetedEnemy.enemyStats.health / menu.targetedEnemy.enemyStats.maxHealth;
 		yield return new WaitForSeconds(1f);
 		while(bar.healthFill2.fillAmount > bar.healthImage.fillAmount){
+			bar.healthText.text = menu.targetedEnemy.enemyStats.health.ToString ("0.#") + " -> " + (menu.targetedEnemy.enemyStats.health-damageTaken).ToString ("0.#");
 			bar.healthFill2.fillAmount -= Time.deltaTime;
 			yield return new WaitForSeconds(Time.deltaTime);
 		}

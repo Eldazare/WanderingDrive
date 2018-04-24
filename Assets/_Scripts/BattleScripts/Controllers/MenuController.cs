@@ -166,12 +166,12 @@ public class MenuController : MonoBehaviour {
 		player.PlayerOverload ();
 	}
 	//UI updates
-	public void updatePlayerHealth (float health, float maxHealth, float percentage) {
+	public void UpdatePlayerHealth (float health, float maxHealth, float percentage) {
 		playerHealthFill.fillAmount = percentage;
 		playerHealthText.text = health.ToString ("0.#") + "/" + maxHealth.ToString ("0");
 		StartCoroutine (LerpStatusBar (playerHealthRedFill, playerHealthFill.fillAmount));
 	}
-	public void updateEnemyHealth (float health, float maxHealth, float percentage, Enemy enemyForListSearch) {
+	public void UpdateEnemyHealth (float health, float maxHealth, float percentage, Enemy enemyForListSearch) {
 		EnemyHealthBarScript healthbar = enemyHealthBars[enemyHealthBars.Count - 1 - (combatController.enemyList.IndexOf (enemyForListSearch))].GetComponent<EnemyHealthBarScript> ();
 		healthbar.healthImage.fillAmount = percentage;
 		healthbar.healthText.text = health.ToString ("0.#") + "/" + maxHealth.ToString ("0");
@@ -185,7 +185,7 @@ public class MenuController : MonoBehaviour {
 		}
 	}
 
-	public void messageToScreen (string message) {
+	public void MessageToScreen (string message) {
 		StartCoroutine (WriteText (message));
 	}
 	IEnumerator WriteText (string message) {
@@ -240,7 +240,10 @@ public class MenuController : MonoBehaviour {
 				i--;
 			}
 		} else {
-			combatController.enemyAttacks ();
+			GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (player.transform.position.x, player.transform.position.y + 3, player.transform.position.z) - player.transform.right, Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh> ().text = "Stunned";
+			yield return new WaitForSeconds (1f);
+			combatController.EnemyAttacks ();
 		}
 	}
 	void UpdateAllEnemyStats () {

@@ -29,11 +29,12 @@ public class Enemy : MonoBehaviour {
         startPos = transform.position;
         yield return new WaitUntil (() => proceed);
         proceed = false;
-        InvokeRepeating ("moveToPlayer", 0, Time.deltaTime);
+        InvokeRepeating ("MoveToPlayer", 0, Time.deltaTime);
         yield return new WaitUntil (() => proceed);
-        animator.SetTrigger ("Attack");
         proceed = false;
+        animator.SetTrigger ("Attack");
         yield return new WaitUntil (() => proceed);
+        proceed = false;
         // TODO: Verify attack
         int randIndex = Random.Range (0, enemyStats.attackList.Count);
         EnemyAttack chosenAttack = enemyStats.attackList[randIndex];
@@ -51,8 +52,7 @@ public class Enemy : MonoBehaviour {
         } else {
             combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
         }
-        InvokeRepeating ("moveFromPlayer", 0, Time.deltaTime);
-        proceed = false;
+        InvokeRepeating ("MoveFromPlayer", 0, Time.deltaTime);
     }
     public void ApplyEnemyBuffs () {
         StartCoroutine(ApplyBuffs());
@@ -98,21 +98,21 @@ public class Enemy : MonoBehaviour {
         proceed = true;
     }
 
-    void moveToPlayer () {
+    void MoveToPlayer () {
         if (Vector3.Distance (combatController.player.transform.position, transform.position) > 4) {
             //transform.Translate((combatController.player.transform.position-transform.position)*Time.deltaTime*enemyStats.quickness);
             transform.position = Vector3.MoveTowards (transform.position, combatController.player.transform.position, Time.deltaTime * enemyStats.quickness + 0.5f); //Quickness as movement speed
         } else {
             proceed = true;
-            CancelInvoke ("moveToPlayer");
+            CancelInvoke ("MoveToPlayer");
         }
     }
-    void moveFromPlayer () {
+    void MoveFromPlayer () {
         if (Vector3.Distance (startPos, transform.position) > 0.1) {
             //transform.Translate((startPos-transform.position)*Time.deltaTime*enemyStats.quickness);
             transform.position = Vector3.MoveTowards (transform.position, startPos, Time.deltaTime * enemyStats.quickness + 1); //Quickness as movement speed
         } else {
-            CancelInvoke ("moveFromPlayer");
+            CancelInvoke ("MoveFromPlayer");
             combatController.enemyAttacked = true;
         }
     }

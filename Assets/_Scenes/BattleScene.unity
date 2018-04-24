@@ -3582,6 +3582,7 @@ MonoBehaviour:
   enemyAttacked: 0
   enemyTurns: 0
   playerDead: 0
+  proceedToEnemyAttacks: 0
 --- !u!1 &848014620
 GameObject:
   m_ObjectHideFlags: 0
@@ -6909,6 +6910,21 @@ Prefab:
     - target: {fileID: 1950548089300006, guid: 4f0c054b51af0c44b9b72a5dc110ce9c, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114799880627074944, guid: 4f0c054b51af0c44b9b72a5dc110ce9c,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114799880627074944, guid: 4f0c054b51af0c44b9b72a5dc110ce9c,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114799880627074944, guid: 4f0c054b51af0c44b9b72a5dc110ce9c,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114148107440979236, guid: 4f0c054b51af0c44b9b72a5dc110ce9c, type: 2}

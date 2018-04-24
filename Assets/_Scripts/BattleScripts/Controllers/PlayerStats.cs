@@ -19,13 +19,13 @@ public class PlayerStats {
 		maxHealth = 100;
 		health = maxHealth;
 	}
-	public float abilityDamage(int abilityID){
+	public float AbilityDamage(int abilityID){
 		return abilities[abilityID].damage;
 	}
-	public float abilityElementDamage(int abilityID){
+	public float AbilityElementDamage(int abilityID){
 		return abilities[abilityID].elementDamage;
 	}
-	public Element abilityElement(int abilityID){
+	public Element AbilityElement(int abilityID){
 		return abilities[abilityID].element;
 	}
 }

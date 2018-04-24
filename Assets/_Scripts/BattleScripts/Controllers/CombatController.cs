@@ -20,6 +20,7 @@ public class CombatController : MonoBehaviour {
 	public int enemyTurns;
 	public bool playerDead;
 	bool proceed;
+	public bool proceedToEnemyAttacks;
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 
 	//For Debugging purposes
@@ -34,8 +35,8 @@ public class CombatController : MonoBehaviour {
 			player.Block();
 		}
 	}
-	public void enemyAttacks () {
-		StartCoroutine (enemyAttacksRoutine ());
+	public void EnemyAttacks () {
+		StartCoroutine (EnemyAttacksRoutine ());
 	}
 	public void ResetPlayerDefence () {
 		player.defended = false;
@@ -62,13 +63,15 @@ public class CombatController : MonoBehaviour {
 
 		GenerateArmors (loadout);
 		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
-		player.updateStats ();
+		player.UpdateStats ();
 
 		for (int i = 0; i < nodeEnemyList.Count; i++) {
 			EnemyCreation (i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
 		} 
+
 		//EnemyCreation (0, nodeEnemyList[0].subtype, nodeEnemyList[0].id);
 		//Temporary ability generation
+
 		Ability spell = new FireBall (player);
 		spell.staminaCost = 10;
 		spell.damage = 0;
@@ -139,21 +142,25 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 
-	IEnumerator enemyAttacksRoutine () {
-		yield return new WaitForSeconds (1f);
+	IEnumerator EnemyAttacksRoutine () {
+		yield return new WaitForSeconds (2f);
 		if (!playerDead) {
 			menuController.targetHealthBar.SetActive (false);
 			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade ();
-			foreach (var item in enemyList) {
-				item.ApplyEnemyBuffs ();
-				if (!item.stunned) {
-					yield return item.Attack ();
-					yield return new WaitUntil (() => enemyAttacked);
-				} else {
-					GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (item.transform.position.x, item.transform.position.y + 3, item.transform.position.z) - item.transform.right, Quaternion.identity) as GameObject;
-					popup.GetComponent<TextMesh> ().text = "Stunned";
-					yield return new WaitForSeconds (1f);
+			foreach(var item in enemyList){
+				if(item != null){
+					item.proceed = false;
+					item.ApplyEnemyBuffs ();
+					if(!item.stunned){
+						yield return item.Attack ();
+						yield return new WaitUntil (() => enemyAttacked);
+						enemyAttacked = false;
+					}else{
+						GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (item.transform.position.x, item.transform.position.y + 3, item.transform.position.z) - item.transform.right, Quaternion.identity) as GameObject;
+						popup.GetComponent<TextMesh> ().text = "Stunned";
+						yield return new WaitForSeconds (1f);
+					}
 				}
 				ResetPlayerDefence();
 			}
@@ -163,7 +170,7 @@ public class CombatController : MonoBehaviour {
 				touchController.enemyTurn = false;
 				menuController.PlayersTurn ();
 			} else {
-				enemyAttacks ();
+				EnemyAttacks ();
 			}
 		}
 	}
@@ -276,13 +283,13 @@ public class CombatController : MonoBehaviour {
 		worldObj.EndCombat (loots);
 	}
 	public void HitPlayer (float damage, float elementDamage, Element element, bool area, int damageType) {
-		menuController.messageToScreen (player.GetHit (damage, elementDamage, element, area, damageType));
+		menuController.MessageToScreen (player.GetHit (damage, elementDamage, element, area, damageType));
 	}
 	public void HitEnemy (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
-		menuController.messageToScreen (menuController.targetedEnemy.GetHit (damage, elementDamage, element, part, accuracy, weaknessType));
+		menuController.MessageToScreen (menuController.targetedEnemy.GetHit (damage, elementDamage, element, part, accuracy, weaknessType));
 	}
 	public void updateEnemyStats (float health, float maxhealth, Enemy enemy) {
-		menuController.updateEnemyHealth (health, maxhealth, health / maxhealth, enemy);
+		menuController.UpdateEnemyHealth (health, maxhealth, health / maxhealth, enemy);
 	}
 	public void ActivatePartCanvas (Enemy enemy) {
 		int i = 0;
