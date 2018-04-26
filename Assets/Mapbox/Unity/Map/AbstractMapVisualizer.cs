@@ -189,6 +189,8 @@ namespace Mapbox.Unity.Map
 				unityTile.transform.SetParent(_map.Root, false);
 			}
 
+
+
 			unityTile.Initialize(_map, tileId, _map.WorldRelativeScale, _map.AbsoluteZoom, _loadingTexture);
 			PlaceTile(tileId, unityTile, _map);
 

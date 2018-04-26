@@ -35,14 +35,15 @@ public class MarkerScript : MonoBehaviour {
 
 
 
-
+	[SerializeField]
+	List<GameObject> _mapTiles;
 
 	UndyingObject theObject;
 
 
-	public List<GameObject> localNodeList;
-	public float trueRadius;
-	public int nodeCount;
+	//public List<GameObject> localNodeList;
+	//public float trueRadius;
+	//public int nodeCount;
 
 
 
@@ -53,7 +54,11 @@ public class MarkerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		SearchTiles ();
+		//Invoke ("SearchTiles", 0.2f);
+
+
+
 		theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject>();
 		theObject.GetLastMarkers (_locations);
 
@@ -62,7 +67,8 @@ public class MarkerScript : MonoBehaviour {
 		if (_locations.Count == 0) {
 			Debug.Log ("Empty _locations list");
 			_locations = new List<Vector2d> ();
-			Invoke ("PlopMarkers", 0.8f);
+			Invoke ("NewPlop", 0.8f);
+			//Invoke ("PlopMarkers", 0.8f);
 		} else {
 			Debug.Log ("NOT empty _locations list");
 			Invoke ("storedPlop", 0.8f);
@@ -72,8 +78,6 @@ public class MarkerScript : MonoBehaviour {
 		// I don't know why this happens but if I had to guess, the map is probably doing some loading so the prefabs don't spawn quite in the right place.
 
 		InvokeRepeating ("DistanceCheck", 1.0f, 1.0f);
-
-
 
 
 		Debug.Log ("LayerType: " + _map.VectorData.LayerType.ToString());
@@ -88,6 +92,52 @@ public class MarkerScript : MonoBehaviour {
 		//var bounds = collider.bounds;
 		//var center = bounds.center;
 		//VectorEntity ent;
+	}
+
+	// Searches for the map tiles.
+	// If it can't find all 9 of them, it tries again. Because apparently if the tiles are still loading, it can't find any of them. 
+	void SearchTiles () {
+		_mapTiles = new List<GameObject>(GameObject.FindGameObjectsWithTag("MapTile"));
+
+		if (_mapTiles.Count >= 9) {
+			Debug.Log ("All tiles accounted for.");
+			//NewPlop ();
+		} else {
+			Invoke ("SearchTiles", 0.01f);
+		}
+	}
+
+
+	// Update on PlopMarkers. Spawns 5 nodes per map tile. Currently only used for the initial plop, as it needs some work.
+	void NewPlop(){
+		SearchTiles ();
+		_locations.Clear ();
+
+		if (_spawnedObjects.Count < NumberOfMarkers) {
+			int l = _spawnedObjects.Count;
+			foreach (GameObject tile in _mapTiles) {
+				for (int i = 0; i < NumberOfMarkers / 9; i++) {
+					float boundX = tile.GetComponent<MeshRenderer> ().bounds.size.x / 2;
+					float boundZ = tile.GetComponent<MeshRenderer> ().bounds.size.z / 2;
+
+					Vector3 spawnPos = tile.transform.position + new Vector3 (Random.Range (-boundX, boundX), 0, Random.Range (-boundZ, boundZ));
+
+					Vector2d vec = _map.WorldToGeoPosition (spawnPos);
+					_locations.Add (vec);
+				}
+
+				for (int i = 0; i < _locations.Count; i++) {
+					SpawnNode (_locations [i]);
+				}
+
+				List<Vector2d> temp = new List<Vector2d> ();
+				for (int i = 0; i < _spawnedObjects.Count; i++) {
+					temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
+				}
+
+				theObject.SetLastMarkers (temp);
+			}
+		}
 	}
 
 
@@ -184,6 +234,8 @@ public class MarkerScript : MonoBehaviour {
 	}
 
 
+
+
 	// Checks the distance between the player and each marker on map.
 	// This may not be the most efficient method.
 	void DistanceCheck () {
@@ -220,6 +272,7 @@ public class MarkerScript : MonoBehaviour {
 
 
 			PlopMarkers ();
+			//NewPlop();
 		}
 		rem.Clear ();
 
@@ -246,7 +299,7 @@ public class MarkerScript : MonoBehaviour {
 		wNode.latitude = location.x;
 		wNode.longitude = location.y;
 
-		localNodeList.Add (node); // <- This may be reduntant
+		//localNodeList.Add (node);
 		_spawnedObjects.Add(node);
 		// TODO: World to local position
 	}
