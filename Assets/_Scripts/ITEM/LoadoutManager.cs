@@ -188,20 +188,31 @@ public class LoadoutManager : MonoBehaviour {
         if (currentItemType == ItemType.Wep) {
             if (chosenHand == 1) {
                 myLoadout.AddMainHand(weaponList[counter]);
+                itemImage = GameObject.FindGameObjectWithTag("MainH").GetComponent<Image>();
+                itemImage.color = Color.green;
             }
             else if (chosenHand == 0) {
                 myLoadout.AddOffHand(weaponList[counter]);
+                itemImage = GameObject.FindGameObjectWithTag("OffH").GetComponent<Image>();
+                itemImage.color = Color.green;
             }
         }
         else if (currentItemType == ItemType.Cons) {
             myLoadout.AddCombatConsumable(chosenConsSlot, combatConsumables.IndexOf(currentItem));
+            itemImage = GameObject.FindGameObjectWithTag("cons" + chosenConsSlot.ToString()).GetComponent<Image>();
+            itemImage.color = Color.green;
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
 				myLoadout.AddArmor(armorLists[currentArmorIndex][counter]);
+                itemImage = GameObject.FindGameObjectWithTag(currentArmorIndex.ToString()).GetComponent<Image>();
+                itemImage.color = Color.green;
+
             }
             else if (currentItemSubType == ItemSubType.Accessory) {
 				myLoadout.AddAccessory(armorLists[currentArmorIndex][counter], chosenAccessorySlot);
+                itemImage = GameObject.FindGameObjectWithTag("acces" + chosenAccessorySlot.ToString()).GetComponent<Image>();
+                itemImage.color = Color.green;
             }
         }
     }

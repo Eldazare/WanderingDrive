@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 85974245}
   m_Layer: 5
   m_Name: Cons4
-  m_TagString: Untagged
+  m_TagString: cons3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 151551076}
   m_Layer: 5
   m_Name: Boots
-  m_TagString: Untagged
+  m_TagString: 4
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1340,7 +1340,7 @@ GameObject:
   - component: {fileID: 420003900}
   m_Layer: 5
   m_Name: OffHand
-  m_TagString: Untagged
+  m_TagString: OffH
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2083,7 +2083,7 @@ GameObject:
   - component: {fileID: 800224988}
   m_Layer: 5
   m_Name: Accessory_1
-  m_TagString: Untagged
+  m_TagString: acces0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2597,7 +2597,7 @@ GameObject:
   - component: {fileID: 872381630}
   m_Layer: 5
   m_Name: Cons2
-  m_TagString: Untagged
+  m_TagString: cons1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2792,7 +2792,7 @@ GameObject:
   - component: {fileID: 887852379}
   m_Layer: 5
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3466,7 +3466,7 @@ GameObject:
   - component: {fileID: 1263545767}
   m_Layer: 5
   m_Name: Cons1
-  m_TagString: Untagged
+  m_TagString: cons0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3801,7 +3801,7 @@ GameObject:
   - component: {fileID: 1304761032}
   m_Layer: 5
   m_Name: Arms
-  m_TagString: Untagged
+  m_TagString: 1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4044,7 +4044,7 @@ GameObject:
   - component: {fileID: 1373501064}
   m_Layer: 5
   m_Name: Legs
-  m_TagString: Untagged
+  m_TagString: 3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4885,7 +4885,7 @@ GameObject:
   - component: {fileID: 1814657045}
   m_Layer: 5
   m_Name: Cons3
-  m_TagString: Untagged
+  m_TagString: cons2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5006,7 +5006,7 @@ GameObject:
   - component: {fileID: 1835354456}
   m_Layer: 5
   m_Name: Accessory_2
-  m_TagString: Untagged
+  m_TagString: acces1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5756,7 +5756,7 @@ GameObject:
   - component: {fileID: 2102440168}
   m_Layer: 5
   m_Name: MainHand
-  m_TagString: Untagged
+  m_TagString: MainH
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5999,7 +5999,7 @@ GameObject:
   - component: {fileID: 2118782156}
   m_Layer: 5
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: 0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
