@@ -27,6 +27,7 @@ public class MarkerScript : MonoBehaviour {
 	AbstractMap _map;
 
 	public List <Vector2d> _locations;
+	public List <MarkerDataContainer> _storedMarkers;
 
 	[SerializeField]
 	GameObject _markerPrefab;
@@ -57,10 +58,20 @@ public class MarkerScript : MonoBehaviour {
 		SearchTiles ();
 		//Invoke ("SearchTiles", 0.2f);
 
-
-
 		theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject>();
-		theObject.GetLastMarkers (_locations);
+
+
+		if (_locations.Count == 0) {
+			_locations = new List<Vector2d> ();
+		}
+		_storedMarkers = new List<MarkerDataContainer>();
+		theObject.GetLastMarkers (_storedMarkers);
+		if (_storedMarkers.Count > 0) {
+			
+			for (int i = 0; i < _storedMarkers.Count; i++) {
+				_locations.Add (_storedMarkers [i]._latlong);
+			}
+		}
 
 
 		_spawnedObjects = new List<GameObject>();
@@ -112,8 +123,10 @@ public class MarkerScript : MonoBehaviour {
 	void NewPlop(){
 		SearchTiles ();
 		_locations.Clear ();
+		_storedMarkers.Clear ();
 
 		if (_spawnedObjects.Count < NumberOfMarkers) {
+			List<MarkerDataContainer> temp = new List<MarkerDataContainer> ();
 			int l = _spawnedObjects.Count;
 			foreach (GameObject tile in _mapTiles) {
 				for (int i = 0; i < NumberOfMarkers / 9; i++) {
@@ -125,25 +138,36 @@ public class MarkerScript : MonoBehaviour {
 					Vector2d vec = _map.WorldToGeoPosition (spawnPos);
 					_locations.Add (vec);
 				}
-
-				for (int i = 0; i < _locations.Count; i++) {
-					SpawnNode (_locations [i]);
-				}
-
-				List<Vector2d> temp = new List<Vector2d> ();
-				for (int i = 0; i < _spawnedObjects.Count; i++) {
-					temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
-				}
-
-				theObject.SetLastMarkers (temp);
 			}
+
+			for (int i = 0; i < _locations.Count; i++) {
+				SpawnNode (_locations [i], -1);
+			}
+
+
+			for (int i = 0; i < _spawnedObjects.Count; i++) {
+				MarkerDataContainer mark = new MarkerDataContainer ();
+
+				mark._nodeType = _spawnedObjects [i].GetComponent<WorldNode> ().nodeType;
+				mark._id = _spawnedObjects [i].GetComponent<WorldNode> ().id;
+				mark._time = _spawnedObjects [i].GetComponent<WorldNode> ().time;
+				mark._latlong = _map.WorldToGeoPosition (_spawnedObjects [i].transform.position);
+
+				temp.Add (mark);
+				//temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
+			}
+
+				//theObject.SetLastMarkers (temp);
+				//Debug.Log ("ADDED MARKS: " + temp.Count);
+			
+			theObject.SetLastMarkers (temp);
 		}
 	}
 
 
 	void storedPlop(){
 		for (int i = 0; i < _locations.Count; i++) {
-			SpawnNode (_locations[i]);
+			SpawnNode (_storedMarkers[i]._latlong, i);
 		}
 	}
 
@@ -152,6 +176,7 @@ public class MarkerScript : MonoBehaviour {
 
 		float nonRange = InitialNonSpawnRange;
 		_locations.Clear ();
+		_storedMarkers.Clear ();
 
 		if (_spawnedObjects.Count < NumberOfMarkers) {
 			
@@ -216,17 +241,25 @@ public class MarkerScript : MonoBehaviour {
 
 
 				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
-				SpawnNode (_locations[i]);
+				SpawnNode (_locations[i], -1);
 			}
 
 			InitialNonSpawnRange = NonSpawnRange;
 
 
-			List<Vector2d> temp = new List<Vector2d> ();
+			List<MarkerDataContainer> temp = new List<MarkerDataContainer> ();
 			for (int i = 0; i < _spawnedObjects.Count; i++) {
-				temp.Add (_map.WorldToGeoPosition(_spawnedObjects[i].transform.position));
-			}
+				MarkerDataContainer mark = new MarkerDataContainer ();
 
+				mark._nodeType = _spawnedObjects [i].GetComponent<WorldNode> ().nodeType;
+				mark._id = _spawnedObjects [i].GetComponent<WorldNode> ().id;
+				mark._time = _spawnedObjects [i].GetComponent<WorldNode> ().time;
+				mark._latlong = _map.WorldToGeoPosition (_spawnedObjects [i].transform.position);
+
+				temp.Add (mark);
+				//temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
+			}
+			//Debug.Log ("ADDED MARKS: " + temp.Count);
 			theObject.SetLastMarkers (temp);
 
 			//_locations.Clear ();
@@ -285,7 +318,7 @@ public class MarkerScript : MonoBehaviour {
 
 
 	// LOCAL
-	private void SpawnNode(Vector2d location){
+	private void SpawnNode(Vector2d location, int index){
 
 		//Sprite theSprite = NodeSpriteContainer.GetSprite (nodeType, id);
 		//GameObject node = Instantiate(new GameObject(), new Vector3(0,0,0), Quaternion.identity) as GameObject;
@@ -294,11 +327,21 @@ public class MarkerScript : MonoBehaviour {
 
 		//node.AddComponent<SpriteRenderer> ().sprite = theSprite;
 		WorldNode wNode = node.AddComponent<WorldNode> ();
-		NodeSpawner.WorldNodeRandoms (wNode);
-		wNode.GetNodeColor ();
-		wNode.latitude = location.x;
-		wNode.longitude = location.y;
-
+		if (index >= 0) {
+			//Debug.Log ("Stored plop");
+			wNode.nodeType = _storedMarkers [index]._nodeType;
+			wNode.id = _storedMarkers [index]._id;
+			wNode.time = _storedMarkers [index]._time;
+			wNode.latitude = _storedMarkers [index]._latlong.x;
+			wNode.longitude = _storedMarkers [index]._latlong.y;
+			wNode.GetNodeColor ();
+		} else {
+			//Debug.Log ("Random plops");
+			NodeSpawner.WorldNodeRandoms (wNode);
+			wNode.GetNodeColor ();
+			wNode.latitude = location.x;
+			wNode.longitude = location.y;
+		}
 		//localNodeList.Add (node);
 		_spawnedObjects.Add(node);
 		// TODO: World to local position

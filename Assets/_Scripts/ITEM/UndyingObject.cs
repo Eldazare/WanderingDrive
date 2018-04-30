@@ -22,7 +22,8 @@ public class UndyingObject : MonoBehaviour {
 	List<NodeEnemy> storedNode;
 
 	public GameObject interactedNode;
-	public List<Vector2d> storedMarkers;
+	//public List<Vector2d> storedMarkers;
+	public List<MarkerDataContainer> storedMarkers;
 
 
 	void Start () {
@@ -37,6 +38,8 @@ public class UndyingObject : MonoBehaviour {
 		int loadoutCount = 10;
 
 		loadoutList = new LoadoutsContainer(loadoutCount);
+
+		storedMarkers = new List<MarkerDataContainer> ();
 
         // Get location data here
         //StartCoroutine (UpdateLocationData(10)); // Enable this when testing location
@@ -77,18 +80,24 @@ public class UndyingObject : MonoBehaviour {
         yield return SceneManager.LoadSceneAsync ("TheWorld");
     }
 
-	public void GetLastMarkers(List<Vector2d> vl){
+	public void GetLastMarkers(List<MarkerDataContainer> vl){
 		//vl = storedMarkers;
 		for (int i = 0; i < storedMarkers.Count; i++) {
 			vl.Add (storedMarkers [i]);
 		}
+		Debug.Log ("Last markers get, entries: vl: " + vl.Count + ", sM: " + storedMarkers.Count);
+
+		if (storedMarkers.Count > 0) {
+			Debug.Log ("latlong of entry 0: " + storedMarkers [0]._latlong.x + ", " + storedMarkers[0]._latlong.y);
+		}
 	}
-	public void SetLastMarkers(List<Vector2d> vl){
+	public void SetLastMarkers(List<MarkerDataContainer> vl){
 		//storedMarkers = vl;
 		storedMarkers.Clear();
 		for (int i = 0; i < vl.Count; i++) {
 			storedMarkers.Add (vl[i]);
 		}
+		Debug.Log ("Last markers set, entries: " + storedMarkers.Count);
 	}
 
 	public void ReceiveChosenLoadout(int loadoutIndex){
