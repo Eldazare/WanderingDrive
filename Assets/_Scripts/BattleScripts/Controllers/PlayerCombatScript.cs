@@ -23,7 +23,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	int attackRange = 4; //How close the player moves to the enemy
 	public bool defended, attacked;
 	public int abilityID;
-	float distanceCovered, movingLength, startTime, lerpSpeed = 5f, overFocusTurn;
+	float distanceCovered, movingLength, startTime, lerpSpeed = 4f, overFocusTurn;
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff> ();
@@ -530,7 +530,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	void MoveToEnemy () {
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		if (Vector3.Distance (enemyPos, transform.position) > attackRange) {
-			transform.position = Vector3.Lerp (transform.position, enemyPos, distanceCovered / movingLength);
+			transform.position = Vector3.Lerp (transform.position, enemyPos, distanceCovered / movingLength*2);
 			//transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		} else {
 			proceed = true;
@@ -540,7 +540,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	void MoveFromEnemy () {
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		if (Vector3.Distance (startPos, transform.position) > 0.1) {
-			transform.position = Vector3.Lerp (transform.position, startPos, distanceCovered / movingLength);
+			transform.position = Vector3.Lerp (transform.position, startPos, distanceCovered / movingLength*5);
 			//transform.Translate((startPos-transform.position)*Time.deltaTime*5);
 		} else {
 			CancelInvoke ("MoveFromEnemy");
