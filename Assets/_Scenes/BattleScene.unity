@@ -994,12 +994,12 @@ Prefab:
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Ability
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
@@ -3894,6 +3894,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 337843892}
   enemyTurn: 0
+  testi: {fileID: 0}
+  MinSwipeLength: 50
 --- !u!1 &883709052
 GameObject:
   m_ObjectHideFlags: 0
@@ -4438,6 +4440,21 @@ Prefab:
         type: 2}
       propertyPath: m_FontData.m_MinSize
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
+        type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
+        type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
+        type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d7a8072785e28643839294ce83ddff8, type: 2}
@@ -7898,12 +7915,12 @@ Prefab:
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Ability
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}

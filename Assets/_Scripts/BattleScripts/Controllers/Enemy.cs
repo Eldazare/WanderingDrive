@@ -70,7 +70,6 @@ public class Enemy : MonoBehaviour {
         frozen = false;
         paralyzed = false;
         hold = false;
-        yield return new WaitForSeconds(1f);
         for (int i = 0; i < buffElementalWeakness.Count; i++) {
             buffElementalWeakness[i] = 0;
         }
@@ -89,7 +88,6 @@ public class Enemy : MonoBehaviour {
             if (enemyStats.health > enemyStats.maxHealth) {
                 enemyStats.health = enemyStats.maxHealth;
             }
-            yield return new WaitForSeconds(1f);
             GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
             popup.GetComponent<TextMesh> ().text = healthRegen.ToString ("0.#");
             updateStats();
@@ -110,12 +108,13 @@ public class Enemy : MonoBehaviour {
     void MoveFromPlayer () {
         if (Vector3.Distance (startPos, transform.position) > 0.1) {
             //transform.Translate((startPos-transform.position)*Time.deltaTime*enemyStats.quickness);
-            transform.position = Vector3.MoveTowards (transform.position, startPos, Time.deltaTime * enemyStats.quickness + 1); //Quickness as movement speed
+            transform.position = Vector3.MoveTowards (transform.position, startPos, Time.deltaTime + 3); //Quickness as movement speed
         } else {
             CancelInvoke ("MoveFromPlayer");
             combatController.enemyAttacked = true;
         }
     }
+    
     public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
         float damageTaken, damageModifier, eleModifier = 1, weaknessTypeAccuracy = 1;
         if (weaknessType == enemyStats.weaknessType) {

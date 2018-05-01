@@ -24,9 +24,6 @@ public class CombatController : MonoBehaviour {
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 
 	//For Debugging purposes
-	void Start(){
-		Screen.orientation = ScreenOrientation.LandscapeRight;
-	}
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.D)){
 			player.Dodge(0);
@@ -145,7 +142,6 @@ public class CombatController : MonoBehaviour {
 	}
 
 	IEnumerator EnemyAttacksRoutine () {
-		yield return new WaitForSeconds (2f);
 		if (!playerDead) {
 			menuController.targetHealthBar.SetActive (false);
 			touchController.enemyTurn = true;
@@ -330,7 +326,7 @@ public class CombatController : MonoBehaviour {
 				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(0);
 			}else{
 				menuController.targetHealthBar.SetActive (true);
-			menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(menuController.selectedPart);
+				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(menuController.selectedPart);
 			}
 			
 			

@@ -89,7 +89,8 @@ public class MenuController : MonoBehaviour {
 		UpdateAllEnemyStats ();
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
-		combatController.cameraScript.ResetCamera ();
+		//combatController.cameraScript.ResetCamera ();
+		enemyPartCanvas.SetActive(false);
 		if (player.paralyzed) {
 			abilityMenuButton.enabled = false;
 		} else {
@@ -105,18 +106,19 @@ public class MenuController : MonoBehaviour {
 		player.CalculateDamage (AttackMode.Attack);
 		DefaultButtons.SetActive (false);
 		abilityOrAttack = false;
-		StartCoroutine (CameraToEnemy ());
+		//StartCoroutine (CameraToEnemy ());
+		combatController.ActivatePartCanvas (targetedEnemy);
 	}
 	public void RunAwayButton () {
 		combatController.RunAway ();
 	}
 
-	IEnumerator CameraToEnemy () {
+	/* IEnumerator CameraToEnemy () {
 		combatController.cameraScript.MoveCamera (targetedEnemy.cameraTarget);
 		yield return new WaitUntil (() => proceed);
 		proceed = false;
 		combatController.ActivatePartCanvas (targetedEnemy);
-	}
+	} */
 
 	public void SelectEnemyPart (int partNbr) {
 		foreach (var item in enemyPartCanvasButtons) {
@@ -128,13 +130,20 @@ public class MenuController : MonoBehaviour {
 	}
 	public void ChoosePartToAttack () {
 		combatController.ActivatePartCanvas (targetedEnemy);
-		StartCoroutine (PlayerAttack ());
+		
+		if (abilityOrAttack) {
+			player.Ability (selectedPart);
+		} else {
+			player.Attack (selectedPart);
+		}
+		//StartCoroutine (PlayerAttack ());
 	}
 	IEnumerator PlayerAttack () {
 		proceed = false;
 		combatController.cameraScript.MoveCamera (playerPovCamera);
 		yield return new WaitUntil (() => proceed);
 		combatController.cameraScript.FollowTarget (playerPovCamera);
+
 		if (abilityOrAttack) {
 			player.Ability (selectedPart);
 		} else {
@@ -148,7 +157,8 @@ public class MenuController : MonoBehaviour {
 		player.abilityID = slot;/* 
 		targetHealthBar.SetActive (true);
 		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
-		StartCoroutine (CameraToEnemy ());
+		//StartCoroutine (CameraToEnemy ());
+		combatController.ActivatePartCanvas (targetedEnemy);
 	}
 
 	public void Consumable (int slot) {
@@ -204,7 +214,6 @@ public class MenuController : MonoBehaviour {
 
 	IEnumerator AttackWaitTime () {
 		proceed = false;
-		yield return new WaitForSeconds (1f);
 		player.ApplyPlayerBuffs ();
 		yield return new WaitUntil (() => proceed);
 		if (!player.stunned) {

@@ -1,78 +1,112 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TouchControlScript : MonoBehaviour {
-
-    private Vector3 fp; //First touch position
-    private Vector3 lp; //Last touch position
-    private float dragDistance; //minimum distance for a swipe to be registered
 
     public PlayerCombatScript player;
     public bool enemyTurn;
     bool isTouchableArea;
-
-    void Start () {
-        dragDistance = Screen.height * 15 / 100; //dragDistance is 15% height of the screen
+    public Text testi;
+    public float MinSwipeLength = 5;
+    Vector2 _firstPressPos;
+    Vector2 _secondPressPos;
+    Vector2 _currentSwipe;
+   
+    //public static Swipe SwipeDirection;
+   
+    void Update() {
+        DetectSwipe();
     }
-    void Update () {
-        if (Input.touchCount == 1) // user is touching the screen with a single touch
-        {
-            if (Input.GetTouch (0).phase == TouchPhase.Began) {
-                Ray ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
-
-                RaycastHit hit;
-
-                if (Physics.Raycast (ray, out hit)) {
-                    if (hit.collider != null && hit.collider.name == "Quad") {
-                        isTouchableArea = true;
-                    }
-                } else {
-                    isTouchableArea = false;
-                }
-
+   
+    class GetCardinalDirections {
+        public static readonly Vector2 Up = new Vector2( 0, 1 );
+        public static readonly Vector2 Down = new Vector2( 0, -1 );
+        public static readonly Vector2 Right = new Vector2( 1, 0 );
+        public static readonly Vector2 Left = new Vector2( -1, 0 );
+        
+        public static readonly Vector2 UpRight = new Vector2( 1, 1 );
+        public static readonly Vector2 UpLeft = new Vector2( -1, 1 );
+        public static readonly Vector2 DownRight = new Vector2( 1, -1 );
+        public static readonly Vector2 DownLeft = new Vector2( -1, -1 );
+    }
+   
+   
+    public void DetectSwipe() {
+        if ( Input.touches.Length > 0 ) {
+            Touch t = Input.GetTouch(0);
+           
+            if ( t.phase == TouchPhase.Began ) {
+                _firstPressPos = new Vector2( t.position.x, t.position.y );
             }
-            Touch touch = Input.GetTouch (0); // get the touch
-            if (touch.phase == TouchPhase.Began && isTouchableArea) //check for the first touch
-            {
-                fp = touch.position;
-                lp = touch.position;
-            } else if (touch.phase == TouchPhase.Moved && isTouchableArea) // update the last position based on where they moved
-            {
-                lp = touch.position;
-            } else if (touch.phase == TouchPhase.Ended && isTouchableArea) //check if the finger is removed from the screen
-            {
-                lp = touch.position; //last touch position. Ommitted if you use list
-
-                //Check if drag distance is greater than 20% of the screen height
-                if (Mathf.Abs (lp.x - fp.x) > dragDistance || Mathf.Abs (lp.y - fp.y) > dragDistance) { //It's a drag
-                    //check if the drag is vertical or horizontal
-                    if (Mathf.Abs (lp.x - fp.x) > Mathf.Abs (lp.y - fp.y)) { //If the horizontal movement is greater than the vertical movement...
-                        if ((lp.x > fp.x)) //If the movement was to the right)
-                        { //Right swipe
-                            Debug.Log ("Right Swipe");
-                            player.Dodge (1);
-                        } else { //Left swipe
-                            Debug.Log ("Left Swipe");
-                            player.Dodge (0);
-                        }
-                    } else { //the vertical movement is greater than the horizontal movement
-                        if (lp.y > fp.y) //If the movement was up
-                        { //Up swipe
-                            Debug.Log ("Up Swipe");
-                            player.Dodge (0);
-                        } else { //Down swipe
-                            Debug.Log ("Down Swipe");
-                            player.Dodge (1);
-                        }
-                    }
-                } else { //It's a tap as the drag distance is less than 20% of the screen height
-                    if (isTouchableArea) {
-                        Debug.Log ("Tap");
-                        player.Block ();
-                    }
+           
+            if ( t.phase == TouchPhase.Ended ) {
+               
+                _secondPressPos = new Vector2( t.position.x, t.position.y );
+                _currentSwipe = new Vector3( _secondPressPos.x - _firstPressPos.x, _secondPressPos.y - _firstPressPos.y );
+               
+               
+                // Make sure it was a legit swipe, not a tap
+                if ( _currentSwipe.magnitude < MinSwipeLength ) {
+                    //SwipeDirection = Swipe.None;
+                    player.Block();
+					testi.text = "Tap";
+                    return;
+                }
+               
+               
+                _currentSwipe.Normalize();
+               
+                // use dot product against 4 cardinal directions.
+                // return if one of them is > 0.5f;
+ 
+                print (_currentSwipe);
+               
+                //compare north
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Up ) > 0.906f ) {
+                    player.Dodge(0);
+                    print( "Up!" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Down ) > 0.906f ) {
+                    player.Dodge(1);
+                    print( "Down!" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Left ) > 0.906f ) {
+                    player.Dodge(0);
+                    print( "Left" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Right ) > 0.906f) {
+                    player.Dodge(1);
+                    print( "Right" );
+                    return;
+                }
+               
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.UpRight ) >0.906f ) {
+					player.Dodge(1);
+                    print( "UpRight" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.UpLeft ) > 0.906f ) {
+					player.Dodge(1);
+                    print( "UpLeft" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.DownLeft ) > 0.906f ) {
+					player.Dodge(0);
+                    print( "DownLeft" );
+                    return;
+                }
+                if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.DownRight ) > 0.906f) {
+					player.Dodge(0);
+                    print( "DownRight" );
+                    return;
                 }
             }
+       
         }
     }
 }
