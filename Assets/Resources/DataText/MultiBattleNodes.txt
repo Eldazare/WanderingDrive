@@ -5,15 +5,15 @@
 #_ is separator
 
 #NodeTypes: Gather / SingleB / MultiBattle / BigBattle / (Dungeon)
+#Note: Currently no implemented big monsters
 
 Node_NodeTypeAmount=4
-Node_TypeWeights=35/45/10/10
+Node_TypeWeights=35/45/10/0
 
 Node_Weights_0=35/45
 Node_Weights_1=30/30
 Node_Weights_2=50/50
 Node_Weights_3=100
-Node_Weights_4=100
 
 Node_multimonster_0=S0_S1_S2_S3
 Node_multimonster_1=S0_S0

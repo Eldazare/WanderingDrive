@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TouchControlScript : MonoBehaviour {
 
     public PlayerCombatScript player;
+	public ComboManager comboManager;
     public bool enemyTurn;
     bool isTouchableArea;
     public Text testi;
@@ -50,8 +51,9 @@ public class TouchControlScript : MonoBehaviour {
                 // Make sure it was a legit swipe, not a tap
                 if ( _currentSwipe.magnitude < MinSwipeLength ) {
                     //SwipeDirection = Swipe.None;
-                    player.Block();
-					testi.text = "Tap";
+					comboManager.GetTapInput(_firstPressPos);
+                    //player.Block();
+					//testi.text = "Tap";
                     return;
                 }
                
@@ -65,48 +67,55 @@ public class TouchControlScript : MonoBehaviour {
                
                 //compare north
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Up ) > 0.906f ) {
-                    player.Dodge(0);
+					comboManager.GetSwipeInput (2);
+                    //player.Dodge(0);
                     print( "Up!" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Down ) > 0.906f ) {
-                    player.Dodge(1);
+					comboManager.GetSwipeInput (6);
+                    //player.Dodge(1);
                     print( "Down!" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Left ) > 0.906f ) {
-                    player.Dodge(0);
+					comboManager.GetSwipeInput (4);
+                    //player.Dodge(0);
                     print( "Left" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.Right ) > 0.906f) {
-                    player.Dodge(1);
+					comboManager.GetSwipeInput (0);
+                    //player.Dodge(1);
                     print( "Right" );
                     return;
                 }
                
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.UpRight ) >0.906f ) {
-					player.Dodge(1);
+					comboManager.GetSwipeInput (1);
+					//player.Dodge(1);
                     print( "UpRight" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.UpLeft ) > 0.906f ) {
-					player.Dodge(1);
+					comboManager.GetSwipeInput (3);
+					//player.Dodge(1);
                     print( "UpLeft" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.DownLeft ) > 0.906f ) {
-					player.Dodge(0);
+					comboManager.GetSwipeInput (5);
+					//player.Dodge(0);
                     print( "DownLeft" );
                     return;
                 }
                 if ( Vector2.Dot( _currentSwipe, GetCardinalDirections.DownRight ) > 0.906f) {
-					player.Dodge(0);
+					comboManager.GetSwipeInput (7);
+					//player.Dodge(0);
                     print( "DownRight" );
                     return;
                 }
             }
-       
         }
     }
 }

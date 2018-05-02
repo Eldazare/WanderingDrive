@@ -26,6 +26,8 @@ TagManager:
   - 3
   - 4
   - 5
+  - enemy
+  - ComboComponent
   layers:
   - Default
   - TransparentFX
