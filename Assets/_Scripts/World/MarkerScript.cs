@@ -92,17 +92,9 @@ public class MarkerScript : MonoBehaviour {
 
 
 		Debug.Log ("LayerType: " + _map.VectorData.LayerType.ToString());
-		//UnityTile _tile;
-
-		//AbstractMapVisualizer _v;
-		//_v = ScriptableObject.CreateInstance<> ();
 
 
-		// !!!
-		//var collider = ve.GameObject.GetComponent<Collider>();
-		//var bounds = collider.bounds;
-		//var center = bounds.center;
-		//VectorEntity ent;
+
 	}
 
 	// Searches for the map tiles.
@@ -125,19 +117,27 @@ public class MarkerScript : MonoBehaviour {
 		_locations.Clear ();
 		_storedMarkers.Clear ();
 
+
 		if (_spawnedObjects.Count < NumberOfMarkers) {
 			List<MarkerDataContainer> temp = new List<MarkerDataContainer> ();
-			int l = _spawnedObjects.Count;
+			//int missingMarkers = NumberOfMarkers - _spawnedObjects.Count;
 			foreach (GameObject tile in _mapTiles) {
-				for (int i = 0; i < NumberOfMarkers / 9; i++) {
-					float boundX = tile.GetComponent<MeshRenderer> ().bounds.size.x / 2;
-					float boundZ = tile.GetComponent<MeshRenderer> ().bounds.size.z / 2;
 
-					Vector3 spawnPos = tile.transform.position + new Vector3 (Random.Range (-boundX, boundX), 0, Random.Range (-boundZ, boundZ));
 
-					Vector2d vec = _map.WorldToGeoPosition (spawnPos);
-					_locations.Add (vec);
+				//Debug.Log ("kid count: " + tile.transform.childCount);
+
+				if (tile.transform.childCount < (NumberOfMarkers / 9)) {
+					for (int i = 0; i < ((NumberOfMarkers / 9) - tile.transform.childCount); i++) {
+						float boundX = tile.GetComponent<MeshRenderer> ().bounds.size.x / 2;
+						float boundZ = tile.GetComponent<MeshRenderer> ().bounds.size.z / 2;
+
+						Vector3 spawnPos = tile.transform.position + new Vector3 (Random.Range (-boundX, boundX), 0, Random.Range (-boundZ, boundZ));
+
+						Vector2d vec = _map.WorldToGeoPosition (spawnPos);
+						_locations.Add (vec);
+					}
 				}
+
 			}
 
 			for (int i = 0; i < _locations.Count; i++) {
@@ -157,10 +157,11 @@ public class MarkerScript : MonoBehaviour {
 				//temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
 			}
 
-				//theObject.SetLastMarkers (temp);
-				//Debug.Log ("ADDED MARKS: " + temp.Count);
+
+			Debug.Log ("ADDED MARKS: " + temp.Count);
 			
 			theObject.SetLastMarkers (temp);
+			SetChildren ();
 		}
 	}
 
@@ -169,103 +170,8 @@ public class MarkerScript : MonoBehaviour {
 		for (int i = 0; i < _locations.Count; i++) {
 			SpawnNode (_storedMarkers[i]._latlong, i);
 		}
+		SetChildren ();
 	}
-
-	// "Plops" markers in place.
-	public void PlopMarkers () {
-
-		float nonRange = InitialNonSpawnRange;
-		_locations.Clear ();
-		_storedMarkers.Clear ();
-
-		if (_spawnedObjects.Count < NumberOfMarkers) {
-			
-			// Adding coordinates to a list
-			int l = _spawnedObjects.Count;
-			for (int i = 0; i < (NumberOfMarkers - l); i++) {
-
-				// Randomly generates X and Y coordinates between negative spawn range and spawn range
-				// For instance, -0.001 and 0.001. The numbers are lat-long wise.
-				Vector2d vec = _map.WorldToGeoPosition (_player.transform.position);
-				double randomX = (double)Random.Range (-SpawnRange, SpawnRange);
-				double randomY = (double)Random.Range (-SpawnRange, SpawnRange);
-
-
-				// Calculates distance between the player and the marker coordinates (before instansiation), using the pythagoran theorem
-				// Unsure if this is the most efficient way to do this, but it doesn't appear to produce lag.
-				float xD = Mathf.Pow ((float)randomX, 2);
-				float zD = Mathf.Pow ((float)randomY, 2);
-				float distance = Mathf.Sqrt (xD + zD);
-				//Debug.Log ("Distance spawn:" + distance);
-
-
-
-				// If the random coordinate is too close to the player, the algorithm adds a random amount of X and Y distances,
-				// that total the minimum of NonSpawnRange. 
-				if (distance < NonSpawnRange) {
-					//Debug.Log ("Correcting...");
-					double correctionX = Random.Range (0, nonRange);
-					double correctionY = nonRange - correctionX;
-
-					// Determines the "closest way out". Or at least its direction.
-					int modifierX = 1;
-					int modifierY = 1;
-					if (randomX < 0) {
-						modifierX = -1;
-					}
-					if (randomY < 0) {
-						modifierY = -1;
-					}
-
-					// Corrected coordinates
-					randomX += (correctionX * modifierX);
-					randomY += (correctionY * modifierY);
-
-				}
-
-				// Shoves the coordinates into the _locations list
-				vec.x += randomX; 
-				vec.y += randomY;
-				_locations.Add (vec);
-
-
-			}
-
-			// Instantiating a marker for each coordinate on _locations list and adding it to the _spawnedObjects list
-			for (int i = 0; i < _locations.Count; i++) {
-
-
-				//GameObject instance = Instantiate(_markerPrefab);
-				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
-				//_spawnedObjects.Add(instance);
-
-
-				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
-				SpawnNode (_locations[i], -1);
-			}
-
-			InitialNonSpawnRange = NonSpawnRange;
-
-
-			List<MarkerDataContainer> temp = new List<MarkerDataContainer> ();
-			for (int i = 0; i < _spawnedObjects.Count; i++) {
-				MarkerDataContainer mark = new MarkerDataContainer ();
-
-				mark._nodeType = _spawnedObjects [i].GetComponent<WorldNode> ().nodeType;
-				mark._id = _spawnedObjects [i].GetComponent<WorldNode> ().id;
-				mark._time = _spawnedObjects [i].GetComponent<WorldNode> ().time;
-				mark._latlong = _map.WorldToGeoPosition (_spawnedObjects [i].transform.position);
-
-				temp.Add (mark);
-				//temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
-			}
-			//Debug.Log ("ADDED MARKS: " + temp.Count);
-			theObject.SetLastMarkers (temp);
-
-			//_locations.Clear ();
-		}
-	}
-
 
 
 
@@ -304,8 +210,8 @@ public class MarkerScript : MonoBehaviour {
 			Destroy (rem[i]);
 
 
-			PlopMarkers ();
-			//NewPlop();
+			//PlopMarkers ();
+			NewPlop();
 		}
 		rem.Clear ();
 
@@ -345,6 +251,29 @@ public class MarkerScript : MonoBehaviour {
 		//localNodeList.Add (node);
 		_spawnedObjects.Add(node);
 		// TODO: World to local position
+	}
+
+
+	void SetChildren(){
+		foreach(GameObject ob in _spawnedObjects){
+
+			GameObject nearest = null;
+			float storedDist = 1000000000000.0f;
+
+			foreach (GameObject tile in _mapTiles) {
+				float xDist = ob.transform.position.x - tile.transform.position.x;
+				float zDist = ob.transform.position.z - tile.transform.position.z;
+				float xD = Mathf.Pow (xDist, 2);
+				float zD = Mathf.Pow (zDist, 2);
+				float distance = Mathf.Sqrt (xD + zD);
+
+				if (nearest == null || storedDist > distance) {
+					nearest = tile;
+					storedDist = distance;
+				}
+			}
+			ob.transform.parent = nearest.transform;
+		}
 	}
 
 
