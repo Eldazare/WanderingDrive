@@ -12,9 +12,10 @@ public class LoadoutManager : MonoBehaviour {
     public Image itemImage;
     public Text itemInfo;
     public GameObject loadoutSlotPanel;
+    public GameObject storeButton;
     public RecipeMaterial currentMaterial;
     Loadout myLoadout = new Loadout(2);
-
+    public bool emptyLoadout;
     public List<Sprite> spriteList = new List<Sprite>();
 	List<List<InventoryArmor>> armorLists;
 	/*
@@ -40,6 +41,7 @@ public class LoadoutManager : MonoBehaviour {
     ItemType currentItemType;
 
     void Start(){
+        emptyLoadout = true;
 		weaponList = Inventory.inventoryWeapons;
 		combatConsumables = Inventory.combatConsumables;
         currentItem = -1;
@@ -185,6 +187,10 @@ public class LoadoutManager : MonoBehaviour {
     }
 
     public void AddToLoadout() {
+        if (emptyLoadout == true) {
+            emptyLoadout = false;
+            storeButton.SetActive(true);
+        }
         if (currentItemType == ItemType.Wep) {
             if (chosenHand == 1) {
                 myLoadout.AddMainHand(weaponList[counter]);
