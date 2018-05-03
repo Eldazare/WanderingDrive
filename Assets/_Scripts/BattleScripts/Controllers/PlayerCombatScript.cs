@@ -60,7 +60,6 @@ public class PlayerCombatScript : MonoBehaviour {
 		frozen = false;
 		paralyzed = false;
 		hold = false;
-		yield return new WaitForSeconds (1f);
 		for (int i = 0; i < buffElementalWeakness.Count; i++) {
 			buffElementalWeakness[i] = 0;
 		}
@@ -530,7 +529,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	void MoveToEnemy () {
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		if (Vector3.Distance (enemyPos, transform.position) > attackRange) {
-			transform.position = Vector3.Lerp (transform.position, enemyPos, distanceCovered / movingLength*2);
+			transform.position = Vector3.Lerp (transform.position, enemyPos, (distanceCovered / movingLength)*4);
 			//transform.Translate(((enemyPos-transform.position)+(enemyPos-transform.position).normalized)*Time.deltaTime*5);
 		} else {
 			proceed = true;
