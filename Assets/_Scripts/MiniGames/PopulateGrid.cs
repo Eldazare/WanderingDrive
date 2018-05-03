@@ -9,7 +9,7 @@ public class PopulateGrid : MonoBehaviour {
     public int howMany;
     public int depth;
 	void Start () {
-        howMany = 63;
+        howMany = 252;
         Populate();
 	}
 
@@ -17,6 +17,9 @@ public class PopulateGrid : MonoBehaviour {
         GameObject newObject;
         for (int i = 0; i < howMany; i++) {
             switch (depth) {
+                case 3:
+                    newObject = (GameObject)Instantiate(groundSprite, transform);
+                    break;
                 case 4:
                     newObject = (GameObject)Instantiate(groundSprite, transform);
                     break;

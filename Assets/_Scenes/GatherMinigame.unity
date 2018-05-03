@@ -245,7 +245,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 50}
+  m_CellSize: {x: 25, y: 25}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -293,8 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2afd64dbde499e49958d4db4cd3f98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSprite: {fileID: 1981973455734758, guid: 48dbb41cc6fe7c643b823f66088d5041,
-    type: 2}
+  groundSprite: {fileID: 0}
   howMany: 0
   depth: 1
 --- !u!1 &914893556
@@ -1035,7 +1034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2afd64dbde499e49958d4db4cd3f98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSprite: {fileID: 1981973455734758, guid: 48dbb41cc6fe7c643b823f66088d5041,
+  groundSprite: {fileID: 1951883803125160, guid: be509b115c6f732438dbb5776c6b4b07,
     type: 2}
   howMany: 0
   depth: 3
@@ -1071,7 +1070,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 50}
+  m_CellSize: {x: 25, y: 25}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1157,7 +1156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2afd64dbde499e49958d4db4cd3f98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSprite: {fileID: 1981973455734758, guid: 48dbb41cc6fe7c643b823f66088d5041,
+  groundSprite: {fileID: 1899572663083412, guid: 3d4c10af2cf6f0c4db169520542d20d2,
     type: 2}
   howMany: 0
   depth: 4
@@ -1193,7 +1192,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 50}
+  m_CellSize: {x: 25, y: 25}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1353,8 +1352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2afd64dbde499e49958d4db4cd3f98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSprite: {fileID: 1981973455734758, guid: 48dbb41cc6fe7c643b823f66088d5041,
-    type: 2}
+  groundSprite: {fileID: 0}
   howMany: 0
   depth: 2
 --- !u!114 &1928377027
@@ -1389,7 +1387,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 50}
+  m_CellSize: {x: 25, y: 25}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
