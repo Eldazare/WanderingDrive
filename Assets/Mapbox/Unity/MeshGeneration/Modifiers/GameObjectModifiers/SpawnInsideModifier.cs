@@ -52,11 +52,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 		public override void Run(VectorEntity ve, UnityTile tile)
 		{
 
-			// This is REALLY roundabout, and I don't like it.
-			// Gonna look for a better way.
-			ve.GameObject.transform.parent.gameObject.tag = "MapTile";
-
-
 
 
 			_spawnedCount = 0;

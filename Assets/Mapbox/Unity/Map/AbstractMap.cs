@@ -10,6 +10,8 @@ namespace Mapbox.Unity.Map
 	using Mapbox.Unity.MeshGeneration.Factories;
 	using Mapbox.Unity.MeshGeneration.Data;
 
+	using Mapbox.Unity.Location;
+
 	public interface IUnifiedMap
 	{
 		//void InitializeMap(MapOptions options);
@@ -67,6 +69,8 @@ namespace Mapbox.Unity.Map
 	/// </summary>
 	public class AbstractMap : MonoBehaviour, IMap
 	{
+		
+
 		[SerializeField]
 		private bool _initializeOnStart = true;
 		/// <summary>
@@ -86,6 +90,7 @@ namespace Mapbox.Unity.Map
 				_options = value;
 			}
 		}
+
 		/// <summary>
 		/// Options to control the imagery component of the map. 
 		/// </summary>
@@ -266,7 +271,10 @@ namespace Mapbox.Unity.Map
 
 		public void SetCenterLatitudeLongitude(Vector2d centerLatitudeLongitude)
 		{
+			//_options.locationOptions.latitudeLongitude = theObject.storedPlayerPosition.x + ", " + theObject.storedPlayerPosition.y;
 			_options.locationOptions.latitudeLongitude = string.Format("{0}, {1}", centerLatitudeLongitude.x, centerLatitudeLongitude.y);
+			//_options.locationOptions.latitudeLongitude = string.Format("{0}, {1}", theObject.storedPlayerPosition.x, theObject.storedPlayerPosition.y);
+			//_centerLatitudeLongitude = theObject.storedPlayerPosition;
 			_centerLatitudeLongitude = centerLatitudeLongitude;
 		}
 
@@ -278,6 +286,9 @@ namespace Mapbox.Unity.Map
 
 		void Awake()
 		{
+			//UndyingObject theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
+			//_options.locationOptions.latitudeLongitude = theObject.storedPlayerPosition.x + ", " + theObject.storedPlayerPosition.y;
+
 			// Setup a visualizer to get a "Starter" map.
 			_mapVisualizer = ScriptableObject.CreateInstance<MapVisualizer>();
 		}
@@ -417,7 +428,22 @@ namespace Mapbox.Unity.Map
 			Options = options;
 			_worldHeightFixed = false;
 			_fileSource = MapboxAccess.Instance;
-			_centerLatitudeLongitude = Conversions.StringToLatLon(options.locationOptions.latitudeLongitude);
+
+
+
+			UndyingObject theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
+			EditorLocationProvider ed = GameObject.Find ("EditorLocation").GetComponent<EditorLocationProvider> ();
+			if (theObject.storedPlayerPosition.x != 0 && theObject.storedPlayerPosition.y != 0) {
+				//Debug.Log ("YES STORED POS");
+				_centerLatitudeLongitude = theObject.storedPlayerPosition;
+			}
+			else {
+				//Debug.Log ("NO STORED POS");
+				_centerLatitudeLongitude = Conversions.StringToLatLon(options.locationOptions.latitudeLongitude);
+			}
+
+
+
 			_initialZoom = (int)options.locationOptions.zoom;
 
 			options.scalingOptions.scalingStrategy.SetUpScaling(this);

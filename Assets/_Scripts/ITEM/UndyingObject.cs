@@ -23,6 +23,7 @@ public class UndyingObject : MonoBehaviour {
 
 	public GameObject interactedNode;
 	//public List<Vector2d> storedMarkers;
+	public Vector2d storedPlayerPosition;
 	public List<MarkerDataContainer> storedMarkers;
 
 
@@ -40,6 +41,7 @@ public class UndyingObject : MonoBehaviour {
 		loadoutList = new LoadoutsContainer(loadoutCount);
 
 		storedMarkers = new List<MarkerDataContainer> ();
+		//storedPlayerPosition = new Vector2d (0, 0);
 
         // Get location data here
         //StartCoroutine (UpdateLocationData(10)); // Enable this when testing location

@@ -7,6 +7,7 @@ using Mapbox.Utils;
 using Mapbox.Unity.Map;
 
 using Mapbox.Unity.MeshGeneration.Data;
+using Mapbox.Unity.Location;
 
 //using Mapbox.Examples;
 
@@ -55,10 +56,23 @@ public class MarkerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+
+
+
+
+
 		SearchTiles ();
 		//Invoke ("SearchTiles", 0.2f);
-
 		theObject = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject>();
+
+
+		EditorLocationProvider ed = GameObject.Find ("EditorLocation").GetComponent<EditorLocationProvider> ();
+		if (theObject.storedPlayerPosition.x != 0 && theObject.storedPlayerPosition.y != 0) {
+			//Debug.Log ("REEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+			ed._latitudeLongitude = theObject.storedPlayerPosition.x + ", " + theObject.storedPlayerPosition.y;
+		}
+
 
 
 		if (_locations.Count == 0) {
@@ -173,11 +187,109 @@ public class MarkerScript : MonoBehaviour {
 		SetChildren ();
 	}
 
+	// "Plops" markers in place.
+	public void PlopMarkers () {
+
+		float nonRange = InitialNonSpawnRange;
+		_locations.Clear ();
+		_storedMarkers.Clear ();
+
+		if (_spawnedObjects.Count < NumberOfMarkers) {
+			
+			// Adding coordinates to a list
+			int l = _spawnedObjects.Count;
+			for (int i = 0; i < (NumberOfMarkers - l); i++) {
+
+				// Randomly generates X and Y coordinates between negative spawn range and spawn range
+				// For instance, -0.001 and 0.001. The numbers are lat-long wise.
+				Vector2d vec = _map.WorldToGeoPosition (_player.transform.position);
+				double randomX = (double)Random.Range (-SpawnRange, SpawnRange);
+				double randomY = (double)Random.Range (-SpawnRange, SpawnRange);
+
+
+				// Calculates distance between the player and the marker coordinates (before instansiation), using the pythagoran theorem
+				// Unsure if this is the most efficient way to do this, but it doesn't appear to produce lag.
+				float xD = Mathf.Pow ((float)randomX, 2);
+				float zD = Mathf.Pow ((float)randomY, 2);
+				float distance = Mathf.Sqrt (xD + zD);
+				//Debug.Log ("Distance spawn:" + distance);
+
+
+
+				// If the random coordinate is too close to the player, the algorithm adds a random amount of X and Y distances,
+				// that total the minimum of NonSpawnRange. 
+				if (distance < NonSpawnRange) {
+					//Debug.Log ("Correcting...");
+					double correctionX = Random.Range (0, nonRange);
+					double correctionY = nonRange - correctionX;
+
+					// Determines the "closest way out". Or at least its direction.
+					int modifierX = 1;
+					int modifierY = 1;
+					if (randomX < 0) {
+						modifierX = -1;
+					}
+					if (randomY < 0) {
+						modifierY = -1;
+					}
+
+					// Corrected coordinates
+					randomX += (correctionX * modifierX);
+					randomY += (correctionY * modifierY);
+
+				}
+
+				// Shoves the coordinates into the _locations list
+				vec.x += randomX; 
+				vec.y += randomY;
+				_locations.Add (vec);
+
+
+			}
+
+			// Instantiating a marker for each coordinate on _locations list and adding it to the _spawnedObjects list
+			for (int i = 0; i < _locations.Count; i++) {
+
+
+				//GameObject instance = Instantiate(_markerPrefab);
+				//instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i]);
+				//_spawnedObjects.Add(instance);
+
+
+				//SpawnNode (nodeType, nodeID, nodeLoc, nodeTime);
+				SpawnNode (_locations[i], -1);
+			}
+
+			InitialNonSpawnRange = NonSpawnRange;
+
+
+			List<MarkerDataContainer> temp = new List<MarkerDataContainer> ();
+			for (int i = 0; i < _spawnedObjects.Count; i++) {
+				MarkerDataContainer mark = new MarkerDataContainer ();
+
+				mark._nodeType = _spawnedObjects [i].GetComponent<WorldNode> ().nodeType;
+				mark._id = _spawnedObjects [i].GetComponent<WorldNode> ().id;
+				mark._time = _spawnedObjects [i].GetComponent<WorldNode> ().time;
+				mark._latlong = _map.WorldToGeoPosition (_spawnedObjects [i].transform.position);
+
+				temp.Add (mark);
+				//temp.Add (_map.WorldToGeoPosition (_spawnedObjects [i].transform.position));
+			}
+			//Debug.Log ("ADDED MARKS: " + temp.Count);
+			theObject.SetLastMarkers (temp);
+
+			//_locations.Clear ();
+		}
+	}
+
+
 
 
 	// Checks the distance between the player and each marker on map.
 	// This may not be the most efficient method.
 	void DistanceCheck () {
+		
+		theObject.storedPlayerPosition = _map.WorldToGeoPosition (_player.transform.position);
 
 		//Debug.Log ("Distance Check");
 
