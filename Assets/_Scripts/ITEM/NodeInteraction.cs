@@ -42,20 +42,21 @@ public static class NodeInteraction {
 				// Note: undefinedin config?
 				string[] enemyData = DataManager.ReadDataString ("Node_multimonster_" + id).Split ("_".ToCharArray ());
 				foreach (string str in enemyData) {
-					int eId = str [1];
+					string[] singleEnemyData = str.Split("/".ToCharArray());
+					int eId = int.Parse(singleEnemyData [1]);
 					string eSubtype = "";
-					switch (str [0]) {
-					case 'S':
+					switch (singleEnemyData [0]) {
+					case "S":
 						eSubtype = "EnemySmall";
 						break;
-					case 'L':
+					case "L":
 						eSubtype = "EnemyLarge";
 						break;
 					default:
 						Debug.LogError ("MultiBattle config contained false enemyType identifier (id: " + id + "), " + str [0]);
 						return;
 					}
-					enemyList2.Add (new NodeEnemy (id, eSubtype));
+					enemyList2.Add (new NodeEnemy (eId, eSubtype));
 				}
 				theObject.CombatPrompt (enemyList2);
 				break;

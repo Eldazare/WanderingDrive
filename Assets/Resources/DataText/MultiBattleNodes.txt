@@ -15,5 +15,5 @@ Node_Weights_1=30/30
 Node_Weights_2=50/50
 Node_Weights_3=100
 
-Node_multimonster_0=S0_S1_S2_S3
-Node_multimonster_1=S0_S0
+Node_multimonster_0=S/0_S/1_S/2_S/3
+Node_multimonster_1=S/0_S/0
