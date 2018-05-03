@@ -103,12 +103,16 @@ public class PlayerCombatScript : MonoBehaviour {
 		movingLength = Vector3.Distance (transform.position, enemyPos);
 		InvokeRepeating ("MoveToEnemy", 0, Time.deltaTime);
 		yield return new WaitUntil (() => proceed);
-		animator.SetTrigger ("Attack");
 		proceed = false;
+		List<ComboPieceAbstraction> tempList = new List<ComboPieceAbstraction>();
+		combatController.GetComponent<ComboManager>().StartCombo(tempList);
 		yield return new WaitUntil (() => proceed);
 		proceed = false;
-		float damageMod = 1;
-		float eleDamageMod = 1;
+		animator.SetTrigger ("Attack");
+		yield return new WaitUntil (() => proceed);
+		proceed = false;
+		float damageMod = combatController.comboMulti;
+		float eleDamageMod = combatController.comboMulti;
 		if (overFocusTurn > 0) {
 			damageMod *= focusDamageBuff * overloadDamageBuff;
 			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
@@ -300,7 +304,11 @@ public class PlayerCombatScript : MonoBehaviour {
 		proceed = false;
 	}
 
-	public void Consumable (int slot) {
+	public void CombatItem (int slot) {
+		StartCoroutine(CombatItemRoutine(slot));
+	}
+	IEnumerator CombatItemRoutine(int slot){
+		yield return new WaitForSeconds(playerStats.combatItems[slot].DoYourItemThing());
 		EndPlayerTurn (false);
 	}
 
@@ -311,6 +319,16 @@ public class PlayerCombatScript : MonoBehaviour {
 		buff.player = this;
 		playerBuffs.Add (buff);
 		EndPlayerTurn (true);
+	}
+
+	public void PopUpText(string popuptext, bool __damage){
+		if(__damage){
+			GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh> ().text = popuptext;
+		}else{
+			GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+			popup.GetComponent<TextMesh> ().text = popuptext;
+		}
 	}
 
 	public void PlayerOverload () {

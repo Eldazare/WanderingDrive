@@ -625,52 +625,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 136264590}
---- !u!1 &142970265
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 142970266}
-  - component: {fileID: 142970267}
-  m_Layer: 0
-  m_Name: ComboController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &142970266
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 142970265}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 398869281}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &142970267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 142970265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c0bf4894a8bcf4f99c97bd3c9cf962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  circleMarker: {fileID: 1220998357097724, guid: e52ae76ae5bc9674f931a7528f05c98d,
-    type: 2}
-  swipeMarker: {fileID: 1949358998722192, guid: 80408d069d6b3eb438eea63ee170a488,
-    type: 2}
-  gr: {fileID: 239878955}
-  markerCanvasParent: {fileID: 1087577549}
 --- !u!1 &154137629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1314,7 @@ RectTransform:
   - {fileID: 1529228761}
   - {fileID: 1472786752}
   - {fileID: 1087577552}
+  - {fileID: 613004644}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1940,7 +1895,6 @@ Transform:
   - {fileID: 847982938}
   - {fileID: 875010432}
   - {fileID: 173571378}
-  - {fileID: 142970266}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2137,7 +2091,7 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 425286905}
+      objectReference: {fileID: 425286907}
     - target: {fileID: 1458431131056354, guid: 0d7a8072785e28643839294ce83ddff8, type: 2}
       propertyPath: m_Name
       value: Item1Button
@@ -2165,17 +2119,17 @@ Prefab:
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: Consumable
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 114671072413199864, guid: 0d7a8072785e28643839294ce83ddff8,
         type: 2}
@@ -2569,6 +2523,74 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 250}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &613004643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 613004644}
+  - component: {fileID: 613004646}
+  - component: {fileID: 613004645}
+  m_Layer: 5
+  m_Name: ComboSuccessImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &613004644
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 613004643}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 239878958}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000015258578, y: -0.000007629389}
+  m_SizeDelta: {x: 800, y: 450}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &613004645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 613004643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.24137926, g: 1, b: 0, a: 0}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &613004646
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 613004643}
 --- !u!224 &618837080 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224210548286708598, guid: 0d7a8072785e28643839294ce83ddff8,
@@ -3590,6 +3612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 847982938}
   - component: {fileID: 847982939}
+  - component: {fileID: 847982940}
   m_Layer: 0
   m_Name: CombatController
   m_TagString: CombatController
@@ -3631,6 +3654,26 @@ MonoBehaviour:
   enemyTurns: 0
   playerDead: 0
   proceedToEnemyAttacks: 0
+  comboMulti: 0
+--- !u!114 &847982940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 847982937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c0bf4894a8bcf4f99c97bd3c9cf962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleMarker: {fileID: 1220998357097724, guid: e52ae76ae5bc9674f931a7528f05c98d,
+    type: 2}
+  swipeMarker: {fileID: 1949358998722192, guid: 80408d069d6b3eb438eea63ee170a488,
+    type: 2}
+  gr: {fileID: 239878955}
+  markerCanvasParent: {fileID: 1087577549}
+  successImage: {fileID: 613004645}
+  FadeRate: 1
 --- !u!1 &848014620
 GameObject:
   m_ObjectHideFlags: 0
@@ -4704,7 +4747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1087577550
 MonoBehaviour:
   m_ObjectHideFlags: 0

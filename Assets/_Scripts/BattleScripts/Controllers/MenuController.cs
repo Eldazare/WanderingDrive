@@ -163,7 +163,7 @@ public class MenuController : MonoBehaviour {
 
 	public void Consumable (int slot) {
 		ItemMenu.SetActive (false);
-		player.Consumable (slot);
+		player.CombatItem (slot);
 	}
 	public void Focus () {
 		AbilityButtons.SetActive (false);
