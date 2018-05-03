@@ -52,6 +52,8 @@ public class Enemy : MonoBehaviour {
         } else {
             combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
         }
+        yield return new WaitUntil (() => proceed);
+        proceed = false;
         InvokeRepeating ("MoveFromPlayer", 0, Time.deltaTime);
     }
     public void ApplyEnemyBuffs () {

@@ -279,15 +279,8 @@ public class CombatController : MonoBehaviour {
 	}
 	IEnumerator WinCombatRoutine () {
 		menuController.victoryScreen.SetActive (true);
-		/*
-		foreach (var item in dropdata) {
-			List<RecipeMaterial> list = DropDataCreator.CalculateDrops (item, 2, enemypartListList[dropdata.IndexOf (item)]);
-			encounterDrops.Add (list);
-		}
-		*/
 		yield return new WaitForSeconds (2f);
 		BattleEndCombat (player.playerStats.health, playerStats.stamina, encounterDrops);
-		yield return new WaitForSeconds (1f); // <- no purpose
 	}
 	public void BattleEndCombat (float health, float stamina, List<List<RecipeMaterial>> loots) {
 		UndyingObject worldObj = GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ();
@@ -328,8 +321,6 @@ public class CombatController : MonoBehaviour {
 				menuController.targetHealthBar.SetActive (true);
 				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(menuController.selectedPart);
 			}
-			
-			
 		} else {
 			foreach (var item in menuController.enemyPartCanvasButtons) {
 				item.SetActive (false);

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: b5bca98ea1d727f40a508f582be8c0cc
-timeCreated: 1524565134
+guid: 3604dc67e414a1444bfa975383a52cb4
+timeCreated: 1525336674
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -203,7 +203,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.64594126
+        functionName: Proceed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9896373
+        functionName: Proceed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
