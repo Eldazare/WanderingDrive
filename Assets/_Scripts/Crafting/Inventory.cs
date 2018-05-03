@@ -8,8 +8,9 @@ public static class Inventory {
     public static List<InventoryArmor> inventoryArmor = new List<InventoryArmor>();
     public static List<InventoryWeapon> inventoryWeapons = new List<InventoryWeapon>();
     public static List<int> inventoryMaterials = new List<int>();
-    public static List<int> combatConsumables = new List<int>();
-    public static List<int> nonCombatConsumables = new List<int>();
+	public static List<List<int>> inventoryConsumables = new List<List<int>> ();
+    //public static List<int> combatConsumables = new List<int>();
+    //public static List<int> nonCombatConsumables = new List<int>();
     public static int capacity;
     public static int maxCapacity = 30;
     public static int maxStack = 255;
@@ -39,15 +40,18 @@ public static class Inventory {
 	public static void Initialize(){
 		int materialCount = DataManager.ReadDataInt ("Material_Count");
 		int comConCount = DataManager.ReadDataInt ("ComCon_Count");
-		int nonConCount = DataManager.ReadDataInt ("NonCom_Count");
+		int worldConCount = DataManager.ReadDataInt ("NonCom_Count");
+		for (int i = 0; i < System.Enum.GetNames (typeof(ConsumableType)).Length; i++) {
+			inventoryConsumables.Add (new List<int> ());
+		}
 		for (int i = 0; i < materialCount; i++) {
 			inventoryMaterials.Add (0);
 		}
 		for (int i = 0; i < comConCount; i++){
-			combatConsumables.Add (0);
+			inventoryConsumables[(int)ConsumableType.ComCon].Add(0);
 		}
-		for (int i = 0; i < nonConCount;i++){
-			nonCombatConsumables.Add (0);
+		for (int i = 0; i < worldConCount;i++){
+			inventoryConsumables[(int)ConsumableType.WorldCon].Add(0);
 		}
 	}
 
@@ -58,14 +62,13 @@ public static class Inventory {
 		foreach (RecipeMaterial item in materialList) {
 			ItemSubType itemSubType = item.subtype;
             if (itemSubType == ItemSubType.NonCom) {
-                if (nonCombatConsumables[item.itemId] < item.amount) {
+				if (inventoryConsumables[(int)ConsumableType.WorldCon][item.itemId] < item.amount) {
                     result = false;
                 }
             }
             else if (itemSubType == ItemSubType.ComCon) {
-                if (combatConsumables[item.itemId] < item.amount) {
+				if (inventoryConsumables[(int)ConsumableType.ComCon][item.itemId] < item.amount) {
                     result = false;
-                    
                 }
             }
             else if (itemSubType == ItemSubType.Mat) {
@@ -102,7 +105,7 @@ public static class Inventory {
 	public static bool RemoveItem(ItemType itemType, ItemSubType subType, int itemId, int amount) {
         bool Success = false;
         switch (itemType) {
-            case ItemType.Wep:
+      	case ItemType.Wep:
                 for (int i = 0; i <= inventoryWeapons.Count; i++) {
                     if (itemId == inventoryWeapons[i].itemID) {
                         inventoryWeapons.RemoveAt(i);
@@ -111,7 +114,7 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.Arm:
+     	case ItemType.Arm:
                 for (int i = 0; i <= inventoryArmor.Count; i++) {
 				if(itemId == inventoryArmor[i].itemID && subType.ToString() == inventoryArmor[i].subType) {
                         inventoryArmor.RemoveAt(i);
@@ -120,27 +123,15 @@ public static class Inventory {
                     }
                 }
                 break;
-            case ItemType.Cons:
-                if (subType == ItemSubType.NonCom) {
-                    if (nonCombatConsumables[itemId] < amount) {
-                        break;
-                    }
-                    else {
-                        nonCombatConsumables[itemId] -= amount;
-                        Success = true;
-                    }
-                }
-                else if (subType == ItemSubType.ComCon) {
-                    if ( combatConsumables[itemId] < amount) {
-                        break;
-                    }
-                    else {
-                        combatConsumables[itemId] -= amount;
-                        Success = true;
-                    }
-                }
-                break;
-            case ItemType.Mat:
+		case ItemType.Cons:
+			ConsumableType conType = (ConsumableType)System.Enum.Parse (typeof(ConsumableType), subType.ToString ());
+			if (inventoryConsumables [System.Convert.ToInt32(conType)] [itemId] < amount) {
+			} else {
+				inventoryConsumables [System.Convert.ToInt32(conType)] [itemId] -= amount;
+				Success = true;
+			}
+			break;
+    	case ItemType.Mat:
                 if(inventoryMaterials[itemId] < amount) {
                     break;
                 }
@@ -180,25 +171,13 @@ public static class Inventory {
                     break;
                 }
             case ItemType.Cons:
-                if(subType == ItemSubType.NonCom) {
-                    if (nonCombatConsumables[itemId] + amount > maxStack) {
-                        break;
-                    }
-                    else {
-                        nonCombatConsumables[itemId] += amount;
-                        Success = true;
-                    }
-                }
-                else if (subType == ItemSubType.ComCon){
-                    if (combatConsumables[itemId] + amount > maxStack){
-                        break;
-                    }
-                    else {
-                        combatConsumables[itemId] += amount;
-                        Success = true;
-                    }    
-                }
-                break;
+			ConsumableType conType = (ConsumableType)System.Enum.Parse (typeof(ConsumableType), subType.ToString ());
+			if (inventoryConsumables [System.Convert.ToInt32(conType)] [itemId] > maxStack) {
+			} else {
+				inventoryConsumables [System.Convert.ToInt32(conType)] [itemId] += amount;
+				Success = true;
+			}
+			break;
             case ItemType.Mat:
                 if (inventoryMaterials[itemId] + amount > maxStack) {
                     break;
@@ -212,19 +191,13 @@ public static class Inventory {
     }
 
 
-	public static int GetAmountInInventory (ItemType type, ItemSubType subtype, int id){
+	public static int GetAmountInInventory (ItemType type, ItemSubType subType, int id){
 		switch (type) {
 		case ItemType.Mat:
 			return inventoryMaterials [id];
 		case ItemType.Cons:
-			if (subtype == ItemSubType.ComCon) {
-				return combatConsumables [id];
-			} else if (subtype == ItemSubType.NonCom) {
-				return nonCombatConsumables [id];
-			} else {
-				Debug.LogError ("False Subtype");
-			}
-			break;
+			ConsumableType conType = (ConsumableType)System.Enum.Parse (typeof(ConsumableType), subType.ToString ());
+			return inventoryConsumables [System.Convert.ToInt32 (conType)] [id];
 		default:
 			break;
 		}

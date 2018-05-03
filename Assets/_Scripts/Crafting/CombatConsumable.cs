@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatConsumable : Consumable {
+public class CombatConsumable {
 
-    public CombatConsumable(int id) : base (id) {
-       
-    }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NonCombatConsumable : Consumable {
+public class NonCombatConsumable {
 
-    public NonCombatConsumable(int id) : base(id) {
 
-    }
 }

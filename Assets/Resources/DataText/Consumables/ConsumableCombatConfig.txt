@@ -7,5 +7,5 @@
 
 ComCon_Count=10
 
-%ComCon_ComCon_0_Flashbang
-
+%Consumable_ComCon_0_Flashbang
+Consumable_ComCon_0=Blindpowder_0.3

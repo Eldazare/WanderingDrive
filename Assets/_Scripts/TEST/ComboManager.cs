@@ -176,5 +176,4 @@ public class ComboManager : MonoBehaviour {
 		}
 		returned = false;
 	}
-
 }

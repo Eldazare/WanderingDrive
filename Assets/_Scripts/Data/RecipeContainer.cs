@@ -17,7 +17,7 @@ public enum ItemType{
 };
 
 public enum ItemSubType {
-	NonCom, ComCon, Mat, 
+	Mat, NonCom, ComCon, UniCon, DungCon,
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
 	Helm, Chest, Arms, Legs, Boots,
 	Accessory

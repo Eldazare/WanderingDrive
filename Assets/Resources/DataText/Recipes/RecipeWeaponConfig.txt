@@ -7,7 +7,7 @@
 #=id
 
 #RecipeType:
-#Weapon | Armor | Accessory | ComCon | NonCom
+#Weapon | Armor | Accessory | Consumable | ComCon | NonCom
 
 
 %Recipe_Weapon_0_genericSword

@@ -41,7 +41,7 @@ public class LoadoutManager : MonoBehaviour {
 
     void Start(){
 		weaponList = Inventory.inventoryWeapons;
-		combatConsumables = Inventory.combatConsumables;
+		combatConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ComCon];
         currentItem = -1;
         chosenHand = -1;
         counter = -1;
