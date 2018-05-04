@@ -21,6 +21,7 @@ public class CombatController : MonoBehaviour {
 	public bool playerDead;
 	bool proceed;
 	public bool proceedToEnemyAttacks;
+	public float comboMulti;
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 
 	//For Debugging purposes
@@ -76,6 +77,11 @@ public class CombatController : MonoBehaviour {
 		spell.element = Element.Fire;
 		playerStats.abilities.Add (spell);
 
+		//Temporary item generation
+
+		CombatItem combatItem = new HealthPotion (player, 20);
+		playerStats.combatItems.Add(combatItem);
+
 		//Temporary buff generation
 		/* _Buff buff = new DamageOverTime(10, Element.Fire,1);
 		player.playerBuffs.Add(buff);
@@ -98,6 +104,14 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 
+	void GenerateCombatItem(){
+		
+	}
+
+	public void ProceedAfterPlayerCombo(float multiplier){
+		player.proceed = true;
+		comboMulti = multiplier;
+	}
 	void GenerateArmors (Loadout loadout) {
 		float speed = 0;
 		float j = 0;
@@ -122,7 +136,7 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 		playerStats.speed = speed / j;
-
+		
 		//Accessory generation
 		if (loadout.wornAccessories != null) {
 			foreach (var item in loadout.wornAccessories) {
@@ -200,10 +214,11 @@ public class CombatController : MonoBehaviour {
 		enemy.combatController = this;
 	}
 
+	//Generates health bars from enemylist in reverse so furthest (last) enemy is first health bar
 	void CreateHealthBars () {
 		int i = enemyList.Count - 1;
 		foreach (var item in enemyList) {
-			menuController.GenerateHealthBars (i, item);
+			menuController.GenerateHealthBars (i, enemyList[i]);
 			updateEnemyStats (item.enemyStats.health, item.enemyStats.maxHealth, item);
 			i--;
 		}

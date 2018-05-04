@@ -455,7 +455,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactedNode: {fileID: 0}
-  storedMarkers: []
 --- !u!1 &1995174586
 GameObject:
   m_ObjectHideFlags: 0
