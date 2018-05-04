@@ -5,7 +5,6 @@
 #(Name the lines accordingly, use straight from the subclass)
 #Get number of consumables from nameList
 
-ConsumableCombat_Count=10
+ConsumableDungeon_Count=10
 
-%Consumable_ConsumableCombat_0_Flashbang
-ConsumableCombat_0=Blindpowder_0.3
+

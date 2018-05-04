@@ -15,11 +15,11 @@ RecipeConsumable_0_m1=Mat_Mat_31_2
 RecipeConsumable_0_m2=Mat_Mat_35_3
 RecipeConsumable_0_m3=
 RecipeConsumable_0_m4=
-RecipeConsumable_0_result=Cons_ComCon_0_1
+RecipeConsumable_0_result=Cons_ConsumableCombat_0_1
 
-%Recipe_NonCom_1_potion
+%Recipe_Consumable_1_potion
 RecipeConsumable_1_m1=Mat_Mat_30_2
 RecipeConsumable_1_m2=
 RecipeConsumable_1_m3=
 RecipeConsumable_1_m4=
-RecipeConsumable_1_result=Cons_UniCon_0_1
+RecipeConsumable_1_result=Cons_ConsumableUniversal_0_1

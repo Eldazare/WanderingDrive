@@ -5,7 +5,8 @@
 #(Name the lines accordingly, use straight from the subclass)
 #Get number of consumables from nameList
 
-NonCom_Count=10
+ConsumableUniversal_Count=10
 
-%NonCom_NonCom_0_Potion
+%Consumable_ConsumableUniversal_0_Small Health Potion
+ConsumableUniversal_0=HealthPotion_20.0
 

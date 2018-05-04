@@ -43,7 +43,7 @@ public class LoadoutManager : MonoBehaviour {
     void Start(){
         emptyLoadout = true;
 		weaponList = Inventory.inventoryWeapons;
-		combatConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ComCon];
+		combatConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ConsumableCombat];
         currentItem = -1;
         chosenHand = -1;
         counter = -1;
@@ -135,7 +135,7 @@ public class LoadoutManager : MonoBehaviour {
 
     public void ChangeConsSlot(int slot) {
         currentItemType = ItemType.Cons;
-        currentItemSubType = ItemSubType.ComCon;
+		currentItemSubType = ItemSubType.ConsumableCombat;
         currentItem = combatConsumables[0];
         chosenConsSlot = slot;
         counter = 0;

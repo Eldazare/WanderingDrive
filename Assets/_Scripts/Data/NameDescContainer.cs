@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public enum NameType{
-	Mat, NonCom, ComCon, UniCon, DungCon,
+	Mat, ConsumableUniversal, ConsumableCombat, ConsumableWorld, ConsumableDungeon,
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
 	Helm, Chest, Arms, Legs, Boots, Accessory,
 	EnemySmall, EnemyLarge, Gather,

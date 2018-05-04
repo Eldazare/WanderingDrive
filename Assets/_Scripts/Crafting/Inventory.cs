@@ -9,8 +9,6 @@ public static class Inventory {
     public static List<InventoryWeapon> inventoryWeapons = new List<InventoryWeapon>();
     public static List<int> inventoryMaterials = new List<int>();
 	public static List<List<int>> inventoryConsumables = new List<List<int>> ();
-    //public static List<int> combatConsumables = new List<int>();
-    //public static List<int> nonCombatConsumables = new List<int>();
     public static int capacity;
     public static int maxCapacity = 30;
     public static int maxStack = 255;
@@ -39,46 +37,35 @@ public static class Inventory {
 
 	public static void Initialize(){
 		int materialCount = DataManager.ReadDataInt ("Material_Count");
-		int comConCount = DataManager.ReadDataInt ("ComCon_Count");
-		int worldConCount = DataManager.ReadDataInt ("NonCom_Count");
-		for (int i = 0; i < System.Enum.GetNames (typeof(ConsumableType)).Length; i++) {
-			inventoryConsumables.Add (new List<int> ());
-		}
 		for (int i = 0; i < materialCount; i++) {
 			inventoryMaterials.Add (0);
 		}
-		for (int i = 0; i < comConCount; i++){
-			inventoryConsumables[(int)ConsumableType.ComCon].Add(0);
-		}
-		for (int i = 0; i < worldConCount;i++){
-			inventoryConsumables[(int)ConsumableType.WorldCon].Add(0);
+		foreach (string consumableName in System.Enum.GetNames(typeof(ConsumableType))) {
+			List<int> newConsList = new List<int> ();
+			int consCount = DataManager.ReadDataInt (consumableName + "_Count");
+			for (int i = 0; i < consCount; i++) {
+				newConsList.Add (0);
+			}
+			inventoryConsumables.Add (newConsList);
 		}
 	}
 
     //katso löytyykö tavarat inventorysta
     public static  bool CheckIfExists(List<RecipeMaterial> materialList) {
-        bool result = true;
-        int temp = 0;
 		foreach (RecipeMaterial item in materialList) {
-			ItemSubType itemSubType = item.subtype;
-            if (itemSubType == ItemSubType.NonCom) {
-				if (inventoryConsumables[(int)ConsumableType.WorldCon][item.itemId] < item.amount) {
-                    result = false;
-                }
+			if (item.type == ItemType.Cons) {
+				ConsumableType consType = (ConsumableType)System.Enum.Parse (typeof(ConsumableType), item.subtype.ToString ());
+				if (inventoryConsumables [(int)consType] [item.itemId] < item.amount) {
+					return false;
+				}
             }
-            else if (itemSubType == ItemSubType.ComCon) {
-				if (inventoryConsumables[(int)ConsumableType.ComCon][item.itemId] < item.amount) {
-                    result = false;
-                }
-            }
-            else if (itemSubType == ItemSubType.Mat) {
+			else if (item.type == ItemType.Mat) {
                 if (inventoryMaterials[item.itemId] < item.amount) {
-                    result = false;
+                    return false;
                 }
             }
-            temp++;
         }
-        return result;
+        return true;
     }
 
 	public static bool CheckIfExists(RecipeMaterial mat){

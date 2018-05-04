@@ -12,7 +12,7 @@
 
 %Recipe_Weapon_0_genericSword
 Recipe_0_m1=Mat_Mat_0_2
-Recipe_0_m2=Cons_NonCom_6_1
+Recipe_0_m2=
 Recipe_0_m3=
 Recipe_0_m4=
 Recipe_0_result=Wep_Sword_0

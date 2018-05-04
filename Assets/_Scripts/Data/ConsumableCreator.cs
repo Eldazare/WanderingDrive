@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ConsumableType{UniCon, ComCon, WorldCon, DungCon};
+public enum ConsumableType{ConsumableUniversal, ConsumableCombat, ConsumableWorld, ConsumableDungeon};
 
 public static class ConsumableCreator {
 

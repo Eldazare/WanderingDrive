@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum CraftingRecipeType{
-	Weapon, Armor, Accessory, ComCon, NonCom
+	Weapon, Armor, Accessory, Consumable
 };
 
 public enum EquipmentSubtype{
@@ -17,7 +17,7 @@ public enum ItemType{
 };
 
 public enum ItemSubType {
-	Mat, NonCom, ComCon, UniCon, DungCon,
+	Mat, ConsumableUniversal, ConsumableCombat, ConsumableWorld, ConsumableDungeon,
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman,
 	Helm, Chest, Arms, Legs, Boots,
 	Accessory

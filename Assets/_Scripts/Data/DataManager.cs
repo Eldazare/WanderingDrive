@@ -4,12 +4,13 @@ using UnityEngine;
 using System.IO;
 
 public enum DataManagerDictionaryType{
-	ComCon, NonCom, Material, Armor, Accessory, EnemySmall, EnemyLarge, Drop, Gather,
-	RecipeWeapon, RecipeArmor, RecipeAccessory, RecipeComCon, RecipeNonCom, 	// copy of RecipeType
+	Material, Armor, Accessory, EnemySmall, EnemyLarge, Drop, Gather,
+	RecipeWeapon, RecipeArmor, RecipeAccessory, RecipeConsumable, 	// copy of RecipeType
 	Sword, Mace, Spear, Dagger, Pistol, Bow, GBow, ShieldS, ShieldL, Talisman, 	// copy of WeaponType
 	RecipeUpSword, RecipeUpMace, RecipeUpSpear, RecipeUpDagger, RecipeUpPistol, RecipeUpBow, RecipeUpGBow,
 	RecipeUpShieldS, RecipeUpShieldL, RecipeUpTalisman, 						// "copy" of WeaponType
 	RecipeUpHelm, RecipeUpChest, RecipeUpArms, RecipeUpLegs, RecipeUpBoots, RecipeUpAccessory,
+	ConsumableUniversal, ConsumableCombat, ConsumableWorld, ConsumableDungeon, // Copy of ConsumableType
 	Node,
 	Ability
 }
@@ -61,8 +62,6 @@ public static class DataManager  {
 		for (int i = 0; i < System.Enum.GetNames (typeof(DataManagerDictionaryType)).Length; i++) {
 			configDatas.Add(new Dictionary<string,string>());
 		}
-		DownloadSingleFile ("ConsumableCombatConfig", configDatas[(int)DataManagerDictionaryType.ComCon], nameListGeneric);
-		DownloadSingleFile ("ConsumableNonConConfig", configDatas[(int)DataManagerDictionaryType.NonCom], nameListGeneric);
 		DownloadSingleFile ("MaterialConfig", configDatas[(int)DataManagerDictionaryType.Material], nameListGeneric);
 		DownloadSingleFile ("EnemySmallConfig", configDatas[(int)DataManagerDictionaryType.EnemySmall], nameListGeneric);
 		DownloadSingleFile ("EnemyLargeConfig", configDatas[(int)DataManagerDictionaryType.EnemyLarge], nameListGeneric);
@@ -73,6 +72,13 @@ public static class DataManager  {
 		DownloadSingleFile ("ArmorConfig", configDatas[(int)DataManagerDictionaryType.Armor], nameListGeneric);
 		DownloadSingleFile ("AccessoryConfig", configDatas [(int)DataManagerDictionaryType.Accessory], nameListGeneric);
 		DownloadSingleFile ("AbilityConfig", configDatas [(int)DataManagerDictionaryType.Ability], nameListGeneric);
+
+		string[] consumableEnumNames = System.Enum.GetNames (typeof(ConsumableType));
+		foreach (string consumableString in consumableEnumNames) {
+			string consumableRUPFile = "Consumables/" + consumableString + "Config";
+			int consIndex = (int)System.Enum.Parse (typeof(DataManagerDictionaryType), consumableString);
+			DownloadSingleFile (consumableRUPFile, configDatas [consIndex], nameListGeneric);
+		}
 
 		string[] armorEnumNames = System.Enum.GetNames (typeof(ArmorType));
 		foreach (string armorString in armorEnumNames) {
