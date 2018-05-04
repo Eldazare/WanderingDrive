@@ -25,6 +25,18 @@ Drop_EnemySmall_2_p1=14_40/15_55/13_5
 Drop_EnemySmall_2_p2=17_85/13_5/11_10
 Drop_EnemySmall_2_p3=16_90/10_10
 
+#Mushroom, parts are Body/Head/Tail/Claws
+Drop_EnemySmall_3_Normal=10_30/11_30/13_2/12_30
+Drop_EnemySmall_3_p1=14_40/15_55/13_5
+Drop_EnemySmall_3_p2=17_85/13_5/11_10
+Drop_EnemySmall_3_p3=16_90/10_10
+
+#Dragon, parts are Body/Head/Tail/Claws
+Drop_EnemySmall_4_Normal=10_30/11_30/13_2/12_30
+Drop_EnemySmall_4_p1=14_40/15_55/13_5
+Drop_EnemySmall_4_p2=17_85/13_5/11_10
+Drop_EnemySmall_4_p3=16_90/10_10
+
 
 #Golem, parts are torso/head/tail/arm/arm
 Drop_EnemyLarge_0_Normal=0_30/1_30/3_2/2_18/7_10

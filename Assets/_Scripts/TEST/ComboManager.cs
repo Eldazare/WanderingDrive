@@ -28,7 +28,7 @@ public class ComboManager : MonoBehaviour {
 
 	GameObject spawnedMarker;
 	float aliveTimeLeft = 0;
-	public float FadeRate = 0.2f;
+	float FadeRate = 5f;
      private float targetAlpha;
 
 	/* void Start(){
