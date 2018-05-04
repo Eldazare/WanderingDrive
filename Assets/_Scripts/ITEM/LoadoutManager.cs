@@ -12,7 +12,9 @@ public class LoadoutManager : MonoBehaviour {
     public Image itemImage;
     public Text itemInfo;
     public GameObject loadoutSlotPanel;
+    public GameObject lSlot1, lSlot2, lSlot3, lSlot4, lSlot5, lSlot6, lSlot7, lSlot8, lSlot9, lSlot10;
     public GameObject storeButton;
+    public GameObject acces1, acces2, head, chest, arms, legs, boots, cons1, cons2, cons3, cons4, mainH, offH;
     public RecipeMaterial currentMaterial;
     Loadout myLoadout = new Loadout(2);
     public bool emptyLoadout;
@@ -209,37 +211,119 @@ public class LoadoutManager : MonoBehaviour {
         if (currentItemType == ItemType.Wep) {
             if (chosenHand == 1) {
                 myLoadout.AddMainHand(weaponList[counter]);
-                itemImage = GameObject.FindGameObjectWithTag("MainH").GetComponent<Image>();
-                itemImage.color = Color.green;
             }
             else if (chosenHand == 0) {
                 myLoadout.AddOffHand(weaponList[counter]);
-                itemImage = GameObject.FindGameObjectWithTag("OffH").GetComponent<Image>();
-                itemImage.color = Color.green;
             }
         }
         else if (currentItemType == ItemType.Cons) {
 			myLoadout.AddCombatConsumable(chosenConsSlot, (int)System.Enum.Parse(typeof(ConsumableType), currentItemSubType.ToString()) , combatConsumables.IndexOf(currentItem));
-            itemImage = GameObject.FindGameObjectWithTag("cons" + chosenConsSlot.ToString()).GetComponent<Image>();
-            itemImage.color = Color.green;
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
 				myLoadout.AddArmor(armorLists[currentArmorIndex][counter]);
-                itemImage = GameObject.FindGameObjectWithTag(currentArmorIndex.ToString()).GetComponent<Image>();
-                itemImage.color = Color.green;
-
             }
             else if (currentItemSubType == ItemSubType.Accessory) {
 				myLoadout.AddAccessory(armorLists[currentArmorIndex][counter], chosenAccessorySlot);
-                itemImage = GameObject.FindGameObjectWithTag("acces" + chosenAccessorySlot.ToString()).GetComponent<Image>();
-                itemImage.color = Color.green;
+            }
+        }
+        UpdateColors();
+    }
+
+    public void UpdateColors() {
+        if (myLoadout.mainHand != null) {
+            mainH.GetComponent<Image>().color = Color.green;
+        }
+        if (myLoadout.offHand != null) {
+            offH.GetComponent<Image>().color = Color.green;
+        }
+        if (myLoadout.wornAccessories[0] != null) {
+            acces1.GetComponent<Image>().color = Color.green;
+        }
+        if (myLoadout.wornAccessories[1] != null) {
+            acces2.GetComponent<Image>().color = Color.green;
+        }
+        for (int i = 0; i < myLoadout.wornArmor.Length; i++) {
+            if (myLoadout.wornArmor[i] != null) {
+                switch (i) {
+                    case 0:
+                        head.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 1:
+                        arms.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 2:
+                        chest.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 3:
+                        legs.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 4:
+                        boots.GetComponent<Image>().color = Color.green;
+                        break;
+                }
+            }
+
+        }
+        for (int i = 0; i < myLoadout.combatConsumableIndexes.Count; i++) {
+            if (myLoadout.combatConsumableIndexes[i] != null) {
+                switch (i) {
+                    case 0:
+                        cons1.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 1:
+                        cons2.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 2:
+                        cons3.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 3:
+                        cons4.GetComponent<Image>().color = Color.green;
+                        break;
+                }
             }
         }
     }
 
     public void Confirm() {
         loadoutSlotPanel.SetActive(true);
+        LoadoutsContainer myContainer = GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().loadoutList;
+        for(int i = 0; i < myContainer.GetLoadoutCount(); i++) {
+            if(myContainer.GetLoadout(i) != null) {
+                switch (i) {
+                    case 0:
+                        lSlot1.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 1:
+                        lSlot2.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 2:
+                        lSlot3.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 3:
+                        lSlot4.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 4:
+                        lSlot5.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 5:
+                        lSlot6.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 6:
+                        lSlot7.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 7:
+                        lSlot8.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 8:
+                        lSlot9.GetComponent<Image>().color = Color.green;
+                        break;
+                    case 9:
+                        lSlot10.GetComponent<Image>().color = Color.green;
+                        break;
+                }
+            }
+        }
     }
 
     public void SaveLoadout(int slot) {
