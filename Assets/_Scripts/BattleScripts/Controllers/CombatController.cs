@@ -158,8 +158,9 @@ public class CombatController : MonoBehaviour {
 	IEnumerator EnemyAttacksRoutine () {
 		if (!playerDead) {
 			menuController.targetHealthBar.SetActive (false);
-			touchController.enemyTurn = true;
 			menuController.EnemyTurnTextFade ();
+			yield return new WaitForSeconds(0.5f);
+			touchController.enemyTurn = true;
 			foreach(var item in enemyList){
 				if(item != null){
 					item.proceed = false;
@@ -262,6 +263,7 @@ public class CombatController : MonoBehaviour {
 	IEnumerator LoseEncounterRoutine () {
 		proceed = false;
 		playerDead = true;
+		menuController.DefaultButtons.SetActive(false);
 		menuController.loseScreen.SetActive (true);
 		GenerateAliveParts ();
 		yield return new WaitForSeconds (2f);
@@ -274,6 +276,7 @@ public class CombatController : MonoBehaviour {
 	IEnumerator RunAwayRoutine () {
 		proceed = false;
 		GenerateAliveParts ();
+		menuController.DefaultButtons.SetActive(false);
 		menuController.runAwayScreen.SetActive (true);
 		yield return new WaitForSeconds (2f);
 		yield return new WaitUntil (() => proceed);
@@ -293,6 +296,7 @@ public class CombatController : MonoBehaviour {
 		proceed = true;
 	}
 	IEnumerator WinCombatRoutine () {
+		menuController.DefaultButtons.SetActive(false);
 		menuController.victoryScreen.SetActive (true);
 		yield return new WaitForSeconds (2f);
 		BattleEndCombat (player.playerStats.health, playerStats.stamina, encounterDrops);
