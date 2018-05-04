@@ -28,7 +28,10 @@ public class LoadoutManager : MonoBehaviour {
     List<InventoryArmor> bootsList = new List<InventoryArmor>();
     */
 	public List<InventoryWeapon> weaponList;
+	List<List<int>> consumables;
+
 	public List<int> combatConsumables;
+	public List<int> universalConsumables;
 
     //public List<InventoryArmor> currentList;
 	private int currentArmorIndex = -1;
@@ -43,6 +46,8 @@ public class LoadoutManager : MonoBehaviour {
     void Start(){
         emptyLoadout = true;
 		weaponList = Inventory.inventoryWeapons;
+		consumables = Inventory.inventoryConsumables;
+		universalConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ConsumableUniversal];
 		combatConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ConsumableCombat];
         currentItem = -1;
         chosenHand = -1;
@@ -69,10 +74,11 @@ public class LoadoutManager : MonoBehaviour {
 			currentItemSubType = (ItemSubType)System.Enum.Parse (typeof(ItemSubType), weaponList [counter].subType);
 			break;
 		case ItemType.Cons:
-			if (counter >= combatConsumables.Count) {
+			List<int> consList = consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())];
+			if (counter >= consList.Count) {
 				counter = 0;
 			}
-			currentItem = combatConsumables[counter];
+			currentItem = consList[counter];
 			break;
 		case ItemType.Arm:
 			if (counter >= armorLists [currentArmorIndex].Count) {
@@ -134,13 +140,22 @@ public class LoadoutManager : MonoBehaviour {
     }
 
     public void ChangeConsSlot(int slot) {
-        currentItemType = ItemType.Cons;
+		currentItemType = ItemType.Cons;
 		currentItemSubType = ItemSubType.ConsumableCombat;
         currentItem = combatConsumables[0];
         chosenConsSlot = slot;
         counter = 0;
         UpdateInfoTexts();
     }
+
+	public void ChangeConsType(){
+		currentItemType = ItemType.Cons;
+		if (currentItemSubType != ItemSubType.ConsumableCombat) {
+			currentItemSubType = ItemSubType.ConsumableCombat;
+		} else {
+			currentItemSubType = ItemSubType.ConsumableUniversal;
+		}
+	}
 
     public void ChangeAccessorySlot(int slot) {
         currentItemType = ItemType.Arm;
@@ -204,7 +219,7 @@ public class LoadoutManager : MonoBehaviour {
             }
         }
         else if (currentItemType == ItemType.Cons) {
-            myLoadout.AddCombatConsumable(chosenConsSlot, combatConsumables.IndexOf(currentItem));
+			myLoadout.AddCombatConsumable(chosenConsSlot, (int)System.Enum.Parse(typeof(ConsumableType), currentItemSubType.ToString()) , combatConsumables.IndexOf(currentItem));
             itemImage = GameObject.FindGameObjectWithTag("cons" + chosenConsSlot.ToString()).GetComponent<Image>();
             itemImage.color = Color.green;
         }

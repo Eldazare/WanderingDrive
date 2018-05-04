@@ -15,13 +15,13 @@ public class Loadout {
 
 	public InventoryArmor[] wornArmor; // excludes accessories
 	public List<InventoryArmor> wornAccessories = new List<InventoryArmor>(); // 
-	public List<int> combatConsumableIndexes = new List<int>();
+	public List<ConsumableAbstraction> combatConsumableIndexes = new List<ConsumableAbstraction>();
 
 	public Loadout(int accessoryAmount){
 		accessoryCount = accessoryAmount;
 		combatConsumableCount = 4;
 		for (int i = 0; i < combatConsumableCount; i++) {
-			combatConsumableIndexes.Add (-1);
+			combatConsumableIndexes.Add (null);
 		}
 		wornArmor = new InventoryArmor[5];
 		for (int i = 0; i < accessoryCount; i++) {
@@ -29,9 +29,9 @@ public class Loadout {
 		}
 	}
 
-	public void AddCombatConsumable(int slotIndex, int itemIndex){
+	public void AddCombatConsumable(int slotIndex, int consumableType, int itemIndex){
 		if (slotIndex >= 0 && slotIndex < combatConsumableCount) {
-			combatConsumableIndexes [slotIndex] = itemIndex;
+			combatConsumableIndexes [slotIndex] = new ConsumableAbstraction((ConsumableType)consumableType, itemIndex);
 		} else {
 			Debug.LogError ("Invalid slot index given at loadout consumable adding");
 		}

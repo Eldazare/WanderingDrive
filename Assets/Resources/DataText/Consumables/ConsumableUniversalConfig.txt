@@ -8,5 +8,6 @@
 ConsumableUniversal_Count=10
 
 %Consumable_ConsumableUniversal_0_Small Health Potion
+&Consumable_ConsumableUniversal_0_Heal for 20 health. Usable anywhere.
 ConsumableUniversal_0=HealthPotion_20.0
 
