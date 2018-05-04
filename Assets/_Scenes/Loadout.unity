@@ -1320,28 +1320,31 @@ MonoBehaviour:
   itemImage: {fileID: 737434484}
   itemInfo: {fileID: 57573403}
   loadoutSlotPanel: {fileID: 1991492431}
-  lSlot1: {fileID: 363578172}
-  lSlot2: {fileID: 842654155}
-  lSlot3: {fileID: 2109548588}
-  lSlot4: {fileID: 251984555}
-  lSlot5: {fileID: 342604794}
-  lSlot6: {fileID: 1390971041}
-  lSlot7: {fileID: 1533916287}
-  lSlot8: {fileID: 1157441736}
-  lSlot9: {fileID: 42473816}
-  lSlot10: {fileID: 2034365209}
+  containerSlots:
+  - {fileID: 363578172}
+  - {fileID: 842654155}
+  - {fileID: 2109548588}
+  - {fileID: 251984555}
+  - {fileID: 342604794}
+  - {fileID: 1390971041}
+  - {fileID: 1533916287}
+  - {fileID: 1157441736}
+  - {fileID: 42473816}
+  - {fileID: 2034365209}
+  consSlots:
+  - {fileID: 1263545765}
+  - {fileID: 872381628}
+  - {fileID: 1814657043}
+  - {fileID: 85974243}
+  armorSlots:
+  - {fileID: 2118782154}
+  - {fileID: 1304761030}
+  - {fileID: 887852377}
+  - {fileID: 1373501062}
+  - {fileID: 151551074}
   storeButton: {fileID: 1130692008}
   acces1: {fileID: 800224986}
   acces2: {fileID: 1835354454}
-  head: {fileID: 2118782154}
-  chest: {fileID: 887852377}
-  arms: {fileID: 1304761030}
-  legs: {fileID: 1373501062}
-  boots: {fileID: 151551074}
-  cons1: {fileID: 1263545765}
-  cons2: {fileID: 872381628}
-  cons3: {fileID: 1814657043}
-  cons4: {fileID: 85974243}
   mainH: {fileID: 2102440166}
   offH: {fileID: 420003898}
   emptyLoadout: 0

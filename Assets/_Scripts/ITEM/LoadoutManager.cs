@@ -12,9 +12,11 @@ public class LoadoutManager : MonoBehaviour {
     public Image itemImage;
     public Text itemInfo;
     public GameObject loadoutSlotPanel;
-    public GameObject lSlot1, lSlot2, lSlot3, lSlot4, lSlot5, lSlot6, lSlot7, lSlot8, lSlot9, lSlot10;
+    public GameObject [] containerSlots = new GameObject[10];
+    public GameObject[] consSlots = new GameObject[4];
+    public GameObject[] armorSlots = new GameObject[5];
     public GameObject storeButton;
-    public GameObject acces1, acces2, head, chest, arms, legs, boots, cons1, cons2, cons3, cons4, mainH, offH;
+    public GameObject acces1, acces2, mainH, offH;
     public RecipeMaterial currentMaterial;
     Loadout myLoadout = new Loadout(2);
     public bool emptyLoadout;
@@ -245,42 +247,13 @@ public class LoadoutManager : MonoBehaviour {
         }
         for (int i = 0; i < myLoadout.wornArmor.Length; i++) {
             if (myLoadout.wornArmor[i] != null) {
-                switch (i) {
-                    case 0:
-                        head.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 1:
-                        arms.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 2:
-                        chest.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 3:
-                        legs.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 4:
-                        boots.GetComponent<Image>().color = Color.green;
-                        break;
-                }
+                armorSlots[i].GetComponent<Image>().color = Color.green;
             }
 
         }
         for (int i = 0; i < myLoadout.combatConsumableIndexes.Count; i++) {
             if (myLoadout.combatConsumableIndexes[i] != null) {
-                switch (i) {
-                    case 0:
-                        cons1.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 1:
-                        cons2.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 2:
-                        cons3.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 3:
-                        cons4.GetComponent<Image>().color = Color.green;
-                        break;
-                }
+                consSlots[i].GetComponent<Image>().color = Color.green;
             }
         }
     }
@@ -290,38 +263,7 @@ public class LoadoutManager : MonoBehaviour {
         LoadoutsContainer myContainer = GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().loadoutList;
         for(int i = 0; i < myContainer.GetLoadoutCount(); i++) {
             if(myContainer.GetLoadout(i) != null) {
-                switch (i) {
-                    case 0:
-                        lSlot1.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 1:
-                        lSlot2.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 2:
-                        lSlot3.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 3:
-                        lSlot4.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 4:
-                        lSlot5.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 5:
-                        lSlot6.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 6:
-                        lSlot7.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 7:
-                        lSlot8.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 8:
-                        lSlot9.GetComponent<Image>().color = Color.green;
-                        break;
-                    case 9:
-                        lSlot10.GetComponent<Image>().color = Color.green;
-                        break;
-                }
+                containerSlots[i].GetComponent<Image>().color = Color.green;
             }
         }
     }
