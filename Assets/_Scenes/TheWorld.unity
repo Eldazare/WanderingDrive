@@ -2247,8 +2247,8 @@ MonoBehaviour:
         entityPerCoroutine: 20
       vectorSubLayers:
       - coreOptions:
-          isActive: 0
-          sublayerName: Test
+          isActive: 1
+          sublayerName: Roads
           geometryType: 1
           layerName: road
           snapToTerrain: 1

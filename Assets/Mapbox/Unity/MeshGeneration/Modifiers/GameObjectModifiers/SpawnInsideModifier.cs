@@ -53,7 +53,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 		{
 
 
-
+			ve.GameObject.tag = "road";
 			_spawnedCount = 0;
 			var collider = ve.GameObject.GetComponent<Collider>();
 			var bounds = collider.bounds;
@@ -74,6 +74,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				{
 					//Debug.DrawLine(ray.origin, hit.point, Color.red, 1000);
 					var index = UnityEngine.Random.Range(0, _prefabs.Length);
+					/*
 					var transform = GetObject(index, ve.GameObject).transform;
 					transform.position = hit.point;
 					if (_randomizeRotation)
@@ -92,7 +93,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 						scale.y = y;
 						transform.localScale = scale;
 					}
-
+					*/
 					_spawnedCount++;
 				}
 			}
