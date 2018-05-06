@@ -9,5 +9,6 @@ public class FireBall : Ability{
 	override public void UseAbility(){
 		player.GetComponent<AbilityController>().AbilityEffect("FireBall");
 		player.playerStats.stamina -= staminaCost;
+		player.UpdateStats();
 	}
 }

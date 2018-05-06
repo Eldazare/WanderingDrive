@@ -15,16 +15,16 @@ public class MenuController : MonoBehaviour {
 	public Enemy targetedEnemy;
 
 	public GameObject DefaultButtons, AbilityButtons, ItemMenu, textBox, targetHealthBar; //Drag from Hierarchy
-	public Button focusButton, overloadButton, abilityMenuButton, playerProfileButton; //Drag buttons to menuController
+	public Button focusButton, overloadButton, abilityMenuButton, playerProfileButton; //Drag from Hierarchy
 	public PlayerCombatScript player; //Drag from Hierarchy
 	public GameObject enemyPartCanvas; //Drag from Hierarchy
 	public List<GameObject> enemyPartCanvasButtons; //Drag from Hierarchy
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
-	public Image playerHealthFill, playerHealthRedFill, playerManaFill; //Drag from Hierarchy
-	public Text playerHealthText, playerManaText, textBoxText; //Drag from Hierarchy
+	public Image playerHealthFill, playerHealthRedFill, playerStaminaFill; //Drag from Hierarchy
+	public Text playerHealthText, playerStaminaText, textBoxText; //Drag from Hierarchy
 	public GameObject enemyHealthBarParent; //Drag from Hierarchy
-	public GameObject victoryScreen, loseScreen, runAwayScreen;
+	public GameObject victoryScreen, loseScreen, runAwayScreen; //Drag from Hierarchy
 	[HideInInspector]
 	public List<GameObject> enemyHealthBars;
 	List<Image> enemyHealthFills;
@@ -33,7 +33,7 @@ public class MenuController : MonoBehaviour {
 	public float textSpeed = 0.02f;
 	public bool proceed, abilityOrAttack;
 	public int selectedPart = -1, AbilityID;
-	public Text enemyTurnText, playerTurnText;
+	public Text enemyTurnText, playerTurnText; //Drag from Hierarchy
 	Color originalColor;
 	public AttackMode attackMode;
 
@@ -112,7 +112,7 @@ public class MenuController : MonoBehaviour {
 	public void RunAwayButton () {
 		combatController.RunAway ();
 	}
-
+	//Legacy routine for camera movement
 	/* IEnumerator CameraToEnemy () {
 		combatController.cameraScript.MoveCamera (targetedEnemy.cameraTarget);
 		yield return new WaitUntil (() => proceed);
@@ -129,16 +129,23 @@ public class MenuController : MonoBehaviour {
 		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (partNbr);
 	}
 	public void ChoosePartToAttack () {
-		combatController.ActivatePartCanvas (targetedEnemy);
-		
 		if (abilityOrAttack) {
-			player.Ability (selectedPart);
+			if(player.playerStats.abilities[player.abilityID].staminaCost<player.playerStats.stamina){
+				player.Ability (selectedPart);
+				combatController.ActivatePartCanvas (targetedEnemy);
+			}else{
+				WriteText("Not enough stamina!");
+			}
+			
 		} else {
 			player.Attack (selectedPart);
+			combatController.ActivatePartCanvas (targetedEnemy);
 		}
 		//StartCoroutine (PlayerAttack ());
 	}
-	IEnumerator PlayerAttack () {
+	//Legacy routine for camera movement
+
+	/* IEnumerator PlayerAttack () {
 		proceed = false;
 		combatController.cameraScript.MoveCamera (playerPovCamera);
 		yield return new WaitUntil (() => proceed);
@@ -149,7 +156,7 @@ public class MenuController : MonoBehaviour {
 		} else {
 			player.Attack (selectedPart);
 		}
-	}
+	} */
 	public void Ability (int slot) {
 		player.CalculateDamage(AttackMode.Ability);
 		AbilityButtons.SetActive (false);
@@ -176,10 +183,14 @@ public class MenuController : MonoBehaviour {
 		player.PlayerOverload ();
 	}
 	//UI updates
+
+	//Player's UpdateStats method calles this with player's health and max health
 	public void UpdatePlayerHealth (float health, float maxHealth, float percentage) {
 		playerHealthFill.fillAmount = percentage;
 		playerHealthText.text = health.ToString ("0.#") + "/" + maxHealth.ToString ("0");
+		playerStaminaText.text = player.playerStats.stamina.ToString ("0.#") + "/" + player.playerStats.maxStamina.ToString ("0");
 		StartCoroutine (LerpStatusBar (playerHealthRedFill, playerHealthFill.fillAmount));
+		StartCoroutine (LerpStatusBar (playerStaminaFill, player.playerStats.stamina/player.playerStats.maxStamina));
 	}
 	public void UpdateEnemyHealth (float health, float maxHealth, float percentage, Enemy enemyForListSearch) {
 		EnemyHealthBarScript healthbar = enemyHealthBars[enemyHealthBars.Count - 1 - (combatController.enemyList.IndexOf (enemyForListSearch))].GetComponent<EnemyHealthBarScript> ();
@@ -212,6 +223,7 @@ public class MenuController : MonoBehaviour {
 		textBox.SetActive (false);
 	}
 
+	//Player's turn routine
 	IEnumerator AttackWaitTime () {
 		proceed = false;
 		player.ApplyPlayerBuffs ();

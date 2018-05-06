@@ -316,6 +316,7 @@ public class CombatController : MonoBehaviour {
 	public void updateEnemyStats (float health, float maxhealth, Enemy enemy) {
 		menuController.UpdateEnemyHealth (health, maxhealth, health / maxhealth, enemy);
 	}
+	//Activates and deactivates enemy part selection
 	public void ActivatePartCanvas (Enemy enemy) {
 		int i = 0;
 		if (!menuController.enemyPartCanvas.activeInHierarchy) {

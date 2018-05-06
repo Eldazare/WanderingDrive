@@ -19,7 +19,6 @@ public class HealthPotion : CombatItem  {
 			player.PopUpText(potency.ToString("0.#"),false);
 			player.UpdateStats();
 		}
-		
 		return returnDelay;
 	}
 }
