@@ -28,6 +28,7 @@ TagManager:
   - 5
   - enemy
   - ComboComponent
+  - road
   layers:
   - Default
   - TransparentFX
