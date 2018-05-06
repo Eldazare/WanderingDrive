@@ -17,6 +17,7 @@ public class ComboManager : MonoBehaviour {
 	public GameObject swipeMarker;
 
 	public GraphicRaycaster gr;
+	public GameObject comboBackground;
 	public GameObject markerCanvasParent;
 
 	List<ComboPieceAbstraction> comboContent;
@@ -188,7 +189,7 @@ public class ComboManager : MonoBehaviour {
 	}
 
 	private IEnumerator ComboMaster (List<ComboPieceAbstraction> comboList) {
-		markerCanvasParent.SetActive (true);
+		comboBackground.SetActive (true);
 		comboResult = new List<bool> ();
 		foreach (ComboPieceAbstraction combP in comboList) {
 			yield return ComboPart (combP);
@@ -202,7 +203,7 @@ public class ComboManager : MonoBehaviour {
 		}
 		GetComponent<CombatController> ().ProceedAfterPlayerCombo (multiplier);
 		Debug.Log ("Combo complete");
-		markerCanvasParent.SetActive (false);
+		comboBackground.SetActive (false);
 	}
 
 	private IEnumerator ComboPart (ComboPieceAbstraction combP) {

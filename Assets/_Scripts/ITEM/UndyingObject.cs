@@ -12,6 +12,8 @@ public class UndyingObject : MonoBehaviour {
 	// add more stuff as it comes up
 
 
+	private bool doTutorialBox = true;
+
 	// PUBLIC only for testing purposes
 	public LoadoutsContainer loadoutList;
 	public WorldStatsContainer playerWorldStats;
@@ -74,6 +76,8 @@ public class UndyingObject : MonoBehaviour {
 		loadout.AddArmor (new InventoryArmor (0, "Legs"));
 		loadout.AddArmor (new InventoryArmor (0, "Boots"));
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
+		loadout.AddCombatConsumable (0, (int)ConsumableType.ConsumableUniversal, 0);
+		loadout.AddCombatConsumable (1, (int)ConsumableType.ConsumableCombat, 0);
 		loadoutList.InsertLoadout (loadout, 9);
 	}
 
@@ -202,7 +206,7 @@ public class UndyingObject : MonoBehaviour {
 		loadout.AddArmor (new InventoryArmor (0, "Boots"));
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
 		List<NodeEnemy> enemyList = new List<NodeEnemy> ();
-		enemyList.Add (new NodeEnemy (0, "EnemySmall"));
+		enemyList.Add (new NodeEnemy (3, "EnemySmall")); // Mushroom
 		comCon.StartCombat (loadout, enemyList);
 	}
 

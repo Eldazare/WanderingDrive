@@ -108,6 +108,7 @@ public static class NodeSpawner  {
 		for (int i = 0; i < count; i++) {
 			calc += weights [i];
 			if (calc > randomInt) {
+				Debug.Log ("weights length: " + weights.Count + "  i: " + i);
 				return i;
 			}
 		}
