@@ -187,6 +187,27 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 
+	public void StartTutorial(){
+		StartCoroutine (StartTutorialIenum ());
+	}
+
+	private IEnumerator StartTutorialIenum(){
+		yield return SceneManager.LoadSceneAsync ("TutorialBattle");
+		CombatController comCon = GameObject.FindGameObjectWithTag ("CombatController").GetComponent<CombatController> ();
+		Loadout loadout = new Loadout (1);
+		loadout.AddArmor (new InventoryArmor (0, "Helm"));
+		loadout.AddArmor (new InventoryArmor (0, "Chest"));
+		loadout.AddArmor (new InventoryArmor (0, "Arms"));
+		loadout.AddArmor (new InventoryArmor (0, "Legs"));
+		loadout.AddArmor (new InventoryArmor (0, "Boots"));
+		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
+		List<NodeEnemy> enemyList = new List<NodeEnemy> ();
+		enemyList.Add (new NodeEnemy (0, "EnemySmall"));
+		comCon.StartCombat (loadout, enemyList);
+	}
+
+
+
 
 	private IEnumerator UpdateLocationData(float seconds){
 		while (true){

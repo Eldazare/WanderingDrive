@@ -24,6 +24,10 @@ public class TheWorldControllerTEST : MonoBehaviour {
         GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().StartLoadoutManagement();
     }
 
+	public void DoTutorialBattle(){
+		GameObject.FindGameObjectWithTag("UndyingObject").GetComponent<UndyingObject>().StartTutorial();
+	}
+
     public void GenerateLoadoutButtons(){
 		loadoutChoicePanel.SetActive (true);
 		if (loadoutsPanel.transform.childCount == 0) {
