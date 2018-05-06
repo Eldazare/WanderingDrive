@@ -8,6 +8,12 @@ public class TheWorldControllerTEST : MonoBehaviour {
 	public GameObject loadoutChoicePanel; // parent, true/false
 	public GameObject loadoutsPanel; // sub, contains loadout buttons
 
+	public GameObject tutorialMasterPanel;
+	public Text tutorialWorldText;
+
+	int currentTutorialString;
+	string[] tutorialTexts;
+
 	public void DoBattle(){
 		GameObject.FindGameObjectWithTag("TestNode").GetComponent<WorldNode> ().Interact ();
 	}
@@ -52,4 +58,36 @@ public class TheWorldControllerTEST : MonoBehaviour {
 		loadoutChoicePanel.SetActive (false);
 		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().NullNodeData ();
 	}
+
+	public void DoTutorial(){
+		tutorialMasterPanel.SetActive (true);
+		tutorialTexts = (Resources.Load ("DataText/WORLDTUTORIALTEXTS") as TextAsset).text.Split ("\n".ToCharArray());
+		currentTutorialString = 0;
+		SetTutorialText ();
+	}
+
+	public void SkipTutorial(){
+		tutorialMasterPanel.SetActive (false);
+	}
+
+	public void NextTutorial(){
+		currentTutorialString++;
+		if (currentTutorialString >= tutorialTexts.Length) {
+			currentTutorialString = tutorialTexts.Length - 1;
+		}
+		SetTutorialText ();
+	}
+
+	public void PrevTutorial(){
+		currentTutorialString--;
+		if (currentTutorialString < 0) {
+			currentTutorialString = 0;
+		}
+		SetTutorialText ();
+	}
+
+	private void SetTutorialText(){
+		tutorialWorldText.text = "Page: "+(currentTutorialString+1)+"/"+tutorialTexts.Length+"\n"+tutorialTexts [currentTutorialString];
+	}
+
 }

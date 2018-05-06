@@ -84,6 +84,10 @@ public class UndyingObject : MonoBehaviour {
 	private IEnumerator ToTheWorld(){
 		//yield return new WaitForSeconds (3.0f); // DEBUG & VIDEO
         yield return SceneManager.LoadSceneAsync ("TheWorld");
+		if (doTutorialBox) {
+			GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().DoTutorial ();
+		}
+		doTutorialBox = false;
     }
 
 	public void GetLastMarkers(List<MarkerDataContainer> vl){

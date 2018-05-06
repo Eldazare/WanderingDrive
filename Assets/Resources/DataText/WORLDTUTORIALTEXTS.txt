@@ -1,0 +1,6 @@
+Welcome to Wandering Drive, a game about running around battling monsters and crafting equipment. This Tutorial contains more knowledge than you require to play the game, so if you feel inclined you can jump straight into combat tutorial found in the menu, or just play the game.
+The map has variety of nodes. Green = Gathering | Red = Single monster | Purple = Multimonster | Black = Big monster
+Your goal in this game is to defeat monsters, craft equipment and defeat boss of each tier to unlock tougher monsters. You also gain experience which unlocks new abilities. Experience doesn't directly boost your stats, but equipment does.
+Monsters have element and weapon type weaknesses. Craft many different equipment and customize different loadouts to stand a chance against variety of monsters! Armor often offers positive and negative resists, so one armor isn't going to protect you from everything. Build your loadouts carefully!
+Unlock abilities with experience and craft consumable items. Each loadout can hold limited number of abilities and items. Make your choices wisely! Note: Not all items can be used inside battle and vice-versa.
+Weapon and armor affect the leniency of your timing windows, both offensive and defensive. Choose your risk/reward wisely!
