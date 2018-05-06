@@ -16,6 +16,7 @@ public class LoadoutManager : MonoBehaviour {
     public GameObject[] consSlots = new GameObject[4];
     public GameObject[] armorSlots = new GameObject[5];
     public GameObject storeButton;
+	public GameObject changeConsumableButton;
     public GameObject acces1, acces2, mainH, offH;
     public RecipeMaterial currentMaterial;
     Loadout myLoadout = new Loadout(2);
@@ -159,6 +160,7 @@ public class LoadoutManager : MonoBehaviour {
 		} else {
 			currentItemSubType = ItemSubType.ConsumableUniversal;
 		}
+		UpdateInfoTexts();
 	}
 
     public void ChangeAccessorySlot(int slot) {
@@ -198,12 +200,22 @@ public class LoadoutManager : MonoBehaviour {
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
 		Debug.Log (currentMaterial.GetName ());
         itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
+		CheckConsumableChangePossibility ();
     }
 
     private void ClearInfoTexts() {
         itemInfo.text = "~Empty~";
+		CheckConsumableChangePossibility ();
         //Tai jotain muuta järkevämpää?
     }
+
+	private void CheckConsumableChangePossibility(){
+		if (currentItemType == ItemType.Cons) {
+			changeConsumableButton.SetActive (true);
+		} else {
+			changeConsumableButton.SetActive (false);
+		}
+	}
 
     public void AddToLoadout() {
         if (emptyLoadout == true) {
