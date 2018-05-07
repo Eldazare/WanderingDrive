@@ -293,8 +293,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2afd64dbde499e49958d4db4cd3f98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSprite: {fileID: 1899572663083412, guid: 3d4c10af2cf6f0c4db169520542d20d2,
+  groundButton: {fileID: 1899572663083412, guid: 3d4c10af2cf6f0c4db169520542d20d2,
     type: 2}
+  treasures:
+  - {fileID: 21300004, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
+  - {fileID: 21300018, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
+  horizontal: 18
+  vertical: 14
   howMany: 0
   depth: 0
 --- !u!1 &914893556
