@@ -144,21 +144,29 @@ public class MarkerScript : MonoBehaviour {
 
 
 							Vector3[] V = getVerticies (ob.gameObject);
-							/*
 							List<Vector3> viableVerticies = new List<Vector3> ();
+							viableVerticies.Add (V[0]);
 
-							foreach (Vector3 victor in V) {
-								Vector3 example;
-								float dist = getDistance (victor, example);
+							int c = viableVerticies.Count;
+							for (int i = 0; i < V.Length; i++) {
+								int viableCount = 0;
+								for (int j = 0; j < c; j++) {
+									float dist = getDistance (viableVerticies[j], V[i]);
+									if (dist > 15.0f) {
+										viableCount++;
+									}
+								}
+								if (viableCount == viableVerticies.Count) {
+									viableVerticies.Add (V[i]);
+								}
 							}
-							*/
 
-							int randomVectorIndex = Random.Range (0, V.Length - 1);
+							//int randomVectorIndex = Random.Range (0, V.Length);
 
-							//Debug.Log ("VERTICIES: " + V.Length);
-							//Vector3 mushVec = mush.bounds.center;
-							Vector3 closestMushVec = mush.ClosestPointOnBounds (V[randomVectorIndex]);
-							roadLayers.Add (closestMushVec);
+							foreach(Vector3 viaVec in viableVerticies) {
+								Vector3 closestMushVec = mush.ClosestPointOnBounds (viaVec);
+								roadLayers.Add (closestMushVec);
+							}
 						}
 
 						roadNames.Add (ob.gameObject.name);
