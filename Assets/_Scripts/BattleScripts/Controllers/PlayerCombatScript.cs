@@ -27,7 +27,7 @@ public class PlayerCombatScript : MonoBehaviour {
 
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff> ();
-	public float buffDamageMultiplier, buffElementDamageMultiplier, healthRegen, staminaRegen, blind, buffDamageReduction;
+	public float accuracyBuff, buffDamageMultiplier, buffElementDamageMultiplier, healthRegen, staminaRegen, blind, buffDamageReduction;
 	public int buffFlatDamage, buffFlatElementDamage, buffArmor;
 	public bool stunned, confused, frozen, paralyzed, hold;
 	public List<int> buffElementalWeakness = new List<int> { 0, 0, 0, 0, 0, 0 };
@@ -55,6 +55,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		healthRegen = 0;
 		staminaRegen = 0;
 		blind = 0;
+		accuracyBuff = 0;
 		stunned = false;
 		confused = false;
 		frozen = false;
@@ -164,13 +165,13 @@ public class PlayerCombatScript : MonoBehaviour {
 			playerDamage *= damageMod;
 			playerElementDamage *= eleDamageMod;
 			if (blind > 0) {
-				if (Random.Range (0, 100) + weapon.accuracyBonus > blind) {
-					combatController.HitEnemy (-1, 0, 0, part, weapon.accuracyBonus, weapon.weaknessType);
+				if (Random.Range (0, 100) + weapon.accuracyBonus+accuracyBuff > blind) {
+					combatController.HitEnemy (-1, 0, 0, part, weapon.accuracyBonus+accuracyBuff, weapon.weaknessType);
 				} else {
-					combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus, weapon.weaknessType);
+					combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus+accuracyBuff, weapon.weaknessType);
 				}
 			} else {
-				combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus, weapon.weaknessType);
+				combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus+accuracyBuff, weapon.weaknessType);
 			}
 		}
 	}
