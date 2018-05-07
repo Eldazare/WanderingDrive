@@ -7,6 +7,7 @@ using UnityEngine;
 public class Consumable {
 
 	public ConsumableType type;
+	public int id;
 	public float potency;
 
 	virtual
@@ -22,5 +23,10 @@ public class Consumable {
 	virtual
 	public void ActivateDungeonConsumable(){
 		Debug.LogError ("Undefined action (activating item)");
+	}
+
+	protected bool ReduceInventoryAmount(){
+		ItemSubType typeAsItemSubtype = (ItemSubType)System.Enum.Parse (typeof(ItemSubType), type.ToString ());
+		return Inventory.RemoveItem (ItemType.Cons, typeAsItemSubtype, id, 1);
 	}
 }

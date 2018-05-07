@@ -17,6 +17,8 @@ public class Loadout {
 	public List<InventoryArmor> wornAccessories = new List<InventoryArmor>(); // 
 	public List<ConsumableAbstraction> combatConsumableIndexes = new List<ConsumableAbstraction>();
 
+
+
 	public Loadout(int accessoryAmount){
 		accessoryCount = accessoryAmount;
 		combatConsumableCount = 4;
