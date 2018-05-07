@@ -16,15 +16,7 @@ public class PopulateGrid : MonoBehaviour {
     public void Populate() {
         GameObject newObject;
         for (int i = 0; i < howMany; i++) {
-            switch (depth) {
-                case 3:
-                    newObject = (GameObject)Instantiate(groundSprite, transform);
-                    break;
-                case 4:
-                    newObject = (GameObject)Instantiate(groundSprite, transform);
-                    break;
-            }
-            
+            newObject = (GameObject)Instantiate(groundSprite, transform);            
         }
 
     }
