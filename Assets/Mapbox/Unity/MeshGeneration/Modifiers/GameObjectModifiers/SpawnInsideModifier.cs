@@ -53,7 +53,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 		{
 
 
-			ve.GameObject.tag = "road";
+			ve.GameObject.tag = "Road";
 			_spawnedCount = 0;
 			var collider = ve.GameObject.GetComponent<Collider>();
 			var bounds = collider.bounds;
