@@ -383,7 +383,17 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114733991260982666, guid: 42464318724b6eb448b3f8556769621a,
+    - target: {fileID: 114929171037383960, guid: 42464318724b6eb448b3f8556769621a,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 337843892}
+    - target: {fileID: 114255209844391952, guid: 42464318724b6eb448b3f8556769621a,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 337843892}
+    - target: {fileID: 114851899720871506, guid: 42464318724b6eb448b3f8556769621a,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -393,14 +403,9 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1249714406}
-    - target: {fileID: 114851899720871506, guid: 42464318724b6eb448b3f8556769621a,
+    - target: {fileID: 114733991260982666, guid: 42464318724b6eb448b3f8556769621a,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 337843892}
-    - target: {fileID: 114255209844391952, guid: 42464318724b6eb448b3f8556769621a,
-        type: 2}
-      propertyPath: player
       value: 
       objectReference: {fileID: 337843892}
     - target: {fileID: 114352430718426112, guid: 42464318724b6eb448b3f8556769621a,
@@ -428,25 +433,9 @@ Prefab:
       propertyPath: cameraScript
       value: 
       objectReference: {fileID: 1249714408}
-    - target: {fileID: 114929171037383960, guid: 42464318724b6eb448b3f8556769621a,
-        type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 337843892}
-    - target: {fileID: 114929171037383960, guid: 42464318724b6eb448b3f8556769621a,
-        type: 2}
-      propertyPath: comboManager
-      value: 
-      objectReference: {fileID: 103785031}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 42464318724b6eb448b3f8556769621a, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &103785031 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114433392139705576, guid: 42464318724b6eb448b3f8556769621a,
-    type: 2}
-  m_PrefabInternal: {fileID: 103785030}
-  m_Script: {fileID: 11500000, guid: a7c0bf4894a8bcf4f99c97bd3c9cf962, type: 3}
 --- !u!1 &154137629
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +700,7 @@ MonoBehaviour:
   defended: 0
   attacked: 0
   abilityID: 0
+  accuracyBuff: 0
   buffDamageMultiplier: 0
   buffElementDamageMultiplier: 0
   healthRegen: 0

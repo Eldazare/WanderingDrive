@@ -19,8 +19,8 @@ public class MenuController : MonoBehaviour {
 	public PlayerCombatScript player; //Drag from Hierarchy
 	public GameObject enemyPartCanvas; //Drag from Hierarchy
 	public List<GameObject> enemyPartCanvasButtons; //Drag from Hierarchy
-	public List<Button> abilityButtons;
-	public List<Button> itemButtons;
+	public List<Button> abilityButtons;	//Drag from Hierarchy
+	public List<Button> itemButtons;	//Drag from Hierarchy
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerHealthRedFill, playerStaminaFill; //Drag from Hierarchy
@@ -69,6 +69,9 @@ public class MenuController : MonoBehaviour {
 	public void AbilitiesMenu () {
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
+		foreach (var item in player.playerStats.abilities) {
+			abilityButtons[player.playerStats.abilities.IndexOf(item)].interactable = true;
+		}
 		if (player.frozen) {
 			overloadEnabled = false;
 		}
@@ -80,8 +83,11 @@ public class MenuController : MonoBehaviour {
 	}
 	public void ItemsMenu () {
 		attackMode = AttackMode.Item;
-		ItemMenu.SetActive (true);
 		DefaultButtons.SetActive (false);
+		ItemMenu.SetActive (true);
+		foreach (var item in player.playerStats.combatItems) {
+			itemButtons[player.playerStats.combatItems.IndexOf(item)].interactable = true;
+		}
 		//targetHealthBar.SetActive(true);
 		//targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(selectedPart);
 	}

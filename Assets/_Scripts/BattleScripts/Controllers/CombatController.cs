@@ -43,8 +43,6 @@ public class CombatController : MonoBehaviour {
 	public void StartCombat (Loadout loadout, List<NodeEnemy> nodeEnemyList) {
 		playerStats = player.playerStats;
 
-		
-
 		armorAlgorithmModifier = DataManager.ReadDataFloat ("Armor_Correspondance");
 		enemyList = new List<Enemy> ();
 		if (loadout.mainHand != null) {
@@ -86,10 +84,18 @@ public class CombatController : MonoBehaviour {
 		spell.element = Element.Fire;
 		playerStats.abilities.Add (spell);
 
+		spell = new AccuracyBuff(player);
+		spell.staminaCost = 10;
+		spell.potency = 0.15f;
+		playerStats.abilities.Add(spell);
+
 		//Temporary item generation
 
 		CombatItem combatItem = new HealthPotion (player, 20);
 		playerStats.combatItems.Add (combatItem);
+
+		GenerateAbilities ();
+		GenerateCombatItems (loadout);
 
 		//Temporary buff generation
 
@@ -113,19 +119,11 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 	}
-
-	void GenerateCombatItem (Loadout loadout) {
-		foreach (var item in loadout.combatConsumableIndexes)
-		{
-			
-		}
+	void GenerateCombatItems (Loadout loadout) {
+		
 	}
-	void GenerateAbilities (Loadout loadout) {
-		int i = 0;
-		foreach (var item in playerStats.abilities) {
-			menuController.abilityButtons[i].interactable = false;
-			i++;
-		}
+	void GenerateAbilities () {
+		
 	}
 
 	public void ProceedAfterPlayerCombo (float multiplier) {
