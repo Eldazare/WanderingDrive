@@ -8,7 +8,10 @@ public class OreElement : MonoBehaviour
     public Image myImage;
     public Sprite secondSoil;
     public Sprite bottomSoil;
+    public Sprite treasure;
     public int depth;
+    public bool treasureExists = false;
+    public bool treasureUp = false;
 
     private void Start() {
         depth = 0;
@@ -21,9 +24,16 @@ public class OreElement : MonoBehaviour
             depth = 1;
         }
         else if (depth == 1) {
-            myImage.sprite = bottomSoil;
+            if(treasureExists == true) {
+                myImage.sprite = treasure;
+                treasureUp = true;
+            }
+            else {
+                myImage.sprite = bottomSoil;
+            }
             depth = 2;
         }
+
         
     }
 }
