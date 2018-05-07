@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour {
 	}
 	public void ResetCameraAfterAttack(){
 		CancelAllInvokes();
-		menuController.enemyPartCanvas.SetActive(false);
+		//menuController.enemyPartCanvas.SetActive(false);
 		targetLoc = startPos;
 		startTime = Time.time;
 		movingLength = Vector3.Distance(transform.position, targetLoc);

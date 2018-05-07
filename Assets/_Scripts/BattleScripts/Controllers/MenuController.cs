@@ -19,6 +19,8 @@ public class MenuController : MonoBehaviour {
 	public PlayerCombatScript player; //Drag from Hierarchy
 	public GameObject enemyPartCanvas; //Drag from Hierarchy
 	public List<GameObject> enemyPartCanvasButtons; //Drag from Hierarchy
+	public List<Button> abilityButtons;
+	public List<Button> itemButtons;
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerHealthRedFill, playerStaminaFill; //Drag from Hierarchy
@@ -38,8 +40,8 @@ public class MenuController : MonoBehaviour {
 	public AttackMode attackMode;
 
 	void Start () {
-	focusEnabled = true;
-	overloadEnabled = true;
+		focusEnabled = true;
+		overloadEnabled = true;
 	}
 	public void GenerateHealthBars (int number, Enemy item) {
 		GameObject newHealthBar = Instantiate (Resources.Load ("CombatResources/EnemyHealthBar"), transform.position, Quaternion.identity, enemyHealthBarParent.transform) as GameObject;
@@ -131,6 +133,7 @@ public class MenuController : MonoBehaviour {
 	public void ChoosePartToAttack () {
 		if (abilityOrAttack) {
 			if(player.playerStats.abilities[player.abilityID].staminaCost<player.playerStats.stamina){
+				Debug.Log(selectedPart);
 				player.Ability (selectedPart);
 				combatController.ActivatePartCanvas (targetedEnemy);
 			}else{
