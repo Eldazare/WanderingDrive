@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114829252996492096}
   m_Layer: 5
   m_Name: SwipeArrow
-  m_TagString: ComboComponent
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
