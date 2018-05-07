@@ -11,7 +11,7 @@ public class PlayerStats {
 	public List<int> elementWeakness = new List<int>{0, 0, 0, 0, 0, 0, 0}; // Need element for "NONE" also, for indexing purposes
 	public WeaponStats mainHand, offHand;
 	public List<Ability> abilities = new List<Ability> ();
-	public List<CombatItem> combatItems = new List<CombatItem>();
+	public List<Consumable> combatItems = new List<Consumable>();
 
 	public PlayerStats(){
 		maxHealth = 100;

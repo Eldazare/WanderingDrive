@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPotion : CombatItem  {
-
-	public HealthPotion(PlayerCombatScript _player , float healing){
-		player = _player;
-		potency = healing;
-		returnDelay = 1f;
-	}
-	override public float DoYourItemThing(){
+public class HealthPotion : CombatConsumable  {
+	override public void ActivateCombatConsumable() {
 		if(player){
 			player.playerStats.health += potency;
 			if(player.playerStats.health > player.playerStats.maxHealth){
@@ -19,6 +13,5 @@ public class HealthPotion : CombatItem  {
 			player.PopUpText(potency.ToString("0.#"),false);
 			player.UpdateStats();
 		}
-		return returnDelay;
 	}
 }

@@ -34,7 +34,7 @@ public class MenuController : MonoBehaviour {
 	public GameObject playerPovCamera; //Drag from Hierarchy
 	public float textSpeed = 0.02f;
 	public bool proceed, abilityOrAttack;
-	public int selectedPart = -1, AbilityID;
+	public int selectedPart = -1;
 	public Text enemyTurnText, playerTurnText; //Drag from Hierarchy
 	Color originalColor;
 	public AttackMode attackMode;
@@ -71,6 +71,7 @@ public class MenuController : MonoBehaviour {
 		AbilityButtons.SetActive (true);
 		foreach (var item in player.playerStats.abilities) {
 			abilityButtons[player.playerStats.abilities.IndexOf(item)].interactable = true;
+			abilityButtons[player.playerStats.abilities.IndexOf(item)].GetComponentInChildren<Text>().text = item.abilityName;
 		}
 		if (player.frozen) {
 			overloadEnabled = false;
@@ -87,6 +88,7 @@ public class MenuController : MonoBehaviour {
 		ItemMenu.SetActive (true);
 		foreach (var item in player.playerStats.combatItems) {
 			itemButtons[player.playerStats.combatItems.IndexOf(item)].interactable = true;
+			itemButtons[player.playerStats.combatItems.IndexOf(item)].GetComponentInChildren<Text>().text = item.GetType().ToString();
 		}
 		//targetHealthBar.SetActive(true);
 		//targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(selectedPart);
@@ -136,6 +138,8 @@ public class MenuController : MonoBehaviour {
 		selectedPart = partNbr;
 		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (partNbr);
 	}
+
+	//Plays attack/ability animation and deactivates part canvas
 	public void ChoosePartToAttack () {
 		if (abilityOrAttack) {
 			if(player.playerStats.abilities[player.abilityID].staminaCost<player.playerStats.stamina){
@@ -167,14 +171,20 @@ public class MenuController : MonoBehaviour {
 		}
 	} */
 	public void Ability (int slot) {
-		player.CalculateDamage(AttackMode.Ability);
-		AbilityButtons.SetActive (false);
+		Ability ability = player.playerStats.abilities[slot];
 		abilityOrAttack = true;
-		player.abilityID = slot;/* 
-		targetHealthBar.SetActive (true);
-		targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
-		//StartCoroutine (CameraToEnemy ());
-		combatController.ActivatePartCanvas (targetedEnemy);
+		player.abilityID = slot;
+		AbilityButtons.SetActive (false);
+		if(ability.offensive){
+			player.CalculateDamage(AttackMode.Ability);
+			/* 
+			targetHealthBar.SetActive (true);
+			targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
+			//StartCoroutine (CameraToEnemy ());
+			combatController.ActivatePartCanvas (targetedEnemy);
+		}else{
+			player.Ability(0);
+		}
 	}
 
 	public void Consumable (int slot) {
