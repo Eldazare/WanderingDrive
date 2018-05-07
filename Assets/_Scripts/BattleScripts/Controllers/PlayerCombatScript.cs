@@ -37,6 +37,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	public float damageDone, elementDamageDone;
 	public Element elementDone;
 	public List<Attack> attackList = new List<Attack> ();
+	public bool enemyTurn;
 
 	public void Attack (int part) {
 		startPos = transform.position;
@@ -593,7 +594,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 
 	public void Dodge (int direction) {
-		if (dodgeTimer <= 0 && !defended && combatController.touchController.enemyTurn) {
+		if (dodgeTimer <= 0 && !defended && enemyTurn) {
 			defended = true;
 			//Dodge animation depending on direction | 1 = right and down | 0 = left and up
 			dodgeTimer += dodgeDuration;
@@ -602,7 +603,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 
 	public void Block () {
-		if (blockTimer <= 0 && !defended && combatController.touchController.enemyTurn) {
+		if (blockTimer <= 0 && !defended && enemyTurn) {
 			defended = true;
 			//Block 
 			blockTimer += blockDuration;

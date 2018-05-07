@@ -223,7 +223,7 @@ public class CombatController : MonoBehaviour {
 			menuController.targetHealthBar.SetActive (false);
 			menuController.EnemyTurnTextFade ();
 			yield return new WaitForSeconds (0.5f);
-			touchController.enemyTurn = true;
+			player.enemyTurn = true;
 			foreach (var item in enemyList) {
 				if (item != null) {
 					item.proceed = false;
@@ -243,7 +243,7 @@ public class CombatController : MonoBehaviour {
 			enemyTurns--;
 			if (enemyTurns <= 0) {
 				enemyTurns = 0;
-				touchController.enemyTurn = false;
+				player.enemyTurn = false;
 				menuController.PlayersTurn ();
 			} else {
 				EnemyAttacks ();
