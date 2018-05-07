@@ -13,6 +13,8 @@ public class WorldStatsContainer {
 
 	public WorldStatsContainer(){
 		buffs = new List<WorldBuffAbstraction> ();
+		health = 100;
+		stamina = 100;
 	}
 
 	public void AddWorldBuff(WorldBuffAbstraction buff){
