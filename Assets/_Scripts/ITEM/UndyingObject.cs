@@ -90,6 +90,11 @@ public class UndyingObject : MonoBehaviour {
 		doTutorialBox = false;
     }
 
+	private IEnumerator ToTheWorldWithMaterials(List<RecipeMaterial> recipMats){
+		yield return SceneManager.LoadSceneAsync ("TheWorld");
+		GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().SetResources (recipMats);
+	}
+
 	public void GetLastMarkers(List<MarkerDataContainer> vl){
 		//vl = storedMarkers;
 		for (int i = 0; i < storedMarkers.Count; i++) {
@@ -145,12 +150,14 @@ public class UndyingObject : MonoBehaviour {
 	}
 
 	public void EndCombat(List<List<RecipeMaterial>> dropListList){
+		List<RecipeMaterial> dropListFinal = new List<RecipeMaterial> ();
 		foreach (List<RecipeMaterial> dropList in dropListList) {
 			foreach (RecipeMaterial recMat in dropList) {
 				Inventory.InsertRecipeMaterial (recMat);
+				dropListFinal.Add(recMat);
 			}
 		}
-		StartCoroutine (ToTheWorld());
+		StartCoroutine (ToTheWorldWithMaterials(dropListFinal));
 	}
 
 	public void GetGatherinNode(int nodeIndex, int dropAmount){
@@ -161,6 +168,7 @@ public class UndyingObject : MonoBehaviour {
 			foreach (RecipeMaterial recMat in dropList) {
 				Inventory.InsertRecipeMaterial (recMat);
 			}
+			GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().SetResources (dropList);
 		}
 	}
 

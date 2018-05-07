@@ -8,6 +8,9 @@ public class TheWorldControllerTEST : MonoBehaviour {
 	public GameObject loadoutChoicePanel; // parent, true/false
 	public GameObject loadoutsPanel; // sub, contains loadout buttons
 
+	public GameObject ResourceDropPanel;
+	public Text resourceDropText;
+
 	public GameObject tutorialMasterPanel;
 	public Text tutorialWorldText;
 
@@ -88,6 +91,11 @@ public class TheWorldControllerTEST : MonoBehaviour {
 
 	private void SetTutorialText(){
 		tutorialWorldText.text = "Page: "+(currentTutorialString+1)+"/"+tutorialTexts.Length+"\n"+tutorialTexts [currentTutorialString];
+	}
+
+	public void SetResources(List<RecipeMaterial> materials){
+		ResourceDropPanel.SetActive (true);
+		resourceDropText.text = "Carved:\n"+InfoBoxCreator.GetMatListInfo (materials);
 	}
 
 }

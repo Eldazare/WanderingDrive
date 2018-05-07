@@ -151,4 +151,12 @@ public static class InfoBoxCreator  {
 	private static string GetAName(string subtype, int id){
 		return NameDescContainer.GetName ((NameType)System.Enum.Parse (typeof(NameType), subtype), id);
 	}
+
+	public static string GetMatListInfo(List<RecipeMaterial> list){
+		string returnee = "";
+		foreach (RecipeMaterial mat in list) {
+			returnee += string.Format ("{0,-18} {1,7} \n", mat.GetName (), mat.amount);
+		}
+		return returnee;
+	}
 }
