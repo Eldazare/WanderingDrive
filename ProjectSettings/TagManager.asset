@@ -14,7 +14,7 @@ TagManager:
   - TestNode
   - enemy
   - ComboComponent
-  - road
+  - Road
   layers:
   - Default
   - TransparentFX

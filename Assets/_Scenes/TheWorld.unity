@@ -671,7 +671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnRange: 0.004
   NonSpawnRange: 0.0038
-  NumberOfMarkers: 90
+  NumberOfMarkers: 135
   DespawnDistance: 180
   _player: {fileID: 1926499057}
   _map: {fileID: 1850690986}

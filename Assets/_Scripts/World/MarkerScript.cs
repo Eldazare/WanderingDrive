@@ -115,7 +115,7 @@ public class MarkerScript : MonoBehaviour {
 	}
 
 
-	// Update on PlopMarkers. Spawns 5 nodes per map tile. Currently only used for the initial plop, as it needs some work.
+	// Update on PlopMarkers. Spawns (NumberOfMarkers / 9) nodes per map tile. Currently only used for the initial plop, as it needs some work.
 	void NewPlop(){
 		SearchTiles ();
 		_locations.Clear ();
@@ -131,13 +131,38 @@ public class MarkerScript : MonoBehaviour {
 				WorldNode[] tileNodes = tile.transform.GetComponentsInChildren<WorldNode>();
 				Transform[] objs = tile.transform.GetComponentsInChildren<Transform> ();
 				List<Vector3> roadLayers = new List<Vector3> ();
+				List<string> roadNames = new List<string> ();
 
 				foreach(Transform ob in objs) {
-					if (ob.gameObject.tag == "road") {
-						MeshCollider mush = ob.gameObject.GetComponent<MeshCollider> ();
-						//Vector3 mushVec = mush.bounds.size;
-						Vector3 mushVec = mush.bounds.center;
-						roadLayers.Add (mushVec);
+					if (ob.gameObject.tag == "Road") {
+
+						// The MapBox appears to create two road layers for each road.
+						// We only want one road layer per road, but it seems like mapbox freaks out, if I attempt to destroy them.
+						// So we're just checking for copies, and only instantiating markers on one.
+						if (!roadNames.Contains(ob.gameObject.name)) {
+							MeshCollider mush = ob.gameObject.GetComponent<MeshCollider> ();
+
+
+							Vector3[] V = getVerticies (ob.gameObject);
+							/*
+							List<Vector3> viableVerticies = new List<Vector3> ();
+
+							foreach (Vector3 victor in V) {
+								Vector3 example;
+								float dist = getDistance (victor, example);
+							}
+							*/
+
+							int randomVectorIndex = Random.Range (0, V.Length - 1);
+
+							//Debug.Log ("VERTICIES: " + V.Length);
+							//Vector3 mushVec = mush.bounds.center;
+							Vector3 closestMushVec = mush.ClosestPointOnBounds (V[randomVectorIndex]);
+							roadLayers.Add (closestMushVec);
+						}
+
+						roadNames.Add (ob.gameObject.name);
+
 					}
 				}
 				int roadRounds = roadLayers.Count;
@@ -199,6 +224,21 @@ public class MarkerScript : MonoBehaviour {
 			SpawnNode (_storedMarkers[i]._latlong, i);
 		}
 		SetChildren ();
+	}
+
+
+	Vector3[] getVerticies(GameObject ob) {
+		MeshCollider mf = ob.GetComponent<MeshCollider> ();
+		return mf.sharedMesh.vertices;
+	}
+
+	float getDistance(Vector3 vecOne, Vector3 vecTwo){
+		float xDist = vecOne.x - vecTwo.x;
+		float zDist = vecOne.z - vecTwo.z;
+		float xD = Mathf.Pow (xDist, 2);
+		float zD = Mathf.Pow (zDist, 2);
+		float distance = Mathf.Sqrt (xD + zD);
+		return distance;
 	}
 
 
