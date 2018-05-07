@@ -130,12 +130,14 @@ public class MarkerScript : MonoBehaviour {
 				//Debug.Log ("kid count: " + tile.transform.childCount);
 				WorldNode[] tileNodes = tile.transform.GetComponentsInChildren<WorldNode>();
 				Transform[] objs = tile.transform.GetComponentsInChildren<Transform> ();
-				List<Transform> roadLayers = new List<Transform> ();
+				List<Vector3> roadLayers = new List<Vector3> ();
 
 				foreach(Transform ob in objs) {
 					if (ob.gameObject.tag == "road") {
-						//roadLayers.Add (ob);
-						// REMEMBER TO REACTIVATE THIS WHEN IT'S READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						MeshCollider mush = ob.gameObject.GetComponent<MeshCollider> ();
+						//Vector3 mushVec = mush.bounds.size;
+						Vector3 mushVec = mush.bounds.center;
+						roadLayers.Add (mushVec);
 					}
 				}
 				int roadRounds = roadLayers.Count;
@@ -147,7 +149,7 @@ public class MarkerScript : MonoBehaviour {
 
 
 						if (roadRounds > 0) {
-							Vector2d vec = _map.WorldToGeoPosition (roadLayers[i].transform.position);
+							Vector2d vec = _map.WorldToGeoPosition (roadLayers[i]);
 							_locations.Add (vec);
 							roadRounds--;
 							Debug.Log ("Road marker placed.");
