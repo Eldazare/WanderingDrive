@@ -9,4 +9,4 @@ ConsumableCombat_Count=10
 
 %Consumable_ConsumableCombat_0_Small flash powder
 &Consumable_ConsumableCombat_0_Blind single enemy. Blind potency: 30%
-ConsumableCombat_0=Blindpowder_0.3
+ConsumableCombat_0=Blindpowder_30

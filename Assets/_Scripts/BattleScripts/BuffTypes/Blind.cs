@@ -7,10 +7,12 @@ using UnityEngine;
 public class Blind : _Buff{
 	float returnDelay = 1f;
 	public Blind(float blind){
+		helpful = false;
 		potency = blind;
 		turnsRemaining = -1;
 	}
 	public Blind(float blind, int turns){
+		helpful = false;
 		potency = blind;
 		turnsRemaining = turns;
 	}

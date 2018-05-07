@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireBall : Ability{
 	public FireBall(PlayerCombatScript _player){
 		player = _player;
+		offensive = true;
 	}
 	override public void UseAbility(){
 		player.GetComponent<AbilityController>().AbilityEffect("FireBall");

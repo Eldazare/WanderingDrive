@@ -78,21 +78,22 @@ public class CombatController : MonoBehaviour {
 		//Temporary ability generation
 
 		Ability spell = new FireBall (player);
+		spell.abilityName = "FireBall";
 		spell.staminaCost = 10;
 		spell.damage = 0;
 		spell.elementDamage = 20;
 		spell.element = Element.Fire;
+		spell.offensive = true;
 		playerStats.abilities.Add (spell);
 
-		spell = new AccuracyBuff(player);
+		spell = new AccuracyBuff (player);
+		spell.abilityName = "Accuracy Buff";
+		spell.offensive = false;
 		spell.staminaCost = 10;
-		spell.potency = 0.15f;
-		playerStats.abilities.Add(spell);
+		spell.potency = 15f;
+		playerStats.abilities.Add (spell);
 
 		//Temporary item generation
-
-		CombatItem combatItem = new HealthPotion (player, 20);
-		playerStats.combatItems.Add (combatItem);
 
 		GenerateAbilities ();
 		GenerateCombatItems (loadout);
@@ -118,18 +119,62 @@ public class CombatController : MonoBehaviour {
 				Debug.Log (item.GetType ().Name);
 			}
 		}
+		player.UpdateStats();
 	}
 	void GenerateCombatItems (Loadout loadout) {
-		
+		foreach (var item in loadout.combatConsumableIndexes) {
+			if(item != null){
+				Debug.Log("item index: "+ item.index);
+				Debug.Log("item type: "+ item.type);
+				Debug.Log("item class: "+item.GetType().ToString());
+				Consumable consumable = ConsumableCreator.CreateConsumable (item.index, item.type);
+				consumable.SetConsumablePlayer(player);
+				playerStats.combatItems.Add(consumable);
+			}
+		}
 	}
 	void GenerateAbilities () {
-		
+
+	}
+	void EnemyCreation (int enemySpacing, string enemyType, int id) {
+		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
+		Debug.Log (enemyName);
+		Vector3 enemyPos = enemyHost.transform.position;
+		//Adds spacing
+		var i = ((enemySpacing * 1.0 + 6.7) / 14);
+
+		//angle in radians, full circle has a radian angle of 2PI, so we find the radian angle between 
+		//2 of our points by dividing 2PI by the number of points
+		var angle = (float) (i * Mathf.PI * 2);
+
+		var radiusX = 15;
+		var radiusZ = 15;
+
+		var x = (float) (Mathf.Sin (angle) * radiusX);
+		var z = (float) (Mathf.Cos (angle) * radiusZ);
+
+		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/" + enemyName, typeof (GameObject)), new Vector3 (enemyPos.x - z, enemyPos.y, enemyPos.z - x), enemyHost.transform.rotation) as GameObject;
+
+		Enemy enemy = enemyObject.GetComponent<Enemy> ();
+		enemyObject.transform.LookAt (player.transform.position);
+		enemy.enemyName = enemyName;
+		enemy.enemyStats = EnemyStatCreator.LoadStatBlockData (id, enemyType);
+
+		enemyList.Add (enemy);
+		enemy.combatController = this;
 	}
 
-	public void ProceedAfterPlayerCombo (float multiplier) {
-		player.proceed = true;
-		comboMulti = multiplier;
+	//Generates health bars from enemylist in reverse so furthest (last) enemy is first health bar
+	void CreateHealthBars () {
+		int i = enemyList.Count - 1;
+		foreach (var item in enemyList) {
+			menuController.GenerateHealthBars (i, enemyList[i]);
+			updateEnemyStats (item.enemyStats.health, item.enemyStats.maxHealth, item);
+			i--;
+		}
 	}
+
+	
 	void GenerateArmors (Loadout loadout) {
 		float speed = 0;
 		float j = 0;
@@ -205,43 +250,7 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 	}
-	void EnemyCreation (int enemySpacing, string enemyType, int id) {
-		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
-		Debug.Log (enemyName);
-		Vector3 enemyPos = enemyHost.transform.position;
-		//Adds spacing
-		var i = ((enemySpacing * 1.0 + 6.7) / 14);
-
-		//angle in radians, full circle has a radian angle of 2PI, so we find the radian angle between 
-		//2 of our points by dividing 2PI by the number of points
-		var angle = (float) (i * Mathf.PI * 2);
-
-		var radiusX = 15;
-		var radiusZ = 15;
-
-		var x = (float) (Mathf.Sin (angle) * radiusX);
-		var z = (float) (Mathf.Cos (angle) * radiusZ);
-
-		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/" + enemyName, typeof (GameObject)), new Vector3 (enemyPos.x - z, enemyPos.y, enemyPos.z - x), enemyHost.transform.rotation) as GameObject;
-
-		Enemy enemy = enemyObject.GetComponent<Enemy> ();
-		enemyObject.transform.LookAt (player.transform.position);
-		enemy.enemyName = enemyName;
-		enemy.enemyStats = EnemyStatCreator.LoadStatBlockData (id, enemyType);
-
-		enemyList.Add (enemy);
-		enemy.combatController = this;
-	}
-
-	//Generates health bars from enemylist in reverse so furthest (last) enemy is first health bar
-	void CreateHealthBars () {
-		int i = enemyList.Count - 1;
-		foreach (var item in enemyList) {
-			menuController.GenerateHealthBars (i, enemyList[i]);
-			updateEnemyStats (item.enemyStats.health, item.enemyStats.maxHealth, item);
-			i--;
-		}
-	}
+	
 
 	public void EnemyDies (Enemy enemy) {
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
@@ -312,6 +321,10 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 		proceed = true;
+	}
+	public void ProceedAfterPlayerCombo (float multiplier) {
+		player.proceed = true;
+		comboMulti = multiplier;
 	}
 	IEnumerator WinCombatRoutine () {
 		menuController.DefaultButtons.SetActive (false);
