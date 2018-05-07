@@ -13,7 +13,6 @@ public class CombatController : MonoBehaviour {
 	public TouchControlScript touchController; //Drag from Hierarchy
 	public CameraController cameraScript; //Drag from Hierarchy
 	public bool enemyAttacked;
-
 	List<DropData> dropdata = new List<DropData> ();
 	List<List<EnemyPart>> enemypartListList = new List<List<EnemyPart>> ();
 	List<List<RecipeMaterial>> encounterDrops = new List<List<RecipeMaterial>> ();
@@ -22,15 +21,16 @@ public class CombatController : MonoBehaviour {
 	bool proceed;
 	public bool proceedToEnemyAttacks;
 	public float comboMulti;
+	bool combatEnded;
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
 
 	//For Debugging purposes
-	void Update() {
-		if(Input.GetKeyDown(KeyCode.D)){
-			player.Dodge(0);
+	void Update () {
+		if (Input.GetKeyDown (KeyCode.D)) {
+			player.Dodge (0);
 		}
-		if(Input.GetKeyDown(KeyCode.B)){
-			player.Block();
+		if (Input.GetKeyDown (KeyCode.B)) {
+			player.Block ();
 		}
 	}
 	public void EnemyAttacks () {
@@ -42,6 +42,9 @@ public class CombatController : MonoBehaviour {
 
 	public void StartCombat (Loadout loadout, List<NodeEnemy> nodeEnemyList) {
 		playerStats = player.playerStats;
+
+		
+
 		armorAlgorithmModifier = DataManager.ReadDataFloat ("Armor_Correspondance");
 		enemyList = new List<Enemy> ();
 		if (loadout.mainHand != null) {
@@ -65,7 +68,13 @@ public class CombatController : MonoBehaviour {
 
 		for (int i = 0; i < nodeEnemyList.Count; i++) {
 			EnemyCreation (i, nodeEnemyList[i].subtype, nodeEnemyList[i].id);
-		} 
+		}
+
+		//Temporary stamina and health add
+		player.playerStats.health = 100;
+		player.playerStats.maxHealth = player.playerStats.health;
+		player.playerStats.stamina = 100;
+		player.playerStats.maxStamina = player.playerStats.stamina;
 
 		//EnemyCreation (0, nodeEnemyList[0].subtype, nodeEnemyList[0].id);
 		//Temporary ability generation
@@ -80,9 +89,10 @@ public class CombatController : MonoBehaviour {
 		//Temporary item generation
 
 		CombatItem combatItem = new HealthPotion (player, 20);
-		playerStats.combatItems.Add(combatItem);
+		playerStats.combatItems.Add (combatItem);
 
 		//Temporary buff generation
+
 		/* _Buff buff = new DamageOverTime(10, Element.Fire,1);
 		player.playerBuffs.Add(buff);
 		buff.player = player;
@@ -104,11 +114,21 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 
-	void GenerateCombatItem(){
-		
+	void GenerateCombatItem (Loadout loadout) {
+		foreach (var item in loadout.combatConsumableIndexes)
+		{
+			
+		}
+	}
+	void GenerateAbilities (Loadout loadout) {
+		int i = 0;
+		foreach (var item in playerStats.abilities) {
+			menuController.abilityButtons[i].interactable = false;
+			i++;
+		}
 	}
 
-	public void ProceedAfterPlayerCombo(float multiplier){
+	public void ProceedAfterPlayerCombo (float multiplier) {
 		player.proceed = true;
 		comboMulti = multiplier;
 	}
@@ -136,7 +156,7 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 		playerStats.speed = speed / j;
-		
+
 		//Accessory generation
 		if (loadout.wornAccessories != null) {
 			foreach (var item in loadout.wornAccessories) {
@@ -147,7 +167,7 @@ public class CombatController : MonoBehaviour {
 					playerStats.elementDamage += acc.elementDamage;
 					playerStats.magicArmor += acc.magicDefense;
 					foreach (var item1 in acc.elementResists) {
-						playerStats.elementWeakness [i] += item1;
+						playerStats.elementWeakness[i] += item1;
 						i++;
 					}
 				}
@@ -159,23 +179,23 @@ public class CombatController : MonoBehaviour {
 		if (!playerDead) {
 			menuController.targetHealthBar.SetActive (false);
 			menuController.EnemyTurnTextFade ();
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds (0.5f);
 			touchController.enemyTurn = true;
-			foreach(var item in enemyList){
-				if(item != null){
+			foreach (var item in enemyList) {
+				if (item != null) {
 					item.proceed = false;
 					item.ApplyEnemyBuffs ();
-					if(!item.stunned){
+					if (!item.stunned) {
 						yield return item.Attack ();
 						yield return new WaitUntil (() => enemyAttacked);
 						enemyAttacked = false;
-					}else{
+					} else {
 						GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (item.transform.position.x, item.transform.position.y + 3, item.transform.position.z) - item.transform.right, Quaternion.identity) as GameObject;
 						popup.GetComponent<TextMesh> ().text = "Stunned";
 						yield return new WaitForSeconds (1f);
 					}
 				}
-				ResetPlayerDefence();
+				ResetPlayerDefence ();
 			}
 			enemyTurns--;
 			if (enemyTurns <= 0) {
@@ -188,24 +208,24 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 	void EnemyCreation (int enemySpacing, string enemyType, int id) {
-		string enemyName =  NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
-		Debug.Log(enemyName);
+		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
+		Debug.Log (enemyName);
 		Vector3 enemyPos = enemyHost.transform.position;
 		//Adds spacing
 		var i = ((enemySpacing * 1.0 + 6.7) / 14);
-             
-        //angle in radians, full circle has a radian angle of 2PI, so we find the radian angle between 
-        //2 of our points by dividing 2PI by the number of points
-        var angle = (float)(i * Mathf.PI * 2);
-             
-        var radiusX = 15;
-        var radiusZ = 15;
-             
-        var x = (float)( Mathf.Sin (angle) * radiusX);
-        var z = (float)( Mathf.Cos (angle) * radiusZ);
 
-		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/"+enemyName, typeof (GameObject)), new Vector3 (enemyPos.x - z, enemyPos.y, enemyPos.z - x), enemyHost.transform.rotation) as GameObject;
-		
+		//angle in radians, full circle has a radian angle of 2PI, so we find the radian angle between 
+		//2 of our points by dividing 2PI by the number of points
+		var angle = (float) (i * Mathf.PI * 2);
+
+		var radiusX = 15;
+		var radiusZ = 15;
+
+		var x = (float) (Mathf.Sin (angle) * radiusX);
+		var z = (float) (Mathf.Cos (angle) * radiusZ);
+
+		GameObject enemyObject = Instantiate (Resources.Load ("EnemyModels/" + enemyName, typeof (GameObject)), new Vector3 (enemyPos.x - z, enemyPos.y, enemyPos.z - x), enemyHost.transform.rotation) as GameObject;
+
 		Enemy enemy = enemyObject.GetComponent<Enemy> ();
 		enemyObject.transform.LookAt (player.transform.position);
 		enemy.enemyName = enemyName;
@@ -224,12 +244,12 @@ public class CombatController : MonoBehaviour {
 			i--;
 		}
 	}
-		
+
 	public void EnemyDies (Enemy enemy) {
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 		dropdata.Add (drop);
 		//enemypartListList.Add (enemy.enemyStats.partList);
-		encounterDrops.Add(DropDataCreator.CalculateDrops(drop, DropDataCreator.DefaultNormalDropAmount(), enemy.enemyStats.partList));
+		encounterDrops.Add (DropDataCreator.CalculateDrops (drop, DropDataCreator.DefaultNormalDropAmount (), enemy.enemyStats.partList));
 
 		enemyList[enemyList.IndexOf (enemy)] = null;
 		Destroy (enemy.gameObject, 1f);
@@ -263,7 +283,7 @@ public class CombatController : MonoBehaviour {
 	IEnumerator LoseEncounterRoutine () {
 		proceed = false;
 		playerDead = true;
-		menuController.DefaultButtons.SetActive(false);
+		menuController.DefaultButtons.SetActive (false);
 		menuController.loseScreen.SetActive (true);
 		GenerateAliveParts ();
 		yield return new WaitForSeconds (2f);
@@ -276,7 +296,7 @@ public class CombatController : MonoBehaviour {
 	IEnumerator RunAwayRoutine () {
 		proceed = false;
 		GenerateAliveParts ();
-		menuController.DefaultButtons.SetActive(false);
+		menuController.DefaultButtons.SetActive (false);
 		menuController.runAwayScreen.SetActive (true);
 		yield return new WaitForSeconds (2f);
 		yield return new WaitUntil (() => proceed);
@@ -296,7 +316,7 @@ public class CombatController : MonoBehaviour {
 		proceed = true;
 	}
 	IEnumerator WinCombatRoutine () {
-		menuController.DefaultButtons.SetActive(false);
+		menuController.DefaultButtons.SetActive (false);
 		menuController.victoryScreen.SetActive (true);
 		yield return new WaitForSeconds (2f);
 		BattleEndCombat (player.playerStats.health, playerStats.stamina, encounterDrops);
@@ -336,10 +356,10 @@ public class CombatController : MonoBehaviour {
 			if (menuController.selectedPart < 0) {
 				menuController.SelectEnemyPart (0);
 				menuController.targetHealthBar.SetActive (true);
-				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(0);
-			}else{
+				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (0);
+			} else {
 				menuController.targetHealthBar.SetActive (true);
-				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(menuController.selectedPart);
+				menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (menuController.selectedPart);
 			}
 		} else {
 			foreach (var item in menuController.enemyPartCanvasButtons) {

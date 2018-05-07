@@ -11,6 +11,7 @@ public class TutorialBattleController : MonoBehaviour {
 	public GameObject blockerAll, blockerLeft, blockerRight, blockerButtons, blockerStatus, blockerFocus, blockerNoClick;
 	bool waitingForClickTextBox, proceed, proceedTutorial;
 	public MenuController menu; //Drag from Hierarchy
+	public PlayerProfileWindowScript playerProfile;
 	bool skipped5, skipped15;
 	public int tutorialStep;
 	static string tutorialText1 = "Welcome to Hunting monsters!\nLet's go through the mechanics of the fight!";
@@ -84,10 +85,12 @@ public class TutorialBattleController : MonoBehaviour {
 					menu.Back ();
 					blockerFocus.SetActive (false);
 					blockerRight.SetActive(true);
+					playerProfile.OpenPlayerProfile();
 					break;
 				case 13:
 					blockerRight.SetActive(false);
 					blockerLeft.SetActive(true);
+					playerProfile.OpenPlayerProfile();
 					break;
 				case 14:
 					menu.Attack();
