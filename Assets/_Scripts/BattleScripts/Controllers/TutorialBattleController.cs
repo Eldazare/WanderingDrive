@@ -12,7 +12,7 @@ public class TutorialBattleController : MonoBehaviour {
 	bool waitingForClickTextBox, proceed, proceedTutorial;
 	public MenuController menu; //Drag from Hierarchy
 	public PlayerProfileWindowScript playerProfile;
-	bool skipped5, skipped15;
+	bool skipped5, skipped12, skipped15;
 	public int tutorialStep;
 	static string tutorialText1 = "Welcome to Hunting monsters!\nLet's go through the mechanics of the fight!";
 	static string tutorialText2 = "Combat is Turn-Based so you can take your time thinking about your turn.";
@@ -27,6 +27,7 @@ public class TutorialBattleController : MonoBehaviour {
 	static string tutorialText10 = "Overload\nYou gain 2 turns immediately and gain damage bonus of 50% for them but you will forfeit your next turn and you'll be unable to dodge for the enemy turns";
 	static string tutorialText11 = "You can use Focus and Overload together for a unique interaction after figuring it out.";
 	static string tutorialText12 = "Okay so here on the left you have your status bars and your character. You can click on your portrait to see any status effects affecting you as well as some more information about your abilities if you forget.";
+	static string tutorialText122 = "";
 	static string tutorialText13 = "On the right you have your enemies. If you are facing multiple monsters you can select which one you want to attack by clicking the name below their health bar.";
 	static string tutorialText14 = "Enemies have different parts that have their own health, attack timings and more that you should try to learn to improve your hunting skills.";
 	static string tutorialText15 = "After selecting an enemy and selecting your course of action. You can select the enemy's part that you want to target.";
@@ -60,6 +61,7 @@ public class TutorialBattleController : MonoBehaviour {
 	IEnumerator StartBattleTutorial () {
 		tutorialStep = 1;
 		foreach (var item in tutorialTexts) {
+			StartCoroutine(WriteText (item));
 			switch (tutorialStep) {
 				case 1:
 					blockerNoClick.SetActive (true);
@@ -82,33 +84,42 @@ public class TutorialBattleController : MonoBehaviour {
 					blockerFocus.SetActive (true);
 					break;
 				case 12:
-					menu.Back ();
-					blockerFocus.SetActive (false);
-					blockerRight.SetActive(true);
-					playerProfile.OpenPlayerProfile();
+					if(skipped12){
+						StopCoroutine("WriteText");
+						textBox.SetActive (false);
+						playerProfile.OpenPlayerProfile();
+					}else{
+						menu.Back ();
+						blockerFocus.SetActive (false);
+						blockerRight.SetActive(true);
+						skipped12 = true;
+						tutorialStep--;
+					}
 					break;
 				case 13:
 					blockerRight.SetActive(false);
 					blockerLeft.SetActive(true);
-					playerProfile.OpenPlayerProfile();
 					break;
 				case 14:
-					menu.Attack();
+					
+					
 					break;
 				case 15:
+					menu.Attack();
+					break;
+				case 16:
 					if(!skipped15){
 						tutorialStep--;
 						skipped15 = true;
 					}
 					break;
-				case 16:
+				case 17:
 					menu.Back();
 					blockerLeft.SetActive(false);
 					break;
 				default:
 					break;
 			}
-			StartCoroutine(WriteText (item));
 			yield return new WaitUntil (() => proceedTutorial);
 			proceedTutorial = false;
 			tutorialStep++;

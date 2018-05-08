@@ -14,7 +14,7 @@ public class Stun : _Buff {
 	public override float DoYourThing(){
 		if(player != null){
 			player.stunned = true;
-			player.StatusTextPopUp("Stunned");
+			player.PopUpText("Stunned", PlayerPopUpColor.Status);
 		}else{
 			enemy.stunned = true;
 			enemy.StatusTextPopUp("Stunned");

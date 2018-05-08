@@ -14,7 +14,7 @@ public class Freeze : _Buff {
 	public override float DoYourThing(){
 		if(player != null){
 			player.frozen = true;
-			player.StatusTextPopUp("Frozen");
+			player.PopUpText("Frozen", PlayerPopUpColor.Status);
 		}else{
 			enemy.frozen = true;
 			enemy.StatusTextPopUp("Frozen");

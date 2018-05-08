@@ -21,7 +21,7 @@ public class Blind : _Buff{
 		if(player != null){
 			if(player.blind<potency){
 				player.blind = potency;
-				player.StatusTextPopUp("Blinded");
+				player.PopUpText("Blinded", PlayerPopUpColor.Status);
 			}
 		}else{
 			if(enemy.blind<potency){

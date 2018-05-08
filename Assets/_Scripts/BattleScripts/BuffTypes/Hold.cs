@@ -14,10 +14,10 @@ public class Hold : _Buff {
 	public override float DoYourThing(){
 		if(player != null){
 			player.hold = true;
-			player.StatusTextPopUp("Hold");
+			player.PopUpText("Hold", PlayerPopUpColor.Status);
 		}else{
 			enemy.hold = true;
-			enemy.StatusTextPopUp("Confused");
+			enemy.StatusTextPopUp("Hold");
 		}
 		return returnDelay;
 	}

@@ -61,7 +61,7 @@ public class CombatController : MonoBehaviour {
 		}
 
 		GenerateArmors (loadout);
-		player.weapon = Instantiate (Resources.Load ("CombatResources/WeaponDefault"), player.weaponSlot.transform) as GameObject;
+		player.weapon = Instantiate (Resources.Load ("CombatResources/Weapons/WeaponDefault"), player.weaponSlot.transform) as GameObject;
 		player.UpdateStats ();
 
 		for (int i = 0; i < nodeEnemyList.Count; i++) {

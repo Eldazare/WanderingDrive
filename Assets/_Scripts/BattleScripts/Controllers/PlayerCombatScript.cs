@@ -23,7 +23,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	bool focusedTurn, skipTurn, overloadDamageTakenBonus; //Focus and overload logic booleans
 	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f, focusAccuracyBuff = 20f;
 	int overloadedTurn, focusBuffTurns;
-	int attackRange = 4; //How close the player moves to the enemy
+	int attackRange = 6; //How close the player moves to the enemy
 	public bool defended, attacked;
 	public int abilityID;
 	float distanceCovered, movingLength, startTime, lerpSpeed = 4f, overFocusTurn;
@@ -99,11 +99,6 @@ public class PlayerCombatScript : MonoBehaviour {
 			yield return new WaitForSeconds (1f);
 		}
 		menuController.proceed = true;
-	}
-
-	public void StatusTextPopUp (string text) {
-		GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
-		popup.GetComponent<TextMesh> ().text = text;
 	}
 	IEnumerator AttackRoutine (Enemy target, int part) {
 		attacked = false;
@@ -588,6 +583,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			defended = true;
 			//Dodge animation depending on direction | 1 = right and down | 0 = left and up
 			dodgeTimer += dodgeDuration;
+			animator.SetTrigger("Dodge");
 			InvokeRepeating ("DodgeCountDown", 0, Time.deltaTime);
 		}
 	}
@@ -597,6 +593,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			defended = true;
 			//Block 
 			blockTimer += blockDuration;
+			animator.SetTrigger("Block");
 			InvokeRepeating ("BlockCountDown", 0, Time.deltaTime);
 		}
 	}

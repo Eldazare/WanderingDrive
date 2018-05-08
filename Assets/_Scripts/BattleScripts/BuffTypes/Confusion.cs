@@ -13,7 +13,7 @@ public class Confusion : _Buff {
 	override public float DoYourThing(){
 		if(player != null){
 			player.confused = true;
-			player.StatusTextPopUp("Confused");
+			player.PopUpText("Confused", PlayerPopUpColor.Status);
 		}else{
 			enemy.confused = true;
 			enemy.StatusTextPopUp("Confused");

@@ -14,7 +14,7 @@ public class Paralyze : _Buff {
 	public override float DoYourThing(){
 		if(player != null){
 			player.paralyzed = true;
-			player.StatusTextPopUp("Paralyzed");
+			player.PopUpText("Paralyzed", PlayerPopUpColor.Status);
 		}else{
 			enemy.paralyzed = true;
 			enemy.StatusTextPopUp("Paralyzed");
