@@ -18,24 +18,26 @@ public class PopulateGrid : MonoBehaviour {
     public int howMany;
     public int depth;
     public bool usingHammer = false;
-    void Start () {
-        chosenSpot = new GameObject();
-        howMany = 252;
-        for (int i = 0; i < vertical; i++) {
-            List<GameObject> newList = new List<GameObject>();
-            List<GameObject> newList2 = new List<GameObject>();
-            soilGrid.Add(newList);
-            treasures.Add(newList2);
-            for (int j = 0; j < horizontal; j++) {
-                soilGrid[i].Add(null);
-                treasures[i].Add(null);
-            }
-        }
-        Populate();
-        AddTreasures(items);
+
+	public void StartTheMinigame(List<RecipeMaterial> maxMats){
+		chosenSpot = new GameObject();
+		howMany = 252;
+		for (int i = 0; i < vertical; i++) {
+			List<GameObject> newList = new List<GameObject>();
+			List<GameObject> newList2 = new List<GameObject>();
+			for (int j = 0; j < horizontal; j++) {
+				newList.Add(null);
+				newList2.Add(null);
+			}
+			soilGrid.Add(newList);
+			treasures.Add(newList2);
+		}
+		Populate();
+		AddTreasures(items);
+		items = maxMats;
 	}
 
-    public void Populate() {
+    private void Populate() {
         for (int i = 0; i < vertical; i++) {
             for(int j = 0; j < horizontal; j++) {
                 GameObject newObject = Instantiate(groundButton, transform);
@@ -44,31 +46,29 @@ public class PopulateGrid : MonoBehaviour {
                 newObject.GetComponent<OreElement>().column = j;
                 soilGrid[i][j] = newObject;
             }
-            
         }
-
     }
 
-    public void AddTreasures(List<RecipeMaterial> tavarat) {
+    private void AddTreasures(List<RecipeMaterial> tavarat) {
         //tämä randomisoidaan myöhemmin
         soilGrid[0][5].GetComponent<OreElement>().treasure = treasureSprites[0];
         soilGrid[0][6].GetComponent<OreElement>().treasure = treasureSprites[1];
         soilGrid[0][5].GetComponent<OreElement>().treasureExists = true;
         soilGrid[0][6].GetComponent<OreElement>().treasureExists = true;
-        treasures[tavarat.IndexOf(tavarat[0])][0] = soilGrid[0][5];
-        treasures[tavarat.IndexOf(tavarat[0])][1] = soilGrid[0][6];
+        treasures[0][0] = soilGrid[0][5];
+        treasures[0][1] = soilGrid[0][6];
         soilGrid[11][8].GetComponent<OreElement>().treasure = treasureSprites[0];
         soilGrid[11][9].GetComponent<OreElement>().treasure = treasureSprites[1];
         soilGrid[11][8].GetComponent<OreElement>().treasureExists = true;
         soilGrid[11][9].GetComponent<OreElement>().treasureExists = true;
-        treasures[tavarat.IndexOf(tavarat[1])][0] = soilGrid[11][8];
-        treasures[tavarat.IndexOf(tavarat[1])][1] = soilGrid[11][9];
+        treasures[1][0] = soilGrid[11][8];
+        treasures[1][1] = soilGrid[11][9];
         soilGrid[13][2].GetComponent<OreElement>().treasure = treasureSprites[0];
         soilGrid[13][3].GetComponent<OreElement>().treasure = treasureSprites[1];
         soilGrid[13][2].GetComponent<OreElement>().treasureExists = true;
         soilGrid[13][3].GetComponent<OreElement>().treasureExists = true;
-        treasures[tavarat.IndexOf(tavarat[2])][0] = soilGrid[11][8];
-        treasures[tavarat.IndexOf(tavarat[2])][1] = soilGrid[11][9];
+        treasures[2][0] = soilGrid[13][2];
+        treasures[2][1] = soilGrid[13][3];
     }
 
     public void ChangeToHammer() {
@@ -80,10 +80,25 @@ public class PopulateGrid : MonoBehaviour {
     }
 
     public void CountTreasures() {
-        for(int i = 0; i < treasures.Count; i++) {
+        for(int i = 0; i < 3; i++) {
+			Debug.Log ("I: " + i);
             if(treasures[i][0].GetComponent<OreElement>().treasureUp == false || treasures[i][1].GetComponent<OreElement>().treasureUp == false) {
                 items.RemoveAt(i);
-            }           
+            }
         }
+		StartCoroutine (WaitBeforeEnd ());
     }
+
+	private IEnumerator WaitBeforeEnd(){
+		yield return new WaitForSeconds(0.8f);
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (items);
+	}
+
+	public void ExitFromGathering(){
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (new List<RecipeMaterial>());
+	}
+
+	public void ReturnFromGathering() {
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (items);
+	}
 }

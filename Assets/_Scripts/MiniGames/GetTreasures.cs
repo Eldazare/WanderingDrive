@@ -9,11 +9,4 @@ public class GetTreasures : MonoBehaviour  {
     public void ShowTreasures() {
         
     }
-
-    public void ReturnFromGathering() {
-        //palauta
-        List<RecipeMaterial> treasures = mineGrid.GetComponent<PopulateGrid>().items;
-    }
-
-
 }

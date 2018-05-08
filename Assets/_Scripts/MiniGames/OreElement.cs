@@ -85,7 +85,7 @@ public class OreElement : MonoBehaviour
         else {
             mineGrid.crack.fillAmount += 0.01f;
         }
-        if(mineGrid.crack.fillAmount == 1) {
+        if(mineGrid.crack.fillAmount >= 1) {
             mineGrid.CountTreasures();
             mineGrid.collapsedPanel.SetActive(true);
             mineGrid.collapsedPanel.GetComponent<GetTreasures>().ShowTreasures();

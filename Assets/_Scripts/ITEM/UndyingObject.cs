@@ -166,22 +166,30 @@ public class UndyingObject : MonoBehaviour {
 			DropData nodeDropData = DropDataCreator.CreateDropData (DropperType.Gather, nodeIndex);
 			List<RecipeMaterial> dropList = DropDataCreator.CalculateDrops (nodeDropData, dropAmount, null);
             StartGatheringGame(dropList);
+			/*
 			foreach (RecipeMaterial recMat in dropList) {
 				Inventory.InsertRecipeMaterial (recMat);
 			}
 			GameObject.FindGameObjectWithTag ("NodeSpawner").GetComponent<TheWorldControllerTEST> ().SetResources (dropList);
+			*/
 		}
 	}
 
-    public void StartGatheringGame(List<RecipeMaterial> droplist) {
+    private void StartGatheringGame(List<RecipeMaterial> droplist) {
         StartCoroutine(StartGatheringEnum(droplist));
     }
 
     private IEnumerator StartGatheringEnum(List<RecipeMaterial> droplist) {
         yield return SceneManager.LoadSceneAsync("GatherMinigame");
-        PopulateGrid grid = GameObject.FindGameObjectWithTag("MineGrid").GetComponent<PopulateGrid>();
-        grid.items = droplist;
+		GameObject.FindGameObjectWithTag("MineGrid").GetComponent<PopulateGrid>().StartTheMinigame(droplist);
     }
+
+	public void EndGatheringGame(List<RecipeMaterial> droplist){
+		foreach (RecipeMaterial recMat in droplist) {
+			Inventory.InsertRecipeMaterial (recMat);
+		}
+		StartCoroutine (ToTheWorldWithMaterials(droplist));
+	}
 
     public void StartCrafting(){
 		StartCoroutine (StartCraftingIenum ());

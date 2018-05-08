@@ -26,3 +26,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/TutorialBattle.unity
     guid: 45c795f9f4e79cd4a82f78ec62f71cdf
+  - enabled: 1
+    path: Assets/_Scenes/GatherMinigame.unity
+    guid: 673073f7102c1094ca7cb3d97c1e5c9e
