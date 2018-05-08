@@ -11,6 +11,7 @@ public class LoadoutManager : MonoBehaviour {
 
     public Image itemImage;
     public Text itemInfo;
+	public Text itemInfoPage;
     public GameObject loadoutSlotPanel;
     public GameObject [] containerSlots = new GameObject[10];
     public GameObject[] consSlots = new GameObject[4];
@@ -35,25 +36,26 @@ public class LoadoutManager : MonoBehaviour {
 	public List<InventoryWeapon> weaponList;
 	List<List<int>> consumables;
 
-	public List<int> combatConsumables;
-	public List<int> universalConsumables;
+	//public List<int> combatConsumables;
+	//public List<int> universalConsumables;
 
     //public List<InventoryArmor> currentList;
 	private int currentArmorIndex = -1;
+	private int currentConsumableIndex = -1;
     public int currentItem;
     public int counter;
+	public int currentMaxCount;
     public int chosenHand;
     public int chosenConsSlot;
     public int chosenAccessorySlot;
     ItemSubType currentItemSubType;
     ItemType currentItemType;
+	private bool validItem = false;
 
     void Start(){
         emptyLoadout = true;
 		weaponList = Inventory.inventoryWeapons;
 		consumables = Inventory.inventoryConsumables;
-		universalConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ConsumableUniversal];
-		combatConsumables = Inventory.inventoryConsumables [(int)ConsumableType.ConsumableCombat];
         currentItem = -1;
         chosenHand = -1;
         counter = -1;
@@ -69,10 +71,10 @@ public class LoadoutManager : MonoBehaviour {
     }
 
     public void ChangeItemOnwards() {
-        counter++;
+		counter++;
 		switch (currentItemType) {
 		case ItemType.Wep:
-			if (counter >= weaponList.Count) {
+			if (currentItem >= weaponList.Count) {
 				counter = 0;
 			}
 			currentItem = weaponList[counter].itemID;
@@ -80,10 +82,11 @@ public class LoadoutManager : MonoBehaviour {
 			break;
 		case ItemType.Cons:
 			List<int> consList = consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())];
+			Debug.Log ("debug conslist count: "+consList.Count);
 			if (counter >= consList.Count) {
 				counter = 0;
 			}
-			currentItem = consList[counter];
+			currentItem = counter;
 			break;
 		case ItemType.Arm:
 			if (counter >= armorLists [currentArmorIndex].Count) {
@@ -109,10 +112,11 @@ public class LoadoutManager : MonoBehaviour {
 			currentItemSubType = (ItemSubType)System.Enum.Parse (typeof(ItemSubType), weaponList [counter].subType);
 			break;
 		case ItemType.Cons:
+			List<int> consList = consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())];
 			if (counter < 0) {
-				counter = combatConsumables.Count - 1;
+				counter = consList.Count - 1;
 			}
-			currentItem = combatConsumables [counter];
+			currentItem = consList[counter];
 			break;
 		case ItemType.Arm:
 			if (counter < 0) {
@@ -132,6 +136,7 @@ public class LoadoutManager : MonoBehaviour {
         currentItemType = ItemType.Wep;
         chosenHand = slot;
         counter = 0;
+		currentMaxCount = weaponList.Count;
         if (weaponList.Count > 0) {
             ItemSubType parsed_enum = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), weaponList[0].subType);
             currentItemSubType = parsed_enum;
@@ -147,9 +152,10 @@ public class LoadoutManager : MonoBehaviour {
     public void ChangeConsSlot(int slot) {
 		currentItemType = ItemType.Cons;
 		currentItemSubType = ItemSubType.ConsumableCombat;
-        currentItem = combatConsumables[0];
+		currentItem = 0;
         chosenConsSlot = slot;
         counter = 0;
+		currentMaxCount = consumables [(int)ConsumableType.ConsumableCombat].Count;
         UpdateInfoTexts();
     }
 
@@ -160,6 +166,8 @@ public class LoadoutManager : MonoBehaviour {
 		} else {
 			currentItemSubType = ItemSubType.ConsumableUniversal;
 		}
+		counter = 0;
+		currentMaxCount = consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())].Count;
 		UpdateInfoTexts();
 	}
 
@@ -169,6 +177,7 @@ public class LoadoutManager : MonoBehaviour {
 		currentArmorIndex = (int)ArmorType.Accessory;
         chosenAccessorySlot = slot;
         counter = 0;
+		currentMaxCount = armorLists [currentArmorIndex].Count;
 		if (armorLists[currentArmorIndex].Count > 0) {
 			currentItem = armorLists[currentArmorIndex][0].itemID;
             UpdateInfoTexts();
@@ -184,6 +193,7 @@ public class LoadoutManager : MonoBehaviour {
 		currentItemSubType = (ItemSubType)System.Enum.Parse(typeof(ItemSubType), ((ArmorType)armorTypeGiven).ToString());
         counter = 0;
 		currentArmorIndex = armorTypeGiven;
+		currentMaxCount = armorLists [currentArmorIndex].Count;
 		if (armorLists[currentArmorIndex].Count > 0) {
 			currentItem = armorLists[currentArmorIndex][0].itemID;
             UpdateInfoTexts();
@@ -199,8 +209,24 @@ public class LoadoutManager : MonoBehaviour {
 		Debug.Log ("currentItem: "+currentItem);
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
 		Debug.Log (currentMaterial.GetName ());
-        itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
 		CheckConsumableChangePossibility ();
+		itemInfoPage.text = (counter+1) + "/" + currentMaxCount;
+
+		// VV~~ ItemText and validItem set below ~~VV
+		if (currentMaterial.GetName() == "default"){
+			itemInfo.text = "Item not implemented. Sorry.";
+			validItem = false;
+			return;
+		}
+		if (currentItemType == ItemType.Cons) {
+			if (consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())] [currentItem] == 0) {
+				itemInfo.text = "Consumable not in inventory";
+				validItem = false;
+				return;
+			}
+		}
+        itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
+		validItem = true;
     }
 
     private void ClearInfoTexts() {
@@ -218,6 +244,10 @@ public class LoadoutManager : MonoBehaviour {
 	}
 
     public void AddToLoadout() {
+		if (!validItem) {
+			Debug.Log ("Invalid item, not added");
+			return;
+		}
         if (emptyLoadout == true) {
             emptyLoadout = false;
             storeButton.SetActive(true);
@@ -231,7 +261,7 @@ public class LoadoutManager : MonoBehaviour {
             }
         }
         else if (currentItemType == ItemType.Cons) {
-			myLoadout.AddCombatConsumable(chosenConsSlot, (int)System.Enum.Parse(typeof(ConsumableType), currentItemSubType.ToString()) , combatConsumables.IndexOf(currentItem));
+			myLoadout.AddCombatConsumable(chosenConsSlot, (int)System.Enum.Parse(typeof(ConsumableType), currentItemSubType.ToString()) , currentItem);
         }
         else if (currentItemType == ItemType.Arm) {
             if (currentItemSubType != ItemSubType.Accessory) {
