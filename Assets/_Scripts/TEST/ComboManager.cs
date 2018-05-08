@@ -40,8 +40,8 @@ public class ComboManager : MonoBehaviour {
 	void Update () {
 		aliveTimeLeft -= Time.deltaTime;
 
-		if (Input.GetMouseButtonDown (0)) {
-			Debug.Log ("Mouse down");
+		if (Input.GetKeyDown (KeyCode.P)) {
+			Debug.Log ("P ~clicked~");
 			GetTapInput (Input.mousePosition);
 		}
 		if (Input.GetKeyDown (KeyCode.Keypad6)) {
@@ -76,6 +76,7 @@ public class ComboManager : MonoBehaviour {
 			Debug.Log ("Keypad - 7");
 			GetSwipeInput (7);
 		}
+
 	}
 
 	public void GetSwipeInput (int direction) {
