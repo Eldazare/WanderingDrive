@@ -10,7 +10,8 @@ public class PopulateGrid : MonoBehaviour {
     public GameObject collapsedPanel;
     public Image crack;
     public List<Sprite> treasureSprites;
-    public List<RecipeMaterial> items;
+    private List<RecipeMaterial> items;
+	private List<RecipeMaterial> result;
     public List<List<GameObject>> soilGrid = new List<List<GameObject>>();
     public List<List<GameObject>> treasures = new List<List<GameObject>>();
     public int horizontal = 18;
@@ -80,10 +81,11 @@ public class PopulateGrid : MonoBehaviour {
     }
 
     public void CountTreasures() {
+		result = new List<RecipeMaterial> ();
         for(int i = 0; i < 3; i++) {
 			Debug.Log ("I: " + i);
-            if(treasures[i][0].GetComponent<OreElement>().treasureUp == false || treasures[i][1].GetComponent<OreElement>().treasureUp == false) {
-                items.RemoveAt(i);
+            if(treasures[i][0].GetComponent<OreElement>().treasureUp == true || treasures[i][1].GetComponent<OreElement>().treasureUp == true) {
+				result.Add(items[i]);
             }
         }
 		StartCoroutine (WaitBeforeEnd ());
@@ -91,7 +93,7 @@ public class PopulateGrid : MonoBehaviour {
 
 	private IEnumerator WaitBeforeEnd(){
 		yield return new WaitForSeconds(0.8f);
-		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (items);
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (result);
 	}
 
 	public void ExitFromGathering(){
@@ -99,6 +101,6 @@ public class PopulateGrid : MonoBehaviour {
 	}
 
 	public void ReturnFromGathering() {
-		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (items);
+		GameObject.FindGameObjectWithTag ("UndyingObject").GetComponent<UndyingObject> ().EndGatheringGame (result);
 	}
 }
