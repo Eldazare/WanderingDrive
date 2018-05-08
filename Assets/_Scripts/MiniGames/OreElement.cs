@@ -26,7 +26,6 @@ public class OreElement : MonoBehaviour
             HitSoil();
         }
         else {
-            mineGrid.crack.fillAmount += 0.01f;
             if (depth == 0) {
                 myImage.sprite = secondSoil;
                 depth = 1;
@@ -41,7 +40,8 @@ public class OreElement : MonoBehaviour
                 }
                 depth = 2;
             }
-        }       
+        }
+        
     }
 
     public void HitSoil() {
@@ -74,7 +74,15 @@ public class OreElement : MonoBehaviour
             mineGrid.soilGrid[y + 1][x - 1].GetComponent<OreElement>().Dig();
         }
         mineGrid.soilGrid[y][x].GetComponent<OreElement>().Dig();
-        mineGrid.crack.fillAmount += 0.03f;
         mineGrid.usingHammer = true;
+    }
+
+    public void Crack() {
+        if(mineGrid.usingHammer == true) {
+            mineGrid.crack.fillAmount += 0.04f;
+        }
+        else {
+            mineGrid.crack.fillAmount += 0.01f;
+        }
     }
 }
