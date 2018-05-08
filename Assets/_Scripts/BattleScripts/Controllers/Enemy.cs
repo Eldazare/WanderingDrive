@@ -125,7 +125,9 @@ public class Enemy : MonoBehaviour {
             weaknessTypeAccuracy = 1f;
         }
         //0-100
-        if (weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy) < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
+		float accuracyFug = weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy);
+		Debug.Log("AccuracyRoll ="+accuracyFug.ToString("F2")+"  Weakness "+weaknessTypeAccuracy);
+		if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
             eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;

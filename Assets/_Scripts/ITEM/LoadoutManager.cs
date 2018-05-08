@@ -12,6 +12,7 @@ public class LoadoutManager : MonoBehaviour {
     public Image itemImage;
     public Text itemInfo;
 	public Text itemInfoPage;
+	public Text itemConsumableAmountInInventory;
     public GameObject loadoutSlotPanel;
     public GameObject [] containerSlots = new GameObject[10];
     public GameObject[] consSlots = new GameObject[4];
@@ -210,7 +211,8 @@ public class LoadoutManager : MonoBehaviour {
         currentMaterial = new RecipeMaterial(currentItemType, currentItemSubType, currentItem);
 		Debug.Log (currentMaterial.GetName ());
 		CheckConsumableChangePossibility ();
-		itemInfoPage.text = (counter+1) + "/" + currentMaxCount;
+		itemInfoPage.text = "Item: "+(counter+1) + "/" + currentMaxCount;
+		itemConsumableAmountInInventory.text = "";
 
 		// VV~~ ItemText and validItem set below ~~VV
 		if (currentMaterial.GetName() == "default"){
@@ -219,12 +221,15 @@ public class LoadoutManager : MonoBehaviour {
 			return;
 		}
 		if (currentItemType == ItemType.Cons) {
-			if (consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())] [currentItem] == 0) {
+			int amountInInventoryCons = consumables [(int)System.Enum.Parse (typeof(ConsumableType), currentItemSubType.ToString ())] [currentItem];
+			if (amountInInventoryCons == 0) {
 				itemInfo.text = "Consumable not in inventory";
 				validItem = false;
 				return;
+			} else {
+				itemConsumableAmountInInventory.text = "In inventory: "+amountInInventoryCons;
 			}
-		}
+		} 
         itemInfo.text = InfoBoxCreator.GetMaterialInfoString(currentMaterial);
 		validItem = true;
     }

@@ -2220,13 +2220,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1934624691669792}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 114352430718426112}
+        m_MethodName: Consumable
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2714,13 +2714,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1934624691669792}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 114352430718426112}
+        m_MethodName: Consumable
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2837,13 +2837,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1934624691669792}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 114352430718426112}
+        m_MethodName: Consumable
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3460,8 +3460,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114352430718426112}
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: Ability
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3596,7 +3596,13 @@ MonoBehaviour:
   playerProfileButton: {fileID: 114093210154260028}
   player: {fileID: 0}
   enemyPartCanvas: {fileID: 1298502633902694}
-  enemyPartCanvasButtons: []
+  enemyPartCanvasButtons:
+  - {fileID: 1387387288230142}
+  - {fileID: 1940761471496462}
+  - {fileID: 1561913749755468}
+  - {fileID: 1753398250275056}
+  - {fileID: 1463638446322078}
+  - {fileID: 1164922247460602}
   abilityButtons:
   - {fileID: 114317985406557078}
   - {fileID: 114968061129417788}
@@ -5649,7 +5655,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   comboManager: {fileID: 114433392139705576}
-  enemyTurn: 0
   testi: {fileID: 0}
   MinSwipeLength: 50
 --- !u!114 &114929855615586524
@@ -5886,13 +5891,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1934624691669792}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 114352430718426112}
+        m_MethodName: Consumable
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5939,8 +5944,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114352430718426112}
-        m_MethodName: 
-        m_Mode: 1
+        m_MethodName: Ability
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
