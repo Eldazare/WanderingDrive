@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour {
         damageMod += buffDamageMultiplier;
         eleDamageMod += buffElementDamageMultiplier;
         if (Random.Range (0, 100) < blind) {
-            combatController.HitPlayer (-1, 0, 0, false, 0);
+            combatController.HitPlayer (-1, -1, 0, false, 0);
         } else {
             combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
         }
@@ -120,13 +120,13 @@ public class Enemy : MonoBehaviour {
     public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
         float damageTaken, damageModifier, eleModifier = 1, weaknessTypeAccuracy = 1;
         if (weaknessType == enemyStats.weaknessType) {
-            weaknessTypeAccuracy = 0.8f;
+            weaknessTypeAccuracy = 20f;
         } else {
-            weaknessTypeAccuracy = 1f;
+            weaknessTypeAccuracy = 0f;
         }
         //0-100
-		float accuracyFug = weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy);
-		Debug.Log("AccuracyRoll ="+accuracyFug.ToString("F2")+"  Weakness "+weaknessTypeAccuracy);
+		float accuracyFug = Random.Range (0, 100) - weaknessTypeAccuracy - accuracy;
+		Debug.Log("AccuracyRoll: "+accuracyFug.ToString("F2")+"  Weakness: "+weaknessTypeAccuracy);
 		if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 

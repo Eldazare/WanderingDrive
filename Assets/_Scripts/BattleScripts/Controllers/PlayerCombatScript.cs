@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerPopUpColor{
+	Damage, Healing, Stamina, Status
+};
 public class PlayerCombatScript : MonoBehaviour {
 	public PlayerStats playerStats = new PlayerStats (); //Player stat container
 	Vector3 startPos; //Player's starting position to move to and from Enemy
@@ -18,7 +21,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 0.5f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
 	float[] blockTiers = { 0.75f, 0.5f, 0.25f };
 	bool focusedTurn, skipTurn, overloadDamageTakenBonus; //Focus and overload logic booleans
-	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
+	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f, focusAccuracyBuff = 20f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 4; //How close the player moves to the enemy
 	public bool defended, attacked;
@@ -75,10 +78,13 @@ public class PlayerCombatScript : MonoBehaviour {
 				item.turnsRemaining--;
 			}
 		}
-		playerStats.stamina += staminaRegen;
-		if (playerStats.stamina < playerStats.maxStamina) {
-			playerStats.stamina = playerStats.maxStamina;
+		if(staminaRegen != 0){
+			playerStats.stamina += staminaRegen;
+			if (playerStats.stamina < playerStats.maxStamina) {
+				playerStats.stamina = playerStats.maxStamina;
+			}
 		}
+		
 
 		if (healthRegen > 0) {
 			playerStats.health += healthRegen;
@@ -122,6 +128,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			if (focusBuffTurns > 0) {
 				damageMod *= focusDamageBuff;
 				eleDamageMod *= focusDamageBuff;
+				accuracyBuff += focusAccuracyBuff;
 			}
 			if (overloadedTurn > 0) {
 				damageMod *= overloadDamageBuff;
@@ -166,7 +173,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			playerDamage *= damageMod;
 			playerElementDamage *= eleDamageMod;
 			if (blind > 0) {
-				if (Random.Range (0, 100) + weapon.accuracyBonus + accuracyBuff > blind) {
+				if ((Random.Range (0, 100) + weapon.accuracyBonus + accuracyBuff )> blind) {
 					combatController.HitEnemy (-1, 0, 0, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
 				} else {
 					combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
@@ -324,6 +331,9 @@ public class PlayerCombatScript : MonoBehaviour {
 		EndPlayerTurn (false);
 	}
 
+	
+	
+	//Player Focus
 	public void PlayerFocus () {
 		focusBuffTurns = 3;
 		menuController.focusEnabled = false;
@@ -332,17 +342,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		playerBuffs.Add (buff);
 		EndPlayerTurn (true);
 	}
-
-	public void PopUpText (string popuptext, bool _damage) {
-		if (_damage) {
-			GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh> ().text = popuptext;
-		} else {
-			GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh> ().text = popuptext;
-		}
-	}
-
+	//Player Overload
 	public void PlayerOverload () {
 		combatController.enemyTurns = 2;
 		menuController.focusEnabled = false;
@@ -373,7 +373,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			EndPlayerTurn (true);
 		}
 	}
-
+	//Ending player's turn and checking various modifiers to that
 	void EndPlayerTurn (bool setBool) {
 		if (playerStats.health > 0) {
 			if (focusBuffTurns > 0) {
@@ -412,6 +412,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 	}
 
+	//Dodge and block modifier check when getting hit
 	public string GetHit (float damage, float elementDamage, Element element, bool area, int damageType) {
 		string returnedValue = ""; //Returning value to report in TextBox
 		//Include modifiers to calculations: 
@@ -427,17 +428,17 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (damage >= 0 || elementDamage >= 0) {
 			if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
 				if (area) {
-					returnedValue = "You dodged but took " + TakeDamage (damage, elementDamage, element, damageType) + " area damage!";
+					returnedValue = "You dodged but took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " area damage!";
 				} else {
 					//Dodged attack
 					returnedValue = "You dodged the attack!";
-					TakeDamage (0, 0, 0, 0);
+					TakeDamage (0, 0, 0, 1, 0);
 				}
 			} else if (blockTimer > 0) {
 				Debug.Log ("Block Timer: " + blockTimer * playerStats.blockModifier);
 				if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
 					returnedValue = "You blocked the attack and took no damage!";
-					TakeDamage (0, 0, 0, 0);
+					TakeDamage (0, 0, 0, 1, 0);
 				} else {
 					bool blocked = false;
 					foreach (var blockModifier in blockTiers) {
@@ -448,12 +449,12 @@ public class PlayerCombatScript : MonoBehaviour {
 						}
 					}
 					if (!blocked) {
-						returnedValue = "Your block failed and you took " + TakeDamage (damage, elementDamage, element, damageType) + " damage!";
+						returnedValue = "Your block failed and you took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " damage!";
 					}
 				}
 			} else {
 				//Damage taken calculations
-				returnedValue = "You took " + TakeDamage (damage, elementDamage, element, damageType) + " damage!";
+				returnedValue = "You took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " damage!";
 			}
 		} else {
 			returnedValue = "Enemy attack missed!";
@@ -466,8 +467,8 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		return returnedValue;
 	}
-
-	string TakeDamage (float damage, float elementDamage, Element element, int damageType) {
+	//Damage taken calculations
+	string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
 		float damageTaken, damageModifier = 0, eleModifier = 1;
 		float armorAlgMod = CombatController.armorAlgorithmModifier;
 		if (damageType == 0) {
@@ -485,51 +486,9 @@ public class PlayerCombatScript : MonoBehaviour {
 			damageModifier *= overloadDebuff;
 			eleModifier *= overloadDebuff;
 		}
-		if (buffDamageReduction != 0) {
-			damageModifier *= buffDamageReduction;
-		}
-
-		eleModifier *= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
-
-		damage = damage * damageModifier;
-		elementDamage = elementDamage * eleModifier;
-		damageTaken = damage + elementDamage;
-		playerStats.health -= damageTaken;
-		if (damageTaken < 0) {
-			GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
-		} else {
-			GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
-			popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
-		}
-		UpdateStats ();
-		if (elementDamage == 0) {
-			return damage.ToString ("0.#");
-		} else {
-			return damage + " + " + elementDamage + " " + element.GetType ().Name;
-		}
-	}
-
-	string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
-		float damageTaken, damageModifier = 0, eleModifier = 1;
-		if (damageType == 0) {
-			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.physicalArmor);
-		} else if (damageType == 1) {
-			damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + playerStats.magicArmor);
-		} else {
-			damageModifier = 1;
-		}
-		if (element == Element.None) {
-			damage += elementDamage;
-			elementDamage = 0;
-		}
-		if (overloadedTurn > 0) {
-			damageModifier *= overloadDebuff;
-			eleModifier *= overloadDebuff;
-		}
-
 		damageModifier *= blockModifier;
 		eleModifier *= blockModifier;
+		
 
 		if (buffDamageReduction > 0) {
 			damageModifier *= buffDamageReduction;
@@ -541,8 +500,11 @@ public class PlayerCombatScript : MonoBehaviour {
 		elementDamage *= eleModifier;
 		damageTaken = damage + elementDamage;
 		playerStats.health -= damageTaken;
-		GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
-		popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
+		if (damageTaken < 0) {
+			PopUpText(damageTaken.ToString("0.#"),PlayerPopUpColor.Healing);
+		} else {
+			PopUpText(damageTaken.ToString("0.#"),PlayerPopUpColor.Damage);
+		}
 		UpdateStats ();
 		if (elementDamage == 0) {
 			return damage.ToString ("0.#");
@@ -554,6 +516,34 @@ public class PlayerCombatScript : MonoBehaviour {
 
 	public void UpdateStats () {
 		menuController.UpdatePlayerHealth (playerStats.health, playerStats.maxHealth, playerStats.health / playerStats.maxHealth);
+	}
+	//InGame PopUp Method
+	public void PopUpText (string popuptext, PlayerPopUpColor popUpColor) {
+		GameObject popup;
+		switch (popUpColor)
+		{
+			case PlayerPopUpColor.Damage:
+				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh> ().text = popuptext;
+				break;
+			case PlayerPopUpColor.Healing:
+				popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh> ().text = popuptext;
+				break;
+			case PlayerPopUpColor.Stamina:
+				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh> ().text = popuptext;
+				popup.GetComponent<TextMesh>().color = new Color(255, 189, 102);
+				break;
+
+			case PlayerPopUpColor.Status:
+				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+				popup.GetComponent<TextMesh> ().text = popuptext;
+				popup.GetComponent<TextMesh>().color = Color.yellow;
+				break;
+			default:
+				break;
+		}
 	}
 
 	void MoveToEnemy () {
