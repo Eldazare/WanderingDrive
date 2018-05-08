@@ -10,6 +10,7 @@ public class OreElement : MonoBehaviour
     public Sprite secondSoil;
     public Sprite bottomSoil;
     public Sprite treasure;
+    public int treasureID;
     public int depth;
     public int row, column;
     public bool treasureExists = false;
@@ -79,10 +80,14 @@ public class OreElement : MonoBehaviour
 
     public void Crack() {
         if(mineGrid.usingHammer == true) {
-            mineGrid.crack.fillAmount += 0.04f;
+            mineGrid.crack.fillAmount += 0.06f;
         }
         else {
             mineGrid.crack.fillAmount += 0.01f;
+        }
+        if(mineGrid.crack.fillAmount == 1) {
+            mineGrid.collapsedPanel.SetActive(true);
+            mineGrid.collapsedPanel.GetComponent<GetTreasures>().ShowTreasures();
         }
     }
 }
