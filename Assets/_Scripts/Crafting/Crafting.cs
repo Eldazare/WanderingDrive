@@ -11,6 +11,7 @@ public class Crafting : MonoBehaviour{
 
 	public GameObject weaponTypeChoicePanel;
 	public GameObject armorTypeChoicePanel;
+	public GameObject consumableTypeChoicePanel;
 
 	// TODO: Sprites will be downloaded per type and per id from Resources. Their id's and counts will match the recipes.
 
@@ -87,6 +88,11 @@ public class Crafting : MonoBehaviour{
 		} else {
 			armorTypeChoicePanel.SetActive (false);
 		}
+		if (recipeIndex == (int)CraftingRecipeType.Consumable) {
+			consumableTypeChoicePanel.SetActive (true);
+		} else {
+			consumableTypeChoicePanel.SetActive (false);
+		}
     }
 
 	public void FilterWeapons(string weaponType){
@@ -103,6 +109,14 @@ public class Crafting : MonoBehaviour{
 		currentRecipe = 0;
 		currentRecipeListCount = filteredList.Count;
 		UpdateInfoTexts ();
+	}
+
+	public void FilterConsumable(string consumableType){
+		filter = true;
+		filteredList = RecipeContainer.GetSpecificConsumableCraftingRecipes ("Consumable" + consumableType);
+		currentRecipe = 0;
+		currentRecipeListCount = filteredList.Count;
+		UpdateInfoTexts();
 	}
 		
 

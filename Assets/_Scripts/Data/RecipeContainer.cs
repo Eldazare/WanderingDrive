@@ -86,6 +86,17 @@ public static class RecipeContainer {
 		return createe;
 	}
 
+	public static List<Recipe> GetSpecificConsumableCraftingRecipes(string consumableSubtype){
+		System.Enum.Parse (typeof(ConsumableType), consumableSubtype); // DEBUG
+		List<Recipe> createe = new List<Recipe> ();
+		foreach (Recipe recip in craftingRecipes[(int)CraftingRecipeType.Consumable]) {
+			if (recip.resultItem.subtype.ToString() == consumableSubtype) {
+				createe.Add (recip);
+			}
+		}
+		return createe;
+	}
+
 	public static List<List<Recipe>> GetAllCraftRecipes(){
 		return craftingRecipes;
 	}

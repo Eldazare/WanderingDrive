@@ -95,7 +95,12 @@ public class TheWorldControllerTEST : MonoBehaviour {
 
 	public void SetResources(List<RecipeMaterial> materials){
 		ResourceDropPanel.SetActive (true);
-		resourceDropText.text = "Carved:\n"+InfoBoxCreator.GetMatListInfo (materials);
+		string infoStuff = InfoBoxCreator.GetMatListInfo (materials);
+		if (infoStuff != "") {
+			resourceDropText.text = "Materials gained:\n" + infoStuff;
+		} else {
+			resourceDropText.text = "No materials gained.";
+		}
 	}
 
 }
