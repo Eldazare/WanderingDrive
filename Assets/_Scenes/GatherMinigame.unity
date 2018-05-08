@@ -295,6 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundButton: {fileID: 1899572663083412, guid: 3d4c10af2cf6f0c4db169520542d20d2,
     type: 2}
+  chosenSpot: {fileID: 0}
   treasures:
   - {fileID: 21300004, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
   - {fileID: 21300018, guid: cf80acbdf7d7c8443a100644a48e2d1b, type: 3}
@@ -302,6 +303,7 @@ MonoBehaviour:
   vertical: 14
   howMany: 0
   depth: 0
+  usingHammer: 0
 --- !u!1 &914893556
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +688,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1191402184}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 531820540}
+        m_MethodName: ChangeToHammer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1191402184
@@ -1137,7 +1150,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2060448633}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 531820540}
+        m_MethodName: ChangeToPickAxe
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2060448633
