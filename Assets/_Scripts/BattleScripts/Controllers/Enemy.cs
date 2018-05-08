@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour {
         damageMod += buffDamageMultiplier;
         eleDamageMod += buffElementDamageMultiplier;
         if (Random.Range (0, 100) < blind) {
-            combatController.HitPlayer (-1, 0, 0, false, 0);
+            combatController.HitPlayer (-1, -1, 0, false, 0);
         } else {
             combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
         }
@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour {
             weaknessTypeAccuracy = 1f;
         }
         //0-100
-        if (weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy) < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
+        if ((weaknessTypeAccuracy * (Random.Range (0, 100) - accuracy)) < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
             eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;

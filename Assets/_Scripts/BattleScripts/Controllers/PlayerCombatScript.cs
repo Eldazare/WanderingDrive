@@ -18,7 +18,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	float blockTimer, dodgeTimer, blockDuration = 2f, dodgeDuration = 0.5f, perfectDodge = 0.35f, perfectBlock = 0.15f; //Defensive timers and the accuracy wanted
 	float[] blockTiers = { 0.75f, 0.5f, 0.25f };
 	bool focusedTurn, skipTurn, overloadDamageTakenBonus; //Focus and overload logic booleans
-	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f;
+	float focusDamageBuff = 1.5f, overloadDamageBuff = 1.5f, overloadDebuff = 2f, attackedPenalty = 0.5f, focusAccuracyBuff = 20f;
 	int overloadedTurn, focusBuffTurns;
 	int attackRange = 4; //How close the player moves to the enemy
 	public bool defended, attacked;
@@ -75,10 +75,13 @@ public class PlayerCombatScript : MonoBehaviour {
 				item.turnsRemaining--;
 			}
 		}
-		playerStats.stamina += staminaRegen;
-		if (playerStats.stamina < playerStats.maxStamina) {
-			playerStats.stamina = playerStats.maxStamina;
+		if(staminaRegen != 0){
+			playerStats.stamina += staminaRegen;
+			if (playerStats.stamina < playerStats.maxStamina) {
+				playerStats.stamina = playerStats.maxStamina;
+			}
 		}
+		
 
 		if (healthRegen > 0) {
 			playerStats.health += healthRegen;
@@ -122,6 +125,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			if (focusBuffTurns > 0) {
 				damageMod *= focusDamageBuff;
 				eleDamageMod *= focusDamageBuff;
+				accuracyBuff += focusAccuracyBuff;
 			}
 			if (overloadedTurn > 0) {
 				damageMod *= overloadDamageBuff;
@@ -166,7 +170,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			playerDamage *= damageMod;
 			playerElementDamage *= eleDamageMod;
 			if (blind > 0) {
-				if (Random.Range (0, 100) + weapon.accuracyBonus + accuracyBuff > blind) {
+				if ((Random.Range (0, 100) + weapon.accuracyBonus + accuracyBuff )> blind) {
 					combatController.HitEnemy (-1, 0, 0, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
 				} else {
 					combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
