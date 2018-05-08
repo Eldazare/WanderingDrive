@@ -14,6 +14,8 @@ TextureImporter:
     21300014: Random_tavaroit_1
     21300016: Random_tavaroit_2
     21300018: Random_tavaroit_3
+    21300020: Random_tavaroit_4
+    21300022: Random_tavaroit_5
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -253,6 +255,34 @@ TextureImporter:
         y: 54
         width: 10
         height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Random_tavaroit_4
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 78
+        width: 11
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Random_tavaroit_5
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 78
+        width: 10
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
