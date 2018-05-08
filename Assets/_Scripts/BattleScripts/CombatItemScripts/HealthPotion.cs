@@ -11,7 +11,7 @@ public class HealthPotion : CombatConsumable  {
 				healing = potency - (player.playerStats.health - player.playerStats.maxHealth);
 				player.playerStats.health = player.playerStats.maxHealth;
 			}
-			player.PopUpText(healing.ToString("0.#"),false);
+			player.PopUpText(healing.ToString("0.#"),PlayerPopUpColor.Healing);
 			player.UpdateStats();
 		}
 	}
