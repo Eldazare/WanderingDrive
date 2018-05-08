@@ -10,7 +10,7 @@ public class PopulateGrid : MonoBehaviour {
     public GameObject collapsedPanel;
     public Image crack;
     public List<Sprite> treasureSprites;
-    public List<int> itemIndexes;
+    public List<RecipeMaterial> items;
     public List<List<GameObject>> soilGrid = new List<List<GameObject>>();
     public List<List<GameObject>> treasures = new List<List<GameObject>>();
     public int horizontal = 18;
@@ -32,7 +32,7 @@ public class PopulateGrid : MonoBehaviour {
             }
         }
         Populate();
-        AddTreasures();
+        AddTreasures(items);
 	}
 
     public void Populate() {
@@ -49,24 +49,26 @@ public class PopulateGrid : MonoBehaviour {
 
     }
 
-    public void AddTreasures() {
+    public void AddTreasures(List<RecipeMaterial> tavarat) {
         //tämä randomisoidaan myöhemmin
         soilGrid[0][5].GetComponent<OreElement>().treasure = treasureSprites[0];
         soilGrid[0][6].GetComponent<OreElement>().treasure = treasureSprites[1];
         soilGrid[0][5].GetComponent<OreElement>().treasureExists = true;
         soilGrid[0][6].GetComponent<OreElement>().treasureExists = true;
-        soilGrid[0][5].GetComponent<OreElement>().treasureID = 0;
-        soilGrid[0][6].GetComponent<OreElement>().treasureID = 0;
-        treasures[0][0] = soilGrid[0][5];
-        treasures[0][1] = soilGrid[0][6];
+        treasures[tavarat.IndexOf(tavarat[0])][0] = soilGrid[0][5];
+        treasures[tavarat.IndexOf(tavarat[0])][1] = soilGrid[0][6];
         soilGrid[11][8].GetComponent<OreElement>().treasure = treasureSprites[0];
         soilGrid[11][9].GetComponent<OreElement>().treasure = treasureSprites[1];
         soilGrid[11][8].GetComponent<OreElement>().treasureExists = true;
         soilGrid[11][9].GetComponent<OreElement>().treasureExists = true;
-        soilGrid[11][8].GetComponent<OreElement>().treasureID = 0;
-        soilGrid[11][9].GetComponent<OreElement>().treasureID = 0;
-        treasures[1][0] = soilGrid[11][8];
-        treasures[1][1] = soilGrid[11][9];
+        treasures[tavarat.IndexOf(tavarat[1])][0] = soilGrid[11][8];
+        treasures[tavarat.IndexOf(tavarat[1])][1] = soilGrid[11][9];
+        soilGrid[13][2].GetComponent<OreElement>().treasure = treasureSprites[0];
+        soilGrid[13][3].GetComponent<OreElement>().treasure = treasureSprites[1];
+        soilGrid[13][2].GetComponent<OreElement>().treasureExists = true;
+        soilGrid[13][3].GetComponent<OreElement>().treasureExists = true;
+        treasures[tavarat.IndexOf(tavarat[2])][0] = soilGrid[11][8];
+        treasures[tavarat.IndexOf(tavarat[2])][1] = soilGrid[11][9];
     }
 
     public void ChangeToHammer() {
@@ -79,13 +81,9 @@ public class PopulateGrid : MonoBehaviour {
 
     public void CountTreasures() {
         for(int i = 0; i < treasures.Count; i++) {
-            switch(treasures[i][0].GetComponent<OreElement>().treasureID) {
-                case 0:
-                if(treasures[i].Count == 2) {
-                    itemIndexes[0] += 1;
-                }
-                    break;
-            }
+            if(treasures[i][0].GetComponent<OreElement>().treasureUp == false || treasures[i][1].GetComponent<OreElement>().treasureUp == false) {
+                items.RemoveAt(i);
+            }           
         }
     }
 }
