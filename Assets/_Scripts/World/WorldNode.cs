@@ -31,4 +31,17 @@ public class WorldNode : MonoBehaviour {
 		Debug.Log ("Hit:" +this.nodeType+ " / " + this.id);
 		Interact ();
 	}
+
+	void OnTriggerStay(Collider col) {
+		if (col.gameObject.CompareTag("marker")) {
+			Vector3 otherVec = col.gameObject.transform.position;
+			Vector3 thisVec = this.gameObject.transform.position;
+			Vector3 diff = new Vector3 (thisVec.x - otherVec.x, 0, thisVec.z - otherVec.z);
+
+			float scaling = 0.5f;
+			diff = -diff.normalized;
+
+			col.GetComponent<Rigidbody> ().AddForce (diff*scaling);
+		}
+	}
 }
