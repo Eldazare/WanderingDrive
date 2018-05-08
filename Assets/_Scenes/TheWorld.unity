@@ -3846,6 +3846,8 @@ MonoBehaviour:
   ResourceDropPanel: {fileID: 62889389}
   resourceDropText: {fileID: 837555258}
   tutorialMasterPanel: {fileID: 171409736}
+  tutorialPrevButton: {fileID: 1117189395}
+  tutorialNextButton: {fileID: 994375187}
   tutorialWorldText: {fileID: 1126295286}
 --- !u!1 &1908528100
 GameObject:

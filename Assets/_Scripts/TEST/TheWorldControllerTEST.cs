@@ -12,6 +12,8 @@ public class TheWorldControllerTEST : MonoBehaviour {
 	public Text resourceDropText;
 
 	public GameObject tutorialMasterPanel;
+	public GameObject tutorialPrevButton;
+	public GameObject tutorialNextButton;
 	public Text tutorialWorldText;
 
 	int currentTutorialString;
@@ -91,6 +93,16 @@ public class TheWorldControllerTEST : MonoBehaviour {
 
 	private void SetTutorialText(){
 		tutorialWorldText.text = "Page: "+(currentTutorialString+1)+"/"+tutorialTexts.Length+"\n"+tutorialTexts [currentTutorialString];
+		if (currentTutorialString == 0) {
+			tutorialPrevButton.SetActive (false);
+		} else {
+			tutorialPrevButton.SetActive (true);
+		}
+		if (currentTutorialString == tutorialTexts.Length - 1) {
+			tutorialNextButton.SetActive (false);
+		} else {
+			tutorialNextButton.SetActive (true);
+		}
 	}
 
 	public void SetResources(List<RecipeMaterial> materials){
