@@ -26,6 +26,7 @@ public class OreElement : MonoBehaviour
             HitSoil();
         }
         else {
+            mineGrid.crack.fillAmount += 0.01f;
             if (depth == 0) {
                 myImage.sprite = secondSoil;
                 depth = 1;
@@ -48,15 +49,32 @@ public class OreElement : MonoBehaviour
         mineGrid.chosenSpot = gameObject;
         int x = mineGrid.chosenSpot.GetComponent<OreElement>().column;
         int y = mineGrid.chosenSpot.GetComponent<OreElement>().row;
-        mineGrid.soilGrid[y + 1][x].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y - 1][x].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y][x + 1].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y][x -1].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y + 1][x + 1].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y - 1][x -1].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y - 1][x + 1].GetComponent<OreElement>().Dig();
-        mineGrid.soilGrid[y + 1][x - 1].GetComponent<OreElement>().Dig();
+        if(y + 1 < 14) {
+            mineGrid.soilGrid[y + 1][x].GetComponent<OreElement>().Dig();
+        }
+        if(y - 1 > -1) {
+            mineGrid.soilGrid[y - 1][x].GetComponent<OreElement>().Dig();
+        }
+        if(x + 1 < 18) {
+            mineGrid.soilGrid[y][x + 1].GetComponent<OreElement>().Dig();
+        }
+        if(x - 1 > -1) {
+            mineGrid.soilGrid[y][x - 1].GetComponent<OreElement>().Dig();
+        }
+        if(y + 1 < 14 && x + 1 < 18) {
+            mineGrid.soilGrid[y + 1][x + 1].GetComponent<OreElement>().Dig();
+        }
+        if (y - 1 > -1 && x - 1 > -1) {
+            mineGrid.soilGrid[y - 1][x - 1].GetComponent<OreElement>().Dig();
+        }
+        if(y - 1 > -1 && x + 1 < 18) {
+            mineGrid.soilGrid[y - 1][x + 1].GetComponent<OreElement>().Dig();
+        }
+        if(y + 1 < 14 && x - 1 > -1) {
+            mineGrid.soilGrid[y + 1][x - 1].GetComponent<OreElement>().Dig();
+        }
         mineGrid.soilGrid[y][x].GetComponent<OreElement>().Dig();
+        mineGrid.crack.fillAmount += 0.03f;
         mineGrid.usingHammer = true;
     }
 }

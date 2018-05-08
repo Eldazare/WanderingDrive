@@ -7,6 +7,7 @@ public class PopulateGrid : MonoBehaviour {
 
     public GameObject groundButton;
     public GameObject chosenSpot;
+    public Image crack;
     public List<Sprite> treasures;
     public List<List<GameObject>> soilGrid = new List<List<GameObject>>();
     public List<List<GameObject>> partials = new List<List<GameObject>>();
@@ -53,12 +54,12 @@ public class PopulateGrid : MonoBehaviour {
         soilGrid[0][6].GetComponent<OreElement>().treasureExists = true;
         partials[0][0] = soilGrid[0][5];
         partials[0][1] = soilGrid[0][6];
-        soilGrid[1][5].GetComponent<OreElement>().treasure = treasures[0];
-        soilGrid[1][6].GetComponent<OreElement>().treasure = treasures[1];
-        soilGrid[1][5].GetComponent<OreElement>().treasureExists = true;
-        soilGrid[1][6].GetComponent<OreElement>().treasureExists = true;
-        partials[1][0] = soilGrid[1][5];
-        partials[1][1] = soilGrid[1][6];
+        soilGrid[11][8].GetComponent<OreElement>().treasure = treasures[0];
+        soilGrid[11][9].GetComponent<OreElement>().treasure = treasures[1];
+        soilGrid[11][8].GetComponent<OreElement>().treasureExists = true;
+        soilGrid[11][9].GetComponent<OreElement>().treasureExists = true;
+        partials[1][0] = soilGrid[11][8];
+        partials[1][1] = soilGrid[11][9];
     }
 
     public void ChangeToHammer() {
