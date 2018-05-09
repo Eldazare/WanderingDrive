@@ -4189,7 +4189,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1926499058}
-  - component: {fileID: 1926499061}
   - component: {fileID: 1926499060}
   - component: {fileID: 1926499059}
   - component: {fileID: 1926499063}
@@ -4230,7 +4229,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4105f521cbd0f7d42ab04e778610c1e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4262,13 +4261,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1926499061
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1926499057}
-  m_Mesh: {fileID: 4300002, guid: c0bb835f07dbe7945a990b895a2874a8, type: 3}
 --- !u!114 &1926499062
 MonoBehaviour:
   m_ObjectHideFlags: 0
