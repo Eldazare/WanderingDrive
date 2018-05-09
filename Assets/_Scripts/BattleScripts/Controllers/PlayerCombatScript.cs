@@ -490,7 +490,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		Debug.Log("b4elementDamage : " +elementDamage);
 		Debug.Log("b4elemod " + eleModifier);
-		eleModifier *= 1+(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
+		eleModifier *= 1-(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
 		Debug.Log("elemod " + eleModifier);
 		damage *= damageModifier;
 		elementDamage *= eleModifier;
