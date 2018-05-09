@@ -15,3 +15,9 @@ Ability_Overload_0=0/0/0
 Ability_Fireball_0=1/0/0
 Ability_Fireball_1=2/0/0
 &Ability_Ability_Fireball_Fireball deals damage. :O
+
+Ability_AccuracyBoost_0=5/0/0
+Ability_AccuracyBoost_1=10/0/0
+Ability_AccuracyBoost_2=15/0/0
+Ability_AccuracyBoost_3=20/0/0
+&Ability_Ability_AccuracyBoost_Boosts accuracy.

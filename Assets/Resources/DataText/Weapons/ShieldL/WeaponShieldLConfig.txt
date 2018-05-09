@@ -15,8 +15,8 @@ ShieldL_speed=1
 
 %Weapon_ShieldL_0_generic large shield
 &Weapon_ShieldL_0_generic large shield description is here
-ShieldL_0_base=10/0/0
+ShieldL_0_base=0/0/0
 ShieldL_0_element=0/0/0
-ShieldL_0_bonuses=0/0/0/0
-ShieldL_0_defenseMods=0.0/0.0
+ShieldL_0_bonuses=0/0/5/5
+ShieldL_0_defenseMods=-0.6/1.0
 

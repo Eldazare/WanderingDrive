@@ -52,7 +52,7 @@ Material_Count=60
 #Gathering mineral parts (40-49)
 %Mat_Mat_40_Iron ore
 %Mat_Mat_41_Rock
-%Mat_Mat_42_
+%Mat_Mat_42_Fresian ore
 %Mat_Mat_43_Light Crystal
 %Mat_Mat_44_Shadow Crystal
 %Mat_Mat_45_Lizardite ore

@@ -17,7 +17,7 @@ public enum BuffType{
 };
 
 public enum AbilityEnum{
-	Focus, Overload, Fireball
+	Focus, Overload, Fireball, AccuracyBoost
 }
 
 public static class NameDescContainer  {
