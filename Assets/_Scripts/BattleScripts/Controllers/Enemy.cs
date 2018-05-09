@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour {
 		if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
-            eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;
+            eleModifier *= 1+((float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100);
             damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
             /* Debug.Log("DamageElement: " +elementDamage); */
             eleModifier *= enemyStats.partList[part].damageMod;

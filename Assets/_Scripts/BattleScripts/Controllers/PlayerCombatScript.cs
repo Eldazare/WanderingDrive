@@ -488,11 +488,13 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (buffDamageReduction > 0) {
 			damageModifier *= buffDamageReduction;
 		}
-
-		eleModifier *= ((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100;
-
+		Debug.Log("b4elementDamage : " +elementDamage);
+		Debug.Log("b4elemod " + eleModifier);
+		eleModifier *= 1+(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
+		Debug.Log("elemod " + eleModifier);
 		damage *= damageModifier;
 		elementDamage *= eleModifier;
+		Debug.Log("elementDamage : " +elementDamage);
 		damageTaken = damage + elementDamage;
 		playerStats.health -= damageTaken;
 		if (damageTaken < 0) {
@@ -501,12 +503,11 @@ public class PlayerCombatScript : MonoBehaviour {
 			PopUpText(damageTaken.ToString("0.#"),PlayerPopUpColor.Damage);
 		}
 		UpdateStats ();
-		if (elementDamage == 0) {
-			return damage.ToString ("0.#");
+		if (elementDamage != 0) {
+			return damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString();
 		} else {
-			return damage + " + " + elementDamage + " " + element.GetType ().Name;
+			return damage.ToString ("0.#");
 		}
-
 	}
 
 	public void UpdateStats () {
