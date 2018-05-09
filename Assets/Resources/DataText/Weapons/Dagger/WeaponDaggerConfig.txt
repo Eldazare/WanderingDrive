@@ -13,10 +13,23 @@
 
 Dagger_speed=1
 
-%Weapon_Dagger_0_genericSword
-&Weapon_Dagger_0_genericSword description is here
+%Weapon_Dagger_0_generic Dagger
+&Weapon_Dagger_0_A basic fire dagger
 Weapon_Dagger_0_base=4/0/0
 Weapon_Dagger_0_element=5/1/0
 Weapon_Dagger_0_bonuses=0/0/0/0
 Weapon_Dagger_0_defenseMods=0.0/0.0
 
+%Weapon_Dagger_2_Shroom dagger
+&Weapon_Dagger_2_Shadow
+Weapon_Dagger_2_base=5/0/0
+Weapon_Dagger_2_element=8/6/4
+Weapon_Dagger_2_bonuses=3/2/0/0
+Weapon_Dagger_2_defenseMods=0.1/-0.5
+
+%Weapon_Dagger_3_Freezing Spike
+&Weapon_Dagger_3_Stab stab stab
+Weapon_Dagger_3_base=1/0/0
+Weapon_Dagger_3_element=20/2/10
+Weapon_Dagger_3_bonuses=0/0/0/0
+Weapon_Dagger_3_defenseMods=0.05/-0.4

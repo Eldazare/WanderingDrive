@@ -2,7 +2,7 @@
 #Element{none, fire, ice, thunder, earth, light, shadow};
 #WeaknessType{slash, stab, smash, ranged, magic};
 
-#Swords are 2-handed
+#Spears are 2-handed
 
 #base is as follows: damage/accuracyBonus/weaknessType(int)
 #element is as follows: damage/element/bonus
@@ -17,4 +17,11 @@ Spear_0_base=10/0/0
 Spear_0_element=0/0/0
 Spear_0_bonuses=0/0/0/0
 Spear_0_defenseMods=0.0/0.0
+
+%Weapon_Spear_2_Dragon spear
+&Weapon_Spear_2_Light infused spear.
+Spear_2_base=4/5/1
+Spear_2_element=10/5/0
+Spear_2_bonuses=0/0/0/0
+Spear_2_defenseMods=-0.4/-0.1
 

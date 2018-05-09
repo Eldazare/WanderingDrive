@@ -12,10 +12,10 @@
 
 Mace_speed=1
 
-%Weapon_Mace_0_generic Mace
+%Weapon_Mace_0_Metal Mace
 &Weapon_Mace_0_generic Mace description is here
-Mace_0_base=6/0/2
+Mace_0_base=13/0/2
 Mace_0_element=0/0/0
 Mace_0_bonuses=0/0/0/0
-Mace_0_defenseMods=0.0/0.0
+Mace_0_defenseMods=-0.2/0.1
 

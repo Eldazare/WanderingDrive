@@ -11,16 +11,16 @@
 
 
 %Recipe_Weapon_0_genericSword
-RecipeWeapon_0_m1=Mat_Mat_40_2
-RecipeWeapon_0_m2=Mat_Mat_41_2
-RecipeWeapon_0_m3=Mat_Mat_30_1
+RecipeWeapon_0_m1=Mat_Mat_41_2
+RecipeWeapon_0_m2=Mat_Mat_30_2
+RecipeWeapon_0_m3=
 RecipeWeapon_0_m4=
 RecipeWeapon_0_result=Wep_Sword_0
 
-%Recipe_Weapon_1_Generic mace
-RecipeWeapon_1_m1=Mat_Mat_40_2
+%Recipe_Weapon_1_Metal Mace
+RecipeWeapon_1_m1=Mat_Mat_40_4
 RecipeWeapon_1_m2=Mat_Mat_41_2
-RecipeWeapon_1_m3=Mat_Mat_30_1
+RecipeWeapon_1_m3=Mat_Mat_42_1
 RecipeWeapon_1_m4=
 RecipeWeapon_1_result=Wep_Mace_0
 
@@ -30,3 +30,45 @@ RecipeWeapon_2_m2=Mat_Mat_15_1
 RecipeWeapon_2_m3=Mat_Mat_16_1
 RecipeWeapon_2_m4=
 RecipeWeapon_2_result=Wep_Sword_2
+
+%Recipe_Weapon_3_Dragon Spear
+RecipeWeapon_3_m1=Mat_Mat_56_2
+RecipeWeapon_3_m2=Mat_Mat_51_4
+RecipeWeapon_3_m3=Mat_Mat_50_2
+RecipeWeapon_3_m4=Mat_Mat_54_1
+RecipeWeapon_3_result=Wep_Spear_2
+
+%Recipe_Weapon_4_Shroom dagger
+RecipeWeapon_4_m1=Mat_Mat_22_2
+RecipeWeapon_4_m2=Mat_Mat_26_4
+RecipeWeapon_4_m3=Mat_Mat_20_3
+RecipeWeapon_4_m4=
+RecipeWeapon_4_result=Wep_Dagger_2
+
+%Recipe_Weapon_5_Large Shield 1
+RecipeWeapon_5_m1=Mat_Mat_17_1
+RecipeWeapon_5_m2=Mat_Mat_24_1
+RecipeWeapon_5_m3=Mat_Mat_46_2
+RecipeWeapon_5_m4=Mat_Mat_6_2
+RecipeWeapon_5_result=Wep_ShieldL_0
+
+%Recipe_Weapon_6_Small Shield 1
+RecipeWeapon_6_m1=Mat_Mat_17_1
+RecipeWeapon_6_m2=Mat_Mat_14_3
+RecipeWeapon_6_m3=Mat_Mat_42_4
+RecipeWeapon_6_m4=Mat_Mat_50_3
+RecipeWeapon_6_result=Wep_ShieldS_0
+
+%Recipe_Weapon_7_Ice talisman
+RecipeWeapon_7_m1=Mat_Mat_23_1
+RecipeWeapon_7_m2=Mat_Mat_27_3
+RecipeWeapon_7_m3=Mat_Mat_7_1
+RecipeWeapon_7_m4=
+RecipeWeapon_7_result=Wep_Talisman_0
+
+%Recipe_Weapon_8_Ice Dagger
+RecipeWeapon_8_m1=Mat_Mat_51_3
+RecipeWeapon_8_m2=Mat_Mat_44_1
+RecipeWeapon_8_m3=Mat_Mat_46_2
+RecipeWeapon_8_m4=Mat_Mat_36_5
+RecipeWeapon_8_result=Wep_Dagger_3
