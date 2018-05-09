@@ -57,7 +57,8 @@ public class UndyingObject : MonoBehaviour {
 		InsertBasicArmorToInventory ();
 		Loadout loadout = new Loadout (1);
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
-		for (int i = 0; i < 50; i++) {
+		int materialCount = DataManager.ReadDataInt ("Material_Count");
+		for (int i = 0; i < materialCount; i++) {
 			Inventory.PutItem (ItemType.Mat, ItemSubType.Mat, i, 50);
 		}
 		//loadoutList.InsertLoadout (loadout, 0);

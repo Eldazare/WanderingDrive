@@ -13,7 +13,7 @@
 
 ShieldS_speed=1
 
-%Weapon_ShieldS_0_generic small shield
+%Weapon_ShieldS_0_Buckler
 &Weapon_ShieldS_0_generic small shield description is here
 ShieldS_0_base=0/0/0
 ShieldS_0_element=0/0/1

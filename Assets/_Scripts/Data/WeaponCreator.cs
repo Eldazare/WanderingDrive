@@ -17,6 +17,7 @@ public static class WeaponCreator  {
 
 	public static WeaponStats CreateWeaponStatBlock(WeaponType wepType, int id){
 		string begin = System.Enum.GetName(typeof(WeaponType), wepType) + "_" + id + "_";
+		Debug.Log (begin);
 		WeaponStats createe = new WeaponStats ();
 		createe.id = id;
 		createe.subtype = wepType;

@@ -14,7 +14,7 @@
 
 Talisman_speed=1
 
-%Weapon_Talisman_0_generic Talisman
+%Weapon_Talisman_0_Ice talisman
 &Weapon_Talisman_0_Boosts Ice and regular damage
 Talisman_0_base=0/0/0
 Talisman_0_element=0/2/10
