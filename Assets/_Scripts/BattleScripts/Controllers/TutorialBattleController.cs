@@ -32,9 +32,10 @@ public class TutorialBattleController : MonoBehaviour {
 	static string tutorialText14 = "Enemies have different parts that have their own health, attack timings and more that you should try to learn to improve your hunting skills.";
 	static string tutorialText15 = "After selecting an enemy and selecting your course of action. You can select the enemy's part that you want to target.";
 	static string tutorialText155 = "Enemy's parts have their own health points and breaking a part will gain you that part regardless of if you win, lose or run away." +
-		"Different parts have the chance to hit on them and also take different damages. More risk, more reward.";
+		" Different parts have the chance to hit on them and also take different damages. More risk, more reward.";
 	static string tutorialText16 = "Now try to win the battle. Attack the enemy, complete combo by tapping and swiping to correct direction. After attacking be ready to swipe or tap to defend against enemy attack. Good luck!";
-	List<string> tutorialTexts = new List<string> () { tutorialText1, tutorialText2, tutorialText3, tutorialText4, tutorialText5, tutorialText55, tutorialText6, tutorialText7, tutorialText8, tutorialText9, tutorialText10, tutorialText11, tutorialText12, tutorialText13, tutorialText14, tutorialText15, tutorialText155, tutorialText16 };
+	List<string> tutorialTexts = new List<string> () { tutorialText1, tutorialText2, tutorialText3, tutorialText4, tutorialText5, tutorialText55, tutorialText6, tutorialText7, tutorialText8,
+	 tutorialText9, tutorialText10, tutorialText11, tutorialText12, tutorialText122, tutorialText13, tutorialText14, tutorialText15, tutorialText155, tutorialText16 };
 	// Use this for initialization
 	void Start () {
 		Debug.Log("start tutorial");
@@ -97,6 +98,7 @@ public class TutorialBattleController : MonoBehaviour {
 					}
 					break;
 				case 13:
+					playerProfile.OpenPlayerProfile();
 					blockerRight.SetActive(false);
 					blockerLeft.SetActive(true);
 					break;
@@ -124,6 +126,7 @@ public class TutorialBattleController : MonoBehaviour {
 			proceedTutorial = false;
 			tutorialStep++;
 		}
+		blockerLeft.SetActive(false);
 		textBox.SetActive(false);
 		blockerNoClick.SetActive(false);
 	}

@@ -15,10 +15,10 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 		damageTaken = 0;
 		foreach (var item in menu.player.attackList) {
 			if (item != null) {
-				damageTaken += menu.targetedEnemy.DamageTakenCalculation (item.damage, item.elementDamage, item.element, part);
+				damageTaken += menu.targetedEnemy.DamageTakenCalculation (item.damage*1.5f, item.elementDamage*1.5f, item.element, part);
 			}
 		}
-		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health - damageTaken) / menu.targetedEnemy.enemyStats.maxHealth;
+		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health - (damageTaken)) / menu.targetedEnemy.enemyStats.maxHealth;
 		bar.healthText.text = menu.targetedEnemy.enemyStats.health.ToString ("0.#") + " -> " + (menu.targetedEnemy.enemyStats.health-damageTaken).ToString ("0.#");
 		bar.healthFill2.fillAmount = menu.targetedEnemy.enemyStats.health / menu.targetedEnemy.enemyStats.maxHealth;
 		bar.buttonText.text = menu.targetedEnemy.enemyName;
@@ -29,12 +29,11 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 	IEnumerator LerpStatusBar(){
 		EnemyHealthBarScript bar = GetComponent<EnemyHealthBarScript> ();
 		bar.healthImage.fillAmount = menu.targetedEnemy.enemyStats.health / menu.targetedEnemy.enemyStats.maxHealth;
-		yield return new WaitForSeconds(1f);
 		while(bar.healthFill2.fillAmount > bar.healthImage.fillAmount){
 			bar.healthFill2.fillAmount -= Time.deltaTime;
-			yield return new WaitForSeconds(Time.deltaTime);
+			yield return new WaitForSeconds(Time.deltaTime/2);
 		}
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.5f);
 		gameObject.SetActive(false);
 	}
 }

@@ -7,7 +7,7 @@
 #Do not change existing id/name, just
 
 #update this when adding new batches
-Material_Count=50
+Material_Count=60
 
 #Golem Parts (0-9)
 %Mat_Mat_0_Small Golem Rock
@@ -58,5 +58,15 @@ Material_Count=50
 %Mat_Mat_45_Lizardite ore
 %Mat_Mat_46_Adamantite ore
 %Mat_Mat_47_
+
+#Dragon parts (50-59)
+%Mat_Mat_50_Dragon Scale
+%Mat_Mat_51_Dragon Hide
+%Mat_Mat_52_Dragon Wing
+%Mat_Mat_53_Dragon Crystal_RARE
+%Mat_Mat_54_Dragon Ear
+%Mat_Mat_55_Dragon Fang
+%Mat_Mat_56_Dragon Claw
+%Mat_Mat_57_Dragon Tail
 
 #Gathering fish nodes?
