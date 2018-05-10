@@ -464,7 +464,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 	//Damage taken calculations
 	string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
-		float damageTaken, damageModifier = 0, eleModifier = 1;
+		float damageTaken, damageModifier, eleModifier;
 		float armorAlgMod = CombatController.armorAlgorithmModifier;
 		if (damageType == 0) {
 			damageModifier = armorAlgMod / (armorAlgMod + playerStats.physicalArmor);
@@ -473,6 +473,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		} else {
 			damageModifier = 1;
 		}
+		eleModifier = 1-(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
 		if (element == Element.None) {
 			damage += elementDamage;
 			elementDamage = 0;
@@ -488,13 +489,8 @@ public class PlayerCombatScript : MonoBehaviour {
 		if (buffDamageReduction > 0) {
 			damageModifier *= buffDamageReduction;
 		}
-		Debug.Log("b4elementDamage : " +elementDamage);
-		Debug.Log("b4elemod " + eleModifier);
-		eleModifier *= 1-(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
-		Debug.Log("elemod " + eleModifier);
 		damage *= damageModifier;
 		elementDamage *= eleModifier;
-		Debug.Log("elementDamage : " +elementDamage);
 		damageTaken = damage + elementDamage;
 		playerStats.health -= damageTaken;
 		if (damageTaken < 0) {

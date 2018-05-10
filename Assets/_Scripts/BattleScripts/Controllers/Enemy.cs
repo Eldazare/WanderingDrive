@@ -118,7 +118,7 @@ public class Enemy : MonoBehaviour {
     }
     
     public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
-        float damageTaken, damageModifier, eleModifier = 1, weaknessTypeAccuracy = 1;
+        float damageTaken, damageModifier, eleModifier , weaknessTypeAccuracy = 1;
         if (weaknessType == enemyStats.weaknessType) {
             weaknessTypeAccuracy = 20f;
         } else {
@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour {
 		if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
-            eleModifier *= 1-((float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100);
+            eleModifier = 1-((float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100);
             damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
             /* Debug.Log("DamageElement: " +elementDamage); */
             eleModifier *= enemyStats.partList[part].damageMod;
