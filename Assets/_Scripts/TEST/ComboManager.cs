@@ -22,6 +22,7 @@ public class ComboManager : MonoBehaviour {
 
 	List<ComboPieceAbstraction> comboContent;
 	List<bool> comboResult;
+	List<float> percentageTimesLeft;
 	bool returned = false;
 	bool awaitingInput = false;
 	int direction = -1;
@@ -29,6 +30,7 @@ public class ComboManager : MonoBehaviour {
 
 	GameObject spawnedMarker;
 	float aliveTimeLeft = 0;
+	float aliveTimeMax = 0;
 	float FadeRate = 5f;
      private float targetAlpha;
 
@@ -111,6 +113,7 @@ public class ComboManager : MonoBehaviour {
 		Destroy(spawnedMarker);
 		returned = true;
 		comboResult.Add (success);
+		percentageTimesLeft.Add (aliveTimeLeft / aliveTimeMax);
 		Debug.Log (success);
 		if (success) {
 			SuccessLerp ();
@@ -149,20 +152,24 @@ public class ComboManager : MonoBehaviour {
 	}
 
 	public void StartCombo (List<ComboPieceAbstraction> comboList) {
-		// TODO: Non debug combolist
 		float aliveTimeForMarkers = 5f;
-		comboContent = new List<ComboPieceAbstraction> ();
-		comboContent.Add (new ComboPieceAbstraction ("circle", aliveTimeForMarkers));
-		comboContent.Add (new ComboPieceAbstraction ("swipe", aliveTimeForMarkers));
-		comboContent.Add (new ComboPieceAbstraction ("swipe", aliveTimeForMarkers));
+		if (comboList.Count == 0) {
+			comboContent = new List<ComboPieceAbstraction> ();
+			comboContent.Add (new ComboPieceAbstraction (ComboPieceType.Tap, aliveTimeForMarkers));
+			comboContent.Add (new ComboPieceAbstraction (ComboPieceType.Swipe, aliveTimeForMarkers));
+			comboContent.Add (new ComboPieceAbstraction (ComboPieceType.Swipe, aliveTimeForMarkers));
+		} else {
+			comboContent = comboList;
+		}
 		StartCoroutine (ComboMaster (comboContent));
 	}
 
 	void SpawnComboMarker (ComboPieceAbstraction abstr) {
 		direction = -1;
 		aliveTimeLeft = abstr.aliveTime;
+		aliveTimeMax = abstr.aliveTime;
 		switch (abstr.type) {
-			case "circle":
+		case ComboPieceType.Tap:
 				spawnedMarker = Instantiate (circleMarker, markerCanvasParent.transform) as GameObject;
 				RectTransform comboCompRectTransform = spawnedMarker.GetComponent<RectTransform> ();
 				if (version2) {
@@ -174,7 +181,7 @@ public class ComboManager : MonoBehaviour {
 
 				}
 				break;
-			case "swipe":
+		case ComboPieceType.Swipe:
 				spawnedMarker = Instantiate (swipeMarker, markerCanvasParent.transform) as GameObject;
 				direction = 0;
 				if (version2) {
@@ -192,6 +199,7 @@ public class ComboManager : MonoBehaviour {
 	private IEnumerator ComboMaster (List<ComboPieceAbstraction> comboList) {
 		comboBackground.SetActive (true);
 		comboResult = new List<bool> ();
+		percentageTimesLeft = new List<float> ();
 		foreach (ComboPieceAbstraction combP in comboList) {
 			yield return ComboPart (combP);
 		}
@@ -202,6 +210,7 @@ public class ComboManager : MonoBehaviour {
 				multiplier += 0.5f;
 			}
 		}
+		// TODO: Use usable percentageTimesLeft
 		GetComponent<CombatController> ().ProceedAfterPlayerCombo (multiplier);
 		Debug.Log ("Combo complete");
 		comboBackground.SetActive (false);

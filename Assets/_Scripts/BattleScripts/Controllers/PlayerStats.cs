@@ -17,6 +17,8 @@ public class PlayerStats {
 		maxHealth = 100;
 		health = maxHealth;
 	}
+
+	/*
 	public float AbilityDamage(int abilityID){
 		return abilities[abilityID].damage;
 	}
@@ -26,4 +28,5 @@ public class PlayerStats {
 	public Element AbilityElement(int abilityID){
 		return abilities[abilityID].element;
 	}
+	*/
 }

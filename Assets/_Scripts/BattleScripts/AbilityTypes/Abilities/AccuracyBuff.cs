@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class AccuracyBuff : Ability {
 
-	public AccuracyBuff(PlayerCombatScript _player){
-		player = _player;
-		offensive = false;
+	float potency;
+
+	public AccuracyBuff(){
+
 	}
+
+
+	override public void Initialize(PlayerCombatScript _player){
+		this.player = _player;
+		string[] datas = dataString.Split ("/".ToCharArray());
+		// TODO: bler
+	}
+
+
 	override public void UseAbility(){
 		//player.GetComponent<AbilityController>().AbilityEffect("AccuracyBuff");
 		player.playerStats.stamina -= staminaCost;

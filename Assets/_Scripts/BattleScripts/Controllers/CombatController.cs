@@ -77,25 +77,27 @@ public class CombatController : MonoBehaviour {
 		//EnemyCreation (0, nodeEnemyList[0].subtype, nodeEnemyList[0].id);
 		//Temporary ability generation
 
+		/*
 		Ability spell = new FireBall (player);
 		spell.abilityName = "FireBall";
-		spell.staminaCost = 10;
-		spell.damage = 0;
-		spell.elementDamage = 20;
-		spell.element = Element.Fire;
 		spell.offensive = true;
 		playerStats.abilities.Add (spell);
 
 		spell = new AccuracyBuff (player);
 		spell.abilityName = "Accuracy Buff";
 		spell.offensive = false;
-		spell.staminaCost = 10;
-		spell.potency = 15f;
 		playerStats.abilities.Add (spell);
+		*/
 
+		foreach (AbilityAbstraction abilAbs in loadout.wornAbilities) {
+			if (abilAbs != null) {
+				Ability ability = AbilityCreator.CreateAbility (abilAbs);
+				ability.Initialize (player);
+				playerStats.abilities.Add (ability);
+			}
+		}
 		//Temporary item generation
 
-		GenerateAbilities ();
 		GenerateCombatItems (loadout);
 
 		//Temporary buff generation
@@ -132,9 +134,6 @@ public class CombatController : MonoBehaviour {
 				playerStats.combatItems.Add(consumable);
 			}
 		}
-	}
-	void GenerateAbilities () {
-
 	}
 	void EnemyCreation (int enemySpacing, string enemyType, int id) {
 		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);

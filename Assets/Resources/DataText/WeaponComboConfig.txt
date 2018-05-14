@@ -1,0 +1,5 @@
+#This is comment file
+
+
+
+Combo_Sword_0=Tap_5/Swipe_5/Swipe_5

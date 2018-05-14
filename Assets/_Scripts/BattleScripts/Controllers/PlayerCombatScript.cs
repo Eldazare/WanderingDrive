@@ -245,9 +245,11 @@ public class PlayerCombatScript : MonoBehaviour {
 				}
 				eleDamageMod += buffElementDamageMultiplier;
 				damageMod += buffDamageMultiplier;
+				/*
 				Attack attack = new Attack (playerStats.abilities[abilityID].damage * damageMod,
 					playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
 				attackList.Add (attack);
+				*/
 				break;
 				//Generate item's attack
 			case AttackMode.Item:
@@ -265,7 +267,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			Debug.Log("Utility");
 			StartCoroutine(UtilityAbilityRoutine());
 		} else {
-			StartCoroutine (OffensiveAbilityRoutine (playerStats.AbilityDamage (abilityID), playerStats.AbilityElementDamage (abilityID), playerStats.AbilityElement (abilityID), part, abilityID));
+			//StartCoroutine (OffensiveAbilityRoutine (playerStats.AbilityDamage (abilityID), playerStats.AbilityElementDamage (abilityID), playerStats.AbilityElement (abilityID), part, abilityID));
 		}
 	}
 	IEnumerator UtilityAbilityRoutine(){

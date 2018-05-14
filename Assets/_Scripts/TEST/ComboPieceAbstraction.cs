@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ComboPieceAbstraction  {
 
-	public string type;
+	public ComboPieceType type;
 	public float aliveTime;
 
-	public ComboPieceAbstraction(string type, float aliveTime){
+	public ComboPieceAbstraction(ComboPieceType type, float aliveTime){
 		this.type = type;
 		this.aliveTime = aliveTime;
 	}

@@ -7,9 +7,11 @@ public enum AbilityEnum{
 }
 public static class AbilityCreator  {
 
-	public static string[] CreateAbility(AbilityAbstraction abilAbs){
+	public static Ability CreateAbility(AbilityAbstraction abilAbs){
 		string begin = "Ability_" + abilAbs.abilityClassName.ToString() + "_" + abilAbs.lvl;
-		string[] data = DataManager.ReadDataString (begin).Split("_".ToCharArray());
-		return data;
+		string data = DataManager.ReadDataString (begin);
+		Ability returnee = (Ability)System.Activator.CreateInstance (System.Type.GetType (abilAbs.abilityClassName.ToString()));
+		returnee.dataString = data;
+		return returnee;
 	}
 }
