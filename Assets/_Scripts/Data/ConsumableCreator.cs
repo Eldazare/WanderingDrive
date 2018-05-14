@@ -6,10 +6,6 @@ public enum ConsumableType{ConsumableUniversal, ConsumableCombat, ConsumableWorl
 
 public static class ConsumableCreator {
 
-
-
-
-
 	public static Consumable CreateConsumable(int id, ConsumableType conType){
 		string begin = conType.ToString()+"_" + id;
 		string[] data = DataManager.ReadDataString (begin).Split("_".ToCharArray());
@@ -19,5 +15,9 @@ public static class ConsumableCreator {
 		returnee.id = id;
 		returnee.potency = float.Parse (data [1]);
 		return returnee;
+	}
+
+	public static Consumable CreateConsumable(ConsumableAbstraction conAbs){
+		return CreateConsumable (conAbs.index, conAbs.type);
 	}
 }

@@ -79,6 +79,8 @@ public class UndyingObject : MonoBehaviour {
 		loadout.AddMainHand (new InventoryWeapon (0, "Sword"));
 		loadout.AddCombatConsumable (0, (int)ConsumableType.ConsumableUniversal, 0);
 		loadout.AddCombatConsumable (1, (int)ConsumableType.ConsumableCombat, 0);
+		loadout.AddAbility (new AbilityAbstraction (AbilityEnum.FireBall, 0), 0);
+		loadout.AddAbility (new AbilityAbstraction (AbilityEnum.AccuracyBuff, 0), 1);
 		loadoutList.InsertLoadout (loadout, 9);
 	}
 

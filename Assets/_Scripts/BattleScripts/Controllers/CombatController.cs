@@ -122,7 +122,7 @@ public class CombatController : MonoBehaviour {
 		player.UpdateStats();
 	}
 	void GenerateCombatItems (Loadout loadout) {
-		foreach (var item in loadout.combatConsumableIndexes) {
+		foreach (var item in loadout.wornConsumables) {
 			if(item != null){
 				Debug.Log("item index: "+ item.index);
 				Debug.Log("item type: "+ item.type);

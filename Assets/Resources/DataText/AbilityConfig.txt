@@ -12,12 +12,12 @@ Ability_Overload_0=0/0/0
 &Ability_Ability_Overload_Reckless offensive action. Gain (small) attack boost and two actions immediately, but become vulnerable and forfeit your next turn.
 
 #Example on how this would go (ex. fireball has 3 types of int/float numbers it needs to use, and currently has 2 levels)
-Ability_Fireball_0=1/0/0
-Ability_Fireball_1=2/0/0
-&Ability_Ability_Fireball_Fireball deals damage. :O
+Ability_FireBall_0=1/0/0
+Ability_FireBall_1=2/0/0
+&Ability_Ability_FireBall_Fireball deals damage. :O
 
-Ability_AccuracyBoost_0=5/0/0
-Ability_AccuracyBoost_1=10/0/0
-Ability_AccuracyBoost_2=15/0/0
-Ability_AccuracyBoost_3=20/0/0
-&Ability_Ability_AccuracyBoost_Boosts accuracy.
+Ability_AccuracyBuff_0=5/0/0
+Ability_AccuracyBuff_1=10/0/0
+Ability_AccuracyBuff_2=15/0/0
+Ability_AccuracyBuff_3=20/0/0
+&Ability_Ability_AccuracyBuff_Boosts accuracy.

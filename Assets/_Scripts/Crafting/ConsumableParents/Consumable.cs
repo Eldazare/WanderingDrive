@@ -6,26 +6,19 @@ using UnityEngine;
 
 public class Consumable {
 
+	// Values set by creatorScript
 	public ConsumableType type;
 	public int id;
 	public float potency;
-    protected PlayerCombatScript player;
 
+	// Values for individual consumable types
+    protected PlayerCombatScript player;
 	public void SetConsumablePlayer(PlayerCombatScript _player){
 		player = _player;
 	}
-	virtual
-	public void ActivateCombatConsumable(){
-		Debug.LogError ("Undefined action (activating item)");
-	}
 
 	virtual
-	public void ActivateWorldConsumable(){
-		Debug.LogError ("Undefined action (activating item)");
-	}
-
-	virtual
-	public void ActivateDungeonConsumable(){
+	public void ActivateConsumable(){
 		Debug.LogError ("Undefined action (activating item)");
 	}
 

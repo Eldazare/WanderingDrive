@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blindpowder : CombatConsumable {
+public class Blindpowder : Consumable {
 
-	override public void ActivateCombatConsumable() {
+	override public void ActivateConsumable() {
 		if(player){
 			_Buff buff = new Blind(potency);
 			buff.turnsRemaining = 5;

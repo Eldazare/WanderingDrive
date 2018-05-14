@@ -16,9 +16,6 @@ public enum BuffType{
 	FlatDamage, FlatElementDamage, Freeze, HealthRegen, Hold, Paralyze, StaminaRegen, Stun
 };
 
-public enum AbilityEnum{
-	Focus, Overload, Fireball, AccuracyBoost
-}
 
 public static class NameDescContainer  {
 

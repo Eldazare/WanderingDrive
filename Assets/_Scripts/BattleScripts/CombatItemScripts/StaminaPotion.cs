@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StaminaPotion : CombatConsumable  {
-	override public void ActivateCombatConsumable() {
+public class StaminaPotion : Consumable  {
+	override public void ActivateConsumable() {
 		float healing = potency;
 		if(player){
 			player.playerStats.stamina += potency;

@@ -321,7 +321,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		StartCoroutine (CombatItemRoutine (slot));
 	}
 	IEnumerator CombatItemRoutine (int slot) {
-		playerStats.combatItems[slot].ActivateCombatConsumable ();
+		playerStats.combatItems[slot].ActivateConsumable ();
 		yield return new WaitForSeconds (0.5f);
 		EndPlayerTurn (false);
 	}

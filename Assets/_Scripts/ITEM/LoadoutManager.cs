@@ -298,8 +298,8 @@ public class LoadoutManager : MonoBehaviour {
             }
 
         }
-        for (int i = 0; i < myLoadout.combatConsumableIndexes.Count; i++) {
-            if (myLoadout.combatConsumableIndexes[i] != null) {
+        for (int i = 0; i < myLoadout.wornConsumables.Count; i++) {
+            if (myLoadout.wornConsumables[i] != null) {
                 consSlots[i].GetComponent<Image>().color = Color.green;
             }
         }
