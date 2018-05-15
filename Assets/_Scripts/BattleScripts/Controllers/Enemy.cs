@@ -57,9 +57,9 @@ public class Enemy : MonoBehaviour {
         InvokeRepeating ("MoveFromPlayer", 0, Time.deltaTime);
     }
     public void ApplyEnemyBuffs () {
-        StartCoroutine(ApplyBuffs());
+        StartCoroutine (ApplyBuffs ());
     }
-    IEnumerator ApplyBuffs(){
+    IEnumerator ApplyBuffs () {
         buffDamageMultiplier = 0;
         buffArmor = 0;
         buffElementDamageMultiplier = 0;
@@ -76,12 +76,12 @@ public class Enemy : MonoBehaviour {
             buffElementalWeakness[i] = 0;
         }
         foreach (var item in enemyBuffList) {
-            if(item != null){
-                if(item.turnsRemaining == 0){
-					enemyBuffList[enemyBuffList.IndexOf(item)] = null;
-				}else{
-					yield return new WaitForSeconds(item.DoYourThing());
-				}
+            if (item != null) {
+                if (item.turnsRemaining == 0) {
+                    enemyBuffList[enemyBuffList.IndexOf (item)] = null;
+                } else {
+                    yield return new WaitForSeconds (item.DoYourThing ());
+                }
                 item.turnsRemaining--;
             }
         }
@@ -92,8 +92,8 @@ public class Enemy : MonoBehaviour {
             }
             GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
             popup.GetComponent<TextMesh> ().text = healthRegen.ToString ("0.#");
-            updateStats();
-            yield return new WaitForSeconds(1f);
+            updateStats ();
+            yield return new WaitForSeconds (1f);
         }
         proceed = true;
     }
@@ -116,35 +116,24 @@ public class Enemy : MonoBehaviour {
             combatController.enemyAttacked = true;
         }
     }
-    
+
     public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
-        float damageTaken, damageModifier, eleModifier , weaknessTypeAccuracy = 1;
+        float damageTaken, weaknessTypeAccuracy = 1;
         if (weaknessType == enemyStats.weaknessType) {
             weaknessTypeAccuracy = 20f;
         } else {
             weaknessTypeAccuracy = 0f;
         }
         //0-100
-		float accuracyFug = Random.Range (0, 100) - weaknessTypeAccuracy - accuracy;
-		Debug.Log("AccuracyRoll: "+accuracyFug.ToString("F2")+"  Weakness: "+weaknessTypeAccuracy);
-		if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
+        float accuracyFug = Random.Range (0, 100) - weaknessTypeAccuracy - accuracy;
+        Debug.Log ("AccuracyRoll: " + accuracyFug.ToString ("F2") + "  Weakness: " + weaknessTypeAccuracy);
+        if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
             //Damage reduction calculations
 
-            eleModifier = 1-((float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / 100);
-            damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
-            /* Debug.Log("DamageElement: " +elementDamage); */
-            eleModifier *= enemyStats.partList[part].damageMod;
-            damageModifier *= enemyStats.partList[part].damageMod;
-            damage *= damageModifier;
-            elementDamage *= eleModifier;
-
-            damageTaken = damage + elementDamage;/* 
-            Debug.Log("Damage: " +damage);
-            Debug.Log("DamageElement: " +elementDamage);
-            Debug.Log("DamageTaken: " +damageTaken); */
+            damageTaken = DamageTakenCalculation (ref damage, ref elementDamage, element, part);
             enemyStats.health -= damageTaken;
             enemyStats.partList[part].DamageThisPart (damageTaken); // Part takes damage
-            combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateCurrentHP();
+            combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateCurrentHP ();
             // animator.SetTrigger("TakeDamage");
             if (damageTaken < 0) {
                 GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
@@ -153,36 +142,51 @@ public class Enemy : MonoBehaviour {
                 GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
                 popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
             }
-
+            string message;
+            if (elementDamage != 0) {
+                message = damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString ();
+                message = MenuController.DamageTextColor(message);
+            } else {
+                message = damage.ToString ("0.#");
+            }
             if (enemyStats.health <= 0) {
                 combatController.EnemyDies (this);
                 //animator.SetTrigger("Death");
-                return enemyName + " took " + damageTaken.ToString ("0.#") + " damage and died!";
+                return enemyName + " took " + message + " damage and died!";
             } else {
-                return enemyName + " took " + damageTaken.ToString ("0.#") + " damage!";
+                return enemyName + " took " + message + " damage!";
+
             }
         } else {
             return "Your attack missed!";
         }
     }
-    public float DamageTakenCalculation(float damage, float elementDamage, Element element, int part){
-            float damageTaken, damageModifier, eleModifier = 1 ;
-            eleModifier -= (float)enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float)100;
-            damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
-
-            eleModifier *= enemyStats.partList[part].damageMod;
-            damageModifier *= enemyStats.partList[part].damageMod;
-
-            damage *= damageModifier;
-            elementDamage *= eleModifier;
-
-            damageTaken = damage + elementDamage;
-            return damageTaken;
+    //Reference method for Enemy to calcualte it's own damageTaken
+    public float DamageTakenCalculation (ref float damage, ref float elementDamage, Element element, int part) {
+        return DamageTakenCalculationExtend (damage, elementDamage, element, part);
     }
-    public void StatusTextPopUp(string text){
-		GameObject popup = Instantiate(Resources.Load("CombatResources/DamagePopUp"),new Vector3(transform.position.x, transform.position.y+3, transform.position.z)-transform.right, Quaternion.identity) as GameObject;
-		popup.GetComponent<TextMesh>().text = text;
-	}
+    //Non-Reference method for prediction calculations
+    public float DamageTakenCalculation (float damage, float elementDamage, Element element, int part) {
+        return DamageTakenCalculationExtend (damage, elementDamage, element, part);
+    }
+    float DamageTakenCalculationExtend (float damage, float elementDamage, Element element, int part) {
+        float damageTaken, damageModifier, eleModifier = 1;
+        eleModifier -= (float) enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float) 100;
+        damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
+
+        eleModifier *= enemyStats.partList[part].damageMod;
+        damageModifier *= enemyStats.partList[part].damageMod;
+
+        damage *= damageModifier;
+        elementDamage *= eleModifier;
+
+        damageTaken = damage + elementDamage;
+        return damageTaken;
+    }
+    public void StatusTextPopUp (string text) {
+        GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+        popup.GetComponent<TextMesh> ().text = text;
+    }
     public void RemoveFromBuffList (_Buff buff) {
         enemyBuffList.Remove (buff);
     }

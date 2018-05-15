@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerPopUpColor{
-	Damage, Healing, Stamina, Status
+public enum PlayerPopUpColor {
+	Damage,
+	Healing,
+	Stamina,
+	Status
 };
 public class PlayerCombatScript : MonoBehaviour {
 	public PlayerStats playerStats = new PlayerStats (); //Player stat container
@@ -43,9 +46,9 @@ public class PlayerCombatScript : MonoBehaviour {
 	public bool enemyTurn;
 
 	public void Attack (int part) {
-		startPos = transform.position;
-		enemyPos = menuController.targetedEnemy.transform.position;
-		StartCoroutine (AttackRoutine (menuController.targetedEnemy, part));
+	startPos = transform.position;
+	enemyPos = menuController.targetedEnemy.transform.position;
+	StartCoroutine (AttackRoutine (menuController.targetedEnemy, part));
 	}
 	public void ApplyPlayerBuffs () {
 		StartCoroutine (ApplyBuffs ());
@@ -78,13 +81,12 @@ public class PlayerCombatScript : MonoBehaviour {
 				item.turnsRemaining--;
 			}
 		}
-		if(staminaRegen != 0){
+		if (staminaRegen != 0) {
 			playerStats.stamina += staminaRegen;
 			if (playerStats.stamina < playerStats.maxStamina) {
 				playerStats.stamina = playerStats.maxStamina;
 			}
 		}
-		
 
 		if (healthRegen > 0) {
 			playerStats.health += healthRegen;
@@ -101,6 +103,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		menuController.proceed = true;
 	}
 	IEnumerator AttackRoutine (Enemy target, int part) {
+		attackList.Clear ();
 		attacked = false;
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, enemyPos);
@@ -116,34 +119,21 @@ public class PlayerCombatScript : MonoBehaviour {
 		proceed = false;
 		float damageMod = combatController.comboMulti;
 		float eleDamageMod = combatController.comboMulti;
-		if (overFocusTurn > 0) {
-			damageMod *= focusDamageBuff * overloadDamageBuff;
-			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
-		} else {
-			if (focusBuffTurns > 0) {
-				damageMod *= focusDamageBuff;
-				eleDamageMod *= focusDamageBuff;
-				accuracyBuff += focusAccuracyBuff;
-			}
-			if (overloadedTurn > 0) {
-				damageMod *= overloadDamageBuff;
-				eleDamageMod *= overloadDamageBuff;
-			}
-		}
-		eleDamageMod += buffElementDamageMultiplier;
-		damageMod += buffDamageMultiplier;
+
+		CalculateModifiers (ref damageMod, ref eleDamageMod);
 
 		if (playerStats.mainHand != null) {
 			if (playerStats.mainHand.damage > 0) {
-				WeaponAttack (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod, part);
+				WeaponAttackCalculation (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
 				attacked = true;
 			}
 		}
 		if (playerStats.offHand != null) {
 			if (playerStats.offHand.damage > 0) {
-				WeaponAttack (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod, part);
+				WeaponAttackCalculation (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod);
 			}
 		}
+		WeaponAttacks (part);
 		yield return new WaitUntil (() => proceed);
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, startPos);
@@ -151,30 +141,20 @@ public class PlayerCombatScript : MonoBehaviour {
 		proceed = false;
 	}
 
-	void WeaponAttack (WeaponStats weapon, WeaponStats otherWep, float damageMod, float eleDamageMod, int part) {
-		if (weapon.damage > 0) {
-			float playerDamage = weapon.damage;
-			float playerElementDamage = weapon.elementDamage;
-			if (otherWep != null) {
-				playerDamage += otherWep.damageBonus;
-				playerElementDamage += otherWep.elementDamageBonus;
-			}
-			playerDamage += buffFlatDamage;
-			playerElementDamage += buffFlatElementDamage;
-			if (attacked) {
-				damageMod *= attackedPenalty;
-				eleDamageMod *= attackedPenalty;
-			}
-			playerDamage *= damageMod;
-			playerElementDamage *= eleDamageMod;
-			if (blind > 0) {
-				if ((Random.Range (0, 100) + weapon.accuracyBonus + accuracyBuff )> blind) {
-					combatController.HitEnemy (-1, 0, 0, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
+	void WeaponAttacks (int part) {
+		foreach (var attack in attackList) {
+			if (attack.damage > 0) {
+				float playerDamage = attack.damage;
+				float playerElementDamage = attack.elementDamage;
+				if (blind > 0) {
+					if ((Random.Range (0, 100) + attack.weapon.accuracyBonus + accuracyBuff) > blind) {
+						combatController.HitEnemy (-1, 0, 0, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
+					} else {
+						combatController.HitEnemy (playerDamage, playerElementDamage, attack.weapon.element, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
+					}
 				} else {
-					combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
+					combatController.HitEnemy (playerDamage, playerElementDamage, attack.weapon.element, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
 				}
-			} else {
-				combatController.HitEnemy (playerDamage, playerElementDamage, weapon.element, part, weapon.accuracyBonus + accuracyBuff, weapon.weaknessType);
 			}
 		}
 	}
@@ -190,7 +170,30 @@ public class PlayerCombatScript : MonoBehaviour {
 		playerDamage *= damageMod;
 		playerElementDamage *= eleDamageMod;
 		Attack attack = new Attack (playerDamage, playerElementDamage, weapon.element);
+		attack.weapon = weapon;
 		attackList.Add (attack);
+	}
+	//Player's modifier calculator
+	void CalculateModifiers (ref float _damageMod, ref float _eleDamageMod) {
+		if (overFocusTurn > 0) {
+			_damageMod *= focusDamageBuff * overloadDamageBuff;
+			_eleDamageMod *= focusDamageBuff * overloadDamageBuff;
+		} else {
+			if (focusBuffTurns > 0) {
+				_damageMod *= focusDamageBuff;
+				_eleDamageMod *= focusDamageBuff;
+			}
+			if (overloadedTurn > 0) {
+				_damageMod *= overloadDamageBuff;
+				_eleDamageMod *= overloadDamageBuff;
+			}
+		}
+		_eleDamageMod *= buffElementDamageMultiplier + 1;
+		_damageMod *= buffDamageMultiplier + 1;
+		if (attacked) {
+			_damageMod *= attackedPenalty;
+			_eleDamageMod *= attackedPenalty;
+		}
 	}
 	public void CalculateDamage (AttackMode attackmod) {
 		attackList.Clear ();
@@ -201,21 +204,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		switch (attackmod) {
 			//Generate weapon attacks
 			case AttackMode.Attack:
-				if (overFocusTurn > 0) {
-					damageMod *= focusDamageBuff * overloadDamageBuff;
-					eleDamageMod *= focusDamageBuff * overloadDamageBuff;
-				} else {
-					if (focusBuffTurns > 0) {
-						damageMod *= focusDamageBuff;
-						eleDamageMod *= focusDamageBuff;
-					}
-					if (overloadedTurn > 0) {
-						damageMod *= overloadDamageBuff;
-						eleDamageMod *= overloadDamageBuff;
-					}
-				}
-				eleDamageMod *= buffElementDamageMultiplier + 1;
-				damageMod *= buffDamageMultiplier + 1;
+				CalculateModifiers (ref damageMod, ref eleDamageMod);
 				if (playerStats.mainHand != null) {
 					if (playerStats.mainHand.damage > 0) {
 						WeaponAttackCalculation (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
@@ -230,26 +219,10 @@ public class PlayerCombatScript : MonoBehaviour {
 				break;
 				//Generate ability attack
 			case AttackMode.Ability:
-				if (overFocusTurn > 0) {
-					damageMod *= focusDamageBuff * overloadDamageBuff;
-					eleDamageMod *= focusDamageBuff * overloadDamageBuff;
-				} else {
-					if (focusBuffTurns > 0) {
-						damageMod *= focusDamageBuff;
-						eleDamageMod *= focusDamageBuff;
-					}
-					if (overloadedTurn > 0) {
-						damageMod *= overloadDamageBuff;
-						eleDamageMod *= overloadDamageBuff;
-					}
-				}
-				eleDamageMod += buffElementDamageMultiplier;
-				damageMod += buffDamageMultiplier;
-				/*
-				Attack attack = new Attack (playerStats.abilities[abilityID].damage * damageMod,
-					playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
-				attackList.Add (attack);
-				*/
+				CalculateModifiers (ref damageMod, ref eleDamageMod);
+				/* Attack attack = new Attack (playerStats.abilities[abilityID].damage * damageMod,
+				playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
+				attackList.Add (attack); */
 				break;
 				//Generate item's attack
 			case AttackMode.Item:
@@ -264,16 +237,16 @@ public class PlayerCombatScript : MonoBehaviour {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
 		if (!playerStats.abilities[abilityID].offensive) {
-			Debug.Log("Utility");
-			StartCoroutine(UtilityAbilityRoutine());
+			Debug.Log ("Utility");
+			StartCoroutine (UtilityAbilityRoutine ());
 		} else {
-			//StartCoroutine (OffensiveAbilityRoutine (playerStats.AbilityDamage (abilityID), playerStats.AbilityElementDamage (abilityID), playerStats.AbilityElement (abilityID), part, abilityID));
+			//StartCoroutine (OffensiveAbilityRoutine (playerStats.abilities[abilityID].damage, playerStats.abilities[abilityID].elementDamage, playerStats.abilities[abilityID].element, part, abilityID));
 		}
 	}
-	IEnumerator UtilityAbilityRoutine(){
-		playerStats.abilities[abilityID].UseAbility();
-		yield return new WaitForSeconds(0.5f);
-		EndPlayerTurn(false);
+	IEnumerator UtilityAbilityRoutine () {
+		playerStats.abilities[abilityID].UseAbility ();
+		yield return new WaitForSeconds (0.5f);
+		EndPlayerTurn (false);
 	}
 	IEnumerator OffensiveAbilityRoutine (float abilityDamage, float abilityElementDamage, Element abilityElement, int part, int ID) {
 		proceed = false;
@@ -281,28 +254,9 @@ public class PlayerCombatScript : MonoBehaviour {
 		yield return new WaitUntil (() => proceed);
 		playerStats.abilities[ID].UseAbility ();
 		proceed = false;
-		Debug.Log ("Damage1: " + abilityDamage);
-		Debug.Log ("DamageEle1: " + abilityElementDamage);
 		float damageMod = 1;
 		float eleDamageMod = 1;
-		if (overFocusTurn > 0) {
-			damageMod *= focusDamageBuff * overloadDamageBuff;
-			eleDamageMod *= focusDamageBuff * overloadDamageBuff;
-		} else {
-			if (focusBuffTurns > 0) {
-				damageMod *= focusDamageBuff;
-				eleDamageMod *= focusDamageBuff;
-			}
-			if (overloadedTurn > 0) {
-				damageMod *= overloadDamageBuff;
-				eleDamageMod *= overloadDamageBuff;
-			}
-		}
-		//Buff damage modifier apply
-		eleDamageMod *= buffElementDamageMultiplier + 1;
-		damageMod *= buffDamageMultiplier + 1;
-		Debug.Log ("DamageMod: " + damageMod);
-		Debug.Log ("DamageEleMod: " + eleDamageMod);
+		CalculateModifiers (ref damageMod, ref eleDamageMod);
 		//Buff flat damage apply
 		abilityDamage += buffFlatDamage;
 		abilityElementDamage += buffFlatElementDamage;
@@ -328,8 +282,6 @@ public class PlayerCombatScript : MonoBehaviour {
 		EndPlayerTurn (false);
 	}
 
-	
-	
 	//Player Focus
 	public void PlayerFocus () {
 		focusBuffTurns = 3;
@@ -475,7 +427,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		} else {
 			damageModifier = 1;
 		}
-		eleModifier = 1-(((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
+		eleModifier = 1 - (((float) playerStats.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
 		if (element == Element.None) {
 			damage += elementDamage;
 			elementDamage = 0;
@@ -486,7 +438,6 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		damageModifier *= blockModifier;
 		eleModifier *= blockModifier;
-		
 
 		if (buffDamageReduction > 0) {
 			damageModifier *= buffDamageReduction;
@@ -496,13 +447,15 @@ public class PlayerCombatScript : MonoBehaviour {
 		damageTaken = damage + elementDamage;
 		playerStats.health -= damageTaken;
 		if (damageTaken < 0) {
-			PopUpText(damageTaken.ToString("0.#"),PlayerPopUpColor.Healing);
+			PopUpText (damageTaken.ToString ("0.#"), PlayerPopUpColor.Healing);
 		} else {
-			PopUpText(damageTaken.ToString("0.#"),PlayerPopUpColor.Damage);
+			PopUpText (damageTaken.ToString ("0.#"), PlayerPopUpColor.Damage);
 		}
 		UpdateStats ();
 		if (elementDamage != 0) {
-			return damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString();
+			string message = damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString ();
+			message = MenuController.DamageTextColor (message);
+			return message;
 		} else {
 			return damage.ToString ("0.#");
 		}
@@ -514,8 +467,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	//InGame PopUp Method
 	public void PopUpText (string popuptext, PlayerPopUpColor popUpColor) {
 		GameObject popup;
-		switch (popUpColor)
-		{
+		switch (popUpColor) {
 			case PlayerPopUpColor.Damage:
 				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 				popup.GetComponent<TextMesh> ().text = popuptext;
@@ -527,13 +479,13 @@ public class PlayerCombatScript : MonoBehaviour {
 			case PlayerPopUpColor.Stamina:
 				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 				popup.GetComponent<TextMesh> ().text = popuptext;
-				popup.GetComponent<TextMesh>().color = new Color(255, 189, 102);
+				popup.GetComponent<TextMesh> ().color = new Color (255, 189, 102);
 				break;
 
 			case PlayerPopUpColor.Status:
 				popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
 				popup.GetComponent<TextMesh> ().text = popuptext;
-				popup.GetComponent<TextMesh>().color = Color.yellow;
+				popup.GetComponent<TextMesh> ().color = Color.yellow;
 				break;
 			default:
 				break;
@@ -582,7 +534,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			defended = true;
 			//Dodge animation depending on direction | 1 = right and down | 0 = left and up
 			dodgeTimer += dodgeDuration;
-			animator.SetTrigger("Dodge");
+			animator.SetTrigger ("Dodge");
 			InvokeRepeating ("DodgeCountDown", 0, Time.deltaTime);
 		}
 	}
@@ -592,7 +544,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			defended = true;
 			//Block 
 			blockTimer += blockDuration;
-			animator.SetTrigger("Block");
+			animator.SetTrigger ("Block");
 			InvokeRepeating ("BlockCountDown", 0, Time.deltaTime);
 		}
 	}

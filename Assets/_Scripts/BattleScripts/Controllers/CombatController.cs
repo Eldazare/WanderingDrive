@@ -121,23 +121,22 @@ public class CombatController : MonoBehaviour {
 				Debug.Log (item.GetType ().Name);
 			}
 		}
-		player.UpdateStats();
+		player.UpdateStats ();
 	}
 	void GenerateCombatItems (Loadout loadout) {
 		foreach (var item in loadout.wornConsumables) {
-			if(item != null){
-				Debug.Log("item index: "+ item.index);
-				Debug.Log("item type: "+ item.type);
-				Debug.Log("item class: "+item.GetType().ToString());
+			if (item != null) {
+				Debug.Log ("item index: " + item.index);
+				Debug.Log ("item type: " + item.type);
+				Debug.Log ("item class: " + item.GetType ().ToString ());
 				Consumable consumable = ConsumableCreator.CreateConsumable (item.index, item.type);
-				consumable.SetConsumablePlayer(player);
-				playerStats.combatItems.Add(consumable);
+				consumable.SetConsumablePlayer (player);
+				playerStats.combatItems.Add (consumable);
 			}
 		}
 	}
 	void EnemyCreation (int enemySpacing, string enemyType, int id) {
 		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
-		Debug.Log (enemyName);
 		Vector3 enemyPos = enemyHost.transform.position;
 		//Adds spacing
 		var i = ((enemySpacing * 1.0 + 6.7) / 14);
@@ -173,7 +172,6 @@ public class CombatController : MonoBehaviour {
 		}
 	}
 
-	
 	void GenerateArmors (Loadout loadout) {
 		float speed = 0;
 		float j = 0;
@@ -191,11 +189,10 @@ public class CombatController : MonoBehaviour {
 					i++;
 				}
 				speed += armor.speed;
-				j++;
 			} else {
 				speed++;
-				j++;
 			}
+			j++;
 		}
 		playerStats.speed = speed / j;
 
@@ -216,7 +213,6 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 	}
-
 	IEnumerator EnemyAttacksRoutine () {
 		if (!playerDead) {
 			menuController.targetHealthBar.SetActive (false);
@@ -237,7 +233,7 @@ public class CombatController : MonoBehaviour {
 						yield return new WaitForSeconds (1f);
 					}
 				}
-				ResetPlayerDefence ();
+				ResetPlayerDefence (); //Resets player's dodge and block
 			}
 			enemyTurns--;
 			if (enemyTurns <= 0) {
@@ -249,8 +245,6 @@ public class CombatController : MonoBehaviour {
 			}
 		}
 	}
-	
-
 	public void EnemyDies (Enemy enemy) {
 		DropData drop = DropDataCreator.CreateDropData (DropDataCreator.parseDroppertype (enemy.enemyStats.subtype), enemy.enemyStats.ID);
 		dropdata.Add (drop);

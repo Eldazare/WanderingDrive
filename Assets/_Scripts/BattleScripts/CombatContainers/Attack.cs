@@ -6,6 +6,7 @@ public class Attack {
 
 	public float damage, elementDamage;
 	public Element element;
+	public WeaponStats weapon;
 
 	public Attack(float _damage, float _elementDamage, Element _element){
 		damage = _damage;

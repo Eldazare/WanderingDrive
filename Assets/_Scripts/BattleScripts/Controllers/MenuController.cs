@@ -10,6 +10,9 @@ public enum AttackMode {
 };
 public class MenuController : MonoBehaviour {
 
+	//UI colors
+	Color textColor = Color.white;
+
 	public CombatController combatController; //Drag from Hierarchy
 	[HideInInspector]
 	public Enemy targetedEnemy;
@@ -19,8 +22,8 @@ public class MenuController : MonoBehaviour {
 	public PlayerCombatScript player; //Drag from Hierarchy
 	public GameObject enemyPartCanvas; //Drag from Hierarchy
 	public List<GameObject> enemyPartCanvasButtons; //Drag from Hierarchy
-	public List<Button> abilityButtons;	//Drag from Hierarchy
-	public List<Button> itemButtons;	//Drag from Hierarchy
+	public List<Button> abilityButtons; //Drag from Hierarchy
+	public List<Button> itemButtons; //Drag from Hierarchy
 	public bool focusEnabled, overloadEnabled;
 	int enemyTargetNumber;
 	public Image playerHealthFill, playerHealthRedFill, playerStaminaFill; //Drag from Hierarchy
@@ -40,8 +43,8 @@ public class MenuController : MonoBehaviour {
 	public AttackMode attackMode;
 
 	void Start () {
-		focusEnabled = true;
-		overloadEnabled = true;
+	focusEnabled = true;
+	overloadEnabled = true;
 	}
 	public void GenerateHealthBars (int number, Enemy item) {
 		GameObject newHealthBar = Instantiate (Resources.Load ("CombatResources/EnemyHealthBar"), transform.position, Quaternion.identity, enemyHealthBarParent.transform) as GameObject;
@@ -70,8 +73,8 @@ public class MenuController : MonoBehaviour {
 		DefaultButtons.SetActive (false);
 		AbilityButtons.SetActive (true);
 		foreach (var item in player.playerStats.abilities) {
-			abilityButtons[player.playerStats.abilities.IndexOf(item)].interactable = true;
-			abilityButtons[player.playerStats.abilities.IndexOf(item)].GetComponentInChildren<Text>().text = item.abilityName;
+			abilityButtons[player.playerStats.abilities.IndexOf (item)].interactable = true;
+			abilityButtons[player.playerStats.abilities.IndexOf (item)].GetComponentInChildren<Text> ().text = item.abilityName;
 		}
 		if (player.frozen) {
 			overloadEnabled = false;
@@ -87,8 +90,8 @@ public class MenuController : MonoBehaviour {
 		DefaultButtons.SetActive (false);
 		ItemMenu.SetActive (true);
 		foreach (var item in player.playerStats.combatItems) {
-			itemButtons[player.playerStats.combatItems.IndexOf(item)].interactable = true;
-			itemButtons[player.playerStats.combatItems.IndexOf(item)].GetComponentInChildren<Text>().text = item.GetType().ToString();
+			itemButtons[player.playerStats.combatItems.IndexOf (item)].interactable = true;
+			itemButtons[player.playerStats.combatItems.IndexOf (item)].GetComponentInChildren<Text> ().text = item.GetType ().ToString ();
 		}
 		//targetHealthBar.SetActive(true);
 		//targetHealthBar.GetComponent<TargetEnemyHealthBar>().UpdateBar(selectedPart);
@@ -100,7 +103,7 @@ public class MenuController : MonoBehaviour {
 		ItemMenu.SetActive (false);
 		AbilityButtons.SetActive (false);
 		//combatController.cameraScript.ResetCamera ();
-		enemyPartCanvas.SetActive(false);
+		enemyPartCanvas.SetActive (false);
 		if (player.paralyzed) {
 			abilityMenuButton.enabled = false;
 		} else {
@@ -108,7 +111,7 @@ public class MenuController : MonoBehaviour {
 		}
 	}
 	public void PlayersTurn () {
-		StartCoroutine (AttackWaitTime ());
+		StartCoroutine (PlayerTurnRoutine ());
 	}
 
 	// Buttons.
@@ -142,14 +145,14 @@ public class MenuController : MonoBehaviour {
 	//Plays attack/ability animation and deactivates part canvas
 	public void ChoosePartToAttack () {
 		if (abilityOrAttack) {
-			if(player.playerStats.abilities[player.abilityID].staminaCost<player.playerStats.stamina){
-				Debug.Log(selectedPart);
+			if (player.playerStats.abilities[player.abilityID].staminaCost < player.playerStats.stamina) {
+				Debug.Log (selectedPart);
 				player.Ability (selectedPart);
 				combatController.ActivatePartCanvas (targetedEnemy);
-			}else{
-				WriteText("Not enough stamina!");
+			} else {
+				WriteText ("Not enough stamina!");
 			}
-			
+
 		} else {
 			player.Attack (selectedPart);
 			combatController.ActivatePartCanvas (targetedEnemy);
@@ -175,15 +178,15 @@ public class MenuController : MonoBehaviour {
 		abilityOrAttack = true;
 		player.abilityID = slot;
 		AbilityButtons.SetActive (false);
-		if(ability.offensive){
-			player.CalculateDamage(AttackMode.Ability);
+		if (ability.offensive) {
+			player.CalculateDamage (AttackMode.Ability);
 			/* 
 			targetHealthBar.SetActive (true);
 			targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
 			//StartCoroutine (CameraToEnemy ());
 			combatController.ActivatePartCanvas (targetedEnemy);
-		}else{
-			player.Ability(0);
+		} else {
+			player.Ability (0);
 		}
 	}
 
@@ -209,7 +212,7 @@ public class MenuController : MonoBehaviour {
 		playerHealthText.text = health.ToString ("0.#") + "/" + maxHealth.ToString ("0");
 		playerStaminaText.text = player.playerStats.stamina.ToString ("0.#") + "/" + player.playerStats.maxStamina.ToString ("0");
 		StartCoroutine (LerpStatusBar (playerHealthRedFill, playerHealthFill.fillAmount));
-		StartCoroutine (LerpStatusBar (playerStaminaFill, player.playerStats.stamina/player.playerStats.maxStamina));
+		StartCoroutine (LerpStatusBar (playerStaminaFill, player.playerStats.stamina / player.playerStats.maxStamina));
 	}
 	public void UpdateEnemyHealth (float health, float maxHealth, float percentage, Enemy enemyForListSearch) {
 		EnemyHealthBarScript healthbar = enemyHealthBars[enemyHealthBars.Count - 1 - (combatController.enemyList.IndexOf (enemyForListSearch))].GetComponent<EnemyHealthBarScript> ();
@@ -236,6 +239,7 @@ public class MenuController : MonoBehaviour {
 			textBoxText.text += item;
 			yield return new WaitForSeconds(textSpeed);
 		} */
+
 		textBoxText.text = message;
 		yield return new WaitForSeconds (1.5f);
 		textBoxText.text = "";
@@ -243,7 +247,7 @@ public class MenuController : MonoBehaviour {
 	}
 
 	//Player's turn routine
-	IEnumerator AttackWaitTime () {
+	IEnumerator PlayerTurnRoutine () {
 		proceed = false;
 		player.ApplyPlayerBuffs ();
 		yield return new WaitUntil (() => proceed);
@@ -303,5 +307,31 @@ public class MenuController : MonoBehaviour {
 		playerTurnText.gameObject.SetActive (true);
 		playerTurnText.CrossFadeAlpha (1.0f, 0.0f, false);
 		playerTurnText.CrossFadeAlpha (0.0f, 3.0f, false);
+	}
+	static public string DamageTextColor (string message) {
+		string[] stringList = message.Split (' ');
+		switch (stringList[3]) {
+			case "Earth":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=brown>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			case "Fire":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=red>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			case "Ice":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=blue>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			case "Light":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=yellow>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			case "Shadow":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=purple>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			case "Thunder":
+				message = stringList[0] + " " + stringList[1] + " " + "<color=darkblue>" + stringList[2] + " " + stringList[3] + "</color>";
+				break;
+			default:
+				break;
+		}
+		return message;
 	}
 }
