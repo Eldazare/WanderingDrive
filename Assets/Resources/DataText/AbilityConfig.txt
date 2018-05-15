@@ -2,6 +2,7 @@
 #Each ability takes one row, and knows how to parse the data
 #"Key" is Ability_<AbilityName>_<LevelNumber>
 #Abilities have levels
+#Base is: AbilityBaseClass/StaminaCost/Etc.
 
 #Most likely no namerows, since each ability is unique class
 
@@ -12,12 +13,15 @@ Ability_Overload_0=0/0/0
 &Ability_Ability_Overload_Reckless offensive action. Gain (small) attack boost and two actions immediately, but become vulnerable and forfeit your next turn.
 
 #Example on how this would go (ex. fireball has 3 types of int/float numbers it needs to use, and currently has 2 levels)
-Ability_FireBall_0=1/0/0
-Ability_FireBall_1=2/0/0
+
+#FireBall stuff: Damage/ElementDamage/Element(str)/ComboIdentifiers
+Ability_FireBall_0=AttackAbility/10/0/20/Fire/Tap_5/Tap_5
+Ability_FireBall_1=AttackAbility/10/0/30/Fire/Tap_4/Tap_4/Tap_4
 &Ability_Ability_FireBall_Fireball deals damage. :O
 
-Ability_AccuracyBuff_0=5/0/0
-Ability_AccuracyBuff_1=10/0/0
-Ability_AccuracyBuff_2=15/0/0
-Ability_AccuracyBuff_3=20/0/0
+#AccuracyBuff stuff: Potency(int)/Turns(int)
+Ability_AccuracyBuff_0=SelfBuffAbility/5/10/3
+Ability_AccuracyBuff_1=SelfBuffAbility/5/15/3
+Ability_AccuracyBuff_2=SelfBuffAbility/5/20/4
+Ability_AccuracyBuff_3=SelfBuffAbility/5/20/6
 &Ability_Ability_AccuracyBuff_Boosts accuracy.

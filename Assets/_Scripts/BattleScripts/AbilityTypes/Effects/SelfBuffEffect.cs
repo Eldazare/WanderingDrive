@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelfBuff : EffectType {
+public class SelfBuffEffect : EffectType {
 	override public void StartEffect(){
 		
 	}

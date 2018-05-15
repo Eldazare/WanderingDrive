@@ -6,14 +6,32 @@ public class Ability{
 
 	public int staminaCost;
 	public string abilityName;
+	//public string abilityBaseClass;
 	public bool offensive;
 
 
 	protected PlayerCombatScript player;
-	public string dataString;
+	public string[] dataArray;
 
+	public void Initialize(PlayerCombatScript _player){
+		this.player = _player;
+		//this.abilityBaseClass = dataArray [0];
+		this.staminaCost = int.Parse(dataArray [1]);
+		InitializeInside ();
+	}
+
+	// Must be called with creator
+	public void SetStringArr(string[] dataString, string theName){
+		this.dataArray = dataString;
+		this.abilityName = theName;
+	}
+
+
+	// Override in childs
 	public virtual void UseAbility(){}
-	public virtual void Initialize(PlayerCombatScript _player){}
+
+	// Override in childs
+	protected virtual void InitializeInside(){}
 
 	protected List<ComboPieceAbstraction> ConvertToComboPieces(List<string> strParts){
 		List<ComboPieceAbstraction> returnee = new List<ComboPieceAbstraction> ();
