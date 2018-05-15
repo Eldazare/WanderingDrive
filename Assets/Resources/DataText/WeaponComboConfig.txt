@@ -3,3 +3,7 @@
 
 
 Combo_Sword_0=Tap_5/Swipe_5/Swipe_5
+Combo_Sword_1=Tap_5/Swipe_5/Swipe_5
+Combo_Sword_2=Tap_5/Swipe_5/Swipe_5
+Combo_Sword_3=Tap_5/Swipe_5/Swipe_5
+Combo_Sword_4=Tap_5/Swipe_5/Swipe_5

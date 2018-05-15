@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootProjectile : EffectType {
+public class ShootProjectileEffect : EffectType {
 	public float projSpeed = 5;
 	override public void StartEffect(){
 		InvokeRepeating("MoveToEnemy", 0, Time.deltaTime);
