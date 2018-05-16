@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public enum AttackMode {
-	Attack,
-	Ability,
-	Item
-};
 public class MenuController : MonoBehaviour {
 
 	//UI colors
@@ -40,7 +35,6 @@ public class MenuController : MonoBehaviour {
 	public int selectedPart = -1;
 	public Text enemyTurnText, playerTurnText; //Drag from Hierarchy
 	Color originalColor;
-	public AttackMode attackMode;
 
 	void Start () {
 	focusEnabled = true;
@@ -86,7 +80,6 @@ public class MenuController : MonoBehaviour {
 		overloadButton.interactable = overloadEnabled;
 	}
 	public void ItemsMenu () {
-		attackMode = AttackMode.Item;
 		DefaultButtons.SetActive (false);
 		ItemMenu.SetActive (true);
 		foreach (var item in player.playerStats.combatItems) {
@@ -116,7 +109,6 @@ public class MenuController : MonoBehaviour {
 
 	// Buttons.
 	public void Attack () {
-		player.CalculateDamage (AttackMode.Attack);
 		DefaultButtons.SetActive (false);
 		abilityOrAttack = false;
 		//StartCoroutine (CameraToEnemy ());
@@ -159,8 +151,8 @@ public class MenuController : MonoBehaviour {
 		}
 		//StartCoroutine (PlayerAttack ());
 	}
-	//Legacy routine for camera movement
 
+	//Legacy routine for camera movement
 	/* IEnumerator PlayerAttack () {
 		proceed = false;
 		combatController.cameraScript.MoveCamera (playerPovCamera);
@@ -173,16 +165,16 @@ public class MenuController : MonoBehaviour {
 			player.Attack (selectedPart);
 		}
 	} */
+
 	public void Ability (int slot) {
 		Ability ability = player.playerStats.abilities[slot];
 		abilityOrAttack = true;
 		player.abilityID = slot;
 		AbilityButtons.SetActive (false);
 		if (ability.offensive) {
-			player.CalculateDamage (AttackMode.Ability);
-			/* 
-			targetHealthBar.SetActive (true);
-			targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); */
+			//player.CalculateDamage (AttackMode.Ability);
+			//targetHealthBar.SetActive (true);
+			targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateBar (selectedPart); 
 			//StartCoroutine (CameraToEnemy ());
 			combatController.ActivatePartCanvas (targetedEnemy);
 		} else {
@@ -239,7 +231,6 @@ public class MenuController : MonoBehaviour {
 			textBoxText.text += item;
 			yield return new WaitForSeconds(textSpeed);
 		} */
-
 		textBoxText.text = message;
 		yield return new WaitForSeconds (1.5f);
 		textBoxText.text = "";

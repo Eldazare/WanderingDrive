@@ -18,10 +18,11 @@ public class DamageOverTime : _Buff {
 		turnsRemaining = turns;
 	}
 	override public float DoYourThing(){
+		AttackResult attack = new AttackResult(0, damageovertime, element, 100, 0);
 		if(player != null){
-			player.combatController.HitPlayer(0,damageovertime, element, true, 1);
+			player.combatController.HitPlayer(attack);
 		}else{
-			enemy.combatController.HitEnemy(0,damageovertime, element, 0, 0, 0);
+			enemy.combatController.HitEnemy(attack);
 		}
 		return returnDelay;
 	}

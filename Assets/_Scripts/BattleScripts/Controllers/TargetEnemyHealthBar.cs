@@ -13,9 +13,10 @@ public class TargetEnemyHealthBar : MonoBehaviour {
 	public void UpdateBar (int part) {
 		EnemyHealthBarScript bar = GetComponent<EnemyHealthBarScript> ();
 		damageTaken = 0;
-		foreach (var item in menu.player.attackList) {
-			if (item != null) {
-				damageTaken += menu.targetedEnemy.DamageTakenCalculation (item.damage*1.5f, item.elementDamage*1.5f, item.element, part);
+		foreach (var attack in menu.player.attackList) {
+			if (attack != null) {
+				AttackResult result = menu.combatController.UniversalDamageTaken(true, attack) ;
+				damageTaken += result.damage+result.elementDamage;
 			}
 		}
 		bar.healthImage.fillAmount = (menu.targetedEnemy.enemyStats.health - (damageTaken)) / menu.targetedEnemy.enemyStats.maxHealth;

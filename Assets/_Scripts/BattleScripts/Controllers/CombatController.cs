@@ -23,6 +23,7 @@ public class CombatController : MonoBehaviour {
 	public float comboMulti;
 	bool combatEnded;
 	public static float armorAlgorithmModifier = 50; // = N | [% = N / (N+Armor)]   
+	float weaknessTypeAccuracyAmount = 20f;
 
 	//For Debugging purposes
 	void Update () {
@@ -134,6 +135,59 @@ public class CombatController : MonoBehaviour {
 				playerStats.combatItems.Add (consumable);
 			}
 		}
+	}
+	public AttackResult UniversalDamageTaken (bool playerAttack, Attack attack) {
+		Defense defense;
+		AttackResult attackResult;
+		if (!playerAttack) {
+			defense = player.PlayerDefense ();
+		} else {
+			defense = menuController.targetedEnemy.EnemyDefense ();
+		}
+		float weaknessTypeAccuracy = 1;
+		if (attack.weaknessType == defense.weaknessType) {
+			weaknessTypeAccuracy = weaknessTypeAccuracyAmount;
+		} else {
+			weaknessTypeAccuracy = 0f;
+		}
+		//0-100
+		float accuracyFug = Random.Range (0, 100) - weaknessTypeAccuracy - attack.accuracy;
+		Debug.Log ("AccuracyRoll: " + accuracyFug.ToString ("F2") + "  Weakness: " + weaknessTypeAccuracy);
+		
+		int damageType = attack.damageType;
+		Element element = attack.element;
+		float damage = attack.damage, elementDamage = attack.elementDamage, damageMod = attack.damageMod, eleDamageMod = attack.eleDamageMod;
+		float damageTaken = 0, damageModifier, eleModifier;
+		float armorAlgMod = armorAlgorithmModifier;
+		Debug.Log(accuracyFug +" vs " + defense.chanceToHit);
+		if (accuracyFug < defense.chanceToHit) {
+			if (damageType == 0) {
+				damageModifier = armorAlgMod / (armorAlgMod + defense.physicalArmor);
+			} else if (damageType == 1) {
+				damageModifier = armorAlgMod / (armorAlgMod + defense.magicArmor);
+			} else {
+				damageModifier = 1;
+			}
+
+			eleModifier = 1 - (((float) defense.elementWeakness[System.Convert.ToInt32 (element)]) / 100);
+
+			if (element == Element.None) {
+				damage += elementDamage;
+				elementDamage = 0;
+			}
+			damageModifier *= damageMod;
+			eleModifier *= eleDamageMod;
+			damageModifier *= defense.damageTakenMod;
+			eleModifier *= defense.damageTakenMod;
+			damage *= damageModifier;
+			elementDamage *= eleModifier;
+			damageTaken = damage + elementDamage;
+			attackResult = new AttackResult (damage, elementDamage, attack.element, attack.accuracy, attack.weaknessType);
+		}else{
+			attackResult = new AttackResult (damage, elementDamage, attack.element, attack.accuracy, attack.weaknessType);
+			attackResult.dodged = true;
+		}
+		return attackResult;
 	}
 	void EnemyCreation (int enemySpacing, string enemyType, int id) {
 		string enemyName = NameDescContainer.GetName ((NameType) System.Enum.Parse (typeof (NameType), enemyType), id);
@@ -331,11 +385,17 @@ public class CombatController : MonoBehaviour {
 		worldObj.playerWorldStats.stamina = stamina;
 		worldObj.EndCombat (loots);
 	}
-	public void HitPlayer (float damage, float elementDamage, Element element, bool area, int damageType) {
+	/* public void HitPlayer (float damage, float elementDamage, Element element, bool area, int damageType) {
 		menuController.MessageToScreen (player.GetHit (damage, elementDamage, element, area, damageType));
+	} */
+	public void HitPlayer (AttackResult attack) {
+		menuController.MessageToScreen (player.GetHit (attack));
 	}
-	public void HitEnemy (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
+	/* public void HitEnemy (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
 		menuController.MessageToScreen (menuController.targetedEnemy.GetHit (damage, elementDamage, element, part, accuracy, weaknessType));
+	} */
+	public void HitEnemy (AttackResult attack) {
+		menuController.MessageToScreen (menuController.targetedEnemy.GetHit (attack));
 	}
 	public void updateEnemyStats (float health, float maxhealth, Enemy enemy) {
 		menuController.UpdateEnemyHealth (health, maxhealth, health / maxhealth, enemy);

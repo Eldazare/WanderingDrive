@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour {
     public int buffFlatDamage, buffFlatElementDamage, buffArmor;
     public bool stunned, confused, frozen, paralyzed, hold;
     public List<int> buffElementalWeakness = new List<int> { 0, 0, 0, 0, 0, 0 };
+
+    float weaknessTypeAccuracyAmount = 20f;
     //Buffs end
 
     public IEnumerator Attack () {
@@ -45,13 +47,18 @@ public class Enemy : MonoBehaviour {
 
         attackDamage += buffFlatDamage;
         attackEleDamage += buffFlatElementDamage;
-        damageMod += buffDamageMultiplier;
-        eleDamageMod += buffElementDamageMultiplier;
+        damageMod *= 1 + buffDamageMultiplier;
+        eleDamageMod *= 1 + buffElementDamageMultiplier;
+        Attack newAttack = new Attack(attackDamage, attackEleDamage,chosenAttack.element, damageMod, eleDamageMod, 0, chosenAttack.damageType);
+        AttackResult result;
+        result = combatController.UniversalDamageTaken(false, newAttack);
         if (Random.Range (0, 100) < blind) {
-            combatController.HitPlayer (-1, -1, 0, false, 0);
+            //combatController.HitPlayer (-1, -1, 0, false, 0);
+            result.dodged = true;
         } else {
-            combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
+            //combatController.HitPlayer (attackDamage * damageMod, attackEleDamage * eleDamageMod, chosenAttack.element, false, chosenAttack.damageType);
         }
+        combatController.HitPlayer(result);
         yield return new WaitUntil (() => proceed);
         proceed = false;
         InvokeRepeating ("MoveFromPlayer", 0, Time.deltaTime);
@@ -97,7 +104,55 @@ public class Enemy : MonoBehaviour {
         }
         proceed = true;
     }
+    public Defense EnemyDefense(){
+        float damageMod =  enemyStats.partList[combatController.menuController.selectedPart].damageMod, chanceToHit = enemyStats.partList[combatController.menuController.selectedPart].percentageHit;
+        chanceToHit -= blind;
+        Defense defense = new Defense(enemyStats.armor, 0, enemyStats.elementWeakness, enemyStats.weaknessType, damageMod, chanceToHit);
+        return defense;
+    }
 
+    public string GetHit(AttackResult attack){
+    //public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
+        EnemyPart part =  enemyStats.partList[combatController.menuController.selectedPart];
+        float damageTaken = attack.damage+attack.elementDamage;
+       
+        if (!attack.dodged) {
+            part.DamageThisPart (damageTaken);
+            enemyStats.health -= damageTaken;
+            combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateCurrentHP ();
+            // animator.SetTrigger("TakeDamage"); 
+            if (damageTaken < 0) {
+                GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
+                popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
+            } else {
+                GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
+                popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
+            }
+            string message;
+            if (attack.elementDamage != 0) {
+                message = attack.damage.ToString ("0.#") + " + " + attack.elementDamage.ToString ("0.#") + " " + attack.element.ToString ();
+                message = MenuController.DamageTextColor(message);
+            } else {
+                message = attack.damage.ToString ("0.#");
+            }
+            if (enemyStats.health <= 0) {
+                combatController.EnemyDies (this);
+                //animator.SetTrigger("Death");
+                return enemyName + " took " + message + " damage and died!";
+            } else {
+                return enemyName + " took " + message + " damage!";
+            }
+        } else {
+            return "Your attack missed!";
+        }
+    }
+    public void StatusTextPopUp (string text) {
+        GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
+        popup.GetComponent<TextMesh> ().text = text;
+    }
+    public void RemoveFromBuffList (_Buff buff) {
+        enemyBuffList.Remove (buff);
+    }
     void MoveToPlayer () {
         if (Vector3.Distance (combatController.player.transform.position, transform.position) > 4) {
             //transform.Translate((combatController.player.transform.position-transform.position)*Time.deltaTime*enemyStats.quickness);
@@ -115,80 +170,6 @@ public class Enemy : MonoBehaviour {
             CancelInvoke ("MoveFromPlayer");
             combatController.enemyAttacked = true;
         }
-    }
-
-    public string GetHit (float damage, float elementDamage, Element element, int part, float accuracy, WeaknessType weaknessType) {
-        float damageTaken, weaknessTypeAccuracy = 1;
-        if (weaknessType == enemyStats.weaknessType) {
-            weaknessTypeAccuracy = 20f;
-        } else {
-            weaknessTypeAccuracy = 0f;
-        }
-        //0-100
-        float accuracyFug = Random.Range (0, 100) - weaknessTypeAccuracy - accuracy;
-        Debug.Log ("AccuracyRoll: " + accuracyFug.ToString ("F2") + "  Weakness: " + weaknessTypeAccuracy);
-        if (accuracyFug < enemyStats.partList[part].percentageHit && (damage >= 0 || elementDamage >= 0)) {
-            //Damage reduction calculations
-
-            damageTaken = DamageTakenCalculation (ref damage, ref elementDamage, element, part);
-            enemyStats.health -= damageTaken;
-            enemyStats.partList[part].DamageThisPart (damageTaken); // Part takes damage
-            combatController.menuController.targetHealthBar.GetComponent<TargetEnemyHealthBar> ().UpdateCurrentHP ();
-            // animator.SetTrigger("TakeDamage");
-            if (damageTaken < 0) {
-                GameObject popup = Instantiate (Resources.Load ("CombatResources/HealPopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
-                popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
-            } else {
-                GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z), Quaternion.identity) as GameObject;
-                popup.GetComponent<TextMesh> ().text = damageTaken.ToString ("0.#");
-            }
-            string message;
-            if (elementDamage != 0) {
-                message = damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString ();
-                message = MenuController.DamageTextColor(message);
-            } else {
-                message = damage.ToString ("0.#");
-            }
-            if (enemyStats.health <= 0) {
-                combatController.EnemyDies (this);
-                //animator.SetTrigger("Death");
-                return enemyName + " took " + message + " damage and died!";
-            } else {
-                return enemyName + " took " + message + " damage!";
-
-            }
-        } else {
-            return "Your attack missed!";
-        }
-    }
-    //Reference method for Enemy to calcualte it's own damageTaken
-    public float DamageTakenCalculation (ref float damage, ref float elementDamage, Element element, int part) {
-        return DamageTakenCalculationExtend (damage, elementDamage, element, part);
-    }
-    //Non-Reference method for prediction calculations
-    public float DamageTakenCalculation (float damage, float elementDamage, Element element, int part) {
-        return DamageTakenCalculationExtend (damage, elementDamage, element, part);
-    }
-    float DamageTakenCalculationExtend (float damage, float elementDamage, Element element, int part) {
-        float damageTaken, damageModifier, eleModifier = 1;
-        eleModifier -= (float) enemyStats.elementWeakness[System.Convert.ToInt32 (element)] / (float) 100;
-        damageModifier = CombatController.armorAlgorithmModifier / (CombatController.armorAlgorithmModifier + enemyStats.armor);
-
-        eleModifier *= enemyStats.partList[part].damageMod;
-        damageModifier *= enemyStats.partList[part].damageMod;
-
-        damage *= damageModifier;
-        elementDamage *= eleModifier;
-
-        damageTaken = damage + elementDamage;
-        return damageTaken;
-    }
-    public void StatusTextPopUp (string text) {
-        GameObject popup = Instantiate (Resources.Load ("CombatResources/DamagePopUp"), new Vector3 (transform.position.x, transform.position.y + 3, transform.position.z) - transform.right, Quaternion.identity) as GameObject;
-        popup.GetComponent<TextMesh> ().text = text;
-    }
-    public void RemoveFromBuffList (_Buff buff) {
-        enemyBuffList.Remove (buff);
     }
     public void updateStats () {
         combatController.updateEnemyStats (enemyStats.health, enemyStats.maxHealth, this);

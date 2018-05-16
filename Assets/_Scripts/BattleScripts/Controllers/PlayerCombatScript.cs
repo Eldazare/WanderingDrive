@@ -34,7 +34,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	//Player buffs that reset every turn and buffs apply them everyturn
 	public List<_Buff> playerBuffs = new List<_Buff> ();
 	public float accuracyBuff, buffDamageMultiplier, buffElementDamageMultiplier, healthRegen, staminaRegen, blind, buffDamageReduction;
-	public int buffFlatDamage, buffFlatElementDamage, buffArmor;
+	public int buffFlatDamage, buffFlatElementDamage, buffArmor, buffMagicArmor;
 	public bool stunned, confused, frozen, paralyzed, hold;
 	public List<int> buffElementalWeakness = new List<int> { 0, 0, 0, 0, 0, 0 };
 
@@ -43,12 +43,13 @@ public class PlayerCombatScript : MonoBehaviour {
 	public float damageDone, elementDamageDone;
 	public Element elementDone;
 	public List<Attack> attackList = new List<Attack> ();
+	public List<AttackResult> results = new List<AttackResult> ();
 	public bool enemyTurn;
 
 	public void Attack (int part) {
 	startPos = transform.position;
 	enemyPos = menuController.targetedEnemy.transform.position;
-	StartCoroutine (AttackRoutine (menuController.targetedEnemy, part));
+	StartCoroutine (AttackRoutine ());
 	}
 	public void ApplyPlayerBuffs () {
 		StartCoroutine (ApplyBuffs ());
@@ -56,6 +57,7 @@ public class PlayerCombatScript : MonoBehaviour {
 	IEnumerator ApplyBuffs () {
 		buffDamageMultiplier = 0;
 		buffArmor = 0;
+		buffMagicArmor = 0;
 		buffElementDamageMultiplier = 0;
 		buffFlatDamage = 0;
 		buffFlatElementDamage = 0;
@@ -100,10 +102,10 @@ public class PlayerCombatScript : MonoBehaviour {
 			UpdateStats ();
 			yield return new WaitForSeconds (1f);
 		}
+		CalculateAttacks ();
 		menuController.proceed = true;
 	}
-	IEnumerator AttackRoutine (Enemy target, int part) {
-		attackList.Clear ();
+	IEnumerator AttackRoutine () {
 		attacked = false;
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, enemyPos);
@@ -117,45 +119,33 @@ public class PlayerCombatScript : MonoBehaviour {
 		animator.SetTrigger ("Attack");
 		yield return new WaitUntil (() => proceed);
 		proceed = false;
-		float damageMod = combatController.comboMulti;
-		float eleDamageMod = combatController.comboMulti;
-
-		CalculateModifiers (ref damageMod, ref eleDamageMod);
-
-		if (playerStats.mainHand != null) {
-			if (playerStats.mainHand.damage > 0) {
-				WeaponAttackCalculation (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
-				attacked = true;
-			}
-		}
-		if (playerStats.offHand != null) {
-			if (playerStats.offHand.damage > 0) {
-				WeaponAttackCalculation (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod);
-			}
-		}
-		WeaponAttacks (part);
+		WeaponAttacks (combatController.comboMulti);
 		yield return new WaitUntil (() => proceed);
+		proceed = false;
 		startTime = Time.time;
 		movingLength = Vector3.Distance (transform.position, startPos);
 		InvokeRepeating ("MoveFromEnemy", 0, Time.deltaTime);
-		proceed = false;
 	}
 
-	void WeaponAttacks (int part) {
-		foreach (var attack in attackList) {
-			if (attack.damage > 0) {
-				float playerDamage = attack.damage;
-				float playerElementDamage = attack.elementDamage;
-				if (blind > 0) {
-					if ((Random.Range (0, 100) + attack.weapon.accuracyBonus + accuracyBuff) > blind) {
-						combatController.HitEnemy (-1, 0, 0, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
-					} else {
-						combatController.HitEnemy (playerDamage, playerElementDamage, attack.weapon.element, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
-					}
+	void WeaponAttacks (float multi) {
+		foreach (var item in attackList) {
+			AttackResult attack;
+			item.damageMod *= multi;
+			item.eleDamageMod *= multi;
+			attack = combatController.UniversalDamageTaken (true, item);
+			/*float playerDamage = attack.damage;
+			float playerElementDamage = attack.elementDamage;
+			if (blind > 0) {
+				if ((Random.Range (0, 100) + attack.weapon.accuracyBonus + accuracyBuff) > blind) {
+					combatController.HitEnemy (-1, 0, 0, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
 				} else {
 					combatController.HitEnemy (playerDamage, playerElementDamage, attack.weapon.element, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
 				}
-			}
+			} else {
+				combatController.HitEnemy (playerDamage, playerElementDamage, attack.weapon.element, part, attack.weapon.accuracyBonus + accuracyBuff, attack.weapon.weaknessType);
+			}*/
+			combatController.HitEnemy(attack);
+
 		}
 	}
 	void WeaponAttackCalculation (WeaponStats weapon, WeaponStats otherWep, float damageMod, float eleDamageMod) {
@@ -167,9 +157,7 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		playerDamage += buffFlatDamage;
 		playerElementDamage += buffFlatElementDamage;
-		playerDamage *= damageMod;
-		playerElementDamage *= eleDamageMod;
-		Attack attack = new Attack (playerDamage, playerElementDamage, weapon.element);
+		Attack attack = new Attack (playerDamage, playerElementDamage, weapon.element, damageMod, eleDamageMod, weapon.accuracyBonus, 0);
 		attack.weapon = weapon;
 		attackList.Add (attack);
 	}
@@ -195,53 +183,36 @@ public class PlayerCombatScript : MonoBehaviour {
 			_eleDamageMod *= attackedPenalty;
 		}
 	}
-	public void CalculateDamage (AttackMode attackmod) {
+	//Generates weapon attacks in beginning of the turn
+	public void CalculateAttacks () {
 		attackList.Clear ();
 		float damageMod = 1;
 		float eleDamageMod = 1;
-		damageDone = 0;
-		elementDamageDone = 0;
-		switch (attackmod) {
-			//Generate weapon attacks
-			case AttackMode.Attack:
-				CalculateModifiers (ref damageMod, ref eleDamageMod);
-				if (playerStats.mainHand != null) {
-					if (playerStats.mainHand.damage > 0) {
-						WeaponAttackCalculation (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
-						attacked = true;
-					}
-				}
-				if (playerStats.offHand != null) {
-					if (playerStats.offHand.damage > 0) {
-						WeaponAttackCalculation (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod);
-					}
-				}
-				break;
-				//Generate ability attack
-			case AttackMode.Ability:
-				CalculateModifiers (ref damageMod, ref eleDamageMod);
-				/* Attack attack = new Attack (playerStats.abilities[abilityID].damage * damageMod,
-				playerStats.abilities[abilityID].elementDamage * eleDamageMod, playerStats.abilities[abilityID].element);
-				attackList.Add (attack); */
-				break;
-				//Generate item's attack
-			case AttackMode.Item:
-
-				break;
-			default:
-				break;
+		//Generate weapon attacks
+		CalculateModifiers (ref damageMod, ref eleDamageMod);
+		if (playerStats.mainHand != null) {
+			if (playerStats.mainHand.damage > 0) {
+				WeaponAttackCalculation (playerStats.mainHand, playerStats.offHand, damageMod, eleDamageMod);
+				attacked = true;
+			}
 		}
-
+		if (playerStats.offHand != null) {
+			if (playerStats.offHand.damage > 0) {
+				WeaponAttackCalculation (playerStats.offHand, playerStats.mainHand, damageMod, eleDamageMod);
+			}
+		}
 	}
 	public void Ability (int part) {
 		startPos = transform.position;
 		enemyPos = menuController.targetedEnemy.transform.position;
-		if (!playerStats.abilities[abilityID].offensive) {
+		//playerStats.abilities[abilityID].UseAbility ();
+		//MAKE ME AN ATTACK CONTAINER TO USE MOTHERF/&%ER!!!!!
+		/* if (!playerStats.abilities[abilityID].offensive) {
 			Debug.Log ("Utility");
 			StartCoroutine (UtilityAbilityRoutine ());
 		} else {
 			//StartCoroutine (OffensiveAbilityRoutine (playerStats.abilities[abilityID].damage, playerStats.abilities[abilityID].elementDamage, playerStats.abilities[abilityID].element, part, abilityID));
-		}
+		} */
 	}
 	IEnumerator UtilityAbilityRoutine () {
 		playerStats.abilities[abilityID].UseAbility ();
@@ -264,7 +235,10 @@ public class PlayerCombatScript : MonoBehaviour {
 		abilityDamage *= damageMod;
 		abilityElementDamage *= eleDamageMod;
 		yield return new WaitUntil (() => proceed);
-		combatController.HitEnemy (abilityDamage, abilityElementDamage, abilityElement, part, 0, 0);
+		Attack attack = new Attack (abilityDamage, abilityElementDamage, abilityElement, damageMod, eleDamageMod, accuracyBuff, 0);
+		AttackResult result;
+		result = combatController.UniversalDamageTaken (true, attack);
+		combatController.HitEnemy (result);
 		proceed = false;
 		yield return new WaitUntil (() => proceed);
 		startTime = Time.time;
@@ -307,7 +281,7 @@ public class PlayerCombatScript : MonoBehaviour {
 					}
 				}
 			}
-			_Buff buff = new OverFocus (4);
+			_Buff buff = new OverFocus (6);
 			buff.player = this;
 			playerBuffs.Add (buff);
 			overFocusTurn = 5;
@@ -316,7 +290,7 @@ public class PlayerCombatScript : MonoBehaviour {
 			EndPlayerTurn (true);
 		} else {
 			overloadedTurn = 3;
-			_Buff buff = new Overload (2);
+			_Buff buff = new Overload (4);
 			buff.player = this;
 			playerBuffs.Add (buff);
 			EndPlayerTurn (true);
@@ -362,11 +336,9 @@ public class PlayerCombatScript : MonoBehaviour {
 	}
 
 	//Dodge and block modifier check when getting hit
-	public string GetHit (float damage, float elementDamage, Element element, bool area, int damageType) {
+	public string GetHit (AttackResult attack) {
+		//public string GetHit (float damage, float elementDamage, Element element, bool area, int damageType) {
 		string returnedValue = ""; //Returning value to report in TextBox
-		//Include modifiers to calculations: 
-		//overloadDamageTakenBonus
-		//focusDefensiveBonus
 		CancelInvoke ("BlockCountDown");
 		CancelInvoke ("DodgeCountDown");
 		if (playerStats.speed != 0) {
@@ -374,39 +346,40 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		Debug.Log ("Dodge Timer: " + dodgeTimer * playerStats.dodgeModifier);
 		Debug.Log ("Block Timer: " + playerStats.blockModifier * blockTimer);
-		if (damage >= 0 || elementDamage >= 0) {
-			if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
-				if (area) {
-					returnedValue = "You dodged but took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " area damage!";
-				} else {
-					//Dodged attack
-					returnedValue = "You dodged the attack!";
-					TakeDamage (0, 0, 0, 1, 0);
-				}
-			} else if (blockTimer > 0) {
-				Debug.Log ("Block Timer: " + blockTimer * playerStats.blockModifier);
-				if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
-					returnedValue = "You blocked the attack and took no damage!";
-					TakeDamage (0, 0, 0, 1, 0);
-				} else {
-					bool blocked = false;
-					foreach (var blockModifier in blockTiers) {
-						if (blockTimer >= (blockModifier * blockDuration)) {
-							returnedValue = "You blocked the attack but took " + TakeDamage (damage, elementDamage, element, 1 - blockModifier, damageType) + "!";
-							blocked = true;
-							break;
-						}
-					}
-					if (!blocked) {
-						returnedValue = "Your block failed and you took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " damage!";
-					}
-				}
+		if (playerStats.dodgeModifier * dodgeTimer > (dodgeDuration - perfectDodge)) {
+			if (attack.area) {
+				returnedValue = "You dodged but took " + TakeDamage (attack) + " area damage!";
 			} else {
-				//Damage taken calculations
-				returnedValue = "You took " + TakeDamage (damage, elementDamage, element, 1, damageType) + " damage!";
+				//Dodged attack
+				returnedValue = "You dodged the attack!";
+				attack.dodged = true;
+				TakeDamage (attack);
+			}
+		} else if (blockTimer > 0) {
+			Debug.Log ("Block Timer: " + blockTimer * playerStats.blockModifier);
+			if ((playerStats.blockModifier * blockTimer) > (blockDuration - perfectBlock)) {
+				returnedValue = "You blocked the attack and took no damage!";
+				attack.damage *= 0;
+				attack.elementDamage *= 0;
+				TakeDamage (attack);
+			} else {
+				bool blocked = false;
+				foreach (var blockModifier in blockTiers) {
+					if (blockTimer >= (blockModifier * blockDuration)) {
+						attack.damage *= 1 - blockModifier;
+						attack.elementDamage *= 1 - blockModifier;
+						returnedValue = "You blocked the attack but took " + TakeDamage (attack) + "!";
+						blocked = true;
+						break;
+					}
+				}
+				if (!blocked) {
+					returnedValue = "Your block failed and you took " + TakeDamage (attack) + " damage!";
+				}
 			}
 		} else {
-			returnedValue = "Enemy attack missed!";
+			//Damage taken calculations
+			returnedValue = "You took " + TakeDamage (attack) + " damage!";
 		}
 		blockTimer = 0;
 		dodgeTimer = 0;
@@ -416,9 +389,24 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		return returnedValue;
 	}
+
+	public Defense PlayerDefense () {
+		float armor = playerStats.physicalArmor, magicArmor = playerStats.magicArmor, damageMod = 1;
+		armor += buffArmor;
+		magicArmor += buffMagicArmor;
+		foreach (var buff in playerBuffs) {
+			if (buff.GetType ().ToString () == "Overload") {
+				damageMod *= overloadDebuff;
+			}
+		}
+		Defense defense = new Defense (armor, magicArmor, playerStats.elementWeakness, 0, damageMod, 100);
+		return defense;
+	}
 	//Damage taken calculations
-	string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
-		float damageTaken, damageModifier, eleModifier;
+	string TakeDamage (AttackResult attack) {
+		float damageTaken;
+		//string TakeDamage (float damage, float elementDamage, Element element, float blockModifier, int damageType) {
+		/* float damageTaken, damageModifier, eleModifier;
 		float armorAlgMod = CombatController.armorAlgorithmModifier;
 		if (damageType == 0) {
 			damageModifier = armorAlgMod / (armorAlgMod + playerStats.physicalArmor);
@@ -444,7 +432,8 @@ public class PlayerCombatScript : MonoBehaviour {
 		}
 		damage *= damageModifier;
 		elementDamage *= eleModifier;
-		damageTaken = damage + elementDamage;
+		damageTaken = damage + elementDamage; */
+		damageTaken = attack.damage + attack.elementDamage;
 		playerStats.health -= damageTaken;
 		if (damageTaken < 0) {
 			PopUpText (damageTaken.ToString ("0.#"), PlayerPopUpColor.Healing);
@@ -452,12 +441,12 @@ public class PlayerCombatScript : MonoBehaviour {
 			PopUpText (damageTaken.ToString ("0.#"), PlayerPopUpColor.Damage);
 		}
 		UpdateStats ();
-		if (elementDamage != 0) {
-			string message = damage.ToString ("0.#") + " + " + elementDamage.ToString ("0.#") + " " + element.ToString ();
+		if (attack.elementDamage != 0) {
+			string message = attack.damage.ToString ("0.#") + " + " + attack.elementDamage.ToString ("0.#") + " " + attack.element.ToString ();
 			message = MenuController.DamageTextColor (message);
 			return message;
 		} else {
-			return damage.ToString ("0.#");
+			return attack.damage.ToString ("0.#");
 		}
 	}
 
